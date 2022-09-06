@@ -1,11 +1,11 @@
 <div align="center">
-    <img width="200" src="https://github.com/Peeter95/woermann-2022/blob/main/resources/public/images/logo.png?raw=true">
-    <h1>Woermann - 2022</h1>
+    <img width="200" src="https://github.com/monotech-hq/karavancentrum-2022/blob/main/resources/public/images/logo.png?raw=true">
+    <h1>Karaváncentrum - 2022</h1>
 </div>
 
 To get this repo with the submodules included:
 
-    git clone --recurse-submodules -j8 git@github.com:Peeter95/woermann-2022.git
+    git clone --recurse-submodules -j8 git@github.com:monotech-hq/karavancentrum-2022.git
 
 Install node modules:
 
@@ -29,7 +29,7 @@ To compile a `jar` executable version please use this command:
 
 To run the `jar` use this:
 
-    java -jar woermann.jar 3000
+    java -jar karavancentrum.jar 3000
 
 To connect Clojure Nrepl with Atom + Chlorine use port `5555`
 
