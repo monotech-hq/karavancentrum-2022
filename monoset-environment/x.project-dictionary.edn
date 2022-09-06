@@ -1,0 +1,267 @@
+
+{:test
+ {:en "Test"
+  :hu "Teszt"}
+
+ ; *
+ :tutorial
+ {:hu "Bevezető"
+  :en "Tutorial"}
+ :vehicles
+ {:hu "Járművek"
+  :en "Vehicles"}
+ :business
+ {:hu "Üzlet"
+  :en "Business"}
+ :image
+ {:hu "Kép"
+  :en "Image"}
+ :images
+ {:hu "Képek"
+  :en "Images"}
+
+ ; Categories
+ :category-name
+ {:hu "Kategória neve"
+  :en "Category name"}
+ :new-category
+ {:hu "Új kategória"
+  :en "New category"}
+ :search-in-categories
+ {:hu "Keresés a kategóriák között"
+  :en "Search in categories"}
+ :unnamed-category
+ {:hu "Névtelen kategória"
+  :en "Unnamed category"}
+
+ ; Clients
+ :clients
+ {:hu "Ügyfelek"
+  :en "Clients"}
+ :client-address
+ {:hu "Ügyfél címe"
+  :en "Client address"}
+ :client-name
+ {:hu "Ügyfél neve"
+  :en "Client name"}
+ :client-tax-no
+ {:hu "Ügyfél adószáma"
+  :en "Client tax number"}
+ :search-in-clients
+ {:hu "Keresés az ügyfelek között"
+  :en "Search in clients"}
+ :unnamed-client
+ {:hu "Névtelen ügyfél"
+  :en "Unnamed client"}
+
+ ; Entities
+ :entities
+ {:hu "Entitások"
+  :en "Entities"}
+ :entity
+ {:hu "Entitás"
+  :en "Entity"}
+ :entity-name
+ {:hu "Entitás neve"
+  :en "Entity name"}
+ :unnamed-entity
+ {:hu "Névtelen entitás"
+  :en "Unnamed entity"}
+
+ ; Models
+ :models
+ {:hu "Modellek"
+  :en "Models"}
+ :model
+ {:hu "Modell"
+  :en "Model"}
+ :model-name
+ {:hu "Modell neve"
+  :en "Model name"}
+ :model-description-placeholder
+ {:hu "Modell rövid leírása"
+  :en "Short description of the model"}
+ :model-tags-placeholder
+ {:hu "Modellre jellemző rövid címkék (pl.: áruszállító)"
+  :en "Short describing labels of the model (e.g., box trailer)"}
+ :new-model
+ {:hu "Új modell"
+  :en "New model"}
+ :search-in-models
+ {:hu "Keresés a modellek között"
+  :en "Search in models"}
+ :select-models!
+ {:hu "Modellek kiválasztása"
+  :en "Select models"}
+ :unnamed-model
+ {:hu "Névtelen modell"
+  :en "Unnamed model"}
+
+ ; Parts
+ :parts
+ {:hu "Tartozékok"
+  :en "Parts"}
+
+ ; Part-groups
+ :part-groups
+ {:hu "Tartozékcsoportok"
+  :en "Part groups"}
+
+ ; Pdf
+ :download-pdf
+ {:hu "Pdf letöltése"
+  :en "Download Pdf"}
+
+ ; Price-quotes
+ :price-quotes
+ {:hu "Árajánlatok"
+  :en "Price quotes"}
+ :pq-date
+ {:hu "Árajánlat kiadásának dátuma"
+  :en "Price quote release date"}
+ :pq-index
+ {:hu "Árajánlat sorszáma"
+  :en "Price quote index"}
+ :pq-validity
+ {:hu "Ajánlat lejártának dátuma"
+  :en "Price quote eligibility date"}
+ :pq-version
+ {:hu "Árajánlat változatszáma"
+  :en "Price quote release index"}
+ :selected-parts
+ {:hu "Választott tartozékok"
+  :en "Selected parts"}
+ :vehicle-count
+ {:hu "Feltüntetett darabszám"
+  :en "Vehicle quantity"}
+ :vehicle-discount-price
+ {:hu "Nettó kedvezményes ár"
+  :en "Vehicle discount price"}
+ :vehicle-price
+ {:hu "Nettó listaár"
+  :en "Vehicle list price"}
+ :vehicle-id
+ {:hu "Utánfutó azonosító"
+  :en "Vehicle id"}
+ :price-quote-template
+ {:hu "Árajánlat sablon"
+  :en "Price quote template"}
+ :information-blocks
+ {:hu "Információs blokkok"
+  :en "Information blocks"}
+ :price-quote-template/header-description
+ {:hu "Fejlécben megjelenő kapcsolati adatok, cég rövid leírása"
+  :en "Contacts data, short company description shown in header"}
+ :price-quote-template/footer-description
+ {:hu "Láblécben megjelenő kapcsolati adatok"
+  :en "Contacts data shown in footer"}
+ :price-quote-template/logo-description
+ {:hu "Fejlécben megjelenő logó"
+  :en "Logo in header"}
+ :price-quote-template/add-information-block
+ {:hu "Információs blokk hozzáadása"
+  :en "Add information block"}
+ :vehicle-data
+ {:hu "Jármű adatok"
+  :en "Vehicle data"}
+ :client-data
+ {:hu "Ügyfél adatok"
+  :en "Client data"}
+ :price-quote-data
+ {:hu "Árajánlat adatok"
+  :en "Price quote data"}
+ :price-data
+ {:hu "Ár adatok"
+  :en "Price data"}
+
+; Schemes
+ :add-field!
+ {:hu "Mező hozzáadása"
+  :en "Add field"}
+
+ ; Site-config
+ :email-address-to-receive
+ {:hu "Árajánlat igényléseket fogadó email-cím"
+  :en "Email address to receive quote requests"}
+ :home-page-image
+ {:hu "Kezdőoldali kép"
+  :en "Home page image"}
+ :home-page-description
+ {:hu "Kezdőoldal leírás"
+  :en "Home page description"}
+ :contact-info
+ {:hu "Kapcsolattartási információk"
+  :en "Contact information"}
+
+; Storage
+ :by-alias-ascending
+ {:en "By name (ascending)"
+  :hu "Név szerint (növekvő)"}
+ :by-alias-descending
+ {:en "By name (descending)"
+  :hu "Név szerint (csökkenő)"}
+ :available-capacity-in-storage-is
+ {:en "Available capacity in storage is: % MB"
+  :hu "A rendelkezésre álló kapacitás a tárhelyen: % MB"}
+ :cant-attach-more-files
+ {:en "You can not select more files!"
+  :hu "Nem választható ki több fájl!"}
+ :failed-to-create-directory
+ {:en "Failed to create directory"
+  :hu "Sikertelen mappa létrehozás"}
+ :file-preview
+ {:en "Preview"
+  :hu "Megtekintés"}
+ :file-storage
+ {:en "File storage"
+  :hu "Tárhely"}
+ :max-uploading-size-is
+ {:en "Uploading size is: Max. % MB"
+  :hu "Az egyszerre feltölthető fájlok mérete: max. % MB"}
+ :my-storage
+ {:en "My storage"
+  :hu "Saját tárhely"}
+ :new-directory
+ {:en "New directory"
+  :hu "Új mappa"}
+ :new-file
+ {:en "New file"
+  :hu "Új fájl"}
+ :search-in-storage
+ {:en "Search in storage"
+  :hu "Keresés a tárhelyen"}
+ :storage
+ {:en "Storage"
+  :hu "Tárhely"}
+ :unnamed-directory
+ {:en "Unnamed directory"
+  :hu "Névtelen mappa"}
+ :unnamed-file
+ {:en "Unnamed file"
+  :hu "Névtelen fájl"}
+ :uploading-size-is
+ {:en "Uploading size is: %1 MB / %2 MB"
+  :hu "A feltölteni kívánt fájlok mérete: %1 MB / %2 MB"}
+ :will-be-deleted-after
+ {:en ""
+  :hu "A lomtárba helyezett elemek % nap után véglegesen törlődnek."}
+
+ ; Types
+ :add-type!
+ {:hu "Típus hozzáadása"
+  :en "Add type"}
+ :technical-data
+ {:hu "Technikai adatok"
+  :en "Technical data"}
+ :types
+ {:hu "Típusok"
+  :en "Types"}
+ :type
+ {:hu "Típus"
+  :en "Type"}
+ :unnamed-type
+ {:hu "Névtelen típus"
+  :en "Unnamed type"}
+ :type-name
+ {:hu "Típus neve"
+  :en "Type name"}}

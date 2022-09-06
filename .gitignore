@@ -1,14 +1,64 @@
-pom.xml
-pom.xml.asc
+
+# log files
+monoset-environment/log
+
+# uploaded files
+monoset-environment/media/storage/*
+monoset-environment/media/thumbnails/*
+
+# default thumbnail & sample file
+!monoset-environment/media/thumbnails/default.png
+!monoset-environment/media/thumbnails/sample.png
+!monoset-environment/media/storage/sample.png
+
+# config files
+resources/public/x.app-build.edn
+monoset-environment/x.site-config.edn
+
+# mono-app
+mono-app.jar
+
+# Log
+log/x.server-events.log
+log/pathom.handler-regs.log
+log/x.server-events.log
+monoset-environment/log/pathom.handler-regs.log
+
+# system files
+.DS_Store
+node_modules
+resources/public/js/core
+Procfile
+system.properties
+log
+.cpcache
+.shadow-cljs
+.idea
+monoset.iml
+
+# Default
 *.jar
 *.class
 /lib/
 /classes/
 /target/
-/checkouts/
+/node_modules
+
+#
 .lein-deps-sum
 .lein-repl-history
 .lein-plugins/
 .lein-failures
 .nrepl-port
 .cpcache/
+.shadow-cljs
+.idea
+**/.DS_Store
+.DS_Store
+
+# Resources
+resources/public/js
+resources/public/robots.txt
+
+# Project
+project/resources/public/js

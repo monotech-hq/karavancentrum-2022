@@ -1,0 +1,31 @@
+{:source-paths ["source-code" "monoset/source-code"]
+ :builds
+ {:site        {:asset-path "/js/core"
+                :devtools {:watch-dir "resources/public"
+                           :after-load   frontend/site-render-app!}
+                :modules {:site {:init-fn frontend/site-start-app!}}
+                :output-dir "resources/public/js/core"
+                :compiler-options {:infer-externs true}
+                :target :browser}
+
+  :admin        {:asset-path "/js/core"
+                 :devtools {:watch-dir "resources/public"
+                            :after-load frontend/admin-render-app!}
+                 :modules {:app {:init-fn frontend/admin-start-app!}}
+                 :output-dir "resources/public/js/core"
+                 :compiler-options {:infer-externs true}
+                 :target :browser}
+
+  :site-ready  {:modules {:site {:init-fn frontend/site-start-app!}}
+                :compiler-options {:infer-externs true}
+                :optimizations :advanced
+                :asset-path "/js/core"
+                :output-dir "resources/public/js/core"
+                :target :browser}
+
+  :admin-ready  {:modules {:app {:init-fn frontend/admin-start-app!}}
+                 :compiler-options {:infer-externs true}
+                 :optimizations :advanced
+                 :asset-path "/js/core"
+                 :output-dir "resources/public/js/core"
+                 :target :browser}}}

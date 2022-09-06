@@ -1,0 +1,81 @@
+
+; @param (map) app-config
+;  {:author (string)
+;   :app-home (string)
+;   :app-languages (keywords in vector)
+;   :app-themes (maps in vector)
+;    [{:name (metamorphic-content)
+;      :id (keyword)}]
+;   :app-title (string)
+;   :css-paths (maps in vector)
+;    [{:core-js (string)(opt)
+;       A fájl kiszolgálása hozzárendelhető egy megadott kliensfájlhoz.
+;      :uri (string)}]
+;   :favicon-paths (maps in vector)
+;    [{:core-js (string)(opt)
+;       A fájl kiszolgálása hozzárendelhető egy megadott kliensfájlhoz.
+;      :uri (string)}]
+;   :meta-description (string)
+;   :meta-keywords (strings in vector or string)
+;   :og-preview-path (string)
+;    Recommended preview-size: 1200x630px
+;   :plugin-js-paths (maps in vector)
+;    [{:core-js (string)(opt)
+;       A fájl kiszolgálása hozzárendelhető egy megadott kliensfájlhoz.
+;      :uri (string)}]
+;   :theme-color (string)
+;    Theme color must be hex!
+;    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name/theme-color
+;
+; @usage
+;  {:app-home      "/"
+;   :app-home      "/admin"
+;   :app-themes    [{:id :my-theme :name "My theme"}
+;                   {:id :light    :name :light-theme}]
+;   :meta-keywords ["a" "b" "c"]
+;   :meta-keywords "a, b, c"
+;   :plugin-js-paths [{:uri "/js/plugins/external-plugin.js"}
+;                     {:uri "https://external-plugin.com/plugin.js"}]}
+
+{; App details
+ :author        "Paul Cristian Martin"
+ :app-build     "0.1"
+ :app-home      "/admin"
+ :app-languages [:en :hu]
+ :app-themes    [{:id :light :name :light-theme}
+                 {:id :dark  :name :dark-theme}]
+ :app-title     "Wörmann.hu"
+
+ ; Browser details
+ :theme-color "#111111"
+
+ ; SEO details
+ :meta-description "The Matrix is everywhere. It is all around us."
+ :meta-keywords    ["Follow the white rabbit!"]
+ :og-preview-path  "/og/og-preview-1200x630.png"
+
+ ; CSS paths
+ :css-paths
+ [
+;; ---- Site ----
+  {:uri "/css/site.css"                :core-js "site.js"}
+  {:uri "/css/slider/carousel.css"     :core-js "site.js"}
+  {:uri "/css/slider/carousel.min.css" :core-js "site.js"}
+
+;; ---- App ----
+  {:uri "/css/full-calendar/common.css"   :core-js "app.js"}
+  {:uri "/css/full-calendar/daygrid.css"  :core-js "app.js"}
+  {:uri "/css/full-calendar/list.css"     :core-js "app.js"}
+  {:uri "/css/full-calendar/timegrid.css" :core-js "app.js"}
+  {:uri "/css/full-calendar/CUSTOM.css"   :core-js "app.js"}]
+
+ ; Favicon paths
+ :favicon-paths
+ [{:uri "/favicon/blue/favicon-16.png"  :size "16x16"}
+  {:uri "/favicon/blue/favicon-32.png"  :size "32x32"}
+  {:uri "/favicon/blue/favicon-96.png"  :size "96x96"}
+  {:uri "/favicon/blue/favicon-144.png" :size "144x144"}]
+
+ ; JavaScript paths
+ :plugin-js-paths
+ []}
