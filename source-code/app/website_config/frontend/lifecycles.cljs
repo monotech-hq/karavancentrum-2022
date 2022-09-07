@@ -1,5 +1,5 @@
 
-(ns app.site-config.frontend.lifecycles
+(ns app.website-config.frontend.lifecycles
     (:require [x.app-core.api :as a]))
 
 ;; ----------------------------------------------------------------------------
@@ -9,5 +9,5 @@
   ::lifecycles
   {:on-app-boot [:home/add-menu-item! {:group    :website
                                        :icon     :tune
-                                       :label    :site-config
-                                       :on-click [:router/go-to! "/@app-home/site-config"]}]})
+                                       :label    :website-config
+                                       :on-click [:router/go-to! "/@app-home/website-config"]}]})

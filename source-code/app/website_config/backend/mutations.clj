@@ -1,5 +1,5 @@
 
-(ns app.site-config.backend.mutations
+(ns app.website-config.backend.mutations
     (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [pathom.api                            :as pathom]
               [server-fruits.io                      :as io]
@@ -8,15 +8,15 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defmutation save-config!
-             [env site-config]
-             {::pathom.co/op-name 'site-config/save-config!}
-             (io/write-edn-file! a/SITE-CONFIG-FILEPATH site-config))
+(defmutation save-changes!
+             [env website-config]
+             {::pathom.co/op-name 'website-config/save-changes!}
+             (io/write-edn-file! a/WEBSITE-CONFIG-FILEPATH website-config))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; @constant (vector)
-(def HANDLERS [save-config!])
+(def HANDLERS [save-changes!])
 
 (pathom/reg-handlers! ::handlers HANDLERS)

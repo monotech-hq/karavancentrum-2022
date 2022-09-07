@@ -1,5 +1,5 @@
 
-(ns app.site-config.backend.resolvers
+(ns app.website-config.backend.resolvers
     (:require [com.wsscode.pathom3.connect.operation :refer [defresolver]]
               [pathom.api                            :as pathom]
               [server-fruits.io                      :as io]
@@ -8,21 +8,18 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defresolver get-config
+(defresolver get-data
              ; @param (map) env
              ; @param (map) resolver-props
-             ;  {:sample/id (string)}
              ;
              ; @return (map)
-             ;  {:sample/id 1
-             ;   :sample/name "hello"}
              [env _]
-             {:site-config/get-config (io/read-edn-file a/SITE-CONFIG-FILEPATH)})
+             {:website-config/get-data (io/read-edn-file a/WEBSITE-CONFIG-FILEPATH)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; @constant (vector)
-(def HANDLERS [get-config])
+(def HANDLERS [get-data])
 
 (pathom/reg-handlers! ::handlers HANDLERS)

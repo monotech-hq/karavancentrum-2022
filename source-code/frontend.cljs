@@ -4,7 +4,7 @@
               [app.common.frontend.api]
               [app.home.frontend.api]
               [app.settings.frontend.api]
-              [app.site-config.frontend.api]
+              [app.website-config.frontend.api]
               [app.storage.frontend.api]
               [app.user.frontend.api]
               [app.views.frontend.api]

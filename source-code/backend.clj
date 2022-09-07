@@ -11,7 +11,7 @@
               [app.common.backend.api]
               [app.home.backend.api]
               [app.settings.backend.api]
-              [app.site-config.backend.api]
+              [app.website-config.backend.api]
               [app.storage.backend.api]
               [app.user.backend.api]
               [app.views.backend.api]
