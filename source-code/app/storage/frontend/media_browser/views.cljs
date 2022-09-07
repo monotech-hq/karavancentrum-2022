@@ -1,6 +1,7 @@
 
 (ns app.storage.frontend.media-browser.views
-    (:require [app.storage.frontend.core.config           :as core.config]
+    (:require [app.common.frontend.api                    :as common]
+              [app.storage.frontend.core.config           :as core.config]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
               [layouts.surface-a.api                      :as surface-a]
               [mid-fruits.format                          :as format]
@@ -15,72 +16,38 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn storage-label
+(defn- storage-search-block
   []
-  (if-let [data-received? @(a/subscribe [:item-browser/data-received? :storage.media-browser])]
-          (let [directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])]
-               [:<> [surface-a/title-sensor {:title directory-alias :offset 36}]
-                    [elements/label ::storage-label
-                                    {:content     directory-alias
-                                     :font-size   :xxl
-                                     :font-weight :extra-bold
-                                     :indent      {:top :xxl}}]])
-          [elements/ghost {:height :l :indent {:bottom :xs :top :xxl} :style {:width "180px"}}]))
+  [common/item-lister-search-block :storage.media-browser
+                                   {:field-placeholder :search-in-the-directory}])
 
-(defn directory-description
+(defn- storage-label-bar
   []
-  (let [size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
+  (let [directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])
+        size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
         items @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
         size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
                     (components/content {:content :n-items :replacements [(count items)]}))]
-       (if-let [data-received? @(a/subscribe [:item-browser/data-received? :storage.media-browser])]
-               [elements/label ::directory-description
-                               {:color     :muted
-                                :content   (if data-received? size)
-                                :font-size :xxs
-                                :indent    {:bottom :s}}]
-               [elements/ghost {:height :s :indent {:bottom :s} :style {:width "150px"}}])))
-
-(defn search-items-field
-  []
-  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
-          (let [search-event [:item-browser/search-items! :storage.media-browser {:search-keys [:alias]}]]
-               [elements/search-field ::search-items-field
-                                      {:indent        {:top :s}
-                                       :on-empty      search-event
-                                       :on-type-ended search-event
-                                       :placeholder   "Keresés a mappában"}])
-          [elements/ghost {:height :l :indent {:top :s}}]))
-
-(defn search-description
-  []
-  (let [data-received?    @(a/subscribe [:item-browser/data-received?     :storage.media-browser])
-        browser-disabled? @(a/subscribe [:item-browser/browser-disabled?  :storage.media-browser])
-        all-item-count    @(a/subscribe [:item-browser/get-all-item-count :storage.media-browser])]
-       [elements/label ::client-list-label
-                       {:color            :muted
-                        :content          (if data-received? (str "Találatok ("all-item-count")"))
-                        :disabled?        browser-disabled?
-                        :font-size        :xxs
-                        :horizontal-align :right
-                        :indent           {:top :xs}}]))
+       [:<> [elements/horizontal-separator {:size :xxl}]
+            [common/item-browser-label-bar  :storage.media-browser
+                                            {:description size
+                                             :label       directory-alias}]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn directory-item-structure
   [browser-id item-dex {:keys [alias size id items modified-at]}]
-  (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
-        item-count (components/content {:content :n-items :replacements [(count items)]})
-        size       (-> size io/B->MB format/decimals (str " MB"))]
-       [:div {:style {:align-items "center" :border-bottom "1px solid #f0f0f0" :display "flex"}}
-             (let [icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
-                  [elements/icon {:icon :folder :icon-family icon-family :indent {:horizontal :m :vertical :xl}}])
-             [:div {:style {:flex-grow 1}}   [elements/label {:content alias                     :style {:color "#333"}}]]
-             [:div {:style {:width "160px"}} [elements/label {:content size       :font-size :xs :style {:color "#888" :line-height "18px"}}]
-                                             [elements/label {:content item-count :font-size :xs :style {:color "#888" :line-height "18px"}}]]
-             [:div {:style {:width "160px"}} [elements/label {:content timestamp  :font-size :xs :style {:color "#888"}}]]
-             [elements/icon {:icon :navigate_next :indent {:right :xs} :size :s}]]))
+  (let [timestamp  @(a/subscribe [:activities/get-actual-timestamp modified-at])
+        item-count  (components/content {:content :n-items :replacements [(count items)]})
+        size        (-> size io/B->MB format/decimals (str " MB"))
+        icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
+       [common/list-item-structure browser-id item-dex
+                                   {:cells [[common/list-item-thumbnail-icon browser-id item-dex {:icon :folder :icon-family icon-family}]
+                                            [common/list-item-label          browser-id item-dex {:content alias :stretch? true}]
+                                            [common/list-item-details        browser-id item-dex {:contents [size item-count]      :width "160px"}]
+                                            [common/list-item-detail         browser-id item-dex {:content timestamp :width "160px"}]
+                                            [common/list-item-end-icon       browser-id item-dex {:icon    :more_vert}]]}]))
 
 (defn directory-item
   [browser-id item-dex {:keys [id] :as directory-item}]
@@ -93,16 +60,15 @@
   [browser-id item-dex {:keys [alias id modified-at filename size] :as file-item}]
   (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
         size       (-> size io/B->MB format/decimals (str " MB"))]
-       [:div {:style {:align-items "center" :border-bottom "1px solid #f0f0f0" :display "flex"}}
-             (if (io/filename->image? alias)
-                 (let [thumbnail-uri (media/filename->media-thumbnail-uri filename)]
-                      [elements/thumbnail {:border-radius :s :height :s :indent {:horizontal :xxs :vertical :xs}
-                                           :uri thumbnail-uri :width :l}])
-                 [elements/icon {:icon :insert_drive_file :indent {:horizontal :m :vertical :xl}}])
-             [:div {:style {:flex-grow 1}}   [elements/label {:content alias                    :style {:color "#333"}}]]
-             [:div {:style {:width "160px"}} [elements/label {:content size      :font-size :xs :style {:color "#888"}}]]
-             [:div {:style {:width "160px"}} [elements/label {:content timestamp :font-size :xs :style {:color "#888"}}]]
-             [elements/icon {:icon :more_vert :indent {:right :xs} :size :s}]]))
+       [common/list-item-structure browser-id item-dex
+                                   {:cells [(if (io/filename->image? alias)
+                                                (let [thumbnail (media/filename->media-thumbnail-uri filename)]
+                                                     [common/list-item-thumbnail browser-id item-dex {:thumbnail thumbnail}])
+                                                [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
+                                            [common/list-item-label     browser-id item-dex {:content   alias     :stretch? true}]
+                                            [common/list-item-detail    browser-id item-dex {:content   size      :width "160px"}]
+                                            [common/list-item-detail    browser-id item-dex {:content   timestamp :width "160px"}]
+                                            [common/list-item-end-icon  browser-id item-dex {:icon      :more_vert}]]}]))
 
 (defn file-item
   [browser-id item-dex file-item]
@@ -119,6 +85,11 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- ghost-view
+  []
+  [common/item-lister-ghost-view :storage.media-browser
+                                 {:padding "0 12px"}])
+
 (defn media-browser
   ; WARNING! NON-PUBLIC! DO NOT USE!
   []
@@ -126,6 +97,7 @@
                      {:auto-title?      true
                       :default-item-id   core.config/ROOT-DIRECTORY-ID
                       :default-order-by :modified-at/descending
+                      :ghost-element    #'ghost-view
                       :item-path        [:storage :media-browser/browsed-item]
                       :items-path       [:storage :media-browser/downloaded-items]
                       :items-key        :items
@@ -192,34 +164,23 @@
                                  :end-content   [:<> [create-folder-icon-button]
                                                      [upload-files-icon-button]]}])
 
-(defn media-browser-column-label
-  [{:keys [label order-by-key]}]
-  (let [current-order-by @(a/subscribe [:item-browser/get-current-order-by :storage.media-browser])
-        current-order-by-key       (keyword/get-namespace current-order-by)
-        current-order-by-direction (keyword/get-name      current-order-by)]
-       [elements/button {:color (if (= order-by-key current-order-by-key) :default :muted)
-                         :icon  (if (= order-by-key current-order-by-key)
-                                    (case current-order-by-direction :descending :arrow_drop_down :ascending :arrow_drop_up))
-                         :on-click (if (= order-by-key current-order-by-key)
-                                       [:item-browser/swap-items!  :storage.media-browser]
-                                       [:item-browser/order-items! :storage.media-browser (keyword/add-namespace order-by-key :descending)])
-                         :label            label
-                         :font-size        :xs
-                         :horizontal-align :left
-                         :icon-position    :right
-                         :indent           {:horizontal :xxs}}]))
-
 (defn media-browser-header
   []
-  (if-let [data-received? @(a/subscribe [:item-browser/data-received? :storage.media-browser])]
-          [:div {:style {:background-color "white" :border-bottom "1px solid #ddd" :position "sticky" :top "48px"}}
-                [control-bar]
-                [:div {:style {:display "flex"}}
-                      [:div {:style {:width "108px"}}]
-                      [:div {:style {:display "flex" :flex-grow 1}}   [media-browser-column-label {:label :name          :order-by-key :name}]]
-                      [:div {:style {:display "flex" :width "160px"}} [media-browser-column-label {:label :size          :order-by-key :size}]]
-                      [:div {:style {:display "flex" :width "160px"}} [media-browser-column-label {:label :last-modified :order-by-key :modified-at}]]
-                      [:div {:style {:width "36px"}}]]]))
+  [common/item-lister-header :storage.media-browser
+                             {:cells [[common/item-lister-header-spacer :storage.media-browser
+                                                                        {:width "108px"}]
+                                      [common/item-lister-header-cell   :storage.media-browser
+                                                                        {:label :name          :order-by-key :name :stretch? true}]
+                                      [common/item-lister-header-cell   :storage.media-browser
+                                                                        {:label :size          :order-by-key :size        :width "160px"}]
+                                      [common/item-lister-header-cell   :storage.media-browser
+                                                                        {:label :last-modified :order-by-key :modified-at :width "160px"}]
+                                      [common/item-lister-header-spacer :storage.media-browser
+                                                                        {:width "36px"}]]
+                              :control-bar [control-bar]}])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -227,10 +188,8 @@
 (defn view-structure
   ; WARNING! NON-PUBLIC! DO NOT USE!
   []
-  [:<> [storage-label]
-       [directory-description]
-       [search-items-field]
-       [search-description]
+  [:<> [storage-label-bar]
+       [storage-search-block]
        [elements/horizontal-separator {:size :xxl}]
        [:div {:style {:display :flex :flex-direction :column-reverse}}
              [:div {:style {:width "100%"}}

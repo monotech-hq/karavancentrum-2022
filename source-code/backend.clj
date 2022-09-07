@@ -15,6 +15,7 @@
               [app.storage.backend.api]
               [app.user.backend.api]
               [app.views.backend.api]
+              [app.contents.backend.api]
 
               ; Site modules
               [site.backend.api]

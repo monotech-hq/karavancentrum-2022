@@ -30,10 +30,10 @@
        (if (core.side-effects/attach-item! env destination-id file-item)
            (when-let [file-item (core.side-effects/insert-item! env file-item)]
                      ; Copy the temporary file to storage, and delete the temporary file
-                     (io/copy-file!   tempfile filepath)
-                     (io/delete-file! tempfile)
+                     (io/copy-file!             tempfile filepath)
+                     (io/delete-file!           tempfile)
                      (media/generate-thumbnail! filename)
-                     (return file-item)))))
+                     (return                    file-item)))))
 
 (defn- upload-files-f
   ; WARNING! NON-PUBLIC! DO NOT USE!

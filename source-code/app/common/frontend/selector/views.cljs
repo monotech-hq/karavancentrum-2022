@@ -33,7 +33,7 @@
   ; @usage
   ;  [common/item-selector-footer :my-lister {...}]
   [lister-id footer-props]
-  [elements/row ::item-selector-footer
+  [elements/row ::item-selection-footer
                 {:content          [discard-selection-button lister-id footer-props]
                  :horizontal-align :right}])
 
@@ -86,6 +86,6 @@
   ; @usage
   ;  [common/item-selector-control-bar :my-lister {...}]
   [lister-id bar-props]
-  [elements/row ::item-selector-control-bar
+  [elements/row ::item-selection-control-bar
                 {:content [:<> [search-items-field   lister-id bar-props]
                                [order-by-icon-button lister-id bar-props]]}])

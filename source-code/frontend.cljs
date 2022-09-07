@@ -8,6 +8,7 @@
               [app.storage.frontend.api]
               [app.user.frontend.api]
               [app.views.frontend.api]
+              [app.contents.frontend.api]
 
               ; Site modules
               [site.frontend.api]

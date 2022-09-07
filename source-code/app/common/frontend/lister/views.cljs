@@ -59,7 +59,28 @@
   ;  [common/list-item-detail :my-lister 0 {...}]
   [_ _ {:keys [content width]}]
   [:div {:style {:width width}}
-        [elements/label {:color "#555" :content content :font-size :xs :indent {:horizontal :xs :right :xs}}]])
+        [elements/label {:color     "#777"
+                         :content   content
+                         :font-size :xs
+                         :indent    {:horizontal :xs :right :xs}}]])
+
+(defn list-item-details
+  ; @param (keyword) lister-id
+  ; @param (integer) item-dex
+  ; @param (map) cell-props
+  ;  {:contents (metamorphic-contents in vector)
+  ;   :width (string)(opt)}
+  ;
+  ; @usage
+  ;  [common/list-item-details :my-lister 0 {...}]
+  [lister-id item-dex {:keys [contents width]}]
+  [:div {:style {:width width}}
+        (letfn [(f [contents content]
+                   (conj contents [elements/label {:color     "#777"
+                                                   :content   content
+                                                   :font-size :xs
+                                                   :indent    {:right :xs}}]))]
+               (reduce f [:<>] contents))])
 
 (defn list-item-primary-cell
   ; @param (keyword) lister-id
@@ -140,9 +161,9 @@
   (let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])
         lister-disabled?     @(a/subscribe [:item-lister/lister-disabled?     lister-id])]
        [surface.views/surface-label lister-id
-                                    {:disabled?   lister-disabled?
-                                     :label       label
-                                     :loading?    (not first-data-received?)}]))
+                                    {:disabled? lister-disabled?
+                                     :label     label
+                                     :loading?  (not first-data-received?)}]))
 
 (defn item-lister-label-bar
   ; @param (keyword) lister-id
@@ -265,16 +286,18 @@
   ;    [{:label (metamorphic-content)
   ;      :order-by-key (namespaced keyword)
   ;      :stretch? (boolean)(opt)
-  ;      :width (string)(opt)}]}
+  ;      :width (string)(opt)}]
+  ;   :control-bar (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/item-lister-header :my-lister {...}]
-  [lister-id {:keys [cells]}]
+  [lister-id {:keys [cells control-bar]}]
   (if-let [data-received? @(a/subscribe [:item-lister/data-received? lister-id])]
-          (letfn [(f [wrapper cell] (conj wrapper cell))]
-                 (reduce f [:div {:style {:background-color "white"  :border-bottom "1px solid #ddd" :display "flex"
-                                          :position         "sticky" :top           "48px"}}]
-                           (param cells)))))
+          [:div {:style {:background-color "white"  :border-bottom "1px solid #ddd" :display "flex"
+                         :flex-direction   "column" :position      "sticky"         :top     "48px"}}
+                (if control-bar [components/content control-bar])
+                (letfn [(f [wrapper cell] (conj wrapper cell))]
+                       (reduce f [:div {:style {:display "flex" :width "100%"}}] cells))]))
 
 (defn item-lister-wrapper
   ; @param (keyword) lister-id

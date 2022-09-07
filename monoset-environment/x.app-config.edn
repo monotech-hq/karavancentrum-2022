@@ -38,13 +38,13 @@
 ;                     {:uri "https://external-plugin.com/plugin.js"}]}
 
 {; App details
- :author        "Paul Cristian Martin"
+ :author        "Monotech.hu"
  :app-build     "0.1"
  :app-home      "/admin"
  :app-languages [:en :hu]
  :app-themes    [{:id :light :name :light-theme}
                  {:id :dark  :name :dark-theme}]
- :app-title     "Wörmann.hu"
+ :app-title     "Karavancentrum.hu"
 
  ; Browser details
  :theme-color "#111111"
@@ -58,16 +58,7 @@
  :css-paths
  [
 ;; ---- Site ----
-  {:uri "/css/site.css"                :core-js "site.js"}
-  {:uri "/css/slider/carousel.css"     :core-js "site.js"}
-  {:uri "/css/slider/carousel.min.css" :core-js "site.js"}
-
-;; ---- App ----
-  {:uri "/css/full-calendar/common.css"   :core-js "app.js"}
-  {:uri "/css/full-calendar/daygrid.css"  :core-js "app.js"}
-  {:uri "/css/full-calendar/list.css"     :core-js "app.js"}
-  {:uri "/css/full-calendar/timegrid.css" :core-js "app.js"}
-  {:uri "/css/full-calendar/CUSTOM.css"   :core-js "app.js"}]
+  {:uri "/css/site.css"                :core-js "site.js"}]
 
  ; Favicon paths
  :favicon-paths

@@ -92,10 +92,10 @@
   (let [saving?      @(a/subscribe [:db/get-item [:storage :media-selector/meta-items :saving?]])
         header-label @(a/subscribe [:item-browser/get-current-item-label :storage.media-selector])]
        (if-not saving? [:<> [common/popup-label-bar :storage.media-selector/view
-                                                    {:secondary-button-event [:ui/close-popup! :storage.media-selector/view]
-                                                     :secondary-button-label :cancel!
-                                                     :primary-button-event   [:storage.media-selector/save-selected-items!]
+                                                    {:primary-button-event   [:storage.media-selector/save-selected-items!]
                                                      :primary-button-label   :select
+                                                     :secondary-button-event [:ui/close-popup! :storage.media-selector/view]
+                                                     :secondary-button-label :cancel!
                                                      :label header-label}]
                             (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-selector])]
                                     [control-bar]
@@ -139,8 +139,8 @@
        [common/list-item-structure browser-id item-dex
                                    {:cells [(if (io/filename->image? alias)
                                                 (let [thumbnail (media/filename->media-thumbnail-uri filename)]
-                                                     [common/list-item-thumbnail      browser-id item-dex {:thumbnail thumbnail}])
-                                                [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file}])
+                                                     [common/list-item-thumbnail browser-id item-dex {:thumbnail thumbnail}])
+                                                [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
                                             [common/list-item-primary-cell browser-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
                                             (if-let [file-selected? @(a/subscribe [:storage.media-selector/file-selected? file-item])]
                                                     [common/list-item-end-icon browser-id item-dex {:icon :check_circle_outline}]

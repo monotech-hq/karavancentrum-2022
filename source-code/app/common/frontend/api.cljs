@@ -1,6 +1,7 @@
 
 (ns app.common.frontend.api
-    (:require [app.common.frontend.credits.views  :as credits.views]
+    (:require [app.common.frontend.browser.views  :as browser.views]
+              [app.common.frontend.credits.views  :as credits.views]
               [app.common.frontend.editor.views   :as editor.views]
               [app.common.frontend.lister.views   :as lister.views]
               [app.common.frontend.popup.views    :as popup.views]
@@ -10,6 +11,9 @@
 
 ;; -- Redirects ---------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+; app.common.frontend.browser.views
+(def item-browser-label-bar browser.views/item-browser-label-bar)
 
 ; app.common.frontend.credits.views
 (def copyright-label  credits.views/copyright-label)
@@ -31,6 +35,7 @@
 (def list-item-thumbnail       lister.views/list-item-thumbnail)
 (def list-item-thumbnail-icon  lister.views/list-item-thumbnail-icon)
 (def list-item-label           lister.views/list-item-label)
+(def list-item-details         lister.views/list-item-details)
 (def list-item-detail          lister.views/list-item-detail)
 (def list-item-primary-cell    lister.views/list-item-primary-cell)
 (def list-item-end-icon        lister.views/list-item-end-icon)
@@ -51,7 +56,8 @@
 (def item-selector-control-bar selector.views/item-selector-control-bar)
 
 ; app.common.frontend.surface.views
-(def surface-label surface.views/surface-label)
+(def surface-label       surface.views/surface-label)
+(def surface-description surface.views/surface-description)
 
 ; app.common.frontend.viewer.views
 (def item-viewer-label-bar  viewer.views/item-viewer-label-bar)

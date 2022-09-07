@@ -8,6 +8,6 @@
 (a/reg-lifecycles!
   ::lifecycles
   {:on-app-boot [:home/add-menu-item! {:group    :website
-                                       :icon     :settings
-                                       :label    :settings
+                                       :icon     :tune
+                                       :label    :site-config
                                        :on-click [:router/go-to! "/@app-home/site-config"]}]})
