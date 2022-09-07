@@ -1,12 +1,13 @@
 
 (ns app.contents.frontend.views
   (:require
-            [x.app-core.api       :as a]
-            [x.app-elements.api   :as elements]
+    [x.app-core.api       :as a]
+    [x.app-elements.api   :as elements]
 
-            [forms.api         :as forms]
+    [forms.api         :as forms]
+    [layouts.surface-a.api     :as surface-a]
 
-            [layouts.surface-a.api     :as surface-a]))
+    [app.common.frontend.api :as common]))
 
 ;; -----------------------------------------------------------------------------
 ;; ---- Subscriptions ----

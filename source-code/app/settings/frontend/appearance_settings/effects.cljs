@@ -1,7 +1,6 @@
 
 (ns app.settings.frontend.appearance-settings.effects
-    (:require [x.app-core.api     :as a]
-              [x.app-elements.api :as elements]))
+    (:require [x.app-core.api :as a]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

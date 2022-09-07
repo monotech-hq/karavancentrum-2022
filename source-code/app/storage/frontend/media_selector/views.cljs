@@ -70,11 +70,12 @@
        [elements/search-field ::search-items-field
                               {:autoclear?    true
                                :autofocus?    true
+                               :emptiable?    true
                                :indent        {:vertical :xxs}
                                :min-width     :s
                                :on-empty      search-event
                                :on-type-ended search-event
-                               :placeholder   "Keresés a mappában"}]))
+                               :placeholder   :search-in-the-directory}]))
 
 (defn control-bar
   []
@@ -165,7 +166,7 @@
 (defn- ghost-view
   []
   [common/item-lister-ghost-view :storage.media-selector
-                                 {:padding "0 12px"}])
+                                 {:padding "0 24px"}])
 
 (defn- saving-indicator
   []

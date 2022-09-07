@@ -16,22 +16,21 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- storage-search-block
+(defn- search-block
   []
   [common/item-lister-search-block :storage.media-browser
                                    {:field-placeholder :search-in-the-directory}])
 
-(defn- storage-label-bar
+(defn- label-bar
   []
   (let [directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])
         size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
         items @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
         size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
                     (components/content {:content :n-items :replacements [(count items)]}))]
-       [:<> [elements/horizontal-separator {:size :xxl}]
-            [common/item-browser-label-bar  :storage.media-browser
-                                            {:description size
-                                             :label       directory-alias}]]))
+       [common/item-browser-label-bar :storage.media-browser
+                                      {:description size
+                                       :label       directory-alias}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -91,7 +90,6 @@
                                  {:padding "0 12px"}])
 
 (defn media-browser
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   []
   [item-browser/body :storage.media-browser
                      {:auto-title?      true
@@ -182,14 +180,12 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn view-structure
   ; WARNING! NON-PUBLIC! DO NOT USE!
   []
-  [:<> [storage-label-bar]
-       [storage-search-block]
+  [:<> [elements/horizontal-separator {:size :xxl}]
+       [label-bar]
+       [search-block]
        [elements/horizontal-separator {:size :xxl}]
        [:div {:style {:display :flex :flex-direction :column-reverse}}
              [:div {:style {:width "100%"}}

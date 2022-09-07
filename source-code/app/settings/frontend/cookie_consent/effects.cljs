@@ -10,10 +10,10 @@
 ;; ----------------------------------------------------------------------------
 
 ; @description
-;  A cookie-consent felület applikáció módban elindított (bejelentkezett)
-;  rendszer esetén használható. A webhely módban elindított rendszer számára
-;  egyedileg a webhely számára szükséges cookie-consent felületet készíteni,
-;  mivel a felületen megjelenő Adatvédelmi irányelvek és Felhasználási feltételek
+;  A cookie-consent felület applikáció módban elindított rendszer esetén
+;  használható. A webhely módban elindított rendszer számára egyedileg,
+;  a webhely számára szükséges cookie-consent felületet készíteni, mivel
+;  a felületen megjelenő "Adatvédelmi irányelvek" és "Felhasználási feltételek"
 ;  hivatkozások az applikáció vonatkozó tartalmaira mutatnak.
 
 ; @description

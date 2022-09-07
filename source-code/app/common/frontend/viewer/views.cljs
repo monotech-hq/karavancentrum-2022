@@ -128,8 +128,8 @@
 ;; ----------------------------------------------------------------------------
 
 (defn item-viewer-menu-bar
-  ; Az item-viewer-action-bar komponens az item-editor-action-bar komponensre épül.
-  ; A komponens további paraméterezését az item-editor-action-bar komponens leírásában találod.
+  ; Az item-viewer-menu-bar komponens az item-editor-menu-bar komponensre épül.
+  ; A komponens további paraméterezését az item-editor-menu-bar komponens leírásában találod.
   ;
   ; A komponens használatához ne felejts el inicializálni egy gestures/view-handler
   ; kezelőt, a viewer-id azonosítóval!

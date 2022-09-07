@@ -56,6 +56,7 @@
 (def item-selector-control-bar selector.views/item-selector-control-bar)
 
 ; app.common.frontend.surface.views
+(def go-back-button      surface.views/go-back-button)
 (def surface-label       surface.views/surface-label)
 (def surface-description surface.views/surface-description)
 
