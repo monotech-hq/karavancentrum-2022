@@ -36,6 +36,8 @@
 
 (defn view
   [request]
-  [:div {}
+  [:div {:style (css/parse {:display        "flex"
+                            :flex-direction "column"
+                            :align-items    "center"})}
         (app-logo  request)
         (app-title request)])
