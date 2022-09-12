@@ -1,0 +1,7 @@
+
+.vehicles-details--thumbnail,
+.vehicles-details--thumbnail > * {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 16/9
+}
