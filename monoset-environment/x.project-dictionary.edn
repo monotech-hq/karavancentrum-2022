@@ -131,18 +131,6 @@
  :selected-parts
  {:hu "Választott tartozékok"
   :en "Selected parts"}
- :vehicle-count
- {:hu "Feltüntetett darabszám"
-  :en "Vehicle quantity"}
- :vehicle-discount-price
- {:hu "Nettó kedvezményes ár"
-  :en "Vehicle discount price"}
- :vehicle-price
- {:hu "Nettó listaár"
-  :en "Vehicle list price"}
- :vehicle-id
- {:hu "Utánfutó azonosító"
-  :en "Vehicle id"}
  :price-quote-template
  {:hu "Árajánlat sablon"
   :en "Price quote template"}
@@ -264,4 +252,49 @@
   :en "Unnamed type"}
  :type-name
  {:hu "Típus neve"
-  :en "Type name"}}
+  :en "Type name"}
+
+;; Vehicle
+ :vehicle
+ {:hu "Jármű"
+  :en "Vehicle"}
+ :unnamed-vehicle
+ {:hu "Névtelen Jármű"
+  :en "Unnamed vehicle"}
+ :built-year
+ {:hu "Gyártási év"
+  :en "Built year"}
+ :seat-number
+ {:hu "Ülések száma"
+  :en "Seat number"}
+ :bed-number
+ {:hu "Ágyak száma"
+  :en "Bed number"}
+
+ :vehicle-count
+ {:hu "Feltüntetett darabszám"
+  :en "Vehicle quantity"}
+ :vehicle-discount-price
+ {:hu "Nettó kedvezményes ár"
+  :en "Vehicle discount price"}
+ :vehicle-price
+ {:hu "Nettó listaár"
+  :en "Vehicle list price"}
+ :vehicle-id
+ {:hu "Utánfutó azonosító"
+  :en "Vehicle id"}
+ ;vehicles images tab
+ :choose-images
+ {:hu "Képek kiválasztása"
+  :en "Choose images"}
+
+ ;Contents
+ :rent-informations
+ {:hu "Bérléssel kapcsolatos információk"
+  :en "Rent informations"}
+ :about-us
+ {:hu "Magunkról"
+  :en "About us"}
+ :main-page
+ {:hu "Főoldal"
+  :en "Main page"}}

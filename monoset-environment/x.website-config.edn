@@ -1,6 +1,10 @@
 
-{:debug "Follow the white rabbit"
- :site-config/email-address "ssa"
- :site-config/facebook "dsadsa"
- :site-config/home-page-description "dsadsa\ndsa\ndsa\ndas\nads\nsad\nads\nsda\n"
- :site-config/phone-number "+1221"}
+{:debug "Follow the white rabbit" 
+ :site-config/email-address "ssa" 
+ :site-config/facebook "dsadsa" 
+ :site-config/home-page-description "dsadsa\ndsa\ndsa\ndas\nads\nsad\nads\nsda\n" 
+ :site-config/phone-number "+1221" 
+ :contact-groups 
+ [{:label "teszt" 
+   :phone-numbers ["+361234567" nil] 
+   :email-addresses ["email@mail.com" nil]}]}

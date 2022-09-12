@@ -9,7 +9,7 @@
 
 {; Database details
  :database-host "127.0.0.1"
- :database-name "woermann"
+ :database-name "karavancentrum"
  :database-port 27017
  :docker-database-host "mongo"
 
