@@ -58,7 +58,10 @@
  :css-paths
  [
 ;; ---- Site ----
-  {:uri "/css/site.css"                :core-js "site.js"}]
+  {:uri "/css/site.css" :core-js "site.js"}
+  
+;; ---- Admin ----
+  {:uri "/css/app.css"  :core-js "app.js"}]
 
  ; Favicon paths
  :favicon-paths
