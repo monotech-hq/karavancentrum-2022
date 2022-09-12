@@ -6,6 +6,7 @@
               [app.settings.frontend.api]
               [app.website-config.frontend.api]
               [app.storage.frontend.api]
+              [app.vehicles.frontend.api]
               [app.user.frontend.api]
               [app.views.frontend.api]
               [app.contents.frontend.api]

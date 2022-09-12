@@ -14,6 +14,7 @@
               [app.website-config.backend.api]
               [app.storage.backend.api]
               [app.user.backend.api]
+              [app.vehicles.backend.api]
               [app.views.backend.api]
               [app.contents.backend.api]
 
