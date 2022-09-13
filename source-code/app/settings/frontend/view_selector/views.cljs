@@ -48,11 +48,16 @@
 
 (defn- view-structure
   [surface-id]
-  [:<> [elements/horizontal-separator {:size :xxl}]
-       [common/surface-label surface-id {:label :settings}]
+  [:<> [common/surface-label surface-id {:label :settings}]
+       [elements/breadcrumbs ::breadcrumbs
+                             {:crumbs [{:label :app-home
+                                        :route "/@app-home"}
+                                       {:label :settings}]
+                              :indent {:left :xs}}]
        [elements/label {:content :there-is-no-available-settings
-                        :color :highlight
-                        :indent {:vertical :xs}}]])
+                        :color :muted
+                        :font-size :xs
+                        :indent {:top :l :vertical :xs}}]])
 
 (defn view
   [surface-id]
