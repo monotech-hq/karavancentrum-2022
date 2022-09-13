@@ -1,10 +1,18 @@
 
-{:debug "Follow the white rabbit" 
- :site-config/email-address "ssa" 
- :site-config/facebook "dsadsa" 
- :site-config/home-page-description "dsadsa\ndsa\ndsa\ndas\nads\nsad\nads\nsda\n" 
- :site-config/phone-number "+1221" 
+{:company-logo "/media/storage/6319b8d653ae192b2e68c88c.jpg" 
+ :address-groups [{}] 
+ :company-slogan "" 
+ :company-name "x" 
+ :facebook-links [""] 
+ :meta-keywords ["Karaváncentrum"] 
+ :share-preview-uri "/images/logo.png" 
+ :meta-description 
+ "Közel 400 utánfutó modell. 2.000 db azonnal elhozható utánfutó. Forgalomba helyezés, házhoz szállítás." 
+ :debug "Follow the white rabbit" 
+ :meta-name "Karaváncentrum.hu" 
+ :meta-title "Karaváncentrum.hu – utánfutók széles választéka" 
+ :company-logo-uri "/media/storage/631e81abc235e86a72c94405.png" 
  :contact-groups 
- [{:label "teszt" 
-   :phone-numbers ["+361234567" nil] 
-   :email-addresses ["email@mail.com" nil]}]}
+ [{:email-addresses ["email@mail.com"] 
+   :label "Nemtom" 
+   :phone-numbers ["06301234567"]}]}

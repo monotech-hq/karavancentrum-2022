@@ -1,4 +1,8 @@
 
+
+; A fájl tartalomváltozásainak érvénybe lépéséhez szükséges újraindítani
+; az applikációt!
+;
 ; @param (map) server-config
 ;  {:database-host (string)}
 ;   :database-name (string)
