@@ -10,9 +10,7 @@
   :user.login-screen/login!
   (fn [{:keys [db]} _]
       (let [login-data (get-in db [:user :login-screen/login-data])]
-           ;[:user/authenticate! login-data])))
-           [:user/authenticate! {:email-address "iroda@karavancentrum.hu"
-                                 :password      "Ka31_4px"}])))
+           [:user/authenticate! login-data])))
  
 (a/reg-event-fx
   :user.login-screen/render!
