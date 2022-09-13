@@ -1,17 +1,9 @@
 
 (ns app.common.frontend.editor.views
     (:require [app.common.frontend.surface.views :as surface.views]
+              [mid-fruits.vector                 :as vector]
               [x.app-core.api                    :as a]
               [x.app-elements.api                :as elements]))
-
-;; -- Input components --------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn input-block-separator
-  ; @usage
-  ;  [common/input-block-separator]
-  []
-  [elements/horizontal-line {:color :highlight :indent {:horizontal :xxl}}])
 
 ;; -- Label-bar components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -127,8 +119,9 @@
                                              {:start-content [:<> [item-name-label         editor-id bar-props]
                                                                   [item-color-marker       editor-id bar-props]]
                                               :end-content   [:<> [revert-item-icon-button editor-id bar-props]
-                                                                  [save-item-icon-button   editor-id bar-props]]}]
-               [item-modified-at-label editor-id bar-props]]))
+                                                                  [save-item-icon-button   editor-id bar-props]]}]]))
+               ; TEMP#4415 Nem nézett ki jól a breadcrumbs komponens felett!
+               ;[item-modified-at-label editor-id bar-props]]))
 
 ;; -- Menu-bar components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -187,7 +180,7 @@
                     :font-size     :xs
                     :icon          icon
                     :icon-position :right
-                    :indent        {:right :xs :top :xxs}
+                    :indent        {:vertical :xs :horizontal :xxs}
                     :label         label
                     :on-click      on-click}])
 
@@ -209,23 +202,31 @@
   ;
   ; @usage
   ;  [common/item-editor-image :my-editor {...} "..."]
-  [_ _ {:keys [image]}]
+  [_ _ image]
   [elements/thumbnail {:border-radius :s
                        :indent        {:left :xs :top :xs}
+                       :height        :xxl
+                       :width         :xxl
                        :uri           image}])
 
 (defn item-editor-image-list
   ; @param (keyword) editor-id
   ; @param (map) list-props
-  ;  {}
+  ;  {:images (strings in vector)
+  ;   :no-images-label (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/item-editor-image-list :my-editor {...}]
-  [editor-id list-props]
+  [editor-id {:keys [images no-images-label] :as list-props}]
   (letfn [(f [image-list image]
              (conj image-list [item-editor-image editor-id list-props image]))]
-         (reduce f [:div {:style {:display :flex :flex-wrap :wrap}}]
-                   (:images list-props))))
+         (if (vector/nonempty? images)
+             (reduce f [:div {:style {:display :flex :flex-wrap :wrap}}] images)
+             [elements/label ::no-images-label
+                             {:color     :highlight
+                              :content   no-images-label
+                              :font-size :xs
+                              :horizontal-align :center}])))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

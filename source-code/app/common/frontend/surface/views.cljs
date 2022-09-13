@@ -17,6 +17,28 @@
                           :label         :back!
                           :on-click      [:router/go-back!]}]])
 
+;; -- Breadcrumbs components --------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn surface-breadcrumbs
+  ; @param (keyword) surface-id
+  ; @param (map) breadcrumbs-props
+  ;  {:crumbs (maps in vector)
+  ;   :disabled? (boolean)(opt)
+  ;   :loading? (boolean)(opt)}
+  ;
+  ; @usage
+  ;  [common/surface-breadcrumbs :my-surface {...}]
+  [surface-id {:keys [crumbs disabled? loading?]}]
+  (if loading? [:div {:style {:display :flex}}
+                     (letfn [(f [ghost-list _]
+                                (conj ghost-list [elements/ghost {:height :xs :indent {:left :xs :top :xxs} :style {:width "80px"}}]))]
+                            (reduce f [:<>] crumbs))]
+               [elements/breadcrumbs ::breadcrumbs
+                                     {:crumbs    crumbs
+                                      :disabled? disabled?
+                                      :indent    {:left :xs}}]))
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 

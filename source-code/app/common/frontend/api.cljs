@@ -1,19 +1,24 @@
 
 (ns app.common.frontend.api
-    (:require [app.common.frontend.browser.views  :as browser.views]
-              [app.common.frontend.credits.views  :as credits.views]
-              [app.common.frontend.editor.views   :as editor.views]
-              [app.common.frontend.lister.views   :as lister.views]
-              [app.common.frontend.popup.views    :as popup.views]
-              [app.common.frontend.selector.views :as selector.views]
-              [app.common.frontend.surface.views  :as surface.views]
-              [app.common.frontend.viewer.views   :as viewer.views]))
+    (:require [app.common.frontend.browser.views      :as browser.views]
+              [app.common.frontend.context-menu.views :as context-menu.views]
+              [app.common.frontend.credits.views      :as credits.views]
+              [app.common.frontend.editor.views       :as editor.views]
+              [app.common.frontend.lister.views       :as lister.views]
+              [app.common.frontend.popup.views        :as popup.views]
+              [app.common.frontend.selector.views     :as selector.views]
+              [app.common.frontend.surface.views      :as surface.views]
+              [app.common.frontend.viewer.views       :as viewer.views]))
 
 ;; -- Redirects ---------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; app.common.frontend.browser.views
-(def item-browser-label-bar browser.views/item-browser-label-bar)
+(def item-browser-search-block browser.views/item-browser-search-block)
+(def item-browser-label-bar    browser.views/item-browser-label-bar)
+
+; app.common.frontend.context-menu.views
+(def context-menu-label-bar context-menu.views/context-menu-label-bar)
 
 ; app.common.frontend.credits.views
 (def copyright-label  credits.views/copyright-label)
@@ -23,7 +28,6 @@
 (def credits          credits.views/credits)
 
 ; app.common.frontend.editor.views
-(def input-block-separator  editor.views/input-block-separator)
 (def item-editor-label-bar  editor.views/item-editor-label-bar)
 (def item-editor-menu-bar   editor.views/item-editor-menu-bar)
 (def item-editor-action-bar editor.views/item-editor-action-bar)
@@ -59,6 +63,7 @@
 (def go-back-button      surface.views/go-back-button)
 (def surface-label       surface.views/surface-label)
 (def surface-description surface.views/surface-description)
+(def surface-breadcrumbs surface.views/surface-breadcrumbs)
 
 ; app.common.frontend.viewer.views
 (def item-viewer-label-bar  viewer.views/item-viewer-label-bar)

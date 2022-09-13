@@ -121,8 +121,9 @@
                                                                   [item-color-marker          viewer-id bar-props]]
                                               :end-content   [:<> [delete-item-icon-button    viewer-id bar-props]
                                                                   [duplicate-item-icon-button viewer-id bar-props]
-                                                                  [edit-item-icon-button      viewer-id bar-props]]}]
-               [item-modified-at-label viewer-id bar-props]]))
+                                                                  [edit-item-icon-button      viewer-id bar-props]]}]]))
+               ; TEMP#4415 Nem nézett ki jól a breadcrumbs komponens felett!
+               ;[item-modified-at-label viewer-id bar-props]]))
 
 ;; -- Menu-bar components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------

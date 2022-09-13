@@ -198,11 +198,11 @@
                                       {:autoclear?    true
                                        :autofocus?    true
                                        :disabled?     lister-disabled?
-                                       :indent        {:left :xs :right :xxs :top :s}
+                                       :indent        {:left :xs :right :xxs}
                                        :on-empty      search-event
                                        :on-type-ended search-event
                                        :placeholder   field-placeholder}])
-          [elements/ghost {:height :l :indent {:left :xs :right :xxs :top :s}}]))
+          [elements/ghost {:height :l :indent {:left :xs :right :xxs}}]))
 
 (defn item-lister-search-description
   ; @param (keyword) lister-id
@@ -211,14 +211,14 @@
   ; @usage
   ;  [common/item-lister-search-description :my-lister {...}]
   [lister-id _]
-  [:div {:style {:display :flex :justify-content :right}}
-        (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled?   lister-id])
-              all-item-count   @(a/subscribe [:item-lister/get-all-item-count lister-id])]
-             [elements/label ::search-items-description
-                             {:color     :muted
-                              :content   (if-not lister-disabled? (components/content {:content :search-results-n :replacements [all-item-count]}))
-                              :font-size :xxs
-                              :indent    {:top :xs :vertical :xxs}}])])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled?   lister-id])
+        all-item-count   @(a/subscribe [:item-lister/get-all-item-count lister-id])
+        description       (components/content {:content :search-results-n :replacements [all-item-count]})]
+       [elements/label ::search-items-description
+                       {:color     :muted
+                        :content   (if-not lister-disabled? description)
+                        :font-size :xxs
+                        :indent    {:top :s :left :xs}}]))
 
 (defn item-lister-search-block
   ; @param (keyword) lister-id
@@ -230,8 +230,8 @@
   [lister-id block-props]
   (if-let [error-mode? @(a/subscribe [:item-lister/get-meta-item lister-id :error-mode?])]
           [:<>] ; A komponens {:error-mode? true} állapotú item-lister felületen nem jelenik meg!
-          [:<> [item-lister-search-field       lister-id block-props]
-               [item-lister-search-description lister-id block-props]]))
+          [:<> [item-lister-search-description lister-id block-props]
+               [item-lister-search-field       lister-id block-props]]))
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
