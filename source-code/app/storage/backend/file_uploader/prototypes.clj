@@ -8,7 +8,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn file-item-prototype
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [{:keys [file-path filename size]}]
   ; - A fájlokkal ellentétben a mappák {:media/mime-type "..."} tulajdonsága nem állapítható meg a nevükből
   ; - A fájlok {:media/mime-type "..."} tulajdonsága is eltárolásra kerül, hogy a mappákhoz hasonlóan

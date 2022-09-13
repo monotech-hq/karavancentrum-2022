@@ -25,10 +25,10 @@
 
 (defn create-button
   [creator-id]
-  (let [field-passed? @(a/subscribe [:elements/input-passed? ::directory-name-field])]
+  (let [directory-name @(a/subscribe [:db/get-item [:storage :directory-creator/meta-items :directory-name]])]
        [elements/button ::create-button
                         {:color       :primary
-                         :disabled?   (not field-passed?)
+                         :disabled?   (empty? directory-name)
                          :font-size   :xs
                          :hover-color :highlight
                          :indent      {:horizontal :xxs :vertical :xxs}

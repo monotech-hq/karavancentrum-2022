@@ -17,7 +17,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn file-selector
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id uploader-props]
   [:input#storage--file-selector {:multiple 1 :type "file"
                                   :accept     (file-uploader.helpers/uploader-props->allowed-extensions-list uploader-props)
@@ -27,7 +26,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn abort-progress-button
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   (let [request-id         (file-uploader.helpers/request-id uploader-id)
         files-uploaded?   @(a/subscribe [:sync/request-successed? request-id])
@@ -39,7 +37,6 @@
                                       :preset   :close}])))
 
 (defn progress-diagram
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   ; Az upload-progress-diagram komponens önálló feliratkozással rendelkezik, hogy a feltöltési folyamat
   ; sokszoros változása ne kényszerítse a többi komponenst újra renderelődésre!
@@ -53,7 +50,6 @@
                                           {:color :highlight :value (- 100 uploader-progress)}]}]))
 
 (defn progress-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   (let [request-id         (file-uploader.helpers/request-id uploader-id)
         files-uploaded?   @(a/subscribe [:sync/request-successed? request-id])
@@ -68,7 +64,6 @@
                         :indent    {:left :xs :horizontal :xxs}}]))
 
 (defn progress-state
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   (let [request-id     (file-uploader.helpers/request-id uploader-id)
         request-sent? @(a/subscribe [:sync/request-sent? request-id])]
@@ -80,14 +75,12 @@
                                     [progress-diagram uploader-id]]])))
 
 (defn progress-list
-  ; WARNING!
   [dialog-id]
   (let [uploader-ids @(a/subscribe [:storage.file-uploader/get-uploader-ids])]
        (reduce #(conj %1 ^{:key %2} [progress-state %2])
                 [:<>] uploader-ids)))
 
 (defn progress-notification-body
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [dialog-id]
   [:<> [progress-list dialog-id]
        [elements/horizontal-separator {:size :s}]])
@@ -96,7 +89,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn cancel-upload-button
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   [elements/button ::cancel-upload-button
                    {:font-size   :xs
@@ -107,7 +99,6 @@
                     :preset      :cancel}])
 
 (defn upload-files-button
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   (let [all-files-cancelled?     @(a/subscribe [:storage.file-uploader/all-files-cancelled?     uploader-id])
         max-upload-size-reached? @(a/subscribe [:storage.file-uploader/max-upload-size-reached? uploader-id])
@@ -122,7 +113,6 @@
                          :preset      :upload}]))
 
 (defn available-capacity-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   ; XXX#0506
   ; - Az available-capacity-label felirat elements/text elem használatával van megjelenítve,
@@ -145,7 +135,6 @@
                        :indent           {:vertical :xs}}]))
 
 (defn uploading-size-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   ; XXX#0506
   (let [files-size               @(a/subscribe [:storage.file-uploader/get-files-size           uploader-id])
@@ -162,7 +151,6 @@
                        :indent           {:vertical :xs}}]))
 
 (defn file-upload-summary
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   [elements/column {:content [:<> [available-capacity-label uploader-id]
                                   [uploading-size-label     uploader-id]
@@ -170,14 +158,12 @@
                     :horizontal-align :center}])
 
 (defn header-buttons
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   [elements/horizontal-polarity ::file-uploader-action-buttons
                                 {:start-content [cancel-upload-button uploader-id]
                                  :end-content   [upload-files-button  uploader-id]}])
 
 (defn header
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   [:<> [header-buttons      uploader-id]
        [file-upload-summary uploader-id]])
@@ -186,7 +172,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn file-item-structure
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id file-dex]
   (let [file-cancelled? @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :cancelled?])
         filename        @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :filename])
@@ -213,7 +198,6 @@
                          :style       (if file-cancelled? {:opacity ".5"})}]))
 
 (defn body
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   (let [file-count @(a/subscribe [:storage.file-uploader/get-selected-file-count uploader-id])]
        (letfn [(f [file-list file-dex]
@@ -225,7 +209,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn view
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   [popup-a/layout :storage.file-uploader/view
                   {:body      [body uploader-id]

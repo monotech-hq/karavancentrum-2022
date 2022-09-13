@@ -6,8 +6,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn get-create-directory-query
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) creator-id
   ; @param (string) directory-name
   ;

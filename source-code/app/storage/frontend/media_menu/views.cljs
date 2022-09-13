@@ -1,41 +1,22 @@
 
 (ns app.storage.frontend.media-menu.views
-    (:require [layouts.popup-a.api :as popup-a]
-              [mid-fruits.io       :as io]
-              [x.app-core.api      :as a]
-              [x.app-elements.api  :as elements]))
+    (:require [app.common.frontend.api :as common]
+              [layouts.popup-a.api     :as popup-a]
+              [mid-fruits.io           :as io]
+              [x.app-core.api          :as a]
+              [x.app-elements.api      :as elements]))
 
 ;; -- Item-menu components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn media-menu-close-icon-button
-  []
-  [elements/icon-button ::media-menu-close-icon-button
-                        {:keypress {:key-code 27}
-                         :on-click [:ui/close-popup! :storage.media-menu/view]
-                         :preset   :close}])
-
-(defn media-menu-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  [{:keys [alias] :as media-item}]
-  [elements/label ::media-menu-label
-                  {:color     :muted
-                   :content   alias
-                   :font-size :xs
-                   :indent    {:horizontal :xxs :left :s}}])
-
 (defn media-menu-header
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  [media-item]
-  [elements/horizontal-polarity ::media-menu-header
-                                {:start-content [media-menu-label media-item]
-                                 :end-content   [media-menu-close-icon-button]}])
+  [{:keys [alias] :as media-item}]
+  [common/context-menu-label-bar :storage.media-menu/view {:label alias}])
 
 ;; -- Directory-item menu components ------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn directory-menu-body
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [directory-item]
   [:<> [elements/button ::open-directory-button
                         {:hover-color :highlight
@@ -84,7 +65,6 @@
                          :preset      :warning}]])
 
 (defn directory-menu
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [directory-item]
   [popup-a/layout :storage.media-menu/view
                   {:body      [directory-menu-body directory-item]
@@ -95,7 +75,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn file-menu-body
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [{:keys [mime-type] :as file-item}]
   [:<> (if (or (io/mime-type->image? mime-type)
                (= mime-type "application/pdf"))
@@ -153,7 +132,6 @@
                          :preset      :warning}]])
 
 (defn file-menu
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [file-item]
   [popup-a/layout :storage.media-menu/view
                   {:body      [file-menu-body    file-item]

@@ -8,7 +8,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn request-id
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [uploader-id]
   ; A file-uploader által indított kéréseket egyedi azonosítóval szükséges ellátni,
   ; hogy egyszerre párhuzamosan több fájlfeltöltési folyamat is futtatható legyen!
@@ -18,7 +17,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn uploader-props->allowed-extensions-list
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [{:keys [allowed-extensions]}]
   (let [allowed-extensions (or allowed-extensions (media/allowed-extensions))]
        (str "." (string/join allowed-extensions ", ."))))

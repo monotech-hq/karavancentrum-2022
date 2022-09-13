@@ -18,8 +18,21 @@
 
 (defn- search-block
   []
-  [common/item-lister-search-block :storage.media-browser
-                                   {:field-placeholder :search-in-the-directory}])
+  [common/item-browser-search-block :storage.media-browser
+                                    {:field-placeholder :search-in-the-directory}])
+
+(defn- breadcrumbs
+  []
+  (if-let [error-mode? @(a/subscribe [:item-browser/get-meta-item :storage.media-browser :error-mode?])]
+          [:<>] ; A komponens {:error-mode? true} állapotú item-browser felületen nem jelenik meg!
+          (let [data-received?    @(a/subscribe [:item-browser/data-received?    :storage.media-browser])
+                browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+               [common/surface-breadcrumbs :storage.media-lister/view
+                                           {:crumbs [{:label :app-home
+                                                      :route "/@app-home"}
+                                                     {:label :storage}]
+                                            :disabled? browser-disabled?
+                                            :loading?  (not data-received?)}])))
 
 (defn- label-bar
   []
@@ -181,20 +194,17 @@
 ;; ----------------------------------------------------------------------------
 
 (defn view-structure
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   []
-  [:<> [elements/horizontal-separator {:size :xxl}]
-       [label-bar]
+  [:<> [label-bar]
+       [breadcrumbs]
        [search-block]
        [elements/horizontal-separator {:size :xxl}]
        [:div {:style {:display :flex :flex-direction :column-reverse}}
              [:div {:style {:width "100%"}}
                    [media-browser]]
-             [media-browser-header]]
-      [elements/horizontal-separator {:size :xxl}]])
+             [media-browser-header]]])
 
 (defn view
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [surface-id]
   [surface-a/layout surface-id
                     {:content #'view-structure}])

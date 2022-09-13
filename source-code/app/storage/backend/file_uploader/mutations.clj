@@ -15,8 +15,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- upload-file-f
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (map) env
   ; @param (map) mutation-props
   ;  {:destination-id (string)}
@@ -36,7 +34,6 @@
                      (return                    file-item)))))
 
 (defn- upload-files-f
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [{:keys [request] :as env} {:keys [destination-id] :as mutation-props}]
   (let [total-size (file-uploader.helpers/request->total-size request)
         files-data (file-uploader.helpers/request->files-data request)]
@@ -54,7 +51,6 @@
                                  (reduce-kv f [] files-data)))))))
 
 (defmutation upload-files!
-             ; WARNING! NON-PUBLIC! DO NOT USE!
              [env mutation-props]
              {::pathom.co/op-name 'storage.file-uploader/upload-files!}
              (upload-files-f env mutation-props))

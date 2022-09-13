@@ -5,8 +5,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn store-creator-props!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) creator-id
   ; @param (map) creator-props
   ;

@@ -93,10 +93,10 @@
   (let [saving?      @(a/subscribe [:db/get-item [:storage :media-selector/meta-items :saving?]])
         header-label @(a/subscribe [:item-browser/get-current-item-label :storage.media-selector])]
        (if-not saving? [:<> [common/popup-label-bar :storage.media-selector/view
-                                                    {:primary-button-event   [:storage.media-selector/save-selected-items!]
-                                                     :primary-button-label   :select
-                                                     :secondary-button-event [:ui/close-popup! :storage.media-selector/view]
-                                                     :secondary-button-label :cancel!
+                                                    {:primary-button   {:on-click [:storage.media-selector/save-selected-items!]
+                                                                        :label    :select!}
+                                                     :secondary-button {:on-click [:ui/close-popup! :storage.media-selector/view]
+                                                                        :label    :cancel!}
                                                      :label header-label}]
                             (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-selector])]
                                     [control-bar]
@@ -175,20 +175,25 @@
        [common/popup-saving-indicator :storage.media-selector/view
                                       {:label saving-label}]))
 
+(defn- media-browser
+  []
+  [item-browser/body :storage.media-selector
+                     {:default-item-id  core.config/ROOT-DIRECTORY-ID
+                      :default-order-by :modified-at/descending
+                      :ghost-element    #'ghost-view
+                      :item-path        [:storage :media-selector/browsed-item]
+                      :items-key        :items
+                      :items-path       [:storage :media-selector/downloaded-items]
+                      :label-key        :alias
+                      :list-element     #'media-item
+                      :path-key         :path}])
+
 (defn body
   [selector-id]
   (if-let [saving? @(a/subscribe [:db/get-item [:storage :media-selector/meta-items :saving?]])]
           [saving-indicator]
-          [item-browser/body :storage.media-selector
-                             {:default-item-id  core.config/ROOT-DIRECTORY-ID
-                              :default-order-by :modified-at/descending
-                              :ghost-element    #'ghost-view
-                              :item-path        [:storage :media-selector/browsed-item]
-                              :items-key        :items
-                              :items-path       [:storage :media-selector/downloaded-items]
-                              :label-key        :alias
-                              :list-element     #'media-item
-                              :path-key         :path}]))
+          [:<> [elements/horizontal-separator {:size :m}]
+               [media-browser]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

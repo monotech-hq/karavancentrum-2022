@@ -7,8 +7,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn get-picked-items
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:value-path (vector)}
@@ -27,8 +25,6 @@
              (string? picked-items) [picked-items])))
 
 (defn no-items-picked?
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;
@@ -38,8 +34,6 @@
        (empty? picked-items)))
 
 (defn get-picked-item-count
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;
@@ -51,11 +45,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; WARNING! NON-PUBLIC! DO NOT USE!
-(a/reg-sub :storage.media-picker/get-picked-items get-picked-items)
-
-; WARNING! NON-PUBLIC! DO NOT USE!
-(a/reg-sub :storage.media-picker/no-items-picked? no-items-picked?)
-
-; WARNING! NON-PUBLIC! DO NOT USE!
+(a/reg-sub :storage.media-picker/get-picked-items      get-picked-items)
+(a/reg-sub :storage.media-picker/no-items-picked?      no-items-picked?)
 (a/reg-sub :storage.media-picker/get-picked-item-count get-picked-item-count)

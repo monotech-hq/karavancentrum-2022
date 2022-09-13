@@ -9,8 +9,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn media-picker-toggle-auto-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:multiple? (boolean)(opt)}
@@ -21,8 +19,6 @@
                {:content :n-items-selected :replacements [picked-item-count]})))
 
 (defn media-picker-toggle-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:toggle-label (metamorphic-content)(opt)}
@@ -33,8 +29,6 @@
                         :font-size :xs}]))
 
 (defn media-picker-label
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:disabled? (boolean)(opt)
@@ -44,8 +38,6 @@
                              :disabled? disabled?}]))
 
 (defn media-picker-toggle
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:disabled? (boolean)(opt)}
@@ -55,8 +47,6 @@
                     :disabled? disabled?}])
 
 (defn media-picker-thumbnail
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:disabled? (boolean)(opt)
@@ -71,8 +61,6 @@
                        :uri       thumbnail-uri}])
 
 (defn media-picker-thumbnail-list
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:thumbnails (map)
@@ -85,8 +73,6 @@
                                       (param              picked-items))))))
 
 (defn media-picker-thumbnails
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   [picker-id picker-props]
@@ -95,8 +81,6 @@
           [media-picker-thumbnail-list picker-id picker-props]))
 
 (defn media-picker
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:thumbnails (map)(opt)}

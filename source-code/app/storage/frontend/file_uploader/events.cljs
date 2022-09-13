@@ -8,12 +8,10 @@
 ;; ----------------------------------------------------------------------------
 
 (defn store-uploader-props!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [db [_ uploader-id uploader-props]]
   (assoc-in db [:storage :file-uploader/meta-items uploader-id] uploader-props))
 
 (defn init-uploader!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [db [_ uploader-id]]
   (let [file-selector (dom/get-element-by-id "storage--file-selector")
         files-meta    (dom/file-selector->files-meta file-selector)
@@ -22,13 +20,11 @@
               (update-in [:storage :file-uploader/meta-items     uploader-id] merge files-meta))))
 
 (defn clean-uploader!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [db [_ uploader-id]]
   (-> db (dissoc-in [:storage :file-uploader/selected-files uploader-id])
          (dissoc-in [:storage :file-uploader/meta-items     uploader-id])))
 
 (defn toggle-file-upload!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [db [_ uploader-id file-dex]]
   (let [filesize (get-in db [:storage :file-uploader/selected-files uploader-id file-dex :filesize])]
        (if-let [file-cancelled? (get-in db [:storage :file-uploader/selected-files uploader-id file-dex :cancelled?])]
@@ -42,8 +38,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; WARNING! NON-PUBLIC! DO NOT USE!
 (a/reg-event-db :storage.file-uploader/toggle-file-upload! toggle-file-upload!)
-
-; WARNING! NON-PUBLIC! DO NOT USE!
-(a/reg-event-db :storage.file-uploader/clean-uploader! clean-uploader!)
+(a/reg-event-db :storage.file-uploader/clean-uploader!     clean-uploader!)

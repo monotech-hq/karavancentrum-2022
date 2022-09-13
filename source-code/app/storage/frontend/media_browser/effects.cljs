@@ -12,7 +12,6 @@
 
 (a/reg-event-fx
   :storage.media-browser/load-browser!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [:storage.media-browser/render-browser!])
 
 ;; ----------------------------------------------------------------------------
@@ -35,7 +34,6 @@
 
 (a/reg-event-fx
   :storage.media-browser/add-new-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-browser)
             load-props     {:browser-id :storage.media-browser :destination-id destination-id}]
@@ -47,28 +45,24 @@
 
 (a/reg-event-fx
   :storage.media-browser/delete-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ {:keys [id]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:item-browser/delete-item! :storage.media-browser id]]}))
 
 (a/reg-event-fx
   :storage.media-browser/duplicate-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ {:keys [id]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:item-browser/duplicate-item! :storage.media-browser id]]}))
 
 (a/reg-event-fx
   :storage.media-browser/rename-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ media-item]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:storage.alias-editor/load-editor! media-item]]}))
 
 (a/reg-event-fx
   :storage.media-browser/move-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ media-item]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]]}))
 
@@ -77,14 +71,12 @@
 
 (a/reg-event-fx
   :storage.media-browser/open-directory!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ {:keys [id]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:item-browser/browse-item! :storage.media-browser id]]}))
 
 (a/reg-event-fx
   :storage.media-browser/copy-directory-link!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ {:keys [id]}]]
       (let [directory-uri (r item-browser/get-item-route db :storage.media-browser id)
             directory-uri (r router/use-app-home         db directory-uri)
@@ -97,7 +89,6 @@
 
 (a/reg-event-fx
   :storage.media-browser/preview-file!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ {:keys [filename]}]]
       (let [directory-id (r item-browser/get-current-item-id db :storage)]
            {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
@@ -105,14 +96,12 @@
 
 (a/reg-event-fx
   :storage.media-browser/download-file!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ {:keys [alias filename]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:tools/save-file! {:filename alias :uri (media/filename->media-storage-uri filename)}]]}))
 
 (a/reg-event-fx
   :storage.media-browser/copy-file-link!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ {:keys [filename]}]]
       (let [file-uri (media/filename->media-storage-uri filename)
             uri-base (window/get-uri-base)]
@@ -123,7 +112,6 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   :storage.media-browser/render-browser!
   [:ui/render-surface! :storage.media-browser/view
                        {:content #'media-browser.views/view}])

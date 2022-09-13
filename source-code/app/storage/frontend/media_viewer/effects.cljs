@@ -35,16 +35,14 @@
 
 (a/reg-event-fx
   :storage.media-viewer/request-directory-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ viewer-id]]
-      [:sync/send-query! :storage.media-viewer/request-directory-item!
-                         {:display-progress? true
-                          :on-success [:storage.media-viewer/receive-directory-item! viewer-id]
-                          :query (r media-viewer.queries/get-request-directory-item-query db viewer-id)}]))
+      [:pathom/send-query! :storage.media-viewer/request-directory-item!
+                           {:display-progress? true
+                            :on-success [:storage.media-viewer/receive-directory-item! viewer-id]
+                            :query (r media-viewer.queries/get-request-directory-item-query db viewer-id)}]))
 
 (a/reg-event-fx
   :storage.media-viewer/render-viewer!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ viewer-id]]
       [:ui/render-popup! :storage.media-viewer/view
                          {:content [media-viewer.views/view viewer-id]}]))

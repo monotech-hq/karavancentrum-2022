@@ -10,19 +10,16 @@
 ;; ----------------------------------------------------------------------------
 
 (defn attach-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [_ directory-id {:media/keys [id] :as media-item}]
   (letfn [(f [document] (update document :media/items vector/conj-item {:media/id id}))]
          (mongo-db/apply-document! "storage" directory-id f)))
 
 (defn detach-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [_ directory-id {:media/keys [id] :as media-item}]
   (letfn [(f [document] (update document :media/items vector/remove-item {:media/id id}))]
          (mongo-db/apply-document! "storage" directory-id f)))
 
 (defn item-attached?
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [_ directory-id {:media/keys [id] :as media-item}]
   (boolean (if-let [{:media/keys [items]} (mongo-db/get-document-by-id "storage" directory-id)]
                    (vector/contains-item? items {:media/id id}))))
@@ -31,8 +28,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn update-path-directories!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (map) env
   ; @param (namespaced map) media-item
   ;  {:media/path (namespaced maps in vector)
@@ -61,17 +56,14 @@
 ;; ----------------------------------------------------------------------------
 
 (defn get-item
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [env item-id]
   (mongo-db/get-document-by-id "storage" item-id))
 
 (defn insert-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [{:keys [request] :as env} item]
   (mongo-db/insert-document! "storage" item {:prototype-f #(mongo-db/added-document-prototype request :media %)}))
 
 (defn remove-item!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [_ {:media/keys [id] :as media-item}]
   (mongo-db/remove-document! "storage" id))
 
@@ -79,14 +71,12 @@
 ;; ----------------------------------------------------------------------------
 
 (defn delete-file!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [filename]
   (if-not (= filename core.config/SAMPLE-FILE-FILENAME)
           (media/delete-storage-file! filename))
   (media/delete-storage-thumbnail! filename))
 
 (defn duplicate-file!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [source-filename copy-filename]
   (media/duplicate-storage-file!      source-filename copy-filename)
   (media/duplicate-storage-thumbnail! source-filename copy-filename))

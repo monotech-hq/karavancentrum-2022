@@ -41,10 +41,10 @@
             validator-f   #(r directory-creator.validators/create-directory-response-valid? db creator-id %)]
            {:db       (r ui/fake-process! db 15)
             :dispatch-n [[:ui/close-popup! :storage.directory-creator/view]
-                         [:sync/send-query! :storage.directory-creator/create-directory!
-                                            {:query query :validator-f validator-f
-                                             :on-success [:storage.directory-creator/directory-created         creator-id]
-                                             :on-failure [:storage.directory-creator/directory-creation-failed creator-id]}]]})))
+                         [:pathom/send-query! :storage.directory-creator/create-directory!
+                                              {:query query :validator-f validator-f
+                                               :on-success [:storage.directory-creator/directory-created         creator-id]
+                                               :on-failure [:storage.directory-creator/directory-creation-failed creator-id]}]]})))
 
 (a/reg-event-fx
   :storage.directory-creator/directory-created

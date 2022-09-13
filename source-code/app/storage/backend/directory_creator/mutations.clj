@@ -10,8 +10,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn create-directory-f
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (map) env
   ; @param (map) mutation-props
   ;  {:alias (string)
@@ -31,8 +29,6 @@
                          (return directory-item)))))
 
 (defmutation create-directory!
-             ; WARNING! NON-PUBLIC! DO NOT USE!
-             ;
              ; @param (map) env
              ; @param (map) mutation-props
              ;

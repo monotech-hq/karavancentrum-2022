@@ -5,8 +5,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn request->files-data
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (map) request
   ;  {:params (map)
   ;    {:query (string)}}
@@ -25,7 +23,6 @@
          (reduce-kv f {} (dissoc params :query))))
 
 (defn request->total-size
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [{:keys [params]}]
   (letfn [(f [total-size _ {:keys [size]}] (+ total-size size))]
          (reduce-kv f 0 (dissoc params :query))))

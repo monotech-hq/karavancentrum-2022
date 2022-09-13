@@ -7,8 +7,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn file-id->filename
-  ; WARNING! NON-PUBLIC! DO NOT USE!
-  ;
   ; @param (string) file-id
   ; @param (string) filename
   ;

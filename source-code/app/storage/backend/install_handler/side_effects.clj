@@ -12,7 +12,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- check-install!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [_]
   (let [request {:session user/SYSTEM-ACCOUNT}
         options {:prototype-f #(mongo-db/added-document-prototype request :media %)}
@@ -30,5 +29,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; WARNING! NON-PUBLIC! DO NOT USE!
 (a/reg-fx :storage/check-install! check-install!)

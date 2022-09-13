@@ -44,7 +44,6 @@
 
 (a/reg-event-fx
   :storage.file-uploader/cancel-uploader!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ uploader-id]]
       {:db       (r file-uploader.events/clean-uploader! db uploader-id)
        :dispatch [:ui/close-popup! :storage.file-uploader/view]}))
@@ -54,21 +53,19 @@
 
 (a/reg-event-fx
   :storage.file-uploader/start-progress!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ uploader-id]]
       (let [query        (r file-uploader.queries/get-upload-files-query          db uploader-id)
             form-data    (r file-uploader.subs/get-form-data                      db uploader-id)
             validator-f #(r file-uploader.validators/upload-files-response-valid? db uploader-id %)]
            {:dispatch-n [[:storage.file-uploader/progress-started uploader-id]
-                         [:sync/send-query! (file-uploader.helpers/request-id uploader-id)
-                                            {:body       (dom/merge-to-form-data! form-data {:query query})
-                                             :on-success [:storage.file-uploader/progress-successed uploader-id]
-                                             :on-failure [:storage.file-uploader/progress-failured  uploader-id]
-                                             :validator-f validator-f}]]})))
+                         [:pathom/send-query! (file-uploader.helpers/request-id uploader-id)
+                                              {:body       (dom/merge-to-form-data! form-data {:query query})
+                                               :on-success [:storage.file-uploader/progress-successed uploader-id]
+                                               :on-failure [:storage.file-uploader/progress-failured  uploader-id]
+                                               :validator-f validator-f}]]})))
 
 (a/reg-event-fx
   :storage.file-uploader/files-selected-to-upload
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ uploader-id]]
       ; A storage--file-selector input on-change eseménye indítja el a feltöltés inicializálását.
       (if-let [any-file-selected? (file-uploader.side-effects/any-file-selected?)]
@@ -77,14 +74,12 @@
 
 (a/reg-event-fx
   :storage.file-uploader/progress-started
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ uploader-id]]
       {:dispatch-n [[:storage.file-uploader/render-progress-notification! uploader-id]
                     [:ui/close-popup! :storage.file-uploader/view]]}))
 
 (a/reg-event-fx
   :storage.file-uploader/progress-successed
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ uploader-id]]
       ; - XXX#5087
       ;   Az egyes feltöltési folyamatok befejezése/megszakadása után késleltetve zárja le az adott
@@ -99,14 +94,12 @@
 
 (a/reg-event-fx
   :storage.file-uploader/progress-failured
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ uploader-id]]
       {; XXX#5087
        :dispatch-later [{:ms 8000 :dispatch [:storage.file-uploader/end-uploader! uploader-id]}]}))
 
 (a/reg-event-fx
   :storage.file-uploader/end-uploader!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [{:keys [db]} [_ uploader-id]]
       ; - A feltöltő lezárása után késleltetve törli ki annak adatait, hogy a még
       ;   látszódó folyamatjelző számára elérhetők maradjanak az adatok.
@@ -119,7 +112,6 @@
 
 (a/reg-event-fx
   :storage.file-uploader/render-uploader!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   (fn [_ [_ uploader-id]]
       [:ui/render-popup! :storage.file-uploader/view
                          {:content [file-uploader.views/view uploader-id]}]))
@@ -129,7 +121,6 @@
 
 (a/reg-event-fx
   :storage.file-uploader/render-progress-notification!
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [:ui/render-bubble! :storage.file-uploader/progress-notification
                       {:body        #'file-uploader.views/progress-notification-body
                        :autoclose?  false

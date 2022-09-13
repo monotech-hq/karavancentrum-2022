@@ -7,7 +7,8 @@
 
 (a/reg-lifecycles!
   ::lifecycles
-  {:on-app-boot [:home/add-menu-item! {:group    :website
-                                       :icon     :folder
-                                       :label    :file-storage
-                                       :on-click [:router/go-to! "/@app-home/storage"]}]})
+  {:on-app-boot [:home/add-menu-item! {:group       :website
+                                       :icon        :folder
+                                       :icon-family :material-icons-outlined
+                                       :label       :file-storage
+                                       :on-click    [:router/go-to! "/@app-home/storage"]}]})

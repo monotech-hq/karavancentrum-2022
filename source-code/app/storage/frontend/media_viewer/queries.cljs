@@ -7,7 +7,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn get-request-directory-item-query
-  ; WARNING! NON-PUBLIC! DO NOT USE!
   [db [_ viewer-id]]
   (let [directory-id (r media-viewer.subs/get-directory-id db viewer-id)]
        [`(:storage.media-browser/get-item ~{:item-id directory-id})]))
