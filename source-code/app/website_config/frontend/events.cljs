@@ -23,6 +23,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn load!
+  [db _]
+  (dissoc-in db [:website-config :config-handler/meta-items :loaded?]))
+
+(defn loaded
+  [db _]
+  (assoc-in db [:website-config :config-handler/meta-items :loaded?] true))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn revert-changes!
   [db _]
   (let [backup-item (get-in db [:website-config :config-handler/backup-item])]
@@ -38,4 +49,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(a/reg-event-db :website-config/loaded          loaded)
 (a/reg-event-db :website-config/revert-changes! revert-changes!)

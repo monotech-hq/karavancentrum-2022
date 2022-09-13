@@ -11,7 +11,8 @@
 (defmutation save-changes!
              [env website-config]
              {::pathom.co/op-name 'website-config/save-changes!}
-             (io/write-edn-file! a/WEBSITE-CONFIG-FILEPATH website-config))
+             (io/write-edn-file! a/WEBSITE-CONFIG-FILEPATH website-config)
+             (a/dispatch-fx [:core/import-website-config!]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

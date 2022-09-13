@@ -18,6 +18,13 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn loaded?
+  [db _]
+  (get-in db [:website-config :config-handler/meta-items :loaded?]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn form-changed?
   [db [_ change-keys]]
   ; Megvizsgálja, hogy a website-config megadott kulcsú elemei megváltoztak-e
@@ -38,5 +45,6 @@
 
 (a/reg-sub :website-config/synchronizing?  synchronizing?)
 (a/reg-sub :website-config/data-received?  data-received?)
+(a/reg-sub :website-config/loaded?         loaded?)
 (a/reg-sub :website-config/form-changed?   form-changed?)
 (a/reg-sub :website-config/config-changed? config-changed?)

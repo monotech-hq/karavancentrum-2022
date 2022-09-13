@@ -12,9 +12,9 @@
   (fn [{:keys [db]} _]
       (let [website-config (get-in db [:website-config :config-handler/edited-item])]
            {:db       (r events/save-changes! db)
-            :dispatch [:sync/send-query! :website-config/synchronizing!
-                                         {:display-progress? true
-                                          :query [`(website-config/save-changes! ~website-config)]}]})))
+            :dispatch [:pathom/send-query! :website-config/synchronizing!
+                                           {:display-progress? true
+                                            :query [`(website-config/save-changes! ~website-config)]}]})))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -28,18 +28,21 @@
   :website-config/request-data!
   (fn [{:keys [db]} _]
       {:db (r events/request-data! db)
-       :dispatch [:sync/send-query! :website-config/synchronizing
-                                    {:display-progress? true
-                                     :on-success [:website-config/receive-data!]
-                                     :query      [:website-config/get-data]}]}))
+       :dispatch [:pathom/send-query! :website-config/synchronizing
+                                      {:display-progress? true
+                                       :on-success [:website-config/receive-data!]
+                                       :on-stalled [:website-config/loaded]
+                                       :query      [:website-config/get-data]}]}))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
   :website-config/load!
-  {:dispatch-n [[:website-config/request-data!]
-                [:gestures/init-view-handler! :website-config
-                                              {:default-view-id :basic-info}]
-                [:ui/render-surface! :website-config/view
-                                     {:content #'views/view}]]})
+  (fn [{:keys [db]} _]
+      {:db (r events/load! db)
+       :dispatch-n [[:website-config/request-data!]
+                    [:gestures/init-view-handler! :website-config
+                                                  {:default-view-id :basic-info}]
+                    [:ui/render-surface! :website-config/view
+                                         {:content #'views/view}]]}))
