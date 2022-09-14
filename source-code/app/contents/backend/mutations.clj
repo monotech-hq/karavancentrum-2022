@@ -5,18 +5,22 @@
               [server-fruits.io                      :as io]
               [x.server-core.api                     :as a]))
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+;; ---- Configurations ----
 
-(defmutation save-config!
-             [env contents]
-             {::pathom.co/op-name 'contents/save-config!}
-             (io/write-edn-file! ""));a/contents-FILEPATH contents))
+(def FILE_PATH "monoset-environment/db/contents.edn")
+
+;; ---- Configurations ----
+;; -----------------------------------------------------------------------------
+(defmutation save! [env contents]
+  {::pathom.co/op-name 'contents/save!}
+  (io/write-edn-file! FILE_PATH contents))
+  ;(a/dispatch-fx [:core/import-website-config!]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; @constant (vector)
-(def HANDLERS [])
+(def HANDLERS [save!])
 
-; (pathom/reg-handlers! ::handlers HANDLERS)
+(pathom/reg-handlers! ::handlers HANDLERS)

@@ -37,12 +37,14 @@
   ; @usage [plugins/text-editor {:value-path [:my-value-path]})
   ;
   ; @return [reagent-component]}
-  (let [db-value      (or @(a/subscribe [:db/get-item value-path]) "")          ;; check reframe-db for value if nil return string to jodit
-        editor-value  (ratom db-value)]                                         ;; load reframe-db value as init value
+  (let [db-value     (a/subscribe [:db/get-item value-path])                    ;; check reframe-db for value if nil return string to jodit
+        local-value  (ratom "")]                                                ;; load reframe-db value as init value
     (assert value-path
             (str "Must provide :value-path in text-editor config"))
     (lifecycles
-      {:reagent-render
+      {:component-did-mount  #(reset! local-value @db-value)                    ;; Sync local value with db-value
+       :component-did-update #(reset! local-value @db-value)                    ;;
+       :reagent-render
        (fn [config]
-         (let [editor-settings (assoc config :editor-value editor-value)]
+         (let [editor-settings (assoc config :editor-value local-value)]
            [text-editor editor-settings]))})))
