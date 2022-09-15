@@ -1,10 +1,12 @@
 (ns plugins.text-editor.view
   (:require
-   ["react" :as react :default useMemo]
-   [reagent.core :as r :refer [atom]]
-   [jodit-react :default JoditEditor]
-   [x.app-core.api :as a]
-   [x.app-elements.api :as elements]))
+    ["react" :as react]
+    [reagent.core :as r :refer [atom]]
+
+    [x.app-core.api :as a]
+    [x.app-elements.api :as elements]
+
+    [jodit-react :default JoditEditor]))
 
 ;; -----------------------------------------------------------------------------
 ;; ---- Configurations ----
@@ -17,23 +19,41 @@
 ;; ---- Configurations ----
 ;; -----------------------------------------------------------------------------
 
+(defn memofn
+  ([f]
+   (react/useMemo f #js []))
+  ([f deps]
+   (react/useMemo f (to-array deps))))
+
+
+(defn start-timer [watcher f & [ms]]
+  (.clearTimeout js/window @watcher)
+  (reset! watcher (.setTimeout js/window (fn []
+                                           (f)
+                                           (.clearTimeout js/window @watcher))
+                                         (if ms ms 500))))
+
+(defn on-type-ended [watcher f & [ms]]
+  (start-timer watcher f (if ms ms 500)))
+
 ;; -----------------------------------------------------------------------------
 ;; ---- Components ----
 
 
-(defn text-editor [{:keys [config value-path init-value ditor-props] :as props}]
-  (let [config  (clj->js (if config config default-config))]
-    [:> JoditEditor
-      {:config   config
-       :value    init-value
-       :onChange (fn [value]
-                   (a/dispatch-sync [:db/set-item! value-path value]))
-       :onBlur   (fn [value]
-                   (a/dispatch-sync [:db/set-item! value-path value]))}]))
+(defn text-editor [{:keys [config value-path local-value editor-props] :as props}]
+  (let [config  (memofn (fn [] (clj->js (if config config default-config))))
+        watcher (atom nil)]
+     [:> JoditEditor
+       (merge {:config   config
+               :value    local-value
+               :onChange #(on-type-ended watcher
+                            (fn []
+                              (a/dispatch-sync [:db/set-item! value-path %])))}
+              editor-props)]))
 
-(defn view [{:keys [value-path settings]}]
+(defn view [{:keys [value-path]}]
   ;  @param {:value-path   (keywords in vector)
-  ;          :settings     (hash-map)(opt)                                      ;; optional settings if not included default-settings going to use
+  ;          :config     (hash-map)(opt)                                        ;; optional config if not included default-config going to use
   ;          :editor-props (hash-map)(opt)}]                                    ;; optional props for JoditEditor in case have to overwrite something
   ;
   ; @usage [plugins/text-editor {:value-path [:my-value-path]})
@@ -41,8 +61,8 @@
   ; @return [reagent-component]}
   (assert value-path
           (str "Must provide :value-path in text-editor config"))
-  (let [
-        init-value (or @(a/subscribe [:db/get-item value-path]) "")]            ;; check reframe-db for value if nil return string to jodit
-    (fn [config]
-      (let [editor-settings (assoc config :init-value init-value)]
-         [:f> text-editor editor-settings]))))
+  (fn [config]
+    (let [init-value (or @(a/subscribe [:db/get-item value-path]) "")
+          editor-settings (assoc config :local-value init-value)]
+       [:div
+        [:f> text-editor editor-settings]])))
