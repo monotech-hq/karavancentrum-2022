@@ -297,4 +297,16 @@
   :en "About us"}
  :main-page
  {:hu "Főoldal"
-  :en "Main page"}}
+  :en "Main page"}
+ :brands
+ {:hu "Márkák"
+  :en "Brands"}
+ :empty
+ {:hu "Nincs megadott érték"
+  :en "Field is empty"}
+ :image-link
+ {:hu "Kép url"
+  :en "Image url"}
+ :link
+ {:hu "Link"
+  :en "Link"}}
