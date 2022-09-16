@@ -6,6 +6,7 @@
     [app.contents.frontend.events :as events]))
 
 
+
 (a/reg-event-fx
   :contents/save!
   (fn [{:keys [db]} _]
@@ -20,18 +21,19 @@
 
 (a/reg-event-fx
   :contents/receive-data!
-  (fn [{:keys [db]} [_ {:contents/keys [get-data]}]]
-      {:db (r events/receive-data! db get-data)}))
+  (fn [{:keys [db]} [_ {:contents/keys [get!]}]]
+    (println "receive-data!" get!)
+    {:db (r events/receive-data! db get!)}))
 
 (a/reg-event-fx
-  :contents/!
+  :contents/init!
   (fn [{:keys [db]} _]
       {:db (r events/request-data! db)
-       :dispatch [:pathom/send-query! :website-config/synchronizing
-                                      {:display-progress? true
-                                       :on-success [:website-config/receive-data!]
-                                       :on-stalled [:website-config/loaded]
-                                       :query      [:website-config/get-data]}]}))
+       :dispatch [:pathom/send-query! :contents/synchronizing
+                  {:display-progress? true
+                   :on-success [:contents/receive-data!]
+                   :on-stalled [:contents/loaded]
+                   :query      [:contents/get!]}]}))
 
 ;; ----------------------------------------------------------------------------
 

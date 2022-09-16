@@ -5,24 +5,22 @@
               [server-fruits.io                      :as io]
               [x.server-core.api                     :as a]))
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+;; ---- Configurations ----
 
-(defresolver get-config
-             ; @param (map) env
-             ; @param (map) resolver-props
-             ;  {:sample/id (string)}
-             ;
-             ; @return (map)
-             ;  {:sample/id 1
-             ;   :sample/name "hello"}
-             [env _]
-             {:contents/get-config (io/read-edn-file)}) ;a/contents-FILEPATH)})
+(def FILE_PATH "monoset-environment/db/contents.edn")
+
+;; ---- Configurations ----
+;; -----------------------------------------------------------------------------
+
+
+(defresolver get! [env _]
+  {:contents/get! (io/read-edn-file FILE_PATH)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; @constant (vector)
-(def HANDLERS [])
+(def HANDLERS [get!])
 
-; (pathom/reg-handlers! ::handlers HANDLERS)
+(pathom/reg-handlers! ::handlers HANDLERS)

@@ -12,10 +12,10 @@
 
 ;; ---- Configurations ----
 ;; -----------------------------------------------------------------------------
+
 (defmutation save! [env contents]
   {::pathom.co/op-name 'contents/save!}
   (io/write-edn-file! FILE_PATH contents))
-  ;(a/dispatch-fx [:core/import-website-config!]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
