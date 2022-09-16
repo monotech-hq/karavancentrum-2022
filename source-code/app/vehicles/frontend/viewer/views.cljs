@@ -99,18 +99,32 @@
     :label-key     :name}])
 
 (defn- label-bar []
-  (let [category-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])
-        category-id   @(a/subscribe [:router/get-current-route-path-param :item-id])]
+  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])
+        vehicle-id   @(a/subscribe [:router/get-current-route-path-param :item-id])]
        [common/item-viewer-label-bar :vehicles.viewer
-                                     {:edit-item-uri (str "/@app-home/vehicles/"category-id"/edit")
-                                      :name          category-name}]))
+                                     {:edit-item-uri (str "/@app-home/vehicles/"vehicle-id"/edit")
+                                      :name          vehicle-name}]))
+
+(defn- breadcrumbs []
+  (let [loaded? @(a/subscribe [:contents/loaded?])
+        vehicle-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])]
+       [common/surface-breadcrumbs :contents/view
+                                   {:crumbs [{:label :app-home
+                                              :route "/@app-home"}
+                                             {:label :vehicles
+                                              :route "/@app-home/vehicles"}
+                                             {:label vehicle-name}]
+                                    :loading? (not loaded?)}]))
+
 
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------
 
 (defn- view-structure []
-  [:<> [elements/horizontal-separator {:size :xxl}]
+  [:<> [elements/horizontal-separator {:size :s}]
        [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :s}]
        [viewer]
        [elements/horizontal-separator {:size :xxl}]])
 

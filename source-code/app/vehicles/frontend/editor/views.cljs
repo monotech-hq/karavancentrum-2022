@@ -9,8 +9,7 @@
       [app.common.frontend.api  :as common]
       [app.storage.frontend.api :as storage]
 
-      [app.components.frontend.api :as comp]
-      [app.vehicles.frontend.editor.sortable-grid.core :as grid]))
+      [app.components.frontend.api :as comp]))
 
 (def default-indent {:vertical :xs})
 
@@ -82,13 +81,14 @@
 ;; -----------------------------------------------------------------------------
 ;; ---- Images ----
 
-(defn img [{:keys [item-props]}]
-  [:div {:style {:transformOrigin    "0 0"
-                 :height "200px"
-                 :backgroundSize     "cover"
-                 :backgroundPosition "center"
-                 :backgroundImage    (str "url(" item-props ")")
-                 :border-radius "10px"}}])
+(defn img [{:keys [item-props]} {:keys [attributes listeners]}]
+  [:div (merge attributes listeners
+               {:style {:transformOrigin    "0 0"
+                        :height "200px"
+                        :backgroundSize     "cover"
+                        :backgroundPosition "center"
+                        :backgroundImage    (str "url(" item-props ")")
+                        :border-radius "10px"}})])
 
 (defn images-selector-button []
   [elements/button ::thumbnail
@@ -112,9 +112,10 @@
 
      (if (empty? items)
        [:p "Üres"]
-       [grid/view {:items      items
-                   :value-path [:vehicles :editor/edited-item :images]
-                   :item       #'img}])]))
+       [:div {:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
+        [comp/sortable {:items      items
+                        :value-path [:vehicles :editor/edited-item :images]
+                        :item       #'img}]])]))
 
 
 ;; ---- Images ----
@@ -149,12 +150,25 @@
      {:name             name
       :name-placeholder :unnamed-vehicle}]))
 
+(defn- breadcrumbs []
+  (let [loaded? @(a/subscribe [:contents/loaded?])
+        vehicle-name @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name]])]
+       [common/surface-breadcrumbs :contents/view
+                                   {:crumbs [{:label :app-home
+                                              :route "/@app-home"}
+                                             {:label :vehicles
+                                              :route "/@app-home/vehicles"}
+                                             {:label vehicle-name}]
+                                    :loading? (not loaded?)}]))
+
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------
 
 (defn- view-structure []
-  [:<> [elements/horizontal-separator {:size :xxl}]
+  [:<> [elements/horizontal-separator {:size :s}]
        [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :s}]
        [editor]
        [elements/horizontal-separator {:size :xxl}]])
 

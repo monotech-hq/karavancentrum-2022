@@ -74,6 +74,15 @@
    {:create-item-uri "/@app-home/vehicles/create"
     :label           :vehicles}])
 
+(defn- breadcrumbs []
+  (let [loaded? @(a/subscribe [:contents/loaded?])]
+       [common/surface-breadcrumbs :contents/view
+                                   {:crumbs [{:label :app-home
+                                              :route "/@app-home"}
+                                             {:label :vehicles}]
+                                    :loading? (not loaded?)}]))
+
+
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------
 
@@ -81,6 +90,7 @@
   [:<>
        [elements/horizontal-separator {:size :s}]
        [label-bar]
+       [breadcrumbs]
        [elements/horizontal-separator {:size :s}]
        [search-block]
        [elements/horizontal-separator {:size :s}]
