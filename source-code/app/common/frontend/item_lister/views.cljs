@@ -1,5 +1,5 @@
 
-(ns app.common.frontend.lister.views
+(ns app.common.frontend.item-lister.views
     (:require [app.common.frontend.surface.views :as surface.views]
               [mid-fruits.candy                  :refer [param]]
               [mid-fruits.keyword                :as keyword]
@@ -39,30 +39,36 @@
   ; @param (keyword) lister-id
   ; @param (integer) item-dex
   ; @param (map) cell-props
-  ;  {:content (metamorphic-content)
+  ;  {:content (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)
   ;   :stretch? (boolean)(opt)}
   ;
   ; @usage
   ;  [common/list-item-label :my-lister 0 {...}]
-  [_ _ {:keys [content stretch?]}]
+  [_ _ {:keys [content placeholder stretch?]}]
   [:div (if stretch? {:style {:flex-grow 1}})
-        [elements/label {:color "#333" :content content :indent {:horizontal :xs :right :xs}}]])
+        [elements/label {:color       "#333"
+                         :content     content
+                         :indent      {:horizontal :xs :right :xs}
+                         :placeholder placeholder}]])
 
 (defn list-item-detail
   ; @param (keyword) lister-id
   ; @param (integer) item-dex
   ; @param (map) cell-props
-  ;  {:content (metamorphic-content)
+  ;  {:content (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)
   ;   :width (string)(opt)}
   ;
   ; @usage
   ;  [common/list-item-detail :my-lister 0 {...}]
-  [_ _ {:keys [content width]}]
+  [_ _ {:keys [content placeholder width]}]
   [:div {:style {:width width}}
-        [elements/label {:color     "#777"
-                         :content   content
-                         :font-size :xs
-                         :indent    {:horizontal :xs :right :xs}}]])
+        [elements/label {:color       "#777"
+                         :content     content
+                         :font-size   :xs
+                         :indent      {:horizontal :xs :right :xs}
+                         :placeholder placeholder}]])
 
 (defn list-item-details
   ; @param (keyword) lister-id
@@ -88,16 +94,17 @@
   ; @param (map) cell-props
   ;  {:description (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)
   ;   :stretch? (boolean)(opt)
   ;   :timestamp (string)(opt)}
   ;
   ; @usage
   ;  [common/list-item-primary-cell :my-lister 0 {...}]
-  [_ _ {:keys [description label stretch? timestamp]}]
+  [_ _ {:keys [description label placeholder stretch? timestamp]}]
   [:div (if stretch? {:style {:flex-grow 1}})
-        (if label       [elements/label {:content label                      :indent {:right :xs} :style {:color "#333" :line-height "21px"}}])
-        (if timestamp   [elements/label {:content timestamp   :font-size :xs :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])
-        (if description [elements/label {:content description :font-size :xs :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])])
+        (if (or label placeholder) [elements/label {:content label :placeholder placeholder :indent {:right :xs} :style {:color "#333" :line-height "21px"}}])
+        (if timestamp              [elements/label {:content timestamp   :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])
+        (if description            [elements/label {:content description :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])])
 
 (defn list-item-end-icon
   ; @param (keyword) lister-id
@@ -127,6 +134,26 @@
   (let [item-last? @(a/subscribe [:item-lister/item-last? lister-id item-dex])]
        (reduce conj [:div {:style {:align-items "center" :border-bottom (if-not item-last? "1px solid #f0f0f0") :display "flex"}}]
                     (param cells))))
+
+;; -- Breadcrumbs components --------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-lister-breadcrumbs
+  ; @param (keyword) lister-id
+  ; @param (map) breadcrumbs-props
+  ;  {:crumbs (maps in vector)}
+  ;
+  ; @usage
+  ;  [common/item-lister-breadcrumbs :my-lister {...}]
+  [lister-id {:keys [crumbs]}]
+  (if-let [error-mode? @(a/subscribe [:item-lister/get-meta-item lister-id :error-mode?])]
+          [:<>] ; A komponens {:error-mode? true} állapotú item-lister felületen nem jelenik meg!
+          (let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])
+                lister-disabled?     @(a/subscribe [:item-lister/lister-disabled?     lister-id])]
+               [surface.views/surface-breadcrumbs nil
+                                                  {:crumbs    crumbs
+                                                   :disabled? lister-disabled?
+                                                   :loading?  (not first-data-received?)}])))
 
 ;; -- Label-bar components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -160,7 +187,7 @@
   [lister-id {:keys [label]}]
   (let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])
         lister-disabled?     @(a/subscribe [:item-lister/lister-disabled?     lister-id])]
-       [surface.views/surface-label lister-id
+       [surface.views/surface-label nil
                                     {:disabled? lister-disabled?
                                      :label     label
                                      :loading?  (not first-data-received?)}]))
@@ -198,11 +225,11 @@
                                       {:autoclear?    true
                                        :autofocus?    true
                                        :disabled?     lister-disabled?
-                                       :indent        {:left :xs :right :xxs}
+                                       :indent        {:left :xs :right :xs}
                                        :on-empty      search-event
                                        :on-type-ended search-event
                                        :placeholder   field-placeholder}])
-          [elements/ghost {:height :l :indent {:left :xs :right :xxs}}]))
+          [elements/ghost {:height :l :indent {:left :xs :right :xs}}]))
 
 (defn item-lister-search-description
   ; @param (keyword) lister-id
@@ -218,7 +245,7 @@
                        {:color     :muted
                         :content   (if-not lister-disabled? description)
                         :font-size :xxs
-                        :indent    {:top :s :left :xs}}]))
+                        :indent    {:top :m :left :xs}}]))
 
 (defn item-lister-search-block
   ; @param (keyword) lister-id

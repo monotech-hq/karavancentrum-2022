@@ -30,10 +30,9 @@
   ; @usage
   ;  [common/surface-breadcrumbs :my-surface {...}]
   [surface-id {:keys [crumbs disabled? loading?]}]
-  (if loading? [:div {:style {:display :flex}}
-                     (letfn [(f [ghost-list _]
-                                (conj ghost-list [elements/ghost {:height :xs :indent {:left :xs :top :xxs} :style {:width "80px"}}]))]
-                            (reduce f [:<>] crumbs))]
+  (if loading? (let [ghost-props {:height :xs :indent {:left :xs :top :xxs} :style {:width "80px"}}]
+                    (letfn [(f [ghost-list _] (conj ghost-list [elements/ghost ghost-props]))]
+                           (reduce f [:div {:style {:display :flex}}] crumbs)))
                [elements/breadcrumbs ::breadcrumbs
                                      {:crumbs    crumbs
                                       :disabled? disabled?

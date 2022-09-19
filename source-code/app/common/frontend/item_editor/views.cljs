@@ -1,9 +1,29 @@
 
-(ns app.common.frontend.editor.views
+(ns app.common.frontend.item-editor.views
     (:require [app.common.frontend.surface.views :as surface.views]
               [mid-fruits.vector                 :as vector]
               [x.app-core.api                    :as a]
               [x.app-elements.api                :as elements]))
+
+;; -- Breadcrumbs components --------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-editor-breadcrumbs
+  ; @param (keyword) editor-id
+  ; @param (map) breadcrumbs-props
+  ;  {:crumbs (maps in vector)}
+  ;
+  ; @usage
+  ;  [common/item-editor-breadcrumbs :my-editor {...}]
+  [editor-id {:keys [crumbs]}]
+  (if-let [error-mode? @(a/subscribe [:item-editor/get-meta-item editor-id :error-mode?])]
+          [:<>] ; A komponens {:error-mode? true} állapotú item-editor felületen nem jelenik meg!
+          (let [data-received?   @(a/subscribe [:item-editor/data-received?   editor-id])
+                editor-disabled? @(a/subscribe [:item-editor/editor-disabled? editor-id])]
+               [surface.views/surface-breadcrumbs nil
+                                                  {:crumbs    crumbs
+                                                   :disabled? editor-disabled?
+                                                   :loading?  (not data-received?)}])))
 
 ;; -- Label-bar components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -28,11 +48,10 @@
 (defn save-item-icon-button
   ; @param (keyword) editor-id
   ; @param (map) bar-props
-  ;  {:edit-item-uri (string)}
   ;
   ; @usage
   ;  [common/save-item-icon-button :my-editor {...}]
-  [editor-id {:keys [edit-item-uri]}]
+  [editor-id _]
   (if-let [data-received? @(a/subscribe [:item-editor/data-received? editor-id])]
           (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? editor-id])]
                [elements/icon-button ::save-item-icon-button
@@ -45,19 +64,19 @@
 (defn item-name-label
   ; @param (keyword) editor-id
   ; @param (map) bar-props
-  ;  {:name (metamorphic-content)
-  ;   :name-placeholder (metamorphic-content)(opt)}
+  ;  {:label (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/item-name-label :my-editor {...}]
-  [editor-id {:keys [name name-placeholder]}]
+  [editor-id {:keys [label placeholder]}]
   (let [data-received?   @(a/subscribe [:item-editor/data-received?   editor-id])
         editor-disabled? @(a/subscribe [:item-editor/editor-disabled? editor-id])]
-       [surface.views/surface-label editor-id
+       [surface.views/surface-label nil
                                     {:disabled?   editor-disabled?
-                                     :label       name
+                                     :label       label
                                      :loading?    (not data-received?)
-                                     :placeholder name-placeholder}]))
+                                     :placeholder placeholder}]))
 
 (defn item-color-marker
   ; @param (keyword) editor-id
@@ -75,40 +94,12 @@
                                        :indent    {:left :m :top :xxs}
                                        :size      :l}])))
 
-(defn item-modified-at-label
-  ; @param (keyword) editor-id
-  ; @param (map) bar-props
-  ;
-  ; @usage
-  ;  [common/item-modified-at-label :my-editor {...}]
-  [editor-id _]
-  (let [data-received?   @(a/subscribe [:item-editor/data-received?               editor-id])
-        editor-disabled? @(a/subscribe [:item-editor/editor-disabled?             editor-id])
-        item-modified-at @(a/subscribe [:item-editor/get-current-item-modified-at editor-id])]
-       [surface.views/surface-description editor-id
-                                          {:description {:content :last-modified-at-n :replacements [item-modified-at]}
-                                           :disabled?   editor-disabled?
-                                           :loading?    (not data-received?)}]))
-
-(defn item-modified-at
-  ; @param (keyword) editor-id
-  ; @param (map) bar-props
-  ;
-  ; @usage
-  ;  [common/item-modified-at :my-editor {...}]
-  [editor-id bar-props]
-  ; Új elem hozzáadásakor az "Utoljára módosítva: ..." feliratot nem szükséges megjeleníteni.
-  (let [route-id @(a/subscribe [:router/get-current-route-id])]
-       (if-not (= (name route-id) "creator-route")
-               [item-modified-at-label editor-id bar-props])))
-
 (defn item-editor-label-bar
   ; @param (keyword) editor-id
   ; @param (map) bar-props
   ;  {:colors (strings in vector)
-  ;   :edit-item-uri (string)
-  ;   :name (metamorphic-content)
-  ;   :name-placeholder (metamorphic-content)(opt)}
+  ;   :label (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/item-editor-label-bar :my-editor {...}]
@@ -120,8 +111,6 @@
                                                                   [item-color-marker       editor-id bar-props]]
                                               :end-content   [:<> [revert-item-icon-button editor-id bar-props]
                                                                   [save-item-icon-button   editor-id bar-props]]}]]))
-               ; TEMP#4415 Nem nézett ki jól a breadcrumbs komponens felett!
-               ;[item-modified-at-label editor-id bar-props]]))
 
 ;; -- Menu-bar components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -164,33 +153,48 @@
   ; @usage
   ;  [common/item-editor-menu-bar :my-editor {...}]
   [editor-id {:keys [menu-items] :as bar-props}]
+  ; XXX#5040
   (if-let [error-mode? @(a/subscribe [:item-editor/get-meta-item editor-id :error-mode?])]
           [:<>] ; A komponens {:error-mode? true} állapotú item-editor felületen nem jelenik meg!
           (letfn [(f [menu-items menu-item] (conj menu-items (item-editor-menu-item-props editor-id bar-props menu-item)))]
-                 [:<> [elements/menu-bar ::item-editor-menu-bar {:menu-items (reduce f [] menu-items)}]
+                 [:<> (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? editor-id])]
+                           [elements/menu-bar ::item-editor-menu-bar {:disabled?  editor-disabled?
+                                                                      :menu-items (reduce f [] menu-items)}])
                       [elements/horizontal-line {:color :highlight :indent {:vertical :xs}}]])))
 
 ;; -- Action-bar components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn item-editor-action-button
-  [_ {:keys [icon label on-click]}]
+  ; @param (keyword) editor-id
+  ; @param (map) bar-props
+  ;  {:label (metamorphic-content)
+  ;   :on-click (metamorphic-event)}
+  [_ {:keys [label on-click]}]
   [elements/button ::item-editor-action-button
-                   {:color         :primary
-                    :font-size     :xs
-                    :icon          icon
-                    :icon-position :right
-                    :indent        {:vertical :xs :horizontal :xxs}
-                    :label         label
-                    :on-click      on-click}])
+                   {:color     :primary
+                    :font-size :xs
+                    :indent    {:vertical :xs :horizontal :xs}
+                    :label     label
+                    :on-click  on-click}])
 
 (defn item-editor-action-bar
+  ; @param (keyword) editor-id
+  ; @param (map) bar-props
+  ;  {:label (metamorphic-content)
+  ;   :on-click (metamorphic-event)}
+  ;
+  ; @usage
+  ;  [common/item-editor-action-bar :my-editor {...}]
   [editor-id bar-props]
+  ; XXX#5041
   (if-let [error-mode? @(a/subscribe [:item-editor/get-meta-item editor-id :error-mode?])]
           [:<>] ; A komponens {:error-mode? true} állapotú item-editor felületen nem jelenik meg!
-          [elements/row ::item-editor-action-bar
-                        {:content [item-editor-action-button editor-id bar-props]
-                         :horizontal-align :right}]))
+          (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? editor-id])]
+               [elements/row ::item-editor-action-bar
+                             {:content          [item-editor-action-button editor-id bar-props]
+                              :disabled?        editor-disabled?
+                              :horizontal-align :center}])))
 
 ;; -- Image-list components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -202,12 +206,14 @@
   ;
   ; @usage
   ;  [common/item-editor-image :my-editor {...} "..."]
-  [_ _ image]
-  [elements/thumbnail {:border-radius :s
-                       :indent        {:left :xs :top :xs}
-                       :height        :xxl
-                       :width         :xxl
-                       :uri           image}])
+  [editor-id _ image]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? editor-id])]
+       [elements/thumbnail {:border-radius :s
+                            :disabled?     editor-disabled?
+                            :indent        {:left :xs :top :xxs}
+                            :height        :2xl
+                            :width         :4xl
+                            :uri           image}]))
 
 (defn item-editor-image-list
   ; @param (keyword) editor-id
@@ -226,7 +232,7 @@
                              {:color     :highlight
                               :content   no-images-label
                               :font-size :xs
-                              :horizontal-align :center}])))
+                              :indent    {:left :xs}}])))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

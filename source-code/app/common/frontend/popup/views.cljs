@@ -73,31 +73,35 @@
                                  :middle-content [popup-label-bar-label  popup-id bar-props]
                                  :end-content    [popup-primary-button   popup-id bar-props]}])
 
-;; -- Saving-indicator components ---------------------------------------------
+;; -- Progress-indicator components ---------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn popup-saving-label
+(defn popup-progress-label
   ; @param (keyword) popup-id
   ; @param (map) indicator-props
-  ;  {:label (metamorphic-content)}
+  ;  {:color (keyword)(opt)
+  ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/popup-saving-label :my-popup {...}]
-  [_ {:keys [label]}]
-  [elements/label ::popup-saving-label
-                  {:color   :muted
+  ;  [common/popup-progress-label :my-popup {...}]
+  [_ {:keys [color label]}]
+  [elements/label ::popup-progress-label
+                  {:color   (or color :muted)
                    :content label}])
 
-(defn popup-saving-indicator
+(defn popup-progress-indicator
   ; @param (keyword) popup-id
   ; @param (map) indicator-props
-  ;  {:label (metamorphic-content)}
+  ;  {:color (keyword)(opt)
+  ;   :indent (map)
+  ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/popup-saving-indicator :my-popup {...}]
-  [popup-id indicator-props]
-  [elements/column ::popup-saving-indicator
-                   {:content             [popup-saving-label popup-id indicator-props]
+  ;  [common/popup-progress-indicator :my-popup {...}]
+  [popup-id {:keys [indent] :as indicator-props}]
+  [elements/column ::popup-progress-indicator
+                   {:content             [popup-progress-label popup-id indicator-props]
                     :horizontal-align    :center
+                    :indent              indent
                     :stretch-orientation :vertical
                     :vertical-align      :center}])

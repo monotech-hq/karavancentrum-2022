@@ -1,5 +1,5 @@
 
-(ns app.common.frontend.selector.views
+(ns app.common.frontend.item-selector.views
     (:require [x.app-core.api     :as a]
               [x.app-elements.api :as elements]))
 
@@ -20,7 +20,7 @@
                     :font-size     :xs
                     :icon          :close
                     :icon-position :right
-                    :indent        {:right :xxs}
+                    :indent        {:horizontal :xxs :right :xxs}
                     :on-click      on-discard
                     :label {:content :n-items-selected :replacements [selected-item-count]}}])
 
