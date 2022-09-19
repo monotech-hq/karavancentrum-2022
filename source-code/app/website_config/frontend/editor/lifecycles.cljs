@@ -1,5 +1,5 @@
 
-(ns app.website-config.frontend.lifecycles
+(ns app.website-config.frontend.editor.lifecycles
     (:require [x.app-core.api :as a]))
 
 ;; ----------------------------------------------------------------------------
@@ -10,4 +10,5 @@
   {:on-app-boot [:home/add-menu-item! {:group    :website
                                        :icon     :tune
                                        :label    :website-config
-                                       :on-click [:router/go-to! "/@app-home/website-config"]}]})
+                                       :on-click [:router/go-to! "/@app-home/website-config"]
+                                       :horizontal-weight 2}]})
