@@ -1,7 +1,6 @@
 
 (ns app.settings.backend.view-selector.lifecycles
-    (:require [plugins.view-selector.api]
-              [x.server-core.api :as a]))
+    (:require [x.server-core.api :as a]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
