@@ -75,12 +75,10 @@
     :label           :vehicles}])
 
 (defn- breadcrumbs []
-  (let [loaded? @(a/subscribe [:contents/loaded?])]
-       [common/surface-breadcrumbs :contents/view
-                                   {:crumbs [{:label :app-home
-                                              :route "/@app-home"}
-                                             {:label :vehicles}]
-                                    :loading? (not loaded?)}]))
+  [common/surface-breadcrumbs :contents/view
+    {:crumbs [{:label :app-home
+               :route "/@app-home"}
+              {:label :vehicles}]}])
 
 
 ;; ---- Components ----

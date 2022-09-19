@@ -11,7 +11,7 @@
 
       [app.components.frontend.api :as comp]))
 
-(def default-indent {:vertical :xs})
+(def default-indent {:top :l :vertical :xs})
 
 ;; -----------------------------------------------------------------------------
 ;; ---- Components ----
@@ -25,6 +25,7 @@
      {:label        :name
       :placeholder  :name
       :autofocus?   true
+      :indent default-indent
       :disabled?    editor-disabled?
       :form-id      :vehicles.editor/form
       :options-path [:vehicles :editor/suggestions :name]
@@ -34,6 +35,7 @@
   [elements/text-field ::built-year
     {:form-id    :vehicles.editor/form
      :label      :built-year
+     :indent default-indent
      :placeholder "2022"
      :value-path [:vehicles :editor/edited-item :built-year]}])
 
@@ -41,6 +43,7 @@
   [elements/text-field ::seat-number
     {:form-id    :vehicles.editor/form
      :label      :seat-number
+     :indent default-indent
      :placeholder "4"
      :value-path [:vehicles :editor/edited-item :seat-number]}])
 
@@ -48,6 +51,7 @@
   [elements/text-field ::bed-number
     {:form-id    :vehicles.editor/form
      :label      :bed-number
+     :indent default-indent
      :placeholder "2"
      :value-path [:vehicles :editor/edited-item :bed-number]}])
 
@@ -65,15 +69,26 @@
 
 (defn- details []
   [:<>
+   [elements/horizontal-separator {:size :l}]
    [:div {:style {:display "flex" :gap "25px" :justify-content "center"}}
     [:div {:style {:min-width "320px"}}
      [thumbnail]]
     [:div {:style {:width "50%"}}
+     [elements/select {:icon         :category
+                       :label         :type
+                       :indent  {:vertical :xs}
+                       :options-label :type
+                       :layout        :select
+                       :options      [:alcove
+                                      :semi-integrated
+                                      :caravan
+                                      :van
+                                      :trailer]
+                       :value-path   [:vehicles :editor/edited-item :type]}]
      [name-field]
      [built-year]
      [seat-number]
      [bed-number]]]])
-
 
 ;; ---- Details ----
 ;; -----------------------------------------------------------------------------
@@ -122,9 +137,9 @@
 ;; -----------------------------------------------------------------------------
 
 (defn- tabs []
-  [comp/tabs {:view-id :vehicles.editor}
-    :details [details]
-    :images  [images]])
+   [comp/tabs {:view-id :vehicles.editor}
+     :details [details]
+     :images  [images]])
 
 (defn- ghost-view []
   [common/item-editor-ghost-view :vehicles.editor
@@ -144,29 +159,26 @@
 
 
 (defn- label-bar []
-  (let [name @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name]])]
+  (let [name @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name] :unnamed-vehicle])]
     [common/item-editor-label-bar
      :vehicles.editor
-     {:name             name
-      :name-placeholder :unnamed-vehicle}]))
+     {:label             name
+      :placeholder :unnamed-vehicle}]))
 
 (defn- breadcrumbs []
-  (let [loaded? @(a/subscribe [:contents/loaded?])
-        vehicle-name @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name]])]
+  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name] :unnamed-vehicle])]
        [common/surface-breadcrumbs :contents/view
                                    {:crumbs [{:label :app-home
                                               :route "/@app-home"}
                                              {:label :vehicles
                                               :route "/@app-home/vehicles"}
-                                             {:label vehicle-name}]
-                                    :loading? (not loaded?)}]))
+                                             {:label vehicle-name}]}]))
 
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------
 
 (defn- view-structure []
-  [:<> [elements/horizontal-separator {:size :s}]
-       [label-bar]
+  [:<> [label-bar]
        [breadcrumbs]
        [elements/horizontal-separator {:size :s}]
        [editor]

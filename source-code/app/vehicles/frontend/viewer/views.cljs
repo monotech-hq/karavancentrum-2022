@@ -82,8 +82,6 @@
    :vehicles.viewer
    {:padding "0 12px"}])
 
-
-
 (defn- tabs []
   [comp/tabs {:view-id :vehicles.viewer}
     :overview [overview]
@@ -99,22 +97,20 @@
     :label-key     :name}])
 
 (defn- label-bar []
-  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])
+  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name] :unnamed-vehicle])
         vehicle-id   @(a/subscribe [:router/get-current-route-path-param :item-id])]
        [common/item-viewer-label-bar :vehicles.viewer
-                                     {:edit-item-uri (str "/@app-home/vehicles/"vehicle-id"/edit")
-                                      :name          vehicle-name}]))
+         {:edit-item-uri (str "/@app-home/vehicles/"vehicle-id"/edit")
+          :label         vehicle-name}]))
 
 (defn- breadcrumbs []
-  (let [loaded? @(a/subscribe [:contents/loaded?])
-        vehicle-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])]
+  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name] :unnamed-vehicle])]
        [common/surface-breadcrumbs :contents/view
                                    {:crumbs [{:label :app-home
                                               :route "/@app-home"}
                                              {:label :vehicles
                                               :route "/@app-home/vehicles"}
-                                             {:label vehicle-name}]
-                                    :loading? (not loaded?)}]))
+                                             {:label vehicle-name}]}]))
 
 
 ;; ---- Components ----

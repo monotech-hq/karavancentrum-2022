@@ -3,7 +3,8 @@
     (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mid-fruits.candy                      :refer [param return]]
               [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]))
+              [pathom.api                            :as pathom]
+              [x.server-user.api                     :as user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -22,7 +23,7 @@
              [{:keys [request] :as env} {:keys [item-id]}]
              {::pathom.co/op-name 'vehicles.viewer/duplicate-item!}
              (mongo-db/duplicate-document! "vehicles" item-id
-                                           {:prototype-f #(mongo-db/duplicated-document-prototype request :vehicle %)}))
+                                           {:prototype-f #(user/duplicated-document-prototype request :vehicle %)}))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
