@@ -66,15 +66,14 @@
 (defn- login-button
   []
   (let [disabled? @(a/subscribe [:user.login-screen/login-button-disabled?])]
-       [elements/submit-button ::login-button
-                               {:background-color :primary
-                                :hover-color      :primary
-                                :disabled?        disabled?
-                                :label            :login!
-                                :keypress         {:key-code 13 :required? true}
-                                :indent           {:bottom :xs :top :l :vertical :xs}
-                                :input-ids        [::email-address-field ::password-field]
-                                :on-click         [:user.login-screen/login!]}]))
+       [elements/button ::login-button
+                        {:background-color :primary
+                         :hover-color      :primary
+                         :disabled?        disabled?
+                         :label            :login!
+                         :keypress         {:key-code 13 :required? true}
+                         :indent           {:bottom :xs :top :l :vertical :xs}
+                         :on-click         [:user.login-screen/login!]}]))
 
 (defn- signup-button
   []
@@ -125,9 +124,11 @@
 
 (defn- user-name-label
   []
-  (let [user-name @(a/subscribe [:user/get-user-name])]
+  (let [user-first-name @(a/subscribe [:user/get-user-first-name])
+        user-last-name  @(a/subscribe [:user/get-user-first-name])
+        user-full-name  @(a/subscribe [:locales/get-ordered-name user-first-name user-last-name])]
        [elements/label ::user-name-label
-                       {:content          {:content :signed-in-as :suffix user-name}
+                       {:content          {:content :signed-in-as :suffix user-full-name}
                         :horizontal-align :center
                         :indent           {:top :s :vertical :xs}}]))
 

@@ -20,7 +20,7 @@
              ; @param (map) env
              ; @param (map) resolver-props
              ;
-             ; @return (map)
+             ; @return (namespaced map)
              ;  {:website-config/get-config (map)}
              [env resolver-props]
              {:website-config/get-config (get-config-f env resolver-props)})

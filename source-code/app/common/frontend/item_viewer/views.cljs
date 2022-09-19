@@ -2,6 +2,7 @@
 (ns app.common.frontend.item-viewer.views
     (:require [app.common.frontend.item-editor.views :as item-editor.views]
               [app.common.frontend.surface.views     :as surface.views]
+              [mid-fruits.vector                     :as vector]
               [x.app-core.api                        :as a]
               [x.app-elements.api                    :as elements]
               [x.app-locales.api                     :as locales]))
@@ -234,6 +235,45 @@
                              {:content          [item-editor.views/item-editor-action-button viewer-id bar-props]
                               :disabled?        viewer-disabled?
                               :horizontal-align :center}])))
+
+;; -- Image-list components ---------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-viewer-image
+  ; @param (keyword) viewer-id
+  ; @param (map) list-props
+  ; @param (string) image
+  ;
+  ; @usage
+  ;  [common/item-viewer-image :my-viewer {...} "..."]
+  [viewer-id _ image]
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
+       [elements/thumbnail {:border-radius :s
+                            :disabled?     viewer-disabled?
+                            :indent        {:left :xs :top :xxs}
+                            :height        :2xl
+                            :width         :4xl
+                            :uri           image}]))
+
+(defn item-viewer-image-list
+  ; @param (keyword) viewer-id
+  ; @param (map) list-props
+  ;  {:images (strings in vector)
+  ;   :no-images-label (metamorphic-content)(opt)}
+  ;
+  ; @usage
+  ;  [common/item-viewer-image-list :my-viewer {...}]
+  [viewer-id {:keys [images no-images-label] :as list-props}]
+  ; XXX#5042
+  (letfn [(f [image-list image]
+             (conj image-list [item-viewer-image viewer-id list-props image]))]
+         (if (vector/nonempty? images)
+             (reduce f [:div {:style {:display :flex :flex-wrap :wrap}}] images)
+             [elements/label ::no-images-label
+                             {:color     :highlight
+                              :content   no-images-label
+                              :font-size :xs
+                              :indent    {:left :xs}}])))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -72,6 +72,7 @@
 (def item-viewer-label-bar   item-viewer.views/item-viewer-label-bar)
 (def item-viewer-menu-bar    item-viewer.views/item-viewer-menu-bar)
 (def item-viewer-action-bar  item-viewer.views/item-viewer-action-bar)
+(def item-viewer-image-list  item-viewer.views/item-viewer-image-list)
 (def item-viewer-ghost-view  item-viewer.views/item-viewer-ghost-view)
 
 ; app.common.frontend.popup.views

@@ -23,7 +23,7 @@
 
 (defn- breadcrumbs
   []
-  [common/item-browser-breadcrumbs :storage.media-lister
+  [common/item-browser-breadcrumbs :storage.media-browser
                                    {:crumbs [{:label :app-home
                                               :route "/@app-home"}
                                              {:label :storage}]}])

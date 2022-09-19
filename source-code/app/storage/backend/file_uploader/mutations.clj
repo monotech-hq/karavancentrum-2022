@@ -19,6 +19,7 @@
   ; @param (map) mutation-props
   ;  {:destination-id (string)}
   ; @param (map) file-data
+  ;  {:tempfile (?)}
   ;
   ; @return (namespaced map)
   [env {:keys [destination-id]} {:keys [tempfile] :as file-data}]
@@ -34,6 +35,12 @@
                      (return                    file-item)))))
 
 (defn- upload-files-f
+  ; @param (map) env
+  ;  {:request (map)}
+  ; @param (map) mutation-props
+  ;  {:destination-id (string)}
+  ;
+  ; @return (namespaced maps in vector)
   [{:keys [request] :as env} {:keys [destination-id] :as mutation-props}]
   (let [total-size (file-uploader.helpers/request->total-size request)
         files-data (file-uploader.helpers/request->files-data request)]
@@ -51,6 +58,11 @@
                                  (reduce-kv f [] files-data)))))))
 
 (defmutation upload-files!
+             ; @param (map) env
+             ; @param (map) mutation-props
+             ;  {:destination-id (string)}
+             ;
+             ; @return (namespaced maps in vector)
              [env mutation-props]
              {::pathom.co/op-name 'storage.file-uploader/upload-files!}
              (upload-files-f env mutation-props))

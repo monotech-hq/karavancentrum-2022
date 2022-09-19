@@ -8,21 +8,57 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn add-item-f
+  ; @param (map) env
+  ;  {:request (map)}
+  ; @param (map) mutation-props
+  ;  {:item (namespaced map)}
+  ;
+  ; @return (namespaced map)
+  [{:keys [request]} {:keys [item]}]
+  (let [prototype-f #(user/added-document-prototype request :vehicle %)]
+       (mongo-db/save-document! "vehicles" item
+                                {:prototype-f prototype-f})))
+
 (defmutation add-item!
-             [{:keys [request]} {:keys [item]}]
-             {::pathom.co/op-name 'vehicles.editor/add-item!}
-             (mongo-db/save-document! "vehicles" item
-                                      {:prototype-f #(user/added-document-prototype request :vehicle %)}))
+             ; @param (map) env
+             ; @param (map) mutation-props
+             ;  {:item (namespaced map)}
+             ;
+             ; @return (namespaced map)
+             [env mutation-props]
+             {::pathom.co/op-name 'vehicles.vehicle-editor/add-item!}
+             (add-item-f env mutation-props))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn save-item-f
+  ; @param (map) env
+  ;  {:request (map)}
+  ; @param (map) mutation-props
+  ;  {:item (namespaced map)}
+  ;
+  ; @return (namespaced map)
+  [{:keys [request]} {:keys [item]}]
+  (let [prototype-f #(user/updated-document-prototype request :vehicle %)]
+       (mongo-db/save-document! "vehicles" item
+                                {:prototype-f prototype-f})))
 
 (defmutation save-item!
-             [{:keys [request]} {:keys [item]}]
-             {::pathom.co/op-name 'vehicles.editor/save-item!}
-             (mongo-db/save-document! "vehicles" item
-                                      {:prototype-f #(user/updated-document-prototype request :vehicle %)}))
+             ; @param (map) env
+             ; @param (map) mutation-props
+             ;  {:item (namespaced map)}
+             ;
+             ; @return (namespaced map)
+             [env mutation-props]
+             {::pathom.co/op-name 'vehicles.vehicle-editor/save-item!}
+             (save-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+; @constant (functions in vector)
 (def HANDLERS [add-item! save-item!])
 
 (pathom/reg-handlers! ::handlers HANDLERS)

@@ -9,10 +9,10 @@
 (a/reg-lifecycles!
   ::lifecycles
   {:on-server-boot [:item-viewer/init-viewer!
-                    :vehicles.viewer
+                    :vehicles.vehicle-viewer
                     {:base-route      "/@app-home/vehicles"
                      :collection-name "vehicles"
-                     :handler-key     :vehicles.viewer
+                     :handler-key     :vehicles.vehicle-viewer
                      :item-namespace  :vehicle
-                     :on-route        [:vehicles.viewer/load!]
+                     :on-route        [:vehicles.vehicle-viewer/load!]
                      :route-title     :vehicles}]})

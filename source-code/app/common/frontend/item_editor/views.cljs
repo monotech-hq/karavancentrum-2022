@@ -224,6 +224,7 @@
   ; @usage
   ;  [common/item-editor-image-list :my-editor {...}]
   [editor-id {:keys [images no-images-label] :as list-props}]
+  ; XXX#5042
   (letfn [(f [image-list image]
              (conj image-list [item-editor-image editor-id list-props image]))]
          (if (vector/nonempty? images)

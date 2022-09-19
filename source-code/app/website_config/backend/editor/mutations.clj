@@ -10,12 +10,22 @@
 ;; ----------------------------------------------------------------------------
 
 (defn save-config-f
+  ; @param (map) env
+  ; @param (map) mutation-props
+  ;  {:config (map)}
+  ;
+  ; @return (map)
   [env {:keys [config]}]
   (io/write-edn-file! a/WEBSITE-CONFIG-FILEPATH config)
   (a/dispatch-fx [:core/import-website-config!])
   (return config))
 
 (defmutation save-config!
+             ; @param (map) env
+             ; @param (map) mutation-props
+             ;  {:config (map)}
+             ;
+             ; @return (map)
              [env mutation-props]
              {::pathom.co/op-name 'website-config/save-config!}
              (save-config-f env mutation-props))

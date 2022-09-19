@@ -90,7 +90,7 @@
 (a/reg-event-fx
   :storage.media-browser/preview-file!
   (fn [{:keys [db]} [_ {:keys [filename]}]]
-      (let [directory-id (r item-browser/get-current-item-id db :storage)]
+      (let [directory-id (r item-browser/get-current-item-id db :storage.media-browser)]
            {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                          [:storage.media-viewer/load-viewer! {:directory-id directory-id :current-item filename}]]})))
 

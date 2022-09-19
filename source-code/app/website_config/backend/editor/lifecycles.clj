@@ -11,4 +11,5 @@
   {:on-server-boot [:config-editor/init-editor! :website-config
                                                 {:base-route  "/@app-home/website-config"
                                                  :handler-key :website-config
-                                                 :on-route    [:website-config/load-editor!]}]})
+                                                 :on-route    [:website-config/load-editor!]
+                                                 :route-title :website-config}]})

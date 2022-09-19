@@ -10,8 +10,8 @@
   :website-address "monotech.hu"}
 
  {:birthday "2022-01-01"
-   :first-name "Karaván"
-   :last-name "Centrum"
+   :first-name "Karaván Centrum"
+   :last-name ""
    :locale :hu
    :id "506bb1e5-eecd-48ee-a30c-7b66ee2bb973"
    :permissions {"super" "ro" "506bb1e5-eecd-48ee-a30c-7b66ee2bb973" "rw"}

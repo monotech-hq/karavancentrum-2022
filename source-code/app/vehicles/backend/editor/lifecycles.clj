@@ -9,10 +9,10 @@
 (a/reg-lifecycles!
   ::lifecycles
   {:on-server-boot [:item-editor/init-editor!
-                    :vehicles.editor
+                    :vehicles.vehicle-editor
                     {:base-route      "/@app-home/vehicles"
                      :collection-name "vehicles"
-                     :handler-key     :vehicles.editor
+                     :handler-key     :vehicles.vehicle-editor
                      :item-namespace  :vehicle
-                     :on-route        [:vehicles.editor/load!]
+                     :on-route        [:vehicles.vehicle-editor/load!]
                      :route-title     :vehicles}]})

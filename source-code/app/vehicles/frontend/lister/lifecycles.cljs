@@ -8,6 +8,7 @@
 (a/reg-lifecycles!
   ::lifecycles
   {:on-app-boot [:home/add-menu-item! {:group    :vehicles
-                                       :icon     :list
+                                       :icon     :airport_shuttle
+                                       :icon-family :material-icons-outlined
                                        :label    :vehicles
                                        :on-click [:router/go-to! "/@app-home/vehicles"]}]})
