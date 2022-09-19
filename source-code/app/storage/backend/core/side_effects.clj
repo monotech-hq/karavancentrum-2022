@@ -4,7 +4,8 @@
               [mid-fruits.candy                :refer [return]]
               [mid-fruits.vector               :as vector]
               [mongo-db.api                    :as mongo-db]
-              [x.server-media.api              :as media]))
+              [x.server-media.api              :as media]
+              [x.server-user.api               :as user]))
 
 ;; -- Attach/detach item functions --------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -44,7 +45,7 @@
    ;  a tartalmazó (felmenő) mappák adatait aktualizálni:
    ; - Utolsó módosítás dátuma, és a felhasználó azonosítója {:media/modified-at ... :media/modified-by ...}
    ; - Tartalom méretének {:media/size ...} aktualizálása
-   (letfn [(prototype-f [document] (mongo-db/updated-document-prototype request :media document))
+   (letfn [(prototype-f [document] (user/updated-document-prototype request :media document))
            (update-f    [document] (update document :media/size operation size))
            (f [path] (when-let [{:media/keys [id]} (last path)]
                                (if operation (mongo-db/apply-document! "storage" id update-f {:prototype-f prototype-f})
@@ -61,7 +62,8 @@
 
 (defn insert-item!
   [{:keys [request] :as env} item]
-  (mongo-db/insert-document! "storage" item {:prototype-f #(mongo-db/added-document-prototype request :media %)}))
+  (let [prototype-f #(user/added-document-prototype request :media %)]
+       (mongo-db/insert-document! "storage" item {:prototype-f prototype-f})))
 
 (defn remove-item!
   [_ {:media/keys [id] :as media-item}]

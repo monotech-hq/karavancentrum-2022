@@ -4,7 +4,6 @@
               [mid-fruits.map                           :refer [dissoc-in]]
               [mid-fruits.vector                        :as vector]
               [x.app-core.api                           :as a :refer [r]]
-              [x.app-ui.api                             :as ui]
               [x.app-media.api                          :as media]))
 
 ;; ----------------------------------------------------------------------------
@@ -57,7 +56,7 @@
   ; ... ha szükséges akkor vektor típusra alakítja.
   ; ... eltárolja az aktuálisan kiválasztott elemekként.
   ;
-  ; A load-selector! függvény kitörli a media-selector meta-adatait (pl. {:saving? ...})
+  ; A load-selector! függvény kitörli az utoljára megnyitott media-selector meta-adatait (pl. {:saving? ...})
   (let [saved-selection (get-in db value-path)]
        (cond-> db (some?   saved-selection) (assoc-in  [:storage :media-selector/selected-items] [saved-selection])
                   (vector? saved-selection) (assoc-in  [:storage :media-selector/selected-items]  saved-selection)
@@ -68,4 +67,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-db :storage.media-selector/discard-selection! discard-selection!)
+(a/reg-event-db :storage.media-selector/store-selected-items! store-selected-items!)
+(a/reg-event-db :storage.media-selector/discard-selection!    discard-selection!)

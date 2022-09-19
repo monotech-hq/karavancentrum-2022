@@ -14,13 +14,6 @@
   [db _]
   (get-in db [:storage :media-selector/selected-items]))
 
-(defn no-items-selected?
-  ;
-  ; @return (boolean)
-  [db _]
-  (let [selected-items (r get-selected-items db)]
-       (-> selected-items vector/nonempty? not)))
-
 (defn get-selected-item-count
   ; @return (integer)
   [db _]
@@ -52,7 +45,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :storage.media-selector/no-items-selected?      no-items-selected?)
 (a/reg-sub :storage.media-selector/get-selected-item-count get-selected-item-count)
 (a/reg-sub :storage.media-selector/file-selected?          file-selected?)
 (a/reg-sub :storage.media-selector/file-selectable?        file-selectable?)

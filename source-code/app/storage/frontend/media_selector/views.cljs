@@ -17,13 +17,13 @@
 (defn order-by-icon-button
   []
   (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-selector])
-        order-by-options   [:modified-at/ascending :modified-at/descending :alias/ascending :alias/descending]]
+        order-by-options   [:modified-at/ascending :modified-at/descending :alias/ascending :alias/descending]
+        on-click           [:item-browser/choose-order-by! :storage.media-selector {:order-by-options order-by-options}]]
        [elements/icon-button ::order-by-icon-button
-                             {:disabled? browser-disabled?
+                             {:disabled?   browser-disabled?
                               :hover-color :highlight
-                              :on-click  [:item-browser/choose-order-by! :storage.media-selector
-                                                                         {:order-by-options order-by-options}]
-                              :preset    :order-by}]))
+                              :on-click    on-click
+                              :preset      :order-by}]))
 
 (defn upload-files-icon-button
   []
@@ -94,7 +94,7 @@
         header-label @(a/subscribe [:item-browser/get-current-item-label :storage.media-selector])]
        (if-not saving? [:<> [common/popup-label-bar :storage.media-selector/view
                                                     {:primary-button   {:on-click [:storage.media-selector/save-selected-items!]
-                                                                        :label    :select!}
+                                                                        :label    :save!}
                                                      :secondary-button {:on-click [:ui/close-popup! :storage.media-selector/view]
                                                                         :label    :cancel!}
                                                      :label header-label}]
@@ -172,8 +172,8 @@
   []
   (let [selected-item-count @(a/subscribe [:storage.media-selector/get-selected-item-count])
         saving-label         (components/content {:content :n-items-selected :replacements [selected-item-count]})]
-       [common/popup-saving-indicator :storage.media-selector/view
-                                      {:label saving-label}]))
+       [common/popup-progress-indicator :storage.media-selector/view
+                                        {:label saving-label}]))
 
 (defn- media-browser
   []

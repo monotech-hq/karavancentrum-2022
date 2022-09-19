@@ -23,16 +23,10 @@
 
 (defn- breadcrumbs
   []
-  (if-let [error-mode? @(a/subscribe [:item-browser/get-meta-item :storage.media-browser :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-browser felületen nem jelenik meg!
-          (let [data-received?    @(a/subscribe [:item-browser/data-received?    :storage.media-browser])
-                browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
-               [common/surface-breadcrumbs :storage.media-lister/view
-                                           {:crumbs [{:label :app-home
-                                                      :route "/@app-home"}
-                                                     {:label :storage}]
-                                            :disabled? browser-disabled?
-                                            :loading?  (not data-received?)}])))
+  [common/item-browser-breadcrumbs :storage.media-lister
+                                   {:crumbs [{:label :app-home
+                                              :route "/@app-home"}
+                                             {:label :storage}]}])
 
 (defn- label-bar
   []

@@ -1,7 +1,6 @@
 
 (ns app.storage.frontend.media-selector.effects
-    (:require [app.storage.frontend.media-selector.config :as media-selector.config]
-              [app.storage.frontend.media-selector.events :as media-selector.events]
+    (:require [app.storage.frontend.media-selector.events :as media-selector.events]
               [app.storage.frontend.media-selector.subs   :as media-selector.subs]
               [app.storage.frontend.media-selector.views  :as media-selector.views]
               [plugins.item-browser.api                   :as item-browser]
@@ -25,6 +24,7 @@
   ; @usage
   ;  [:storage.media-selector/load-selector! :my-selector {...}]
   [a/event-vector<-id]
+  ; XXX#1167
   ; A selector-id azonosító nincs felhasználva sehol, kizárólag az *-id & *-props formula
   ; egységes használata miatt adható meg.
   (fn [{:keys [db]} [_ selector-id selector-props]]
@@ -50,15 +50,10 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :storage.media-selector/store-selected-items!
-  (fn [{:keys [db]} _]
-      {:db (r media-selector.events/store-selected-items! db)}))
-
-(a/reg-event-fx
   :storage.media-selector/save-selected-items!
   (fn [{:keys [db]} _]
       (let [db (r media-selector.events/set-saving-mode! db)]
-           {:db db :dispatch-later [{:ms         media-selector.config/AUTOCLOSE-DELAY
+           {:db db :dispatch-later [{:ms         1000
                                      :dispatch-n [[:ui/close-popup! :storage.media-selector/view]
                                                   [:storage.media-selector/store-selected-items!]]}]})))
 
@@ -68,7 +63,8 @@
       (let [db (r media-selector.events/toggle-file-selection! db file-item)]
            (if-not (r media-selector.subs/autosave-selected-items? db file-item)
                    {:db db}
-                   {:db db :dispatch [:storage.media-selector/save-selected-items!]}))))
+                   {:db db :dispatch-later [{:ms       250
+                                             :dispatch [:storage.media-selector/save-selected-items!]}]}))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

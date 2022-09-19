@@ -11,4 +11,5 @@
                                        :icon        :folder
                                        :icon-family :material-icons-outlined
                                        :label       :file-storage
-                                       :on-click    [:router/go-to! "/@app-home/storage"]}]})
+                                       :on-click    [:router/go-to! "/@app-home/storage"]
+                                       :horizontal-weight 0}]})

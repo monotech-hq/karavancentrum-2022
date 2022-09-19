@@ -1,6 +1,7 @@
 
 (ns app.storage.frontend.media-picker.views
     (:require [mid-fruits.candy   :refer [param]]
+              [mid-fruits.random  :as random]
               [mid-fruits.vector  :as vector]
               [x.app-core.api     :as a]
               [x.app-elements.api :as elements]))
@@ -111,7 +112,7 @@
   ; @usage
   ;  [storage/media-picker :my-picker {...}]
   ([picker-props]
-   [element (a/id) picker-props])
+   [element (random/generate-keyword) picker-props])
 
   ([picker-id picker-props]
    [media-picker picker-id picker-props]))
