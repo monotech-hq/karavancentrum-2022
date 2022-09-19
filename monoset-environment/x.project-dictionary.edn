@@ -255,6 +255,7 @@
   :en "Type name"}
 
 ;; Vehicle
+
  :vehicle
  {:hu "Jármű"
   :en "Vehicle"}
@@ -287,6 +288,22 @@
  :choose-images
  {:hu "Képek kiválasztása"
   :en "Choose images"}
+ ;Vehicle types
+ :alcove
+ {:hu "Alkóvos Lakóautó"
+  :en "Alcove"}
+ :semi-integrated
+ {:hu "Részintegrált Lakóautó"
+  :en "Semi integrated"}
+ :caravan
+ {:hu "Kempingbusz"
+  :en "Caravan"}
+ :van
+ {:hu "Lakókocsi"
+  :en "Van"}
+ :trailer
+ {:hu "Utánfutó"
+  :en "Trailer"}
 
  ;Contents
  :rent-informations

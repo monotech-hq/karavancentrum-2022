@@ -1,0 +1,579 @@
+
+/******************************************************************************/
+/***** Website *****/
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
+
+body {
+  font-family: 'Poppins'
+}
+
+/***** Website *****/
+/******************************************************************************/
+
+/******************************************************************************/
+/***** Effects *****/
+
+.effect--underline {
+  text-decoration: none;
+}
+
+.effect--underline:hover::before,
+.effect--underline:focus::before {
+  transform: scale(1);
+}
+
+.effect--underline::before {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+
+  width: 100%;
+  height: 1px;
+
+  content: '';
+  transition: transform 300ms;
+  transform: scale(0);
+  transform-origin: center;
+
+  background-color: white;
+}
+
+.effect--bg-grow {
+  z-index: 1;
+}
+
+.effect--bg-grow::before {
+  position: absolute;
+  z-index: -1;
+  top: 50%; left: 50%;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  content: '';
+  transition: transform 300ms;
+  transform: translate(-50%, -50%) scale(0);
+
+  border-radius: 15px;
+}
+
+.effect--bg-grow:hover::before,
+.effect--bg-grow:focus::before {
+  transform: translate(-50%, -50%) scale(1)
+}
+
+.effect--bg-grow:hover,
+.effect--bg-grow:focus {
+  color: white !important;
+}
+
+/***** Effects *****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Utils ****/
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link:hover,
+.link:focus {
+  text-decoration: none;
+}
+
+.card {
+  overflow: hidden;
+
+  min-width: 150px;
+  max-width: 280px;
+  height: fit-content;
+
+  transition: background-color .2s;
+  text-align: center;
+
+  color: #3C3C3C;
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.card a {
+  display: block;
+
+  text-decoration: none;
+
+  backdrop-filter: blur(0px);
+
+}
+
+.card:hover,
+.card:focus-within {
+  outline: none;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.card:hover p,
+.card:focus-within p {
+  color: #e1e1e1;
+  background: #3c3c3c;
+}
+
+.card div {
+  padding: 50px;
+}
+
+.card img {
+  width: 100%;
+}
+
+.card p {
+  padding: 10px 15px;
+
+  transition: background-color .2s;
+  letter-spacing: 2px;
+
+  background-color: #e1e1e1d9;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cards-container {
+  padding: 25px;
+
+  border-radius: 15px;
+  background: #5257478c;
+  box-shadow: 0px 0px 7px 2px rgb(0 0 0 / 30%);
+}
+
+.box {
+  padding: 25px;
+
+  border-radius: 15px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+
+.table-container {
+  overflow-x: auto;
+
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 35%);
+
+}
+
+.table {
+  overflow: hidden;
+
+  width: 100%;
+}
+
+.table thead {
+  margin-bottom: 15px;
+
+  white-space: nowrap;
+  letter-spacing: 3px;
+
+  background-color: rgba(0,0,0,0.6);
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.table tbody {
+  background-color: rgba(0,0,0,0.4);
+}
+
+.table th,
+.table td {
+  padding: 10px;
+
+  text-align: center;
+  white-space: nowrap;
+}
+
+.table td {
+}
+
+/**** Utils ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Sidebar ****/
+
+.sidebar,
+.sidebar--cover {
+  transition-property: transform;
+  transition-duration: .25s;
+  transition-timing-function: ease;
+}
+
+.sidebar--cover {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  /* background-color: var( --black-semi-transparent ); */
+  height: 100vh;
+  right: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  opacity: 0;
+  /* transform: translateX(110%); */
+  transition-property: opacity, z-index;
+  transition-delay: .25s;
+  transition-duration: .3s;
+}
+
+.sidebar--cover[data-visible="true"] {
+  opacity: 1;
+  transform: translateX(0%);
+  z-index: 2;
+}
+
+.sidebar--cover[data-visible="false"] {
+  opacity: 0;
+  z-index: -1;
+}
+
+.sidebar--container {
+  z-index: 5;
+}
+
+.sidebar--content {
+  position: fixed;
+  top: 0px;
+  width: 85%;
+  max-width: 500px;
+  height: 100%;
+
+  transition: transform 0.3s;
+  text-align: center;
+
+  background: #0000006b;
+  padding: 15px;
+
+  backdrop-filter: blur(5px);
+}
+
+.sidebar--container[data-direction="left"] .sidebar--content {
+  left: 0px;
+}
+
+.sidebar--container[data-direction="right"] .sidebar--content {
+  right: 0px;
+}
+
+
+.sidebar--container[data-direction="left"] .sidebar--close-button {
+  text-align: left;
+}
+.sidebar--container[data-direction="right"] .sidebar--close-button {
+  text-align: right;
+}
+
+.sidebar--container[data-open=false][data-direction="left"] .sidebar--content {
+  transform: translateX(-110%);
+}
+
+.sidebar--container[data-open=true][data-direction="left"] .sidebar--content {
+  transform: translateX(-0%);
+}
+
+.sidebar--container[data-open=false][data-direction="right"] .sidebar--content {
+  transform: translateX(110%);
+}
+
+.sidebar--container[data-open=true][data-direction="right"] .sidebar--content {
+  transform: translateX(0%);
+}
+
+/**** Sidebar ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Navbar ****/
+
+#navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 0px 25px;
+  z-index: 10;
+  transition: background-color 0.15s;
+}
+
+#navbar[data-top="true"] {
+  background: hsl(0deg 0% 100% / 0%)
+}
+#navbar[data-top="false"] {
+  background: hsl(0deg 0% 100% / 80%)
+}
+
+#navbar--container {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+
+  justify-content: space-between;
+
+  max-width: var(--site-width);
+  height: 75px;
+  margin: 0px auto;
+}
+
+#navbar[data-layout="mobile"] #navbar--container {
+  justify-content: center;
+}
+
+#logo {
+  width: var(--logo-width);
+
+  transition: transform .2s;
+  transform: scale(1);
+}
+
+#logo img {
+  width: 100%;
+}
+
+#logo:hover,
+#logo:focus-within {
+  transform: scale(1.05);
+}
+
+#navbar #menu {
+  display: flex;
+
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+  color: #333;
+  letter-spacing: 1.5px;
+  gap: 50px;
+}
+
+#navbar--menu-btn {
+  display: flex;
+  position: absolute;
+  right: 0px;
+}
+
+#navbar[data-layout="mobile"] #menu {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#navbar #menu .effect--underline::before {
+  bottom: 0px;
+}
+
+/**** Navbar ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Hero ****/
+
+#hero {
+    height: 100vh;
+    background-position: left 60%;
+    background-image: url(/images/hero.jpg);
+    background-size: cover;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+#company-name-and-slogan {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#company-name {
+  text-transform: uppercase;
+  letter-spacing: 3.5px;
+  font-weight: 300;
+  font-size: 22px;
+  font-family: 'Poppins';
+  color: #007cff;
+}
+
+#company-slogan {
+  font-family: 'Dancing script';
+  letter-spacing: 2px;
+  font-size: 18px;
+  color: #555;
+  font-weight: 100;
+  line-height: 26px;
+}
+
+/**** scroll icon ****/
+
+#scroll-icon {
+  position: absolute;
+  bottom: 30px;
+  width: 21px;
+  height: 35px;
+  transition: transform 0.5s;
+}
+
+#scroll-icon[data-show="false"] {
+  transform: translateY(100vh);
+}
+
+#scroll-icon button {
+  position: unset;
+}
+
+#scroll-icon button span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin-left: -15px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  align-items: center;
+}
+
+#scroll-icon button span::before,
+#scroll-icon button span::after {
+  position: absolute;
+  content: '';
+}
+
+
+#scroll-icon button span::before {
+  top: 5px;
+  width: 5px;
+  height: 5px;
+  animation: scroll-icon-anim 2s infinite;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+#scroll-icon button span::after {
+  bottom: -13px;
+  width: 10.5px;
+  height: 10.5px;
+  transform: rotate(-45deg);
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+
+@keyframes scroll-icon-anim {
+  0% {
+    transform: translate(0, 0);
+
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate(0, 15px);
+
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+/**** scroll icon ****/
+
+/**** Hero ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Footer ****/
+
+#footer {
+  margin-top: 50px;
+  padding: 50px 25px;
+
+  text-align: center;
+
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#footer h2 {
+  margin: 0px 0px 50px;
+
+  letter-spacing: 3px;
+
+  font-weight: 500;
+}
+
+#footer--links-wrapper {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+#footer--links-wrapper > * {
+  letter-spacing: 4px;
+
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+#mt--container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 0px 0px;
+}
+
+#mt--container a {
+  text-decoration: none;
+}
+
+#mt--wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+}
+
+#mt--wrapper p {
+  font-size: 0.9rem;
+}
+
+#mt--wrapper img {
+  width: 40px;
+
+  transition: transform 0.2s;
+
+  filter: brightness(0.6);
+}
+
+#mt--link:hover img,
+#mt--link:focus img {
+  transform: scale(1.1);
+}

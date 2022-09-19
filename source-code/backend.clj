@@ -19,7 +19,7 @@
               [app.contents.backend.api]
 
               ; Site modules
-              [site.backend.api]
+              [site.pages.backend]
 
               ; monoset/x
               [x.boot-loader.api :as boot-loader]

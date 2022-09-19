@@ -1,19 +1,20 @@
 
 (ns frontend
     (:require ; App modules
-              [app.common.frontend.api]
               [app.home.frontend.api]
-              [app.settings.frontend.api]
-              [app.website-config.frontend.api]
-              [app.storage.frontend.api]
-              [app.vehicles.frontend.api]
               [app.user.frontend.api]
               [app.views.frontend.api]
+              [app.common.frontend.api]
+              [app.storage.frontend.api]
+              [app.settings.frontend.api]
               [app.contents.frontend.api]
+              [app.vehicles.frontend.api]
+              [app.website-config.frontend.api]
 
               ; Site modules
-              [site.frontend.api]
-              [site.frontend.wrapper :as site-wrapper]
+              [site.pages.frontend]
+              [site.modules.api :as site.modules]
+              [site.wrapper :as site.wrapper]
 
               ; monoset/x
               [x.boot-loader.api :as boot-loader]))
@@ -23,7 +24,7 @@
 
 (defn- site-app
   [ui-structure]
-  [site-wrapper/view ui-structure])
+  [site.wrapper/view ui-structure])
 
 (defn- admin-app
   [ui-structure]
