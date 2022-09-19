@@ -1,7 +1,8 @@
 
 (ns app.views.frontend.error-screen.views
-    (:require [layouts.surface-a.api :as surface-a]
-              [x.app-elements.api    :as elements]))
+    (:require [app.common.frontend.api :as common]
+              [layouts.surface-a.api   :as surface-a]
+              [x.app-elements.api      :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -33,28 +34,12 @@
                                                    :size :xxl}]
                           :horizontal-align :center}]))
 
-(defn- go-back-button
-  [surface-id content-props]
-  [elements/button ::go-back-button
-                   {:border-radius :s
-                    :hover-color   :highlight
-                    :indent        {:top :m}
-                    :label         :back!
-                    :on-click      [:router/go-back!]}])
-
-(defn- go-back
-  [surface-id content-props]
-  [elements/row ::go-back
-                {:content [go-back-button surface-id content-props]
-                 :horizontal-align :center}])
-
 (defn- view-structure
   [surface-id content-props]
-  [:<> [elements/horizontal-separator {:size :xxl}]
-       [error-icon   surface-id content-props]
+  [:<> [error-icon   surface-id content-props]
        [error-title  surface-id content-props]
        [error-helper surface-id content-props]
-       [go-back      surface-id content-props]])
+       [common/go-back-button surface-id]])
 
 (defn view
   [surface-id content-props]

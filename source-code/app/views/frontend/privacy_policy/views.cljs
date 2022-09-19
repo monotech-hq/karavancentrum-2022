@@ -14,33 +14,29 @@
                  {:content lorem-ipsum/LONG
                   :indent  {:vertical :xs :top :xxl}}])
 
+(defn- breadcrumbs
+  [_]
+  [elements/breadcrumbs ::breadcrumbs
+                        {:crumbs [{:label :app-home
+                                   :route "/@app-home"}
+                                  {:label :privacy-policy}]
+                         :indent {:left :xs}}])
+
 (defn- title
   [surface-id]
-  [:<> [elements/horizontal-separator {:size :xxl}]
-       [common/surface-label surface-id
-                             {:label :privacy-policy}]])
-
-(defn- go-back-button
-  [_]
-  [:div {:style {:display :flex :justify-content :center}}
-        [elements/button ::go-back-button
-                         {:border-radius :s
-                          :hover-color   :highlight
-                          :indent        {:top :m}
-                          :label         :back!
-                          :on-click      [:router/go-back!]}]])
+  [common/surface-label surface-id
+                        {:label :privacy-policy}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   [surface-id]
-  [:<> [title          surface-id]
-       [content        surface-id]
-       [content        surface-id]
-       [content        surface-id]
-       [go-back-button surface-id]
-       [elements/horizontal-separator {:size :xxl}]])
+  [:<> [title       surface-id]
+       [breadcrumbs surface-id]
+       [content     surface-id]
+       [content     surface-id]
+       [content     surface-id]])
 
 (defn view
   [surface-id]

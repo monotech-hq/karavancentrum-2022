@@ -203,9 +203,11 @@
 
 (defn- user-name-label
   []
-  (let [user-name @(a/subscribe [:user/get-user-name])]
+  (let [user-first-name @(a/subscribe [:user/get-user-first-name])
+        user-last-name  @(a/subscribe [:user/get-user-last-name])
+        user-full-name  @(a/subscribe [:locales/get-ordered-name user-first-name user-last-name])]
        [elements/label ::user-name-label
-                       {:content     user-name
+                       {:content     user-full-name
                         :font-size   :s
                         :font-weight :extra-bold}]))
 
