@@ -20,6 +20,17 @@
  {:hu "Képek"
   :en "Images"}
 
+ ; Contents
+ :content-name
+ {:en "Content name"
+  :hu "Tartalom neve"}
+ :search-in-contents
+ {:en "Search in contents"
+  :hu "Keresés az tartalmak között"}
+ :unnamed-content
+ {:en "Unnamed content"
+  :hu "Névtelen tartalom"}
+   
  ; Storage
  :by-alias-ascending
  {:en "By name (ascending)"
