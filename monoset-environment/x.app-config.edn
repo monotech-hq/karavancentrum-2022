@@ -41,7 +41,7 @@
  :app-languages [:en :hu]
  :app-themes    [{:id :light :name :light-theme}
                  {:id :dark  :name :dark-theme}]
- :app-title     "Karavancentrum.hu"
+ :app-title     "Karaváncentrum.hu"
 
  ; Browser details
  :theme-color "#111111"
