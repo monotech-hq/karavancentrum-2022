@@ -10,6 +10,6 @@
   :website-content/load-editor!
   (fn [{:keys [db]} _]
       {:dispatch-n [[:gestures/init-view-handler! :website-content
-                                                  {:default-view-id :basic-info}]
+                                                  {:default-view-id :main-page}]
                     [:ui/render-surface! :website-content/view
                                          {:content #'views/view}]]}))

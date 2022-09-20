@@ -7,8 +7,9 @@
 
 (a/reg-lifecycles!
   ::lifecycles
-  {:on-app-boot [:home/add-menu-item! {:group    :content
-                                       :icon     :fiber_manual_record
-                                       :label    :contents
-                                       :on-click [:router/go-to! "/@app-home/contents"]
+  {:on-app-boot [:home/add-menu-item! {:group       :content
+                                       :icon        :article
+                                       :icon-family :material-icons-outlined
+                                       :label       :contents
+                                       :on-click    [:router/go-to! "/@app-home/contents"]
                                        :horizontal-weight 1}]})

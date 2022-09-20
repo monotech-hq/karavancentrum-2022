@@ -1,56 +1,28 @@
 
 (ns app.website-config.frontend.editor.views
-    (:require [app.storage.frontend.api]
-              [app.common.frontend.api :as common]
-              [forms.api               :as forms]
-              [layouts.surface-a.api   :as surface-a]
-              [mid-fruits.css          :as css]
-              [mid-fruits.vector       :as vector]
-              [plugins.file-editor.api :as file-editor]
-              [x.app-core.api          :as a]
-              [x.app-elements.api      :as elements]))
+    (:require [app.common.frontend.api  :as common]
+              [app.storage.frontend.api :as storage]
+              [forms.api                :as forms]
+              [layouts.surface-a.api    :as surface-a]
+              [mid-fruits.css           :as css]
+              [mid-fruits.vector        :as vector]
+              [plugins.file-editor.api  :as file-editor]
+              [x.app-core.api           :as a]
+              [x.app-elements.api       :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- company-logo-button
-  []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])
-        on-click [:storage.media-selector/load-selector! :website-config/logo-selector
-                                                         {:value-path [:website-config :config-editor/edited-item :company-logo-uri]}]]
-       [elements/button ::company-logo-button
-                        {:color     :muted
-                         :font-size :xs
-                         :indent    {:left :xs}
-                         :label     :select-image!
-                         :on-click  on-click}]))
-
-(defn- company-logo-label
+(defn- company-logo-picker
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
-       [elements/label ::company-logo-label
-                       {:content   :logo
-                        :disabled? editor-disabled?
-                        :indent    {:left :xs :top :l}}]))
-
-(defn- company-logo-thumbnail
-  []
-  (let [company-logo-uri @(a/subscribe [:db/get-item [:website-config :config-editor/edited-item :company-logo-uri]])
-        editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
-       [elements/thumbnail ::company-logo-thumbnail
-                           {:border-radius :m
-                            :disabled?     editor-disabled?
-                            :indent        {:left :xs}
-                            :height        :xxl
-                            :width         :xxl
-                            :uri           company-logo-uri}]))
-
-(defn- company-logo
-  []
-  [:<> [company-logo-label]
-       [:div {:style {:display :flex}}
-             [company-logo-button]]
-       [company-logo-thumbnail]])
+       [storage/media-picker ::company-logo-picker
+                             {:disabled?    editor-disabled?
+                              :indent       {:top :l :vertical :xs}
+                              :label        :logo
+                              :toggle-label :select-image!
+                              :thumbnails   {:height :2xl :width :4xl}
+                              :value-path   [:website-config :config-editor/edited-item :company-logo-uri]}]))
 
 (defn- company-slogan-field
   []
@@ -79,7 +51,7 @@
   []
   [:div (forms/form-row-attributes)
         [:div (forms/form-block-attributes {:ratio 100})
-              [company-logo]
+              [company-logo-picker]
               [company-name-field]
               [company-slogan-field]]])
 
@@ -357,46 +329,21 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- share-preview-button
-  []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])
-        on-click [:storage.media-selector/load-selector! :website-config/logo-selector
-                                                         {:value-path [:website-config :config-editor/edited-item :share-preview-uri]}]]
-       [elements/button ::share-preview-button
-                        {:color     :muted
-                         :disabled? editor-disabled?
-                         :font-size :xs
-                         :indent    {:left :xs}
-                         :label     :select-image!
-                         :on-click  on-click}]))
-
-(defn- share-preview-label
+(defn- share-preview-picker
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
-       [elements/label ::share-preview-label
-                       {:content   :share-preview
-                        :disabled? editor-disabled?
-                        :indent    {:left :xs :top :l}
-                        :info-text {:content :recommended-image-size-n :replacements ["1200" "630"]}}]))
-
-(defn- share-preview-thumbnail
-  []
-  (let [share-preview-uri @(a/subscribe [:db/get-item [:website-config :config-editor/edited-item :share-preview-uri]])
-        editor-disabled?  @(a/subscribe [:file-editor/editor-disabled? :website-config])]
-       [elements/thumbnail ::share-preview-thumbnail
-                           {:border-radius :m
-                            :disabled?     editor-disabled?
-                            :height        :4xl
-                            :width         :4xl
-                            :indent        {:left :xs}
-                            :uri           share-preview-uri}]))
+       [storage/media-picker ::share-preview-picker
+                             {:disabled?    editor-disabled?
+                              :indent       {:top :l :vertical :xs}
+                              :info-text    {:content :recommended-image-size-n :replacements ["1200" "630"]}
+                              :label        :share-preview
+                              :toggle-label :select-image!
+                              :thumbnails   {:height :2xl :width :4xl}
+                              :value-path   [:website-config :config-editor/edited-item :share-preview-uri]}]))
 
 (defn- share
   []
-  [:<> [share-preview-label]
-       [:div {:style {:display :flex}}
-             [share-preview-button]]
-       [share-preview-thumbnail]])
+  [:<> [share-preview-picker]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -44,10 +44,10 @@
        [elements/thumbnail ::vehicle-thumbnail
                            {:border-radius :s
                             :disabled?     viewer-disabled?
-                            :height        :l
+                            :height        :2xl
                             :indent        {:top :xxs :vertical :xs}
                             :uri           vehicle-thumbnail
-                            :width         :xxl}]))
+                            :width         :4xl}]))
 
 (defn- vehicle-images
   []

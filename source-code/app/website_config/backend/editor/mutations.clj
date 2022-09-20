@@ -4,8 +4,7 @@
               [com.wsscode.pathom3.connect.operation     :as pathom.co :refer [defmutation]]
               [mid-fruits.candy                          :refer [return]]
               [pathom.api                                :as pathom]
-              [server-fruits.io                          :as io]
-              [x.server-core.api                         :as a]))
+              [server-fruits.io                          :as io]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -18,7 +17,6 @@
   ; @return (map)
   [env {:keys [content]}]
   (io/write-edn-file! handler.config/WEBSITE-CONFIG-FILEPATH content)
-  ;(a/dispatch-fx [:core/import-website-config!])
   (return content))
 
 (defmutation save-content!

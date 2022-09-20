@@ -79,85 +79,33 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn- vehicle-thumbnail-label
+(defn- vehicle-thumbnail-picker
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [elements/label ::vehicle-thumbnail-label
-                       {:content   :thumbnail
-                        :disabled? editor-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
+       [storage/media-picker ::vehicle-thumbnail-picker
+                             {:disabled?    editor-disabled?
+                              :indent       {:top :l :vertical :xs}
+                              :label        :thumbnail
+                              :toggle-label :select-image!
+                              :thumbnails   {:height :2xl :width :4xl}
+                              :value-path   [:vehicles :vehicle-editor/edited-item :thumbnail]}]))
 
-(defn- vehicle-thumbnail
-  []
-  (let [editor-disabled?  @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
-        vehicle-thumbnail @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :thumbnail]])]
-       [elements/thumbnail ::vehicle-thumbnail
-                           {:border-radius :s
-                            :disabled?     editor-disabled?
-                            :height        :l
-                            :indent        {:top :xxs :vertical :xs}
-                            :uri           vehicle-thumbnail
-                            :width         :xxl}]))
-
-(defn- vehicle-thumbnail-button
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
-        on-click [:storage.media-selector/load-selector! :parts.part-editor/thumbnail-selector
-                                                         {:value-path [:vehicles :vehicle-editor/edited-item :thumbnail]}]]
-       [elements/button ::vehicle-thumbnail-button
-                        {:color     :muted
-                         :disabled? editor-disabled?
-                         :font-size :xs
-                         :indent    {:vertical :xs}
-                         :label     :select-image!
-                         :on-click  on-click}]))
-
-(defn- vehicle-thumbnail-selector
-  []
-  [:<> [vehicle-thumbnail-label]
-       [:div (forms/form-row-attributes)
-             [vehicle-thumbnail-button]]
-       [vehicle-thumbnail]])
-
-(defn- vehicle-images-label
+(defn- vehicle-images-picker
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [elements/label ::vehicle-images-label
-                       {:content   :images
-                        :disabled? editor-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
-
-(defn- vehicle-images-button
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
-        on-click [:storage.media-selector/load-selector! :vehicles.vehicle-editor/thumbnail-selector
-                                                         {:multiple?  true
-                                                          :value-path [:vehicles :vehicle-editor/edited-item :images]}]]
-       [elements/button ::vehicle-images-button
-                        {:color     :muted
-                         :disabled? editor-disabled?
-                         :font-size :xs
-                         :indent    {:vertical :xs}
-                         :label     :select-images!
-                         :on-click  on-click}]))
-
-(defn- vehicle-image-list
-  []
-  (let [vehicle-images @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :images]])]
-       [common/item-editor-image-list :vehicles.vehicle-editor
-                                      {:images vehicle-images}]))
-
-(defn- vehicle-image-selector
-  []
-  [:<> [vehicle-images-label]
-       [:div (forms/form-row-attributes)
-             [vehicle-images-button]]
-       [vehicle-image-list]])
+       [storage/media-picker ::vehicle-images-picker
+                             {:disabled?    editor-disabled?
+                              :indent       {:top :l :vertical :xs}
+                              :label        :images
+                              :multiple?    true
+                              :toggle-label :select-images!
+                              :thumbnails   {:height :2xl :width :4xl}
+                              :value-path   [:vehicles :vehicle-editor/edited-item :images]}]))
 
 (defn- vehicle-images
   []
-  [:<> [vehicle-thumbnail-selector]
-       [vehicle-image-selector]])
+  [:<> [vehicle-thumbnail-picker]
+       [vehicle-images-picker]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

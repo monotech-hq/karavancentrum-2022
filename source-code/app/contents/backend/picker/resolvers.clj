@@ -1,29 +1,29 @@
 
-(ns app.website-content.backend.editor.resolvers
-    (:require [app.website-content.backend.handler.config :as handler.config]
-              [com.wsscode.pathom3.connect.operation      :refer [defresolver]]
-              [pathom.api                                 :as pathom]
-              [server-fruits.io                           :as io]))
+(ns app.contents.backend.editor.resolvers
+    (:require [com.wsscode.pathom3.connect.operation :refer [defresolver]]
+              [mongo-db.api                          :as mongo-db]
+              [pathom.api                            :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- get-content-f
+(defn get-content-f
   ; @param (map) env
   ; @param (map) resolver-props
   ;
-  ; @return (map)
-  [env resolver-props]
-  (io/read-edn-file handler.config/WEBSITE-CONTENT-FILEPATH))
+  ; @return (namespaced map)
+  [env _]
+  (let [content-id (pathom/env->param env :content-id)]
+       (mongo-db/get-document-by-id "contents" content-id)))
 
 (defresolver get-content
              ; @param (map) env
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:website-content/get-content (map)}
+             ;  {:contents.content-picker/get-content (namespaced map)}
              [env resolver-props]
-             {:website-content/get-content (get-content-f env resolver-props)})
+             {:contents.content-picker/get-content (get-content-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

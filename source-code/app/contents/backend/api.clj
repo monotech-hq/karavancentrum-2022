@@ -8,6 +8,7 @@
               [app.contents.backend.lister.lifecycles]
               [app.contents.backend.lister.mutations]
               [app.contents.backend.lister.resolvers]
+              [app.contents.backend.picker.resolvers]
               [app.contents.backend.selector.lifecycles]
               [app.contents.backend.viewer.lifecycles]
               [app.contents.backend.viewer.mutations]
