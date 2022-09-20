@@ -9,5 +9,6 @@
                   :products
                   :vehicles
                   :parts
+                  :content
                   :website
                   :other])

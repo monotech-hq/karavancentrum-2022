@@ -1,11 +1,10 @@
 
-(ns app.website-config.backend.editor.mutations
-    (:require [app.website-config.backend.handler.config :as handler.config]
-              [com.wsscode.pathom3.connect.operation     :as pathom.co :refer [defmutation]]
-              [mid-fruits.candy                          :refer [return]]
-              [pathom.api                                :as pathom]
-              [server-fruits.io                          :as io]
-              [x.server-core.api                         :as a]))
+(ns app.website-content.backend.editor.mutations
+    (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
+              [mid-fruits.candy                      :refer [return]]
+              [pathom.api                            :as pathom]
+              [server-fruits.io                      :as io]))
+              ;[x.server-core.api                     :as a]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -17,7 +16,7 @@
   ;
   ; @return (map)
   [env {:keys [content]}]
-  (io/write-edn-file! handler.config/WEBSITE-CONFIG-FILEPATH content)
+  ;(io/write-edn-file! a/WEBSITE-CONFIG-FILEPATH content)
   ;(a/dispatch-fx [:core/import-website-config!])
   (return content))
 
@@ -28,7 +27,7 @@
              ;
              ; @return (map)
              [env mutation-props]
-             {::pathom.co/op-name 'website-config/save-content!}
+             {::pathom.co/op-name 'website-content/save-content!}
              (save-content-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------

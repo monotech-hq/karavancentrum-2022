@@ -21,7 +21,9 @@
 
 (defn add-menu-item!
   ; @param (map) item-props
-  ;  {:group (keyword)(opt)
+  ;  {:disabled? (boolean)(opt)
+  ;    Default: false
+  ;   :group (keyword)(opt)
   ;    Default: :other
   ;   :horizontal-weight (integer)(opt)
   ;    Default: 0

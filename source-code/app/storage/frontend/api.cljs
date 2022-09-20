@@ -8,6 +8,7 @@
               [app.storage.frontend.file-uploader.events]
               [app.storage.frontend.file-uploader.side-effects]
               [app.storage.frontend.file-uploader.subs]
+              [app.storage.frontend.lifecycles]
               [app.storage.frontend.media-browser.effects]
               [app.storage.frontend.media-browser.lifecycles]
               [app.storage.frontend.media-menu.effects]

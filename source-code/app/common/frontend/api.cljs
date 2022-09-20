@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.api
-    (:require [app.common.frontend.config-editor.views :as config-editor.views]
-              [app.common.frontend.context-menu.views  :as context-menu.views]
+    (:require [app.common.frontend.context-menu.views  :as context-menu.views]
               [app.common.frontend.credits.views       :as credits.views]
+              [app.common.frontend.file-editor.views   :as file-editor.views]
               [app.common.frontend.item-browser.views  :as item-browser.views]
               [app.common.frontend.item-editor.views   :as item-editor.views]
               [app.common.frontend.item-lister.views   :as item-lister.views]
@@ -14,13 +14,6 @@
 ;; -- Redirects ---------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; app.common.frontend.config-editor.views
-(def config-editor-breadcrumbs config-editor.views/config-editor-breadcrumbs)
-(def config-editor-label-bar   config-editor.views/config-editor-label-bar)
-(def config-editor-menu-bar    config-editor.views/config-editor-menu-bar)
-(def config-editor-action-bar  config-editor.views/config-editor-action-bar)
-(def config-editor-ghost-view  config-editor.views/config-editor-ghost-view)
-
 ; app.common.frontend.context-menu.views
 (def context-menu-label-bar context-menu.views/context-menu-label-bar)
 
@@ -30,6 +23,13 @@
 (def created-by-label credits.views/created-by-label)
 (def created-by       credits.views/created-by)
 (def credits          credits.views/credits)
+
+; app.common.frontend.file-editor.views
+(def file-editor-breadcrumbs file-editor.views/file-editor-breadcrumbs)
+(def file-editor-label-bar   file-editor.views/file-editor-label-bar)
+(def file-editor-menu-bar    file-editor.views/file-editor-menu-bar)
+(def file-editor-action-bar  file-editor.views/file-editor-action-bar)
+(def file-editor-ghost-view  file-editor.views/file-editor-ghost-view)
 
 ; app.common.frontend.item-browser.views
 (def item-browser-search-block item-browser.views/item-browser-search-block)

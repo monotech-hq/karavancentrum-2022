@@ -97,9 +97,10 @@
                          :indent  {}}]])
 
 (defn- label-group-item
-  [{:keys [on-click] :as group-item}]
+  [{:keys [disabled? on-click] :as group-item}]
   [elements/card {:border-radius    :m
                   :content          [label-group-item-content group-item]
+                  :disabled?        disabled?
                   :on-click         on-click
                   :horizontal-align :left
                   :hover-color      :highlight

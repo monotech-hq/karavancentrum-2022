@@ -1,9 +1,10 @@
 
 (ns routes
-    (:require [app.views.backend.api :as views]
-              [server-fruits.http    :as http]
-              [x.server-core.api     :as a]
-              [x.server-ui.api       :as ui])
+    (:require [app.website-config.backend.api :as website-config]
+              [app.views.backend.api          :as views]
+              [server-fruits.http             :as http]
+              [x.server-core.api              :as a]
+              [x.server-ui.api                :as ui])
     (:gen-class))
 
 ;; ----------------------------------------------------------------------------
@@ -11,10 +12,11 @@
 
 (defn view
   [request]
-  (ui/html (ui/head request {})
-           (ui/body request {:loading-screen (views/loading-screen request)})))
-          ;(ui/head request {:css-paths       [{:uri ""}]})
-          ;(ui/body request {:plugin-js-paths [{:uri ""}]})
+  (let [website-config (website-config/get-website-config)]
+       (ui/html (ui/head request website-config)
+                (ui/body request {:loading-screen (views/loading-screen request)}))))
+               ;(ui/head request {:css-paths       [{:uri ""}]})
+               ;(ui/body request {:plugin-js-paths [{:uri ""}]})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

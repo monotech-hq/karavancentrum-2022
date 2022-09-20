@@ -1,21 +1,21 @@
 
 (ns app.website-config.frontend.editor.views
     (:require [app.storage.frontend.api]
-              [app.common.frontend.api   :as common]
-              [forms.api                 :as forms]
-              [layouts.surface-a.api     :as surface-a]
-              [mid-fruits.css            :as css]
-              [mid-fruits.vector         :as vector]
-              [plugins.config-editor.api :as config-editor]
-              [x.app-core.api            :as a]
-              [x.app-elements.api        :as elements]))
+              [app.common.frontend.api :as common]
+              [forms.api               :as forms]
+              [layouts.surface-a.api   :as surface-a]
+              [mid-fruits.css          :as css]
+              [mid-fruits.vector       :as vector]
+              [plugins.file-editor.api :as file-editor]
+              [x.app-core.api          :as a]
+              [x.app-elements.api      :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- company-logo-button
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])
         on-click [:storage.media-selector/load-selector! :website-config/logo-selector
                                                          {:value-path [:website-config :config-editor/edited-item :company-logo-uri]}]]
        [elements/button ::company-logo-button
@@ -27,7 +27,7 @@
 
 (defn- company-logo-label
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/label ::company-logo-label
                        {:content   :logo
                         :disabled? editor-disabled?
@@ -36,7 +36,7 @@
 (defn- company-logo-thumbnail
   []
   (let [company-logo-uri @(a/subscribe [:db/get-item [:website-config :config-editor/edited-item :company-logo-uri]])
-        editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+        editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/thumbnail ::company-logo-thumbnail
                            {:border-radius :m
                             :disabled?     editor-disabled?
@@ -54,7 +54,7 @@
 
 (defn- company-slogan-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/text-field ::company-slogan-field
                             {:disabled?  editor-disabled?
                              :indent     {:top :l :vertical :xs}
@@ -65,7 +65,7 @@
 
 (defn- company-name-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/text-field ::company-name-field
                             {:autofocus? true
                              :disabled?  editor-disabled?
@@ -92,7 +92,7 @@
 
 (defn- duplicate-contact-group-button
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/button {:color     :primary
                          :disabled? editor-disabled?
                          :font-size :xs
@@ -103,7 +103,7 @@
 
 (defn- delete-contact-group-button
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/button {:color     :warning
                          :disabled? editor-disabled?
                          :font-size :xs
@@ -114,7 +114,7 @@
 
 (defn- contact-group-label-field
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/text-field {:autofocus?  true
                              :disabled?   editor-disabled?
                              :label       :label
@@ -124,7 +124,7 @@
 
 (defn- email-addresses-field
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-field {:disabled?   editor-disabled?
                               :label       :email-address
                               :indent      {:all :xs}
@@ -133,7 +133,7 @@
 
 (defn- phone-numbers-field
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-field {:disabled?   editor-disabled?
                               :label       :phone-number
                               :indent      {:all :xs}
@@ -166,10 +166,10 @@
 
 (defn- contact-group-action-bar
   []
-  [common/config-editor-action-bar :website-config
-                                   {:label    :add-contacts-data!
-                                    :on-click [:db/apply-item! [:website-config :config-editor/edited-item :contact-groups]
-                                                               vector/cons-item {}]}])
+  [common/file-editor-action-bar :website-config
+                                 {:label    :add-contacts-data!
+                                  :on-click [:db/apply-item! [:website-config :config-editor/edited-item :contact-groups]
+                                                             vector/cons-item {}]}])
 
 (defn- contacts-data
   []
@@ -181,7 +181,7 @@
 
 (defn- duplicate-address-group-button
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/button {:color     :primary
                          :disabled? editor-disabled?
                          :font-size :xs
@@ -192,7 +192,7 @@
 
 (defn- delete-address-group-button
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/button {:color     :warning
                          :disabled? editor-disabled?
                          :font-size :xs
@@ -203,7 +203,7 @@
 
 (defn- address-group-label-field
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/text-field {:autofocus?  true
                              :disabled?   editor-disabled?
                              :label       :label
@@ -213,7 +213,7 @@
 
 (defn- company-addresses-field
   [group-dex _]
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-field {:disabled?   editor-disabled?
                               :label       :address
                               :indent      {:all :xs}
@@ -244,10 +244,10 @@
 
 (defn- address-group-action-bar
   []
-  [common/config-editor-action-bar :website-config
-                                   {:label    :add-address-data!
-                                    :on-click [:db/apply-item! [:website-config :config-editor/edited-item :address-groups]
-                                                               vector/cons-item {}]}])
+  [common/file-editor-action-bar :website-config
+                                 {:label    :add-address-data!
+                                  :on-click [:db/apply-item! [:website-config :config-editor/edited-item :address-groups]
+                                                             vector/cons-item {}]}])
 
 (defn- address-data
   []
@@ -259,7 +259,7 @@
 
 (defn- facebook-links-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-field ::facebook-links-field
                              {:autofocus? true
                               :disabled?  editor-disabled?
@@ -270,7 +270,7 @@
 
 (defn- instagram-links-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-field ::instagram-links-field
                              {:disabled?  editor-disabled?
                               :indent     {:vertical :xs :top :l}
@@ -280,7 +280,7 @@
 
 (defn- youtube-links-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-field ::youtube-links-field
                              {:disabled?   editor-disabled?
                               :indent      {:vertical :xs :top :l}
@@ -299,7 +299,7 @@
 
 (defn- meta-name-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/text-field ::meta-name-field
                             {:autofocus?  true
                              :disabled?   editor-disabled?
@@ -311,7 +311,7 @@
 
 (defn- meta-title-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/text-field ::meta-title-field
                             {:disabled?   editor-disabled?
                              :label       :meta-title
@@ -322,7 +322,7 @@
 
 (defn- meta-description-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multiline-field ::meta-description-field
                                  {:disabled?   editor-disabled?
                                   :label       :meta-description
@@ -333,7 +333,7 @@
 
 (defn- meta-keywords-field
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/multi-combo-box ::meta-keywords-field
                                  {:deletable?  true
                                   :disabled?   editor-disabled?
@@ -359,7 +359,7 @@
 
 (defn- share-preview-button
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])
         on-click [:storage.media-selector/load-selector! :website-config/logo-selector
                                                          {:value-path [:website-config :config-editor/edited-item :share-preview-uri]}]]
        [elements/button ::share-preview-button
@@ -372,7 +372,7 @@
 
 (defn- share-preview-label
   []
-  (let [editor-disabled? @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/label ::share-preview-label
                        {:content   :share-preview
                         :disabled? editor-disabled?
@@ -382,7 +382,7 @@
 (defn- share-preview-thumbnail
   []
   (let [share-preview-uri @(a/subscribe [:db/get-item [:website-config :config-editor/edited-item :share-preview-uri]])
-        editor-disabled?  @(a/subscribe [:config-editor/editor-disabled? :website-config])]
+        editor-disabled?  @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [elements/thumbnail ::share-preview-thumbnail
                            {:border-radius :m
                             :disabled?     editor-disabled?
@@ -403,25 +403,25 @@
 
 (defn- menu-bar
   []
-  [common/config-editor-menu-bar :website-config
-                                 {:menu-items [{:change-keys [:company-name :company-slogan :company-logo]
-                                                :label   :basic-info
-                                                :view-id :basic-info}
-                                               {:change-keys [:contact-groups]
-                                                :label   :contacts-data
-                                                :view-id :contacts-data}
-                                               {:change-keys [:address-groups]
-                                                :label   :address-data
-                                                :view-id :address-data}
-                                               {:change-keys [:facebook-links :instagram-links :youtube-links]
-                                                :label   :social-media
-                                                :view-id :social-media}
-                                               {:change-keys [:meta-name :meta-title :meta-keywords :meta-description]
-                                                :label   :seo
-                                                :view-id :seo}
-                                               {:change-keys [:share-preview]
-                                                :label   :share
-                                                :view-id :share}]}])
+  [common/file-editor-menu-bar :website-config
+                               {:menu-items [{:change-keys [:company-name :company-slogan :company-logo]
+                                              :label   :basic-info
+                                              :view-id :basic-info}
+                                             {:change-keys [:contact-groups]
+                                              :label   :contacts-data
+                                              :view-id :contacts-data}
+                                             {:change-keys [:address-groups]
+                                              :label   :address-data
+                                              :view-id :address-data}
+                                             {:change-keys [:facebook-links :instagram-links :youtube-links]
+                                              :label   :social-media
+                                              :view-id :social-media}
+                                             {:change-keys [:meta-name :meta-title :meta-keywords :meta-description]
+                                              :label   :seo
+                                              :view-id :seo}
+                                             {:change-keys [:share-preview]
+                                              :label   :share
+                                              :view-id :share}]}])
 
 (defn- view-selector
   []
@@ -436,25 +436,25 @@
 
 (defn- website-config-editor
   []
-  [config-editor/body :website-config
-                      {:config-path   [:website-config :config-editor/edited-item]
-                       :form-element  #'view-selector
-                       :ghost-element #'common/config-editor-ghost-view}])
+  [file-editor/body :website-config
+                    {:content-path  [:website-config :config-editor/edited-item]
+                     :form-element  #'view-selector
+                     :ghost-element #'common/file-editor-ghost-view}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- breadcrumbs
   []
-  [common/config-editor-breadcrumbs :website-config
-                                    {:crumbs [{:label :app-home
-                                               :route "/@app-home"}
-                                              {:label :website-config}]}])
+  [common/file-editor-breadcrumbs :website-config
+                                  {:crumbs [{:label :app-home
+                                             :route "/@app-home"}
+                                            {:label :website-config}]}])
 
 (defn- label-bar
   []
-  [common/config-editor-label-bar :website-config
-                                  {:label :website-config}])
+  [common/file-editor-label-bar :website-config
+                                {:label :website-config}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
