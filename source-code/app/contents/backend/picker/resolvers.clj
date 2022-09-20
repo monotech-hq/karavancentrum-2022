@@ -1,5 +1,5 @@
 
-(ns app.contents.backend.editor.resolvers
+(ns app.contents.backend.picker.resolvers
     (:require [com.wsscode.pathom3.connect.operation :refer [defresolver]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]))

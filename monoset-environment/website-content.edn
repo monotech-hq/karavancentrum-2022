@@ -1,7 +1,7 @@
 
 {:debug "x" 
- :about-us "6329e1f1e041041784616b84" 
- :rent-informations "6329b5e4e0410401e625cf27" 
- :address-data-information "6329b5e4e0410401e625cf27" 
- :more-brands [{} {:logo "/media/storage/sample.png"}] 
- :contacts-data-information "6329e1f1e041041784616b84"}
+ :about-us nil 
+ :rent-informations "6329e1f1e041041784616b84" 
+ :address-data-information nil 
+ :more-brands [] 
+ :contacts-data-information nil}

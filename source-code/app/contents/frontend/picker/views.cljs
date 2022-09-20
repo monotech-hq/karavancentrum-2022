@@ -14,10 +14,10 @@
   ; @param (map) picker-props
   [picker-id picker-props]
   (let [content-body @(a/subscribe [:contents.content-picker/get-content-body picker-id])]
-       [elements/text {:color     :muted
-                       :content   content-body
-                       :font-size :xs
-                       :indent    {:horizontal :xxs :vertical :xs}
+       [elements/text {:color       :muted
+                       :content     content-body
+                       :font-size   :xs
+                       :indent      {:horizontal :xxs :vertical :xs}
                        :placeholder :downloading...}]))
 
 (defn- content-picker-preview-card

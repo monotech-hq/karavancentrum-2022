@@ -66,8 +66,8 @@
   []
   [:<> [rent-informations]
        [about-us]
-       [address-data-information]
-       [contacts-data-information]])
+       [contacts-data-information]
+       [address-data-information]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -165,7 +165,7 @@
                                                             :about-us :rent-informations]
                                               :label   :main-page
                                               :view-id :main-page}
-                                             {:change-keys []
+                                             {:change-keys [:more-brands]
                                               :label   :more-brands
                                               :view-id :more-brands}]}])
 
