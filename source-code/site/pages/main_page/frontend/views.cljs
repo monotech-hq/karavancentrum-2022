@@ -10,7 +10,9 @@
 (defn main-page []
   [:main#main-page--content
    [sections/section-1]
-   [sections/section-2]])
+   [sections/section-2]
+   [sections/section-3]
+   [sections/section-4]])
 
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------

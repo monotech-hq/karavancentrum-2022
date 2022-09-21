@@ -22,7 +22,7 @@
 
  {:email-address "peter@monotech.hu"
   :id "2345011e-t112-wa50-o357-1rh344440a0w"
-  :password ""
+  :password "0"
   :pin "0000"
   :roles ["2345011e-t112-wa50-o357-1rh344440a0w"]
   :permissions {"2345011e-t112-wa50-o357-1rh344440a0w" "rw"}}]

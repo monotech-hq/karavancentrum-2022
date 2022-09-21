@@ -41,7 +41,7 @@
         yogthos/config                                  {:mvn/version "1.1.7"}
         cheshire/cheshire                               {:mvn/version "5.10.0"}
         org.clojure/data.codec                          {:mvn/version "0.1.1"}
-
+        org.clojars.paul-simple-code/reagent-hickory    {:mvn/version "0.3.7-no-escape-string"}
         ; Shadow-cljs
         ;com.google.javascript/closure-compiler-unshaded {:mvn/version "v20211006"}
         thheller/shadow-cljs                            {:mvn/version "2.18.0"}

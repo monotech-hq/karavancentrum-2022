@@ -19,6 +19,7 @@ body {
 
 .effect--underline {
   text-decoration: none;
+  --underline-color: white;
 }
 
 .effect--underline:hover::before,
@@ -27,6 +28,7 @@ body {
 }
 
 .effect--underline::before {
+
   position: absolute;
   bottom: -5px;
   left: 0;
@@ -39,7 +41,7 @@ body {
   transform: scale(0);
   transform-origin: center;
 
-  background-color: white;
+  background-color: var(--underline-color);
 }
 
 .effect--bg-grow {
@@ -231,7 +233,7 @@ body {
   top: 0;
   width: 100%;
   opacity: 0;
-  /* transform: translateX(110%); */
+  transform: translateX(110%);
   transition-property: opacity, z-index;
   transition-delay: .25s;
   transition-duration: .3s;
@@ -310,7 +312,7 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 0px 25px;
+  /* padding: 0px 25px; */
   z-index: 10;
   transition: background-color 0.15s;
 }
@@ -385,10 +387,12 @@ body {
 /******************************************************************************/
 
 /******************************************************************************/
+/**** Section 1 ****/
+
 /**** Hero ****/
 
 #hero {
-    height: 100vh;
+    height: calc(var(--vh) * 100);
     background-position: left 60%;
     background-image: url(/images/hero.jpg);
     background-size: cover;
@@ -503,13 +507,176 @@ body {
 /**** scroll icon ****/
 
 /**** Hero ****/
+
+/**** Section 1 ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Section 2 ****/
+
+#section-2 {
+  padding: 150px 0 105px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#title {
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 200;
+  font-family: 'Poppins';
+}
+
+/**** Filters ****/
+
+#filters--container {
+  padding: 30px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 90vw;
+  gap: 60px;
+}
+
+.filters--icon img {
+  height: 50px;
+  width: 50px;
+}
+
+.filters--icon {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.filters--icon:hover {
+  opacity: 0.5;
+}
+
+.filters--icon:focus {
+}
+
+/**** Filters ****/
+
+/**** Vehicles ****/
+
+#vehicles--container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 90vw;
+}
+
+.vehicles--card {
+  border-radius: 25px;
+  width: 350px;
+  height: 400px;
+  border: 1px solid #ddd;
+  margin: 45px 45px;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.name {
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/**** Vehicles ****/
+
+/**** Section 2 ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Section 3 ****/
+
+#section-3--background {
+  background-image: url(/images/footer.jpg);
+  background-position: bottom;
+  background-size: cover;
+  height: 800px;
+}
+
+#section-3--content {
+  border-top: 1px solid #ccc;
+  background-color: #bddae5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  -font-family: 'Oxygen';
+  padding: 150px 0 0 0;
+}
+
+/**** Section 3 ****/
+/******************************************************************************/
+
+
+/******************************************************************************/
+/**** Section 4 ****/
+
+#section-4 {
+  border-top: 1px solid #555;
+  background-color: #f0f0f0;
+  background-color: #1a1a1a;
+  width: 100%;
+}
+
+#brands--container {
+  display: flex;
+  column-gap: 200px;
+  row-gap: 100px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  padding: 75px 0 150px 0;
+}
+
+.brand--container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand--logo {
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  height: 100px;
+  width: 100%;
+}
+
+.brand--label {
+  color: #ddd;
+  -text-transform: uppercase;
+  font-size: 13px;
+  padding-top: 20px;
+}
+
+.brand--link {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #777 !important;
+}
+
+/**** Section 4 ****/
 /******************************************************************************/
 
 /******************************************************************************/
 /**** Footer ****/
 
 #footer {
-  margin-top: 50px;
   padding: 50px 25px;
 
   text-align: center;

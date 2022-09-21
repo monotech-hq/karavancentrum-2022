@@ -24,20 +24,24 @@
 ;; ---- Components ----
 
 (defn logo []
-  [:div#logo-and-company-name
-   [:div#logo]
-   [:div#company-name-and-slogan
-    [:div#company-name "Karaván Centrum"]
-    [:div#company-slogan "Lakóautók és kempingcikkek"]]])
+  [:a {:href "/" :style {:text-decoration "none"}}
+    [:div#logo-and-company-name
+     [:div#company-name-and-slogan
+      [:div#company-name "Karaván Centrum"]
+      [:div#company-slogan "Lakóautók és kempingcikkek"]]]])
+
+(defn navbar-item [{:keys [href]} label]
+  [:a.link.effect--underline {:style {"--underline-color" "black"}
+                              :href href}
+   label])
 
 (defn navbar []
-  [site.modules/navbar {:threshold 800
-                        :align-x :right
+  [site.modules/navbar {:threshold 800 :align-x :right :max-width 1200
                         :logo [logo]}
-   [:a.link.effect--underline {:href ""} "Bérbeadás"]
-   [:a.link.effect--underline {:href ""} "Értékesítés"]
-   [:a.link.effect--underline {:href ""} "Webáruház"]
-   [:a.link.effect--underline {:href ""} "Kapcsolat"]])
+   [navbar-item {:href ""} "Bérbeadás"]
+   [navbar-item {:href ""} "Értékesítés"]
+   [navbar-item {:href ""} "Webáruház"]
+   [navbar-item {:href ""} "Kapcsolat"]])
 
 (defn header []
   [navbar])

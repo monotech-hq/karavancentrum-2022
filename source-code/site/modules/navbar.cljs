@@ -73,7 +73,8 @@
 
 (defn navbar-desktop [config items {:keys [layout] :as view-props}]
   [:nav#navbar {:data-layout layout}
-   [:div#navbar--container {:style {:justify-content (get-alignment config)}}
+   [:div#navbar--container {:style {:justify-content (get-alignment config)
+                                    :max-width (:max-width config)}}
     [nav-logo (:logo config)]
     [menu items]]])
 
