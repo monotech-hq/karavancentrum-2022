@@ -51,14 +51,14 @@
   [lister-id {:keys [search-field-placeholder search-keys]}]
   (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? lister-id])
         search-event [:item-lister/search-items! lister-id {:search-keys search-keys}]]
-       [elements/search-field ::search-items-field
-                              {:autoclear?    true
-                               :disabled?     lister-disabled?
-                               :indent        {:horizontal :xxs :left :xs}
-                               :on-empty      search-event
-                               :on-type-ended search-event
-                               :placeholder   search-field-placeholder
-                               :style         {:flex-grow 1}}]))
+       [:div {:style {:flex-grow 1}}
+             [elements/search-field ::search-items-field
+                                    {:autoclear?    true
+                                     :disabled?     lister-disabled?
+                                     :indent        {:horizontal :xxs :left :xs}
+                                     :on-empty      search-event
+                                     :on-type-ended search-event
+                                     :placeholder   search-field-placeholder}]]))
 
 (defn order-by-icon-button
   ; @param (keyword) lister-id

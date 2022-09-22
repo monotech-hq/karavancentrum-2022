@@ -15,7 +15,7 @@
 (defn- ghost-view
   []
   [common/item-editor-ghost-view :pages.page-editor
-                                 {:padding "0 12px"}])
+                                 {}])
 
 (defn- menu-bar
   []
@@ -24,14 +24,62 @@
 
 (defn- view-selector
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.page-editor])]
-       [:<> [menu-bar]]))
+  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.page-editor])]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- control-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :pages.page-editor])]
+       [common/item-editor-control-bar :pages.page-editor
+                                       {:disabled? editor-disabled?}]))
+
+(defn- breadcrumbs
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :pages.page-editor])
+        page-name        @(a/subscribe [:db/get-item [:pages :page-editor/edited-item :name]])
+        page-id          @(a/subscribe [:router/get-current-route-path-param :item-id])
+        page-uri          (str "/@app-home/pages/" page-id)]
+       [common/surface-breadcrumbs :pages.page-editor/view
+                                   {:crumbs (if page-id [{:label :app-home :route "/@app-home"}
+                                                         {:label :pages    :route "/@app-home/pages"}
+                                                         {:label page-name :route page-uri :placeholder :unnamed-page}
+                                                         {:label :edit!}]
+                                                        [{:label :app-home :route "/@app-home"}
+                                                         {:label :pages    :route "/@app-home/pages"}
+                                                         {:label :add!}])
+                                    :disabled? editor-disabled?}]))
+
+(defn- label-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :pages.page-editor])
+        page-name        @(a/subscribe [:db/get-item [:pages :page-editor/edited-item :name]])]
+       [common/surface-label :pages.page-editor/view
+                             {:disabled?   editor-disabled?
+                              :label       page-name
+                              :placeholder :unnamed-page}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- view-structure
+  []
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [label-bar]
+        [breadcrumbs]
+        [elements/horizontal-separator {:size :xxl}]
+        [menu-bar]
+        [view-selector]
+        [elements/horizontal-separator {:size :xxl}]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [control-bar]]])
 
 (defn- page-editor
   []
   [item-editor/body :pages.page-editor
                     {:auto-title?      true
-                     :form-element     #'view-selector
+                     :form-element     #'view-structure
                      :ghost-element    #'ghost-view
                      :initial-item     {:visibility :public}
                      :item-path        [:pages :page-editor/edited-item]
@@ -39,46 +87,7 @@
                      :suggestion-keys  [:name]
                      :suggestions-path [:pages :page-editor/suggestions]}])
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- breadcrumbs
-  []
-  (let [page-name @(a/subscribe [:db/get-item [:pages :page-editor/edited-item :name]])
-        page-id   @(a/subscribe [:router/get-current-route-path-param :item-id])]
-       [common/item-editor-breadcrumbs :pages.page-editor
-                                       {:crumbs (if page-id [{:label :app-home
-                                                              :route "/@app-home"}
-                                                             {:label :pages
-                                                              :route "/@app-home/pages"}
-                                                             {:label       page-name
-                                                              :placeholder :unnamed-page
-                                                              :route       (str "/@app-home/pages/" page-id)}
-                                                             {:label :edit!}]
-                                                            [{:label :app-home
-                                                              :route "/@app-home"}
-                                                             {:label :pages
-                                                              :route "/@app-home/pages"}
-                                                             {:label :add!}])}]))
-
-(defn- label-bar
-  []
-  (let [page-name @(a/subscribe [:db/get-item [:pages :page-editor/edited-item :name]])]
-       [common/item-editor-label-bar :pages.page-editor
-                                     {:label       page-name
-                                      :placeholder :unnamed-page}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- view-structure
-  []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [elements/horizontal-separator {:size :xxl}]
-       [page-editor]])
-
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:page #'view-structure}])
+                    {:page #'page-editor}])

@@ -19,63 +19,76 @@
 (defn- ghost-view
   []
   [common/item-viewer-ghost-view :pages.page-viewer
-                                 {:padding "0 12px"}])
+                                 {}])
 
 (defn- menu-bar
   []
-  [common/item-viewer-menu-bar :pages.page-viewer
-                               {:menu-items [{:label :overview :view-id :overview}]}])
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])]
+       [common/item-viewer-menu-bar :pages.page-viewer
+                                    {:disabled?  viewer-disabled?
+                                     :menu-items [{:label :overview}]}]))
 
 (defn- view-selector
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.page-viewer])]
-       [:<> [menu-bar]
-            (case current-view-id :overview [page-overview])]))
+       (case current-view-id :overview [page-overview])))
 
-(defn- page-viewer
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- control-bar
   []
-  [item-viewer/body :pages.page-viewer
-                    {:auto-title?   true
-                     :ghost-element #'ghost-view
-                     :item-element  #'view-selector
-                     :item-path     [:pages :page-viewer/viewed-item]
-                     :label-key     :name}])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])
+        page-id          @(a/subscribe [:router/get-current-route-path-param :item-id])
+        edit-item-uri     (str "/@app-home/pages/"page-id"/edit")]
+       [common/item-viewer-control-bar :pages.page-viewer
+                                       {:disabled?     viewer-disabled?
+                                        :edit-item-uri edit-item-uri}]))
 
 (defn- breadcrumbs
   []
-  (let [page-name @(a/subscribe [:db/get-item [:pages :page-viewer/viewed-item :name]])]
-       [common/item-viewer-breadcrumbs :pages.page-viewer
-                                       {:crumbs [{:label :app-home
-                                                  :route "/@app-home"}
-                                                 {:label :pages
-                                                  :route "/@app-home/pages"}
-                                                 {:label       page-name
-                                                  :placeholder :unnamed-page}]}]))
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])
+        page-name        @(a/subscribe [:db/get-item [:pages :page-viewer/viewed-item :name]])]
+       [common/surface-breadcrumbs :pages.page-viewer/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :pages    :route "/@app-home/pages"}
+                                             {:label page-name :placeholder :unnamed-page}]
+                                    :disabled? viewer-disabled?}]))
 
 (defn- label-bar
   []
-  (let [page-name    @(a/subscribe [:db/get-item [:pages :page-viewer/viewed-item :name]])
-        page-id      @(a/subscribe [:router/get-current-route-path-param :item-id])
-        edit-item-uri (str "/@app-home/pages/"page-id"/edit")]
-       [common/item-viewer-label-bar :pages.page-viewer
-                                     {:edit-item-uri edit-item-uri
-                                      :label         page-name
-                                      :placeholder   :unnamed-page}]))
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])
+        page-name        @(a/subscribe [:db/get-item [:pages :page-viewer/viewed-item :name]])]
+       [common/surface-label :pages.page-viewer/view
+                             {:disabled?   viewer-disabled?
+                              :label       page-name
+                              :placeholder :unnamed-page}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [elements/horizontal-separator {:size :xxl}]
-       [page-viewer]])
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [label-bar]
+        [breadcrumbs]
+        [elements/horizontal-separator {:size :xxl}]
+        [menu-bar]
+        [view-selector]
+        [elements/horizontal-separator {:size :xxl}]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [control-bar]]])
+
+(defn- page-viewer
+  []
+  [item-viewer/body :pages.page-viewer
+                    {:auto-title?   true
+                     :ghost-element #'ghost-view
+                     :item-element  #'view-structure
+                     :item-path     [:pages :page-viewer/viewed-item]
+                     :label-key     :name}])
 
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:page #'view-structure}])
+                    {:page #'page-viewer}])

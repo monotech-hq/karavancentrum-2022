@@ -86,7 +86,7 @@
   [selector-id]
   (if-let [saving? @(a/subscribe [:db/get-item [:contents :content-selector/meta-items :saving?]])]
           [saving-indicator]
-          [:<> [elements/horizontal-separator {:size :m}]
+          [:<> [elements/horizontal-separator {:size :xs}]
                [content-lister]]))
 
 ;; ----------------------------------------------------------------------------

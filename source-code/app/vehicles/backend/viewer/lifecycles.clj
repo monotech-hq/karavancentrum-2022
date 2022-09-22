@@ -8,11 +8,10 @@
 
 (a/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:item-viewer/init-viewer!
-                    :vehicles.vehicle-viewer
-                    {:base-route      "/@app-home/vehicles"
-                     :collection-name "vehicles"
-                     :handler-key     :vehicles.vehicle-viewer
-                     :item-namespace  :vehicle
-                     :on-route        [:vehicles.vehicle-viewer/load!]
-                     :route-title     :vehicles}]})
+  {:on-server-boot [:item-viewer/init-viewer! :vehicles.vehicle-viewer
+                                              {:base-route      "/@app-home/vehicles"
+                                               :collection-name "vehicles"
+                                               :handler-key     :vehicles.vehicle-viewer
+                                               :item-namespace  :vehicle
+                                               :on-route        [:vehicles.vehicle-viewer/load!]
+                                               :route-title     :vehicles}]})

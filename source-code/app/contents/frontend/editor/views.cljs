@@ -69,30 +69,76 @@
 (defn- ghost-view
   []
   [common/item-editor-ghost-view :contents.content-editor
-                                 {:padding "0 12px"}])
+                                 {}])
 
 (defn- menu-bar
   []
-  [common/item-editor-menu-bar :contents.content-editor
-                               {:menu-items [{:label   :data
-                                              :view-id :data
-                                              :change-keys [:name]}
-                                             {:label   :content
-                                              :view-id :content
-                                              :change-keys [:body]}]}])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
+       [common/item-editor-menu-bar :contents.content-editor
+                                    {:disabled?  editor-disabled?
+                                     :menu-items [{:label :data    :change-keys [:name]}
+                                                  {:label :content :change-keys [:body]}]}]))
 
 (defn- view-selector
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.content-editor])]
-       [:<> [menu-bar]
-            (case current-view-id :data    [content-data]
-                                  :content [content-content])]))
+       (case current-view-id :data    [content-data]
+                             :content [content-content])))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- control-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
+       [common/item-editor-control-bar :contents.content-editor
+                                       {:disabled? editor-disabled?}]))
+
+(defn- breadcrumbs
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])
+        content-name     @(a/subscribe [:db/get-item [:contents :content-editor/edited-item :name]])
+        content-id       @(a/subscribe [:router/get-current-route-path-param :item-id])
+        content-uri       (str "/@app-home/contents/" content-id)]
+       [common/surface-breadcrumbs :contents.content-editor/view
+                                   {:crumbs (if content-id [{:label :app-home    :route "/@app-home"}
+                                                            {:label :contents    :route "/@app-home/contents"}
+                                                            {:label content-name :route content-uri :placeholder :unnamed-content}
+                                                            {:label :edit!}]
+                                                           [{:label :app-home    :route "/@app-home"}
+                                                            {:label :contents    :route "/@app-home/contents"}
+                                                            {:label :add!}])
+                                    :disabled? editor-disabled?}]))
+
+(defn- label-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])
+        content-name     @(a/subscribe [:db/get-item [:contents :content-editor/edited-item :name]])]
+       [common/surface-label :contents.content-editor/view
+                             {:disabled?   editor-disabled?
+                              :label       content-name
+                              :placeholder :unnamed-content}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- view-structure
+  []
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [label-bar]
+        [breadcrumbs]
+        [elements/horizontal-separator {:size :xxl}]
+        [menu-bar]
+        [view-selector]
+        [elements/horizontal-separator {:size :xxl}]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [control-bar]]])
 
 (defn- content-editor
   []
   [item-editor/body :contents.content-editor
                     {:auto-title?      true
-                     :form-element     #'view-selector
+                     :form-element     #'view-structure
                      :ghost-element    #'ghost-view
                      :initial-item     {:visibility :public}
                      :item-path        [:contents :content-editor/edited-item]
@@ -100,46 +146,7 @@
                      :suggestion-keys  [:name]
                      :suggestions-path [:contents :content-editor/suggestions]}])
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- breadcrumbs
-  []
-  (let [content-name @(a/subscribe [:db/get-item [:contents :content-editor/edited-item :name]])
-        content-id   @(a/subscribe [:router/get-current-route-path-param :item-id])]
-       [common/item-editor-breadcrumbs :contents.content-editor
-                                       {:crumbs (if content-id [{:label :app-home
-                                                                 :route "/@app-home"}
-                                                                {:label :contents
-                                                                 :route "/@app-home/contents"}
-                                                                {:label       content-name
-                                                                 :placeholder :unnamed-content
-                                                                 :route       (str "/@app-home/contents/" content-id)}
-                                                                {:label :edit!}]
-                                                               [{:label :app-home
-                                                                 :route "/@app-home"}
-                                                                {:label :contents
-                                                                 :route "/@app-home/contents"}
-                                                                {:label :add!}])}]))
-
-(defn- label-bar
-  []
-  (let [content-name @(a/subscribe [:db/get-item [:contents :content-editor/edited-item :name]])]
-       [common/item-editor-label-bar :contents.content-editor
-                                     {:label       content-name
-                                      :placeholder :unnamed-content}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- view-structure
-  []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [elements/horizontal-separator {:size :xxl}]
-       [content-editor]])
-
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:content #'view-structure}])
+                    {:content #'content-editor}])

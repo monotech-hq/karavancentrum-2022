@@ -64,132 +64,6 @@
                                         [item-viewer-item-modified viewer-id info-props]]
                         :indent    indent}]))
 
-;; -- Breadcrumbs components --------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn item-viewer-breadcrumbs
-  ; @param (keyword) viewer-id
-  ; @param (map) breadcrumbs-props
-  ;  {:crumbs (maps in vector)}
-  ;
-  ; @usage
-  ;  [common/item-viewer-breadcrumbs :my-viewer {...}]
-  [viewer-id {:keys [crumbs]}]
-  (if-let [error-mode? @(a/subscribe [:item-viewer/get-meta-item viewer-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-viewer felületen nem jelenik meg!
-          (let [data-received?   @(a/subscribe [:item-viewer/data-received?   viewer-id])
-                viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-               [surface.views/surface-breadcrumbs nil
-                                                  {:crumbs    crumbs
-                                                   :disabled? viewer-disabled?
-                                                   :loading?  (not data-received?)}])))
-
-;; -- Label-bar components ----------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn delete-item-icon-button
-  ; @param (keyword) viewer-id
-  ; @param (map) bar-props
-  ;
-  ; @usage
-  ;  [common/delete-item-icon-button :my-viewer {...}]
-  [viewer-id _]
-  (if-let [data-received? @(a/subscribe [:item-viewer/data-received? viewer-id])]
-          (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-               [elements/icon-button ::delete-item-icon-button
-                                     {:color       :warning
-                                      :disabled?   viewer-disabled?
-                                      :hover-color :highlight
-                                      :icon        :delete_outline
-                                      :on-click    [:item-viewer/delete-item! viewer-id]}])))
-
-(defn duplicate-item-icon-button
-  ; @param (keyword) viewer-id
-  ; @param (map) bar-props
-  ;
-  ; @usage
-  ;  [common/duplicate-item-icon-button :my-viewer {...}]
-  [viewer-id _]
-  (if-let [data-received? @(a/subscribe [:item-viewer/data-received? viewer-id])]
-          (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-               [elements/icon-button ::delete-item-icon-button
-                                     {:color       :default
-                                      :disabled?   viewer-disabled?
-                                      :hover-color :highlight
-                                      :icon        :file_copy
-                                      :icon-family :material-icons-outlined
-                                      :on-click    [:item-viewer/duplicate-item! viewer-id]}])))
-
-(defn edit-item-icon-button
-  ; @param (keyword) viewer-id
-  ; @param (map) bar-props
-  ;  {:edit-item-uri (string)}
-  ;
-  ; @usage
-  ;  [common/edit-item-icon-button :my-viewer {...}]
-  [viewer-id {:keys [edit-item-uri]}]
-  (if-let [data-received? @(a/subscribe [:item-viewer/data-received? viewer-id])]
-          (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-               [elements/icon-button ::edit-item-icon-button
-                                     {:color       :default
-                                      :disabled?   viewer-disabled?
-                                      :hover-color :highlight
-                                      :icon        :edit
-                                      :on-click    [:router/go-to! edit-item-uri]}])))
-
-(defn item-color-marker
-  ; @param (keyword) viewer-id
-  ; @param (map) bar-props
-  ;  {:colors (strings in vector)}
-  ;
-  ; @usage
-  ;  [common/item-color-marker :my-viewer {...}]
-  [viewer-id {:keys [colors]}]
-  (if-let [data-received? @(a/subscribe [:item-viewer/data-received? viewer-id])]
-          (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-               [elements/color-marker ::item-color-marker
-                                      {:colors    colors
-                                       :disabled? viewer-disabled?
-                                       :indent    {:left :xs :top :xxs}
-                                       :size      :l}])))
-
-(defn item-name-label
-  ; @param (keyword) viewer-id
-  ; @param (map) bar-props
-  ;  {:label (metamorphic-content)(opt)
-  ;   :placeholder (metamorphic-content)(opt)}
-  ;
-  ; @usage
-  ;  [common/item-name-label :my-viewer {...}]
-  [viewer-id {:keys [label placeholder]}]
-  (let [data-received?   @(a/subscribe [:item-viewer/data-received?   viewer-id])
-        viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-       [surface.views/surface-label nil
-                                    {:disabled?   viewer-disabled?
-                                     :label       label
-                                     :loading?    (not data-received?)
-                                     :placeholder placeholder}]))
-
-(defn item-viewer-label-bar
-  ; @param (keyword) viewer-id
-  ; @param (map) bar-props
-  ;  {:colors (strings in vector)(opt)
-  ;   :edit-item-uri (string)
-  ;   :label (metamorphic-content)(opt)
-  ;   :placeholder (metamorphic-content)(opt)}
-  ;
-  ; @usage
-  ;  [common/item-viewer-label-bar :my-viewer {...}]
-  [viewer-id bar-props]
-  (if-let [error-mode? @(a/subscribe [:item-viewer/get-meta-item viewer-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-viewer felületen nem jelenik meg!
-          [:<> [elements/horizontal-polarity ::item-viewer-label-bar
-                                             {:start-content [:<> [item-name-label            viewer-id bar-props]
-                                                                  [item-color-marker          viewer-id bar-props]]
-                                              :end-content   [:<> [delete-item-icon-button    viewer-id bar-props]
-                                                                  [duplicate-item-icon-button viewer-id bar-props]
-                                                                  [edit-item-icon-button      viewer-id bar-props]]}]]))
-
 ;; -- Menu-bar components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -199,21 +73,17 @@
   ;
   ; @param (keyword) viewer-id
   ; @param (map) bar-props
-  ;  {:menu-items (maps in vector)
-  ;    [{:label (metamorphic-content)
-  ;      :view-id (keyword)}]}
+  ;  {:disabled? (boolean)(opt)
+  ;   :menu-items (maps in vector)
+  ;    [{:label (metamorphic-content)}]}
   ;
   ; @usage
   ;  [common/item-viewer-menu-bar :my-viewer {...}]
-  [viewer-id {:keys [menu-items] :as bar-props}]
-  ; XXX#5040
-  (if-let [error-mode? @(a/subscribe [:item-viewer/get-meta-item viewer-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-viewer felületen nem jelenik meg!
-          (letfn [(f [menu-items menu-item] (conj menu-items (item-editor.views/item-editor-menu-item-props viewer-id bar-props menu-item)))]
-                 [:<> (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-                           [elements/menu-bar ::item-viewer-menu-bar {:disabled?  viewer-disabled?
-                                                                      :menu-items (reduce f [] menu-items)}])
-                      [elements/horizontal-line {:color :highlight :indent {:vertical :xs}}]])))
+  [viewer-id {:keys [disabled? menu-items] :as bar-props}]
+  (letfn [(f [menu-items menu-item] (conj menu-items (item-editor.views/item-editor-menu-item-props viewer-id bar-props menu-item)))]
+         [:<> [elements/menu-bar ::item-viewer-menu-bar {:disabled?  disabled?
+                                                         :menu-items (reduce f [] menu-items)}]
+              [elements/horizontal-line {:color :highlight :indent {:vertical :xs}}]]))
 
 ;; -- Action-bar components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -221,20 +91,16 @@
 (defn item-viewer-action-bar
   ; @param (keyword) viewer-id
   ; @param (map) bar-props
-  ;  {:label (metamorphic-content)
+  ;  {:disabled? (boolean)(opt)}
+  ;   :label (metamorphic-content)
   ;   :on-click (metamorphic-event)}
   ;
   ; @usage
   ;  [common/item-viewer-action-bar :my-viewer {...}]
   [viewer-id bar-props]
-  ; XXX#5041
-  (if-let [error-mode? @(a/subscribe [:item-viewer/get-meta-item viewer-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-viewer felületen nem jelenik meg!
-          (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-               [elements/row ::item-viewer-action-bar
-                             {:content          [item-editor.views/item-editor-action-button viewer-id bar-props]
-                              :disabled?        viewer-disabled?
-                              :horizontal-align :center}])))
+  [elements/row ::item-viewer-action-bar
+                {:content          [item-editor.views/item-editor-action-button viewer-id bar-props]
+                 :horizontal-align :center}])
 
 ;; -- Image-list components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -242,23 +108,24 @@
 (defn item-viewer-image
   ; @param (keyword) viewer-id
   ; @param (map) list-props
+  ;  {:disabled? (boolean)(opt)}
   ; @param (string) image
   ;
   ; @usage
   ;  [common/item-viewer-image :my-viewer {...} "..."]
-  [viewer-id _ image]
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? viewer-id])]
-       [elements/thumbnail {:border-radius :s
-                            :disabled?     viewer-disabled?
-                            :indent        {:left :xs :top :xxs}
-                            :height        :2xl
-                            :width         :4xl
-                            :uri           image}]))
+  [viewer-id {:keys [disabled?]} image]
+  [elements/thumbnail {:border-radius :s
+                       :disabled?     disabled?
+                       :indent        {:left :xs :top :xxs}
+                       :height        :2xl
+                       :width         :4xl
+                       :uri           image}])
 
 (defn item-viewer-image-list
   ; @param (keyword) viewer-id
   ; @param (map) list-props
-  ;  {:images (strings in vector)
+  ;  {:disabled? (boolean)(opt)}
+  ;   :images (strings in vector)
   ;   :no-images-label (metamorphic-content)(opt)}
   ;
   ; @usage
@@ -281,12 +148,90 @@
 (defn item-viewer-ghost-view
   ; @param (keyword) viewer-id
   ; @param (map) view-props
-  ;  {:padding (string)(opt)}
   ;
   ; @usage
   ;  [common/item-viewer-ghost-view :my-viewer {...}]
-  [_ {:keys [padding]}]
-  [:div {:style {:width "100%" :padding padding}}
-        [elements/ghost {:height :l :style {:flex-grow :1}                 :indent {}}]
-        [elements/ghost {:height :l :style {:flex-grow :1}                 :indent {:top :xs}}]
-        [elements/ghost {           :style {:flex-grow :1 :height "120px"} :indent {:top :xs}}]])
+  [_ {:keys []}]
+  [:div {:style {:padding "0 12px" :width "100%"}}
+        [:div {:style {:padding-bottom "6px" :width "240px"}}
+              [elements/ghost {:height :xl}]]
+        [:div {:style {:display "flex" :grid-column-gap "12px" :padding-top "6px"}}
+              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]
+              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]
+              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]]
+        [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px" :padding-top "48px"}}
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l   :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l   :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :4xl :indent {}}]]]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn delete-item-button
+  ; @param (keyword) viewer-id
+  ; @param (map) bar-props
+  ;  {:disabled? (boolean)(opt)}
+  ;
+  ; @usage
+  ;  [common/delete-item-button :my-viewer {...}]
+  [viewer-id {:keys [disabled?]}]
+  [elements/button ::delete-item-button
+                   {:color       :warning
+                    :disabled?   disabled?
+                    :hover-color :highlight
+                    :icon        :delete_outline
+                    :label       :delete!
+                    :on-click    [:item-viewer/delete-item! viewer-id]
+                    :style       {:line-height "48px"}}])
+
+(defn duplicate-item-button
+  ; @param (keyword) viewer-id
+  ; @param (map) bar-props
+  ;  {:disabled? (boolean)(opt)}
+  ;
+  ; @usage
+  ;  [common/duplicate-item-button :my-viewer {...}]
+  [viewer-id {:keys [disabled?]}]
+  [elements/button ::delete-item-button
+                   {:color       :default
+                    :disabled?   disabled?
+                    :hover-color :highlight
+                    :icon        :file_copy
+                    :icon-family :material-icons-outlined
+                    :indent      {:left :xs}
+                    :label       :copy!
+                    :on-click    [:item-viewer/duplicate-item! viewer-id]
+                    :style       {:line-height "48px"}}])
+
+(defn edit-item-button
+  ; @param (keyword) viewer-id
+  ; @param (map) bar-props
+  ;  {:disabled? (boolean)(opt)
+  ;   :edit-item-uri (string)}
+  ;
+  ; @usage
+  ;  [common/edit-item-button :my-viewer {...}]
+  [viewer-id {:keys [disabled? edit-item-uri]}]
+  [elements/button ::edit-item-button
+                   {:background-color "#5a4aff"
+                    :color            "white"
+                    :disabled?        disabled?
+                    :icon             :edit
+                    :indent           {:left :xs}
+                    :label            :edit!
+                    :on-click         [:router/go-to! edit-item-uri]
+                    :style            {:line-height "48px"}}])
+
+(defn item-viewer-control-bar
+  ; @param (keyword) viewer-id
+  ; @param (map) bar-props
+  ;  {:disabled? (boolean)(opt)
+  ;   :edit-item-uri (string)}
+  ;
+  ; @usage
+  ;  [common/item-viewer-control-bar :my-viewer {...}]
+  [viewer-id bar-props]
+  [elements/horizontal-polarity ::item-viewer-control-bar
+                                {:end-content [:<> [delete-item-button    viewer-id bar-props]
+                                                   [duplicate-item-button viewer-id bar-props]
+                                                   [edit-item-button      viewer-id bar-props]]}])

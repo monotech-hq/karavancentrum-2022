@@ -130,19 +130,21 @@
            [elements/label {:color     :muted
                             :content   group-name
                             :font-size :l
-                            :indent    {:top :xxl :vertical :xs}}])))
+                            :indent    {:bottom :xs :left :xs :top :xxs}}])))
 
 (defn- vertical-group
   [group-name]
   ; Az azonos vertical-group csoportokban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
-  [:<> [vertical-group-label group-name]
-       [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px"}}
-             (let [group-items      @(a/subscribe [:home/get-menu-group-items group-name])
-                   horizontal-groups (group-by :horizontal-weight group-items)]
-                  (letfn [(f [horizontal-group-list horizontal-weight]
-                             (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
-                         (reduce f [:<>] (-> horizontal-groups keys sort))))]])
+  (let [group-items @(a/subscribe [:home/get-menu-group-items group-name])]
+       (if (vector/nonempty? group-items)
+           [:div {:style {:margin-top "48px"}}
+                 [vertical-group-label group-name]
+                 [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px"}}
+                       (let [horizontal-groups (group-by :horizontal-weight group-items)]
+                            (letfn [(f [horizontal-group-list horizontal-weight]
+                                       (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
+                                   (reduce f [:<>] (-> horizontal-groups keys sort))))]])))
 
 (defn- menu-groups
   []

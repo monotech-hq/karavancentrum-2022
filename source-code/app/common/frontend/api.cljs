@@ -37,12 +37,11 @@
 (def item-browser-label-bar    item-browser.views/item-browser-label-bar)
 
 ; app.common.frontend.item-editor.views
-(def item-editor-breadcrumbs item-editor.views/item-editor-breadcrumbs)
-(def item-editor-label-bar  item-editor.views/item-editor-label-bar)
-(def item-editor-menu-bar   item-editor.views/item-editor-menu-bar)
-(def item-editor-action-bar item-editor.views/item-editor-action-bar)
-(def item-editor-image-list item-editor.views/item-editor-image-list)
-(def item-editor-ghost-view item-editor.views/item-editor-ghost-view)
+(def item-editor-menu-bar    item-editor.views/item-editor-menu-bar)
+(def item-editor-action-bar  item-editor.views/item-editor-action-bar)
+(def item-editor-image-list  item-editor.views/item-editor-image-list)
+(def item-editor-ghost-view  item-editor.views/item-editor-ghost-view)
+(def item-editor-control-bar item-editor.views/item-editor-control-bar)
 
 ; app.common.frontend.item-lister.views
 (def list-item-structure       item-lister.views/list-item-structure)
@@ -68,12 +67,11 @@
 
 ; app.common.frontend.item-viewer.views
 (def item-viewer-item-info   item-viewer.views/item-viewer-item-info)
-(def item-viewer-breadcrumbs item-viewer.views/item-viewer-breadcrumbs)
-(def item-viewer-label-bar   item-viewer.views/item-viewer-label-bar)
 (def item-viewer-menu-bar    item-viewer.views/item-viewer-menu-bar)
 (def item-viewer-action-bar  item-viewer.views/item-viewer-action-bar)
 (def item-viewer-image-list  item-viewer.views/item-viewer-image-list)
 (def item-viewer-ghost-view  item-viewer.views/item-viewer-ghost-view)
+(def item-viewer-control-bar item-viewer.views/item-viewer-control-bar)
 
 ; app.common.frontend.popup.views
 (def popup-label-bar          popup.views/popup-label-bar)

@@ -168,14 +168,16 @@
   [lister-id {:keys [create-item-uri]}]
   (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])]
           (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? lister-id])]
-               [elements/icon-button ::create-item-button
-                                     {:border-color  :none
-                                      :border-radius :s
-                                      :color         :primary
-                                      :disabled?     lister-disabled?
-                                      :hover-color   :highlight
-                                      :on-click      [:router/go-to! create-item-uri]
-                                      :preset        :add}])))
+               [elements/button ::create-item-button
+                                {:background-color "#5a4aff"
+                                 :color            "white"
+                                 :disabled?        lister-disabled?
+                                 :font-size        :xs
+                                 :font-weight      :extra-bold
+                                 :icon             :add
+                                 :label            :add!
+                                 :on-click         [:router/go-to! create-item-uri]
+                                 :style            {:line-height "48px"}}])))
 
 (defn item-lister-label
   ; @param (keyword) lister-id
@@ -320,8 +322,8 @@
   ;  [common/item-lister-header :my-lister {...}]
   [lister-id {:keys [cells control-bar]}]
   (if-let [data-received? @(a/subscribe [:item-lister/data-received? lister-id])]
-          [:div {:style {:background-color "white"  :border-bottom "1px solid #ddd" :display "flex"
-                         :flex-direction   "column" :position      "sticky"         :top     "48px"}}
+          [:div {:style {:background-color "rgba(255,255,255,.95)" :border-bottom "1px solid #ddd" :display "flex"
+                         :flex-direction   "column"  :position      "sticky"         :top     "48px"}}
                 (if control-bar [components/content control-bar])
                 (letfn [(f [wrapper cell] (conj wrapper cell))]
                        (reduce f [:div {:style {:display "flex" :width "100%"}}] cells))]))

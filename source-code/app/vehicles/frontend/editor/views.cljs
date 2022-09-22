@@ -110,72 +110,81 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
+(defn- control-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+       [common/item-editor-control-bar :vehicles.vehicle-editor
+                                       {:disabled? editor-disabled?}]))
+
 (defn- ghost-view
   []
   [common/item-editor-ghost-view :vehicles.vehicle-editor
-                                 {:padding "0 12px"}])
+                                 {}])
 
 (defn- menu-bar
   []
-  [common/item-editor-menu-bar :vehicles.vehicle-editor
-                               {:menu-items [{:label   :data
-                                              :view-id :data
-                                              :change-keys [:name :type :construction-year :number-of-bunks :number-of-seats]}
-                                             {:label   :images
-                                              :view-id :images
-                                              :change-keys [:images :thumbnail]}]}])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+       [common/item-editor-menu-bar :vehicles.vehicle-editor
+                                    {:disabled?  editor-disabled?
+                                     :menu-items [{:label :data   :change-keys [:name :type :construction-year
+                                                                                :number-of-bunks :number-of-seats]}
+                                                  {:label :images :change-keys [:images :thumbnail]}]}]))
 
 (defn- view-selector
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :vehicles.vehicle-editor])]
-       [:<> [menu-bar]
-            (case current-view-id :data   [vehicle-data]
-                                  :images [vehicle-images])]))
-
-(defn- vehicle-editor
-  []
-  [item-editor/body :vehicles.vehicle-editor
-                    {:auto-title?      true
-                     :form-element     #'view-selector
-                     :ghost-element    #'ghost-view
-                     :item-path        [:vehicles :vehicle-editor/edited-item]
-                     :label-key        :name
-                     :suggestion-keys  [:name]
-                     :suggestions-path [:vehicles :vehicle-editor/suggestions]}])
+       (case current-view-id :data   [vehicle-data]
+                             :images [vehicle-images])))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn- label-bar
   []
-  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])]
-       [common/item-editor-label-bar :vehicles.vehicle-editor
-                                     {:label       vehicle-name
-                                      :placeholder :unnamed-vehicle}]))
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
+        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])]
+       [common/surface-label :vehicles.vehicle-editor/view
+                             {:disabled?   editor-disabled?
+                              :label       vehicle-name
+                              :placeholder :unnamed-vehicle}]))
 
 (defn- breadcrumbs
   []
-  (let [vehicle-name @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])]
-       [common/item-editor-breadcrumbs :vehicles.vehicle-editor
-                                       {:crumbs [{:label :app-home
-                                                  :route "/@app-home"}
-                                                 {:label :vehicles
-                                                  :route "/@app-home/vehicles"}
-                                                 {:label vehicle-name
-                                                  :placeholder :unnamed-vehicle}]}]))
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
+        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])]
+       [common/surface-breadcrumbs :vehicles.vehicle-editor/view
+                                   {:crumbs [{:label :app-home    :route "/@app-home"}
+                                             {:label :vehicles    :route "/@app-home/vehicles"}
+                                             {:label vehicle-name :placeholder :unnamed-vehicle}]
+                                    :disabled? editor-disabled?}]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn- view-structure
   []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [elements/horizontal-separator {:size :xxl}]
-       [vehicle-editor]
-       [elements/horizontal-separator {:size :xxl}]])
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [label-bar]
+        [breadcrumbs]
+        [elements/horizontal-separator {:size :xxl}]
+        [menu-bar]
+        [view-selector]
+        [elements/horizontal-separator {:size :xxl}]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [control-bar]]])
+
+(defn- vehicle-editor
+  []
+  [item-editor/body :vehicles.vehicle-editor
+                    {:auto-title?      true
+                     :form-element     #'view-structure
+                     :ghost-element    #'ghost-view
+                     :item-path        [:vehicles :vehicle-editor/edited-item]
+                     :label-key        :name
+                     :suggestion-keys  [:name]
+                     :suggestions-path [:vehicles :vehicle-editor/suggestions]}])
 
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:content #'view-structure}])
+                    {:content #'vehicle-editor}])
