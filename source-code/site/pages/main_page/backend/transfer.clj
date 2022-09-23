@@ -28,7 +28,7 @@
 (a/reg-transfer!
   ::vehicles
   {:data-f (fn [request]
-             (mongo-db/get-documents-by-pipeline "vehicles" [{"$match" {}}
+             (mongo-db/get-documents-by-pipeline "vehicles" [{"$match" {:vehicle/visibility true}}
                                                              {"$project" project}]))
    :target-path [:site :vehicles]})
 

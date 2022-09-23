@@ -46,7 +46,7 @@
 
 (defn vehicle [{:vehicle/keys [id thumbnail name] :as props}]
   [:a {:key id
-       :href (str "/" id)}
+       :href (str "/berelheto-jarmuveink/" id)}
    [:div.vehicles--card {:style {:background-image (str "url("thumbnail")")}}
      [vehicle-name name]]])
 
