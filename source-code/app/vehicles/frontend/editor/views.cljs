@@ -1,6 +1,7 @@
 
 (ns app.vehicles.frontend.editor.views
     (:require [app.common.frontend.api  :as common]
+              [app.contents.frontend.api :as contents]
               [app.storage.frontend.api :as storage]
               [forms.api                :as forms]
               [layouts.surface-a.api    :as surface-a]
@@ -10,20 +11,6 @@
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
-
-(defn- vehicle-visibility-radio-button
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [elements/radio-button ::vehicle-visibility-radio-button
-                              {:disabled?       editor-disabled?
-                               :indent          {:top :l :vertical :xs}
-                               :label           :vehicle-visibility
-                               :options         [{:label :public-content  :helper :visible-to-everyone     :value :public}
-                                                 {:label :private-content :helper :only-visible-to-editors :value :private}]
-                               :option-helper-f :helper
-                               :option-label-f  :label
-                               :option-value-f  :value
-                               :value-path      [:vehicles :vehicle-editor/edited-item :visibility]}]))
 
 (defn- vehicle-name-field
   []
@@ -65,14 +52,37 @@
 
 (defn- vehicle-type-select
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])])
-  [elements/select ::vehicle-type-select
-                   {:indent        {:top :l :vertical :xs}
-                    :label         :type
-                    :layout        :select
-                    :options-label :vehicle-type
-                    :options       [:alcove :semi-integrated :van :caravan :trailer]
-                    :value-path    [:vehicles :vehicle-editor/edited-item :type]}])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+       [elements/select ::vehicle-type-select
+                        {:indent        {:top :l :vertical :xs}
+                         :label         :type
+                         :layout        :select
+                         :options-label :vehicle-type
+                         :options       [:alcove :semi-integrated :van :caravan :trailer]
+                         :value-path    [:vehicles :vehicle-editor/edited-item :type]}]))
+
+(defn- vehicle-visibility-radio-button
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+       [elements/radio-button ::vehicle-visibility-radio-button
+                              {:disabled?       editor-disabled?
+                               :indent          {:top :l :vertical :xs}
+                               :label           :vehicle-visibility
+                               :options         [{:label :public-content  :helper :visible-to-everyone     :value :public}
+                                                 {:label :private-content :helper :only-visible-to-editors :value :private}]
+                               :option-helper-f :helper
+                               :option-label-f  :label
+                               :option-value-f  :value
+                               :value-path      [:vehicles :vehicle-editor/edited-item :visibility]}]))
+
+(defn- vehicle-content-picker
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+       [contents/content-picker ::vehicle-content-picker
+                                {:disabled?  editor-disabled?
+                                 :indent     {:top :l :vertical :xs}
+                                 :label      :vehicle-content
+                                 :value-path [:vehicles :vehicle-editor/edited-item :content]}]))
 
 (defn- vehicle-data
   []
@@ -91,8 +101,10 @@
               [:div (forms/form-block-attributes {:ratio 50})
                     [vehicle-number-of-bunks-field]]]
         [:div (forms/form-block-attributes)
-              [:div (forms/form-block-attributes {:ratio 100})
-                    [vehicle-visibility-radio-button]]]])
+              [:div (forms/form-block-attributes {:ratio 50})
+                    [vehicle-visibility-radio-button]]
+              [:div (forms/form-block-attributes {:ratio 50})
+                    [vehicle-content-picker]]]])
 
 
 ;; -----------------------------------------------------------------------------

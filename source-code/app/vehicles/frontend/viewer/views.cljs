@@ -1,6 +1,9 @@
 
 (ns app.vehicles.frontend.viewer.views
     (:require [app.common.frontend.api :as common]
+              ;; TEMP
+              [app.contents.frontend.picker.views :as contents]
+
               [forms.api               :as forms]
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-lister.api :as item-lister]
@@ -173,10 +176,21 @@
                         :disabled? viewer-disabled?
                         :indent    {:vertical :xs}}]))
 
-(defn- vehicle-visibility
+(defn- vehicle-content-label
   []
-  [:<> [vehicle-visibility-label]
-       [vehicle-visibility-value]])
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
+       [elements/label ::vehicle-content-label
+                       {:content   :vehicle-content
+                        :disabled? viewer-disabled?
+                        :indent    {:top :l :vertical :xs}}]))
+
+(defn- vehicle-content-value
+  []
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
+        content-body     @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :content]])]
+        ;; TEMP 
+       [contents/content-picker-preview ::vehicle-content-body-value
+                      {:value-path  [:vehicles :vehicle-viewer/viewed-item :content]}]))
 
 (defn- vehicle-overview
   []
@@ -195,7 +209,10 @@
                    [vehicle-number-of-bunks-value]]
              [:div (forms/form-block-attributes {:ratio 100})
                    [vehicle-visibility-label]
-                   [vehicle-visibility-value]]]])
+                   [vehicle-visibility-value]]
+             [:div (forms/form-block-attributes {:ratio 100})
+                   [vehicle-content-label]
+                   [vehicle-content-value]]]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

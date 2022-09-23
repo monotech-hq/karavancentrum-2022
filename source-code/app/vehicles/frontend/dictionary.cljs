@@ -13,4 +13,7 @@
             :hu "Névtelen Jármű"}
            :vehicle-visibility
            {:en "Vehicle visibility"
-            :hu "Jármű láthatósága"}})  
+            :hu "Jármű láthatósága"}
+           :vehicle-content
+           {:en "Vehicle content"
+            :hu "Jármű tartalma"}})  
