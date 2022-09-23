@@ -155,6 +155,29 @@
                         :placeholder         "-"
                         :selectable?         true}]))
 
+(defn- vehicle-visibility-label
+  []
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
+       [elements/label ::vehicle-visibility-label
+                       {:content   :vehicle-visibility
+                        :disabled? viewer-disabled?
+                        :indent    {:top :l :vertical :xs}}]))
+
+(defn- vehicle-visibility-value
+  []
+  (let [viewer-disabled?   @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
+        content-visibility @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :visibility]])]
+       [elements/label ::vehicle-visibility-value
+                       {:color     :muted
+                        :content   (case content-visibility :public :public-content :private :private-content)
+                        :disabled? viewer-disabled?
+                        :indent    {:vertical :xs}}]))
+
+(defn- vehicle-visibility
+  []
+  [:<> [vehicle-visibility-label]
+       [vehicle-visibility-value]])
+
 (defn- vehicle-overview
   []
   [:<> [:div (forms/form-row-attributes)
@@ -169,7 +192,10 @@
                    [vehicle-number-of-seats-value]]
              [:div (forms/form-block-attributes {:ratio 25})
                    [vehicle-number-of-bunks-label]
-                   [vehicle-number-of-bunks-value]]]])
+                   [vehicle-number-of-bunks-value]]
+             [:div (forms/form-block-attributes {:ratio 100})
+                   [vehicle-visibility-label]
+                   [vehicle-visibility-value]]]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

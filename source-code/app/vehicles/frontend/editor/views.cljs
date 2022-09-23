@@ -11,6 +11,20 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
+(defn- vehicle-visibility-radio-button
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+       [elements/radio-button ::vehicle-visibility-radio-button
+                              {:disabled?       editor-disabled?
+                               :indent          {:top :l :vertical :xs}
+                               :label           :vehicle-visibility
+                               :options         [{:label :public-content  :helper :visible-to-everyone     :value :public}
+                                                 {:label :private-content :helper :only-visible-to-editors :value :private}]
+                               :option-helper-f :helper
+                               :option-label-f  :label
+                               :option-value-f  :value
+                               :value-path      [:vehicles :vehicle-editor/edited-item :visibility]}]))
+
 (defn- vehicle-name-field
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
@@ -62,19 +76,24 @@
 
 (defn- vehicle-data
   []
-  [:<> [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 100})
-                   [vehicle-name-field]]]
-       [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 50})
-                   [vehicle-type-select]]
-             [:div (forms/form-block-attributes {:ratio 50})
-                   [vehicle-construction-year-field]]]
-       [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 50})
-                   [vehicle-number-of-seats-field]]
-             [:div (forms/form-block-attributes {:ratio 50})
-                   [vehicle-number-of-bunks-field]]]])
+  [:<>
+        [:div (forms/form-row-attributes)
+              [:div (forms/form-block-attributes {:ratio 100})
+                    [vehicle-name-field]]]
+        [:div (forms/form-row-attributes)
+              [:div (forms/form-block-attributes {:ratio 50})
+                    [vehicle-type-select]]
+              [:div (forms/form-block-attributes {:ratio 50})
+                    [vehicle-construction-year-field]]]
+        [:div (forms/form-row-attributes)
+              [:div (forms/form-block-attributes {:ratio 50})
+                    [vehicle-number-of-seats-field]]
+              [:div (forms/form-block-attributes {:ratio 50})
+                    [vehicle-number-of-bunks-field]]]
+        [:div (forms/form-block-attributes)
+              [:div (forms/form-block-attributes {:ratio 100})
+                    [vehicle-visibility-radio-button]]]])
+
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
