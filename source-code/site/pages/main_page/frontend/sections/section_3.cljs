@@ -9,8 +9,8 @@
 ;; ---- Components ----
 
 (defn content []
-  (let [data @(a/subscribe [:db/get-item [:contents :contacts-data-information :content/body]])]
-    [:div#section-3--content
+  (let [data @(a/subscribe [:site/get [:contents :contacts-data-information :content/body]])]
+    [:div#contacts
       (html->hiccup data)]))
 
 (defn section-3 []

@@ -1,18 +1,15 @@
 
 (ns site.pages.main-page.frontend.sections.section-1
   (:require
-    [reagent.api :refer [lifecycles]]))
+    [reagent.api :refer [lifecycles]]
+    [site.utils :as utils]))
 ;; -----------------------------------------------------------------------------
 ;; ---- Components ----
 
 (defn scroll-down-icon []
   [:div#scroll-icon
    [:button {:tab-index "-1"
-             :on-click #(let [element (.getElementById js/document "section-2")]
-                          (.scrollIntoView element
-                            (clj->js {:behavior "smooth"
-                                      :block    "start"
-                                      :inline   "center"})))}
+             :on-click #(utils/scroll-into "section-2")}
     [:span]]])
 
 (defn hero []

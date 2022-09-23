@@ -8,13 +8,13 @@
 ;; ---- Components ----
 
 (defn brand [{:keys [logo label link] :as props}]
-  [:div.brand--container
+  [:div.brand--container {:key link}
    [:div.brand--logo {:style {:background-image (css/url logo)}}]
    [:p.brand--label label]
    [:a.link.effect--underline.brand--link {:href link} link]])
 
 (defn brands []
-  (let [data @(a/subscribe [:db/get-item [:contents :more-brands]])]
+  (let [data @(a/subscribe [:site/get [:contents :more-brands]])]
     [:div#brands--container
      (map brand data)]))
 

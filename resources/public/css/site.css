@@ -540,22 +540,35 @@ body {
   gap: 60px;
 }
 
+.filters--icon-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.filters--icon-input:disabled ~ .filters--icon-img img {
+
+}
+
+.filters--icon-input:checked ~ .filters--icon-img img{
+  opacity: 1;
+}
+
+.filters--icon label {
+  cursor: pointer;
+}
+
 .filters--icon img {
+  opacity: 0.4;
   height: 50px;
   width: 50px;
 }
 
-.filters--icon {
-  border: 2px solid transparent;
-  border-radius: 6px;
-  padding: 8px;
-}
-
-.filters--icon:hover {
-  opacity: 0.5;
-}
-
-.filters--icon:focus {
+.filters--icon:hover,
+.filters--icon:focus-within {
+  opacity: 0.7;
 }
 
 /**** Filters ****/
@@ -599,13 +612,6 @@ body {
 /******************************************************************************/
 /**** Section 3 ****/
 
-#section-3--background {
-  background-image: url(/images/footer.jpg);
-  background-position: bottom;
-  background-size: cover;
-  height: 800px;
-}
-
 #section-3--content {
   border-top: 1px solid #ccc;
   background-color: #bddae5;
@@ -616,6 +622,14 @@ body {
   -font-family: 'Oxygen';
   padding: 150px 0 0 0;
 }
+
+#contacts {
+  background-image: url(/images/footer.jpg);
+  background-position: bottom;
+  background-size: cover;
+  height: 800px;
+}
+
 
 /**** Section 3 ****/
 /******************************************************************************/
@@ -671,6 +685,28 @@ body {
 }
 
 /**** Section 4 ****/
+/******************************************************************************/
+
+/******************************************************************************/
+/**** Vehicle page ****/
+
+#vehicle-page--content {
+  padding-top: 75px; /* push content down with navbar height */
+}
+
+#vehicle-page--title {
+    text-align: center;
+    color: #303c48;
+    font-family: 'Roboto', sans-serif;
+    font-size: 19px;
+    letter-spacing: 10px;
+    font-weight: 200;
+    line-height: 30px;
+    margin: 80px 0;
+    text-transform: uppercase;
+}
+
+/**** Vehicle page ****/
 /******************************************************************************/
 
 /******************************************************************************/

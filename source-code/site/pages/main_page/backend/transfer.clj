@@ -30,7 +30,7 @@
   {:data-f (fn [request]
              (mongo-db/get-documents-by-pipeline "vehicles" [{"$match" {}}
                                                              {"$project" project}]))
-   :target-path [:vehicles]})
+   :target-path [:site :vehicles]})
 
 (a/reg-transfer!
   ::contents
@@ -39,12 +39,12 @@
                (update-vals contents [:about-us
                                       :rent-informations
                                       :address-data-information
-                                      :contacts-data-information] 
+                                      :contacts-data-information]
                             get-content)))
-   :target-path [:contents]})
+   :target-path [:site :contents]})
 
 (a/reg-transfer!
   ::config
   {:data-f (fn [_]
              (io/read-edn-file "monoset-environment/website-config.edn"))
-   :target-path [:config]})
+   :target-path [:site :config]})
