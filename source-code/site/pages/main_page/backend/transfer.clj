@@ -28,8 +28,12 @@
 (a/reg-transfer!
   ::vehicles
   {:data-f (fn [request]
-             (mongo-db/get-documents-by-pipeline "vehicles" [{"$match" {"vehicle/visibility" "*:public"}}
-                                                             {"$project" project}]))
+             (let [vehicles (mongo-db/get-documents-by-pipeline
+                                "vehicles"
+                                [{"$match" {"vehicle/visibility" "*:public"}}
+                                 {"$project" project}])]
+               (mapv #(update-vals % [:vehicle/content] get-content) vehicles)))
+
    :target-path [:site :vehicles]})
 
 (a/reg-transfer!

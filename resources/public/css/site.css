@@ -640,7 +640,9 @@ body {
 /**** Vehicle page ****/
 
 #vehicle-page--content {
-  padding-top: 75px; /* push content down with navbar height */
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 75px 0; /* push content down with navbar height */
   display: flex;
   flex-direction: column;
   align-items: center;

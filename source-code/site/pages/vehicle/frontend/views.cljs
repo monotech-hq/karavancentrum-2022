@@ -2,6 +2,7 @@
 (ns site.pages.vehicle.frontend.views
   (:require
     [x.app-core.api :as a]
+    [utils.html-parser :refer [html->hiccup]]
     [site.components.api :as site.components]
     [site.pages.vehicle.frontend.slider :as slider]))
 
@@ -9,7 +10,7 @@
 ;; ---- Components ----
 
 (defn slideshow [{:vehicle/keys [images]}]
-  [:div#vehicle-page--slider {:style {:width "80%" :margin "0px auto"}}
+  [:div#vehicle-page--slider {:style {}}
    [slider/view
     (map (fn [src]
            ^{:key src}
@@ -17,13 +18,21 @@
             [:img {:src src}]])
          images)]])
 
-(defn title [{:vehicle/keys [name]}]
+(defn vehicle-name [{:vehicle/keys [name]}]
   [:h1#vehicle-page--title name])
+
+(defn vehicle-content [{:vehicle/keys [content]}]
+  [:div#vehicle-page--content
+   (html->hiccup (:content/body content))])
 
 (defn vehicle-view [vehicle]
   [:<>
     [slideshow vehicle]
-    [title vehicle]])
+    [vehicle-name vehicle]
+    [vehicle-content vehicle]])
+
+;; -----------------------------------------------------------------------------
+;; ---- Comment ----
 
 (defn back-button []
   [:button {:style {:margin "15px 0"}
@@ -47,8 +56,11 @@
          [back-button]
          [vehicle-view selected-vehicle]]
         [:<>
-         [title (first vehicles)]
+         [vehicle-name (first vehicles)]
          [vehicle-cards vehicles]])))
+
+;; ---- Comment ----
+;; -----------------------------------------------------------------------------
 
 (defn view-structure []
   (let [vehicles         @(a/subscribe [:vehicle/get-all-by-link])]
