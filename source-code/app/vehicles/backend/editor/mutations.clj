@@ -3,13 +3,16 @@
     (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]))
+              [x.server-user.api                     :as user]
+              [utils.normalize :as utils]))
 
 
 
-(defn create-link [{:vehicle/keys [name construction-year]
-                    :or {name "" construction-year ""}}]
-    (utils.normalize/clean-url (str "berelheto-" name "-" construction-year)))
+(defn create-link [{:vehicle/keys [name construction-year]}]
+  (->> ["berelheto" name construction-year]
+    (remove clojure.string/blank?)
+    (clojure.string/join "-")
+    (utils/clean-url)))
 
 (defn with-link [item]
   (let [link (create-link item)]
