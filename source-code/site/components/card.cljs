@@ -2,24 +2,11 @@
 
 (ns site.components.card)
 
-;; -----------------------------------------------------------------------------
-;; -- Prototypes ---------------------------------------------------------------
 
-(defn card-props-prototype [props]
-  (dissoc props :href :src :title))
-
-;; -- Prototypes ---------------------------------------------------------------
-;; -----------------------------------------------------------------------------
-
-;; -----------------------------------------------------------------------------
-;; -- Components ---------------------------------------------------------------
-
-(defn card [{:keys [href src title] :as props}]
-  [:div.card (card-props-prototype props)
-   [:a {:href href}
-    [:div
-     [:img {:src src}]]
-    [:p title]]])
+(defn card [{:keys [src name] :as props}]
+  [:div.vehicle--card 
+   [:div.vehicle--card-thumbnail {:style {:background-image (str "url("src")")}}]
+   [:p.vehicle--card-name name]])
 
 (defn view [props]
   [card props])
