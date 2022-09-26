@@ -4,7 +4,7 @@
    [x.app-core.api :as a :refer [r]]
    [x.app-components.api :as components]
 
-   [site.utils :as site.utils]
+   [utils.api :as utils]
    [site.modules.api :as site.modules]
    [site.components.api :as site.components]))
 
@@ -30,7 +30,7 @@
    [navbar-item {:href ""} "Bérbeadás"]
    [navbar-item {:href ""} "Értékesítés"]
    [navbar-item {:href ""} "Webáruház"]
-   [navbar-item {:href "" :on-click #(site.utils/scroll-into "contacts")} "Kapcsolat"]])
+   [navbar-item {:href "" :on-click #(utils/scroll-into "contacts")} "Kapcsolat"]])
 
 (defn header []
   [navbar])

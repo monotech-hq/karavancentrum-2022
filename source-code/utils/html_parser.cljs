@@ -1,4 +1,4 @@
-(ns site.html-parser
+(ns utils.html-parser
   (:require
     [clojure.string :as s]
     [clojure.walk :as w]

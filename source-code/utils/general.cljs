@@ -1,5 +1,5 @@
 
-(ns site.utils
+(ns utils.general
   (:require
     [dom.api :as dom]))
 

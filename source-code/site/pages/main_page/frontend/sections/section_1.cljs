@@ -2,7 +2,7 @@
 (ns site.pages.main-page.frontend.sections.section-1
   (:require
     [reagent.api :refer [lifecycles]]
-    [site.utils :as utils]))
+    [utils.api :as utils]))
 ;; -----------------------------------------------------------------------------
 ;; ---- Components ----
 

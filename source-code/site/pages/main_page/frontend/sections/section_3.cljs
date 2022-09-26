@@ -2,7 +2,7 @@
 (ns site.pages.main-page.frontend.sections.section-3
   (:require
     [x.app-core.api :as a]
-    [site.html-parser :refer [html->hiccup]]))
+    [utils.api :refer [html->hiccup]]))
 
 
 ;; -----------------------------------------------------------------------------
