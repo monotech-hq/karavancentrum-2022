@@ -6,5 +6,5 @@
  ::lifecycles
  {:on-server-boot [:router/add-route! :vehicle/view
                    {:core-js        "site.js"
-                    :route-template "/berelheto-jarmuveink/:name"
+                    :route-template "/berelheto-jarmuveink/:link"
                     :client-event   [:vehicle/load!]}]})

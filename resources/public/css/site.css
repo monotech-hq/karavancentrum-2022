@@ -641,6 +641,13 @@ body {
 
 #vehicle-page--content {
   padding-top: 75px; /* push content down with navbar height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#vehicle-page--slider li {
+    align-self: center;
 }
 
 #vehicle-page--title {
