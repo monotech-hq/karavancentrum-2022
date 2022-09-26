@@ -3,7 +3,8 @@
 (ns site.pages.main-page.frontend.sections.section-2
   (:require
     [x.app-core.api :as a]
-    [reagent.api :refer [lifecycles]]))
+    [reagent.api :refer [lifecycles]]
+    [site.components.api :as site.components]))
 
 ;; -----------------------------------------------------------------------------
 ;; ---- Configurations ----
@@ -42,13 +43,14 @@
          filter-config)])
 
 (defn vehicle-name [name]
-  [:p.name name])
+  [:p.link.effect--underline.name name])
 
-(defn vehicle [{:vehicle/keys [id thumbnail name] :as props}]
-  [:a {:key id
-       :href (str "/berelheto-jarmuveink/" id)}
-   [:div.vehicles--card {:style {:background-image (str "url("thumbnail")")}}
-     [vehicle-name name]]])
+(defn vehicle [{:vehicle/keys [id link thumbnail name] :as props}]
+  [:a {:style {:text-decoration "none"}
+       :key id
+       :href (str "/berelheto-jarmuveink/" link)}
+   [site.components/card {:name name
+                          :src  thumbnail}]])
 
 (defn vehicles []
   (let [data @(a/subscribe [:site/vehicles])]
