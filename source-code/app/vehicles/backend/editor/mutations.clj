@@ -5,6 +5,16 @@
               [pathom.api                            :as pathom]
               [x.server-user.api                     :as user]))
 
+
+
+(defn create-link [{:vehicle/keys [name construction-year]
+                    :or {name "" construction-year ""}}]
+    (utils.normalize/clean-url (str "berelheto-" name "-" construction-year)))
+
+(defn with-link [item]
+  (let [link (create-link item)]
+    (assoc item :vehicle/link link)))
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -17,8 +27,8 @@
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
   (let [prototype-f #(user/added-document-prototype request :vehicle %)]
-       (mongo-db/save-document! "vehicles" item
-                                {:prototype-f prototype-f})))
+    (mongo-db/save-document! "vehicles" (with-link item)
+                             {:prototype-f prototype-f})))
 
 (defmutation add-item!
              ; @param (map) env
@@ -42,7 +52,7 @@
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
   (let [prototype-f #(user/updated-document-prototype request :vehicle %)]
-       (mongo-db/save-document! "vehicles" item
+       (mongo-db/save-document! "vehicles" (with-link item)
                                 {:prototype-f prototype-f})))
 
 (defmutation save-item!

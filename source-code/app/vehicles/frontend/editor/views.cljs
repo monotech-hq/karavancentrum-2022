@@ -7,7 +7,8 @@
               [layouts.surface-a.api    :as surface-a]
               [plugins.item-editor.api  :as item-editor]
               [x.app-core.api           :as a]
-              [x.app-elements.api       :as elements]))
+              [x.app-elements.api       :as elements]
+              [utils.normalize :as utils.normalize]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -210,6 +211,7 @@
                     {:auto-title?      true
                      :form-element     #'view-structure
                      :ghost-element    #'ghost-view
+                     :initial-item     {:visibility :public}
                      :item-path        [:vehicles :vehicle-editor/edited-item]
                      :label-key        :name
                      :suggestion-keys  [:name]
