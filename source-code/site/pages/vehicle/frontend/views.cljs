@@ -10,7 +10,7 @@
 ;; ---- Components ----
 
 (defn slideshow [{:vehicle/keys [images]}]
-  [:div#vehicle-page--slider {:style {}}
+  [:div#vehicle-page--slider
    [slider/view
     (map (fn [src]
            ^{:key src}

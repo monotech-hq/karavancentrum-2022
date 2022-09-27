@@ -8,6 +8,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 
 body {
+  --site-width: 1200px;
   font-family: 'Poppins'
 }
 
@@ -561,7 +562,7 @@ body {
 /******************************************************************************/
 /**** Section 3 ****/
 
-#section-3--content {
+#contacts {
   border-top: 1px solid #ccc;
   background-color: #bddae5;
   display: flex;
@@ -572,7 +573,7 @@ body {
   padding: 150px 0 0 0;
 }
 
-#contacts {
+#section-3--background {
   background-image: url(/images/footer.jpg);
   background-position: bottom;
   background-size: cover;
@@ -640,7 +641,7 @@ body {
 /**** Vehicle page ****/
 
 #vehicle-page--content {
-  max-width: 1000px;
+  max-width: var(--site-width);
   margin: 0 auto;
   padding: 75px 0; /* push content down with navbar height */
   display: flex;

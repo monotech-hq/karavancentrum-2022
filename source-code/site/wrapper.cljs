@@ -30,7 +30,10 @@
    [navbar-item {:href ""} "Bérbeadás"]
    [navbar-item {:href ""} "Értékesítés"]
    [navbar-item {:href ""} "Webáruház"]
-   [navbar-item {:href "" :on-click #(utils/scroll-into "contacts")} "Kapcsolat"]])
+   [navbar-item {:href "/" :on-click #(utils/scroll-into "contacts" {:behavior "smooth"
+                                                                     :block    "start"
+                                                                     :inline   "start"})}
+    "Kapcsolat"]])
 
 (defn header []
   [navbar])
