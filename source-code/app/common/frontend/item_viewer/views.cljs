@@ -1,11 +1,9 @@
 
 (ns app.common.frontend.item-viewer.views
     (:require [app.common.frontend.item-editor.views :as item-editor.views]
-              [app.common.frontend.surface.views     :as surface.views]
               [mid-fruits.vector                     :as vector]
               [x.app-core.api                        :as a]
-              [x.app-elements.api                    :as elements]
-              [x.app-locales.api                     :as locales]))
+              [x.app-elements.api                    :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -182,7 +180,7 @@
                     :icon        :delete_outline
                     :label       :delete!
                     :on-click    [:item-viewer/delete-item! viewer-id]
-                    :style       {:line-height "48px"}}])
+                    :style       {:line-height "48px" :padding "0 24px 0 18px"}}])
 
 (defn duplicate-item-button
   ; @param (keyword) viewer-id
@@ -201,7 +199,7 @@
                     :indent      {:left :xs}
                     :label       :copy!
                     :on-click    [:item-viewer/duplicate-item! viewer-id]
-                    :style       {:line-height "48px"}}])
+                    :style       {:line-height "48px" :padding "0 24px 0 18px"}}])
 
 (defn edit-item-button
   ; @param (keyword) viewer-id
@@ -217,10 +215,10 @@
                     :color            "white"
                     :disabled?        disabled?
                     :icon             :edit
-                    :indent           {:left :xs}
+                    :indent           {:vertical :xs}
                     :label            :edit!
                     :on-click         [:router/go-to! edit-item-uri]
-                    :style            {:line-height "48px"}}])
+                    :style            {:line-height "48px" :padding "0 24px 0 18px"}}])
 
 (defn item-viewer-control-bar
   ; @param (keyword) viewer-id

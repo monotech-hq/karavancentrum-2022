@@ -75,12 +75,15 @@
 (defn- brand-logo-picker
   [brand-dex _]
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [storage/media-picker {:disabled?    editor-disabled?
-                              :indent       {:all :xs}
-                              :label        :logo
-                              :toggle-label :select-image!
-                              :thumbnails   {:height :2xl :width :4xl}
-                              :value-path   [:website-content :content-editor/edited-item :more-brands brand-dex :logo]}]))
+       [storage/media-picker {:autosave?     true
+                              :disabled?     editor-disabled?
+                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
+                              :indent        {:all :xs}
+                              :label         :logo
+                              :multi-select? false
+                              :toggle-label  :select-image!
+                              :thumbnails    {:height :2xl :width :4xl}
+                              :value-path    [:website-content :content-editor/edited-item :more-brands brand-dex :logo]}]))
 
 (defn- duplicate-brand-button
   [brand-dex _]
@@ -160,55 +163,70 @@
 
 (defn- menu-bar
   []
-  [common/file-editor-menu-bar :website-content
-                               {:menu-items [{:change-keys [:address-data-information :contacts-data-information
-                                                            :about-us :rent-informations]
-                                              :label   :main-page
-                                              :view-id :main-page}
-                                             {:change-keys [:more-brands]
-                                              :label   :more-brands
-                                              :view-id :more-brands}]}])
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+       [common/file-editor-menu-bar :website-content
+                                    {:menu-items [{:label :main-page   :change-keys [:address-data-information :contacts-data-information
+                                                                                     :about-us :rent-informations]}
+                                                  {:label :more-brands :change-keys [:more-brands]}]
+                                     :disabled? editor-disabled?}]))
 
 (defn- view-selector
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :website-content])]
-       [:<> [menu-bar]
-            (case current-view-id :main-page   [main-page]
-                                  :more-brands [more-brands])]))
+       (case current-view-id :main-page   [main-page]
+                             :more-brands [more-brands])))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- control-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+       [common/file-editor-control-bar :website-content
+                                       {:disabled? editor-disabled?}]))
+
+(defn- breadcrumbs
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+       [common/surface-breadcrumbs :website-content/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :website-content}]
+                                    :disabled? editor-disabled?}]))
+
+(defn- label-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+       [common/surface-label :website-content/view
+                             {:disabled? editor-disabled?
+                              :label     :website-content}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- header
+  []
+  [:<> [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :xxl}]
+       [menu-bar]])
+
+(defn- view-structure
+  []
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [header]
+        [view-selector]
+        [elements/horizontal-separator {:size :xxl}]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [control-bar]]])
 
 (defn- website-content-editor
   []
   [file-editor/body :website-content
                     {:content-path  [:website-content :content-editor/edited-item]
-                     :form-element  #'view-selector
+                     :form-element  #'view-structure
                      :ghost-element #'common/file-editor-ghost-view}])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- breadcrumbs
-  []
-  [common/file-editor-breadcrumbs :website-content
-                                  {:crumbs [{:label :app-home
-                                             :route "/@app-home"}
-                                            {:label :website-content}]}])
-
-(defn- label-bar
-  []
-  [common/file-editor-label-bar :website-content
-                                {:label :website-content}])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- view-structure
-  []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [elements/horizontal-separator {:size :xxl}]
-       [website-content-editor]])
 
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:content #'view-structure}])
+                    {:content #'website-content-editor}])

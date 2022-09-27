@@ -1,11 +1,11 @@
 
 (ns app.storage.backend.core.side-effects
-    (:require [app.storage.backend.core.config :as core.config]
+    (:require [app.common.backend.api          :as common]
+              [app.storage.backend.core.config :as core.config]
               [mid-fruits.candy                :refer [return]]
               [mid-fruits.vector               :as vector]
               [mongo-db.api                    :as mongo-db]
-              [x.server-media.api              :as media]
-              [x.server-user.api               :as user]))
+              [x.server-media.api              :as media]))
 
 ;; -- Attach/detach item functions --------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -45,7 +45,7 @@
    ;  a tartalmazó (felmenő) mappák adatait aktualizálni:
    ; - Utolsó módosítás dátuma, és a felhasználó azonosítója {:media/modified-at ... :media/modified-by ...}
    ; - Tartalom méretének {:media/size ...} aktualizálása
-   (letfn [(prototype-f [document] (user/updated-document-prototype request :media document))
+   (letfn [(prototype-f [document] (common/updated-document-prototype request :media document))
            (update-f    [document] (update document :media/size operation size))
            (f [path] (when-let [{:media/keys [id]} (last path)]
                                (if operation (mongo-db/apply-document! "storage" id update-f {:prototype-f prototype-f})
@@ -62,7 +62,7 @@
 
 (defn insert-item!
   [{:keys [request] :as env} item]
-  (let [prototype-f #(user/added-document-prototype request :media %)]
+  (let [prototype-f #(common/added-document-prototype request :media %)]
        (mongo-db/insert-document! "storage" item {:prototype-f prototype-f})))
 
 (defn remove-item!

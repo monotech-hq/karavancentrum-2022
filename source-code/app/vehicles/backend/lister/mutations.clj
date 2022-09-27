@@ -1,9 +1,9 @@
 
 (ns app.vehicles.backend.lister.mutations
-    (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
+    (:require [app.common.backend.api                :as common]
+              [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]))
+              [pathom.api                            :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -59,7 +59,7 @@
   ;
   ; @return (keywords in vector)
   [{:keys [request]} {:keys [item-ids]}]
-  (let [prototype-f #(user/duplicated-document-prototype request :vehicle %)]
+  (let [prototype-f #(common/duplicated-document-prototype request :vehicle %)]
        (mongo-db/duplicate-documents! "vehicles" item-ids
                                       {:prototype-f prototype-f})))
 

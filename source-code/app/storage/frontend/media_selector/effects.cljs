@@ -1,20 +1,30 @@
 
 (ns app.storage.frontend.media-selector.effects
-    (:require [app.storage.frontend.media-selector.events :as media-selector.events]
-              [app.storage.frontend.media-selector.subs   :as media-selector.subs]
-              [app.storage.frontend.media-selector.views  :as media-selector.views]
-              [plugins.item-browser.api                   :as item-browser]
-              [x.app-core.api                             :as a :refer [r]]))
+    (:require [app.storage.frontend.media-selector.events  :as media-selector.events]
+              [app.storage.frontend.media-selector.helpers :as media-selector.helpers]
+              [app.storage.frontend.media-selector.subs    :as media-selector.subs]
+              [app.storage.frontend.media-selector.views   :as media-selector.views]
+              [plugins.item-browser.api                    :as item-browser]
+              [x.app-core.api                              :as a :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
+  :storage.media-selector/render-selector!
+  ; @param (keyword) selector-id
+  (fn [_ [_ selector-id]]
+      [:ui/render-popup! :storage.media-selector/view
+                         {:content [media-selector.views/view selector-id]}]))
+
+(a/reg-event-fx
   :storage.media-selector/load-selector!
   ; @param (keyword)(opt) selector-id
   ; @param (map) selector-props
-  ;  {:extensions (strings in vector)(opt)
-  ;   :multiple? (boolean)(opt)
+  ;  {:autosave? (boolean)(opt)
+  ;    Default: false
+  ;   :extensions (strings in vector)(opt)
+  ;   :multi-select? (boolean)(opt)
   ;    Default: false
   ;   :value-path (vector)}
   ;
@@ -24,12 +34,16 @@
   ; @usage
   ;  [:storage.media-selector/load-selector! :my-selector {...}]
   [a/event-vector<-id]
-  ; XXX#1167
-  ; A selector-id azonosító nincs felhasználva sehol, kizárólag az *-id & *-props formula
-  ; egységes használata miatt adható meg.
-  (fn [{:keys [db]} [_ selector-id selector-props]]
-      {:db       (r media-selector.events/load-selector! db selector-id selector-props)
-       :dispatch [:storage.media-selector/render-selector!]}))
+  (fn [_ [_ _ {:keys [autosave? extensions multi-select? value-path]}]]
+      {:dispatch-n [[:item-selector/load-selector! :storage.media-selector
+                                                   {:autosave?     autosave?
+                                                    :extensions    extensions
+                                                    :export-id-f   media-selector.helpers/export-id-f
+                                                    :import-id-f   media-selector.helpers/import-id-f
+                                                    :multi-select? multi-select?
+                                                    :on-save       [:ui/close-popup! :storage.media-selector/view]
+                                                    :value-path    value-path}]
+                    [:storage.media-selector/render-selector!]]}))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -45,32 +59,3 @@
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-selector)]
            [:storage.file-uploader/load-uploader! {:browser-id :storage.media-selector :destination-id destination-id}])))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(a/reg-event-fx
-  :storage.media-selector/save-selected-items!
-  (fn [{:keys [db]} _]
-      (let [db (r media-selector.events/set-saving-mode! db)]
-           {:db db :dispatch-later [{:ms         1000
-                                     :dispatch-n [[:ui/close-popup! :storage.media-selector/view]
-                                                  [:storage.media-selector/store-selected-items!]]}]})))
-
-(a/reg-event-fx
-  :storage.media-selector/file-clicked
-  (fn [{:keys [db]} [_ file-item]]
-      (let [db (r media-selector.events/toggle-file-selection! db file-item)]
-           (if-not (r media-selector.subs/autosave-selected-items? db file-item)
-                   {:db db}
-                   {:db db :dispatch-later [{:ms       250
-                                             :dispatch [:storage.media-selector/save-selected-items!]}]}))))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(a/reg-event-fx
-  :storage.media-selector/render-selector!
-  (fn [_ [_ selector-id]]
-      [:ui/render-popup! :storage.media-selector/view
-                         {:content [media-selector.views/view selector-id]}]))

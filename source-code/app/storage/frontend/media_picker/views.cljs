@@ -13,10 +13,10 @@
 (defn media-picker-toggle-auto-label
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  ;  {:multiple? (boolean)(opt)}
-  [picker-id {:keys [multiple?] :as picker-props}]
+  ;  {:multi-select? (boolean)(opt)}
+  [picker-id {:keys [multi-select?] :as picker-props}]
   (if-let [no-items-picked? @(a/subscribe [:storage.media-picker/no-items-picked? picker-id picker-props])]
-          (if multiple? :no-items-selected :no-item-selected)
+          (if multi-select? :no-items-selected :no-item-selected)
           (let [picked-item-count @(a/subscribe [:storage.media-picker/get-picked-item-count picker-id picker-props])]
                {:content :n-items-selected :replacements [picked-item-count]})))
 
@@ -30,14 +30,15 @@
                         :content   toggle-label
                         :font-size :xs}]))
 
-(defn media-picker-toggle
+(defn media-picker-button
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {:disabled? (boolean)(opt)}
   [picker-id {:keys [disabled?] :as picker-props}]
-  [elements/toggle {:content   [media-picker-toggle-label              picker-id picker-props]
-                    :on-click  [:storage.media-selector/load-selector! picker-id picker-props]
-                    :disabled? disabled?}])
+  [:div {:style {:display :flex}}
+        [elements/toggle {:content   [media-picker-toggle-label              picker-id picker-props]
+                          :on-click  [:storage.media-selector/load-selector! picker-id picker-props]
+                          :disabled? disabled?}]])
 
 (defn media-picker-label
   ; @param (keyword) picker-id
@@ -90,7 +91,7 @@
   ; @param (map) picker-props
   [picker-id picker-props]
   [:<> [media-picker-label      picker-id picker-props]
-       [media-picker-toggle     picker-id picker-props]
+       [media-picker-button     picker-id picker-props]
        [media-picker-thumbnails picker-id picker-props]])
 
 (defn- media-picker
@@ -105,15 +106,17 @@
 (defn element
   ; @param (keyword)(opt) picker-id
   ; @param (map) picker-props
-  ;  {:disabled? (boolean)(opt)
+  ;  {:autosave? (boolean)(opt)
+  ;   Default: false
+  ;   :disabled? (boolean)(opt)
   ;    Default: false
   ;   :extensions (strings in vector)(opt)
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
-  ;   :required? (boolean)(opt)
-  ;   :multiple? (boolean)(opt)
+  ;   :multi-select? (boolean)(opt)
   ;    Default: false
+  ;   :required? (boolean)(opt)
   ;   :thumbnails (map)(opt)
   ;    {:max-count (integer)(opt)
   ;      Default: 8

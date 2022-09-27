@@ -1,9 +1,6 @@
 
 (ns app.vehicles.frontend.viewer.views
     (:require [app.common.frontend.api :as common]
-              ;; TEMP
-              [app.contents.frontend.picker.views :as contents]
-
               [forms.api               :as forms]
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-lister.api :as item-lister]
@@ -158,40 +155,6 @@
                         :placeholder         "-"
                         :selectable?         true}]))
 
-(defn- vehicle-visibility-label
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-visibility-label
-                       {:content   :vehicle-visibility
-                        :disabled? viewer-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
-
-(defn- vehicle-visibility-value
-  []
-  (let [viewer-disabled?   @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        content-visibility @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :visibility]])]
-       [elements/label ::vehicle-visibility-value
-                       {:color     :muted
-                        :content   (case content-visibility :public :public-content :private :private-content)
-                        :disabled? viewer-disabled?
-                        :indent    {:vertical :xs}}]))
-
-(defn- vehicle-content-label
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-content-label
-                       {:content   :vehicle-content
-                        :disabled? viewer-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
-
-(defn- vehicle-content-value
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        content-body     @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :content]])]
-        ;; TEMP 
-       [contents/content-picker-preview ::vehicle-content-body-value
-                      {:value-path  [:vehicles :vehicle-viewer/viewed-item :content]}]))
-
 (defn- vehicle-overview
   []
   [:<> [:div (forms/form-row-attributes)
@@ -206,21 +169,10 @@
                    [vehicle-number-of-seats-value]]
              [:div (forms/form-block-attributes {:ratio 25})
                    [vehicle-number-of-bunks-label]
-                   [vehicle-number-of-bunks-value]]
-             [:div (forms/form-block-attributes {:ratio 100})
-                   [vehicle-visibility-label]
-                   [vehicle-visibility-value]]
-             [:div (forms/form-block-attributes {:ratio 100})
-                   [vehicle-content-label]
-                   [vehicle-content-value]]]])
+                   [vehicle-number-of-bunks-value]]]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
-
-(defn- ghost-view
-  []
-  [common/item-viewer-ghost-view :vehicles.vehicle-viewer
-                                 {}])
 
 (defn- menu-bar
   []
@@ -268,13 +220,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- header
+  []
+  [:<> [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :xxl}]
+       [menu-bar]])
+
 (defn- view-structure
   []
   [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [label-bar]
-        [breadcrumbs]
-        [elements/horizontal-separator {:size :xxl}]
-        [menu-bar]
+        [header]
         [view-selector]
         [elements/horizontal-separator {:size :xxl}]
         [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
@@ -284,7 +240,7 @@
   []
   [item-viewer/body :vehicles.vehicle-viewer
                     {:auto-title?   true
-                     :ghost-element #'ghost-view
+                     :ghost-element #'common/item-viewer-ghost-view
                      :item-element  #'view-structure
                      :item-path     [:vehicles :vehicle-viewer/viewed-item]
                      :label-key     :name}])

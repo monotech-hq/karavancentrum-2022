@@ -1,6 +1,7 @@
 
 (ns app.storage.backend.install-handler.side-effects
-    (:require [app.storage.backend.core.config            :as core.config]
+    (:require [app.common.backend.api                     :as common]
+              [app.storage.backend.core.config            :as core.config]
               [app.storage.backend.install-handler.config :as install-handler.config]
               [mongo-db.api                               :as mongo-db]
               [server-fruits.io                           :as io]
@@ -14,7 +15,7 @@
 (defn- check-install!
   [_]
   (let [request {:session user/SYSTEM-ACCOUNT}
-        options {:prototype-f #(user/added-document-prototype request :media %)}
+        options {:prototype-f #(common/added-document-prototype request :media %)}
         ; Get sample file filesize
         sample-file-filepath (media/filename->media-storage-filepath core.config/SAMPLE-FILE-FILENAME)
         sample-file-filesize (io/get-filesize sample-file-filepath)]

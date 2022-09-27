@@ -28,20 +28,15 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-lister-ghost-view :vehicles.vehicle-lister
-                                 {:padding "0 12px"}])
-
-(defn- vehicle-lister
+(defn- vehicle-lister-body
   []
   [item-lister/body :vehicles.vehicle-lister
                     {:default-order-by :modified-at/descending
                      :items-path       [:vehicles :vehicle-lister/downloaded-items]
-                     :ghost-element    #'ghost-view
+                     :ghost-element    #'common/item-lister-body-ghost-view
                      :list-element     #'vehicle-item}])
 
-(defn- header
+(defn- vehicle-lister-header
   []
   [common/item-lister-header :vehicles.vehicle-lister
                              {:cells [[common/item-lister-header-spacer :vehicles.vehicle-lister
@@ -53,43 +48,71 @@
                                       [common/item-lister-header-spacer :vehicles.vehicle-lister
                                                                         {:width "36px"}]]}])
 
-(defn- wrapper
-  []
-  [common/item-lister-wrapper :vehicles.vehicle-lister
-                              {:item-list        #'vehicle-lister
-                               :item-list-header #'header}])
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+(defn create-item-button
+  []
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :vehicles.vehicle-lister])
+        create-vehicle-uri (str "/@app-home/vehicles/create")]
+       [common/item-lister-create-item-button :vehicles.vehicle-lister
+                                              {:disabled?       lister-disabled?
+                                               :create-item-uri create-vehicle-uri}]))
 
 (defn- search-block
   []
-  [common/item-lister-search-block :vehicles.vehicle-lister
-                                   {:field-placeholder :search-in-vehicles}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :vehicles.vehicle-lister])]
+       [common/item-lister-search-block :vehicles.vehicle-lister
+                                        {:disabled?         lister-disabled?
+                                         :field-placeholder :search-in-vehicles}]))
 
 (defn- breadcrumbs
   []
-  [common/item-lister-breadcrumbs :vehicles.vehicle-lister
-                                  {:crumbs [{:label :app-home
-                                             :route "/@app-home"}
-                                            {:label :vehicles}]}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :vehicles.vehicle-lister])]
+       [common/surface-breadcrumbs :vehicles.vehicle-lister/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :vehicles}]
+                                    :disabled? lister-disabled?}]))
 
 (defn- label-bar
   []
-  [common/item-lister-label-bar :vehicles.vehicle-lister
-                                {:create-item-uri "/@app-home/vehicles/create"
-                                 :label           :vehicles}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :vehicles.vehicle-lister])]
+       [common/surface-label :vehicles.vehicle-lister/view
+                             {:disabled? lister-disabled?
+                              :label     :vehicles}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- footer
+  []
+  [common/item-lister-download-info :vehicles.vehicle-lister {}])
+
+(defn- body
+  []
+  [:div {:style {:display :flex :flex-direction :column-reverse}}
+        [:div {:style {:width "100%"}}
+              [vehicle-lister-body]]
+        [vehicle-lister-header]])
+
+(defn- header
+  []
+  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :vehicles.vehicle-lister])]
+          [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
+                     [label-bar]
+                     [create-item-button]]
+               [breadcrumbs]
+               [search-block]]
+          [common/item-lister-header-ghost-view :vehicles.vehicle-lister {}]))
 
 (defn- view-structure
   []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [search-block]
-       [elements/horizontal-separator {:size :xxl}]
-       [wrapper]])
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [header]
+        [elements/horizontal-separator {:size :xxl}]
+        [body]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [footer]]])
 
 (defn view
   [surface-id]

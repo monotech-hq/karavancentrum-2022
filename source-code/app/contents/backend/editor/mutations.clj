@@ -1,9 +1,9 @@
 
 (ns app.contents.backend.editor.mutations
-    (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
+    (:require [app.common.backend.api                :as common]
+              [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]))
+              [pathom.api                            :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -16,7 +16,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(user/added-document-prototype request :content %)]
+  (let [prototype-f #(common/added-document-prototype request :content %)
+        item         (update item :content/body #(str "<div>"%"</div>"))]
        (mongo-db/save-document! "contents" item
                                 {:prototype-f prototype-f})))
 
@@ -41,7 +42,7 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(user/updated-document-prototype request :content %)]
+  (let [prototype-f #(common/updated-document-prototype request :content %)]
        (mongo-db/save-document! "contents" item
                                 {:prototype-f prototype-f})))
 

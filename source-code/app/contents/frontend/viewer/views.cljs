@@ -69,11 +69,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-viewer-ghost-view :contents.content-viewer
-                                 {}])
-
 (defn- menu-bar
   []
   (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])]
@@ -120,13 +115,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- header
+  []
+  [:<> [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :xxl}]
+       [menu-bar]])
+
 (defn- view-structure
   []
   [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [label-bar]
-        [breadcrumbs]
-        [elements/horizontal-separator {:size :xxl}]
-        [menu-bar]
+        [header]
         [view-selector]
         [elements/horizontal-separator {:size :xxl}]
         [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
@@ -136,7 +135,7 @@
   []
   [item-viewer/body :contents.content-viewer
                     {:auto-title?   true
-                     :ghost-element #'ghost-view
+                     :ghost-element #'common/item-viewer-ghost-view
                      :item-element  #'view-structure
                      :item-path     [:contents :content-viewer/viewed-item]
                      :label-key     :name}])

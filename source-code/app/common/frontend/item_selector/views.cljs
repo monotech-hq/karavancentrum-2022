@@ -55,7 +55,7 @@
              [elements/search-field ::search-items-field
                                     {:autoclear?    true
                                      :disabled?     lister-disabled?
-                                     :indent        {:horizontal :xxs :left :xs}
+                                     :indent        {:horizontal :xxs :left :xxs}
                                      :on-empty      search-event
                                      :on-type-ended search-event
                                      :placeholder   search-field-placeholder}]]))
@@ -89,3 +89,19 @@
   [elements/row ::item-selection-control-bar
                 {:content [:<> [search-items-field   lister-id bar-props]
                                [order-by-icon-button lister-id bar-props]]}])
+
+;; -- Ghost-view components ---------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-selector-body-ghost-view
+  ; @param (keyword) lister-id
+  ; @param (map) view-props
+  ;
+  ; @usage
+  ;  [common/item-selector-body-ghost-view :my-lister {...}]
+  [_ {:keys []}]
+  [:div {:style {:padding "0 12px" :width "100%"}}
+        [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px"}}
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]]])

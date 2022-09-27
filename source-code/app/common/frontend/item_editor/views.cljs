@@ -1,9 +1,8 @@
 
 (ns app.common.frontend.item-editor.views
-    (:require [app.common.frontend.surface.views :as surface.views]
-              [mid-fruits.vector                 :as vector]
-              [x.app-core.api                    :as a]
-              [x.app-elements.api                :as elements]))
+    (:require [mid-fruits.vector  :as vector]
+              [x.app-core.api     :as a]
+              [x.app-elements.api :as elements]))
 
 ;; -- Menu-bar components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -16,7 +15,7 @@
   ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/item-editor-menu-item-props editor-id {...} {...} :my-view]
+  ;  [common/item-editor-menu-item-props :my-editor {...} {...}]
   ;
   ; @return (map)
   ;  {:active? (boolean)
@@ -168,7 +167,7 @@
                          :icon        :settings_backup_restore
                          :label       :revert!
                          :on-click    [:item-editor/revert-item! editor-id]
-                         :style       {:line-height "48px"}}]))
+                         :style            {:line-height "48px" :padding "0 24px 0 18px"}}]))
 
 (defn save-item-button
   ; @param (keyword) editor-id
@@ -182,10 +181,10 @@
                     :color            "white"
                     :disabled?        disabled?
                     :icon             :save
-                    :indent           {:left :xs}
+                    :indent           {:vertical :xs}
                     :label            :save!
                     :on-click         [:item-editor/save-item! editor-id]
-                    :style            {:line-height "48px"}}])
+                    :style            {:line-height "48px" :padding "0 24px 0 18px"}}])
 
 (defn item-editor-control-bar
   ; @param (keyword) editor-id

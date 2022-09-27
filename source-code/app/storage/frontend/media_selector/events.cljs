@@ -45,27 +45,7 @@
                (let [selected-item (get-in db [:storage :media-selector/selected-items 0])]
                     (assoc-in db value-path selected-item)))))
 
-(defn discard-selection!
-  [db _]
-  (assoc-in db [:storage :media-selector/selected-items] []))
-
-(defn load-selector!
-  [db [_ _ {:keys [value-path] :as selector-props}]]
-  ; XXX#8073
-  ; A load-selector! függvény a {:value-path [...]} tulajdonságként átadott útvonalon található értéket, ...
-  ; ... ha szükséges akkor vektor típusra alakítja.
-  ; ... eltárolja az aktuálisan kiválasztott elemekként.
-  ;
-  ; A load-selector! függvény kitörli az utoljára megnyitott media-selector meta-adatait (pl. {:saving? ...})
-  (let [saved-selection (get-in db value-path)]
-       (cond-> db (some?   saved-selection) (assoc-in  [:storage :media-selector/selected-items] [saved-selection])
-                  (vector? saved-selection) (assoc-in  [:storage :media-selector/selected-items]  saved-selection)
-                  (nil?    saved-selection) (assoc-in  [:storage :media-selector/selected-items] [])
-                  :store-selector-props!    (assoc-in  [:storage :media-selector/selector-props] selector-props)
-                  :reset-meta-items!        (dissoc-in [:storage :media-selector/meta-items]))))
-
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-db :storage.media-selector/store-selected-items! store-selected-items!)
-(a/reg-event-db :storage.media-selector/discard-selection!    discard-selection!)

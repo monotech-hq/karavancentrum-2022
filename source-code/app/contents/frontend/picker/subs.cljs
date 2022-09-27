@@ -22,9 +22,12 @@
   ;
   ; @return (boolean)
   [db [_ picker-id {:keys [value-path]}]]
+  ; XXX#5051
   ; Ha a content-picker komponens picker-props paramétere megváltozik, akkor
   ; a content-picker-preview-body komponens component-did-update életciklusa
-  ; megtörténik és ebben az esetben nem szükséges újra letölteni a tartalmat.
+  ; megtörténik viszont ebben az esetben nem szükséges újra letölteni a tartalmat,
+  ; ezért kell vizsgálni, hogy a picked-content értéke változott-e meg, vagy csak
+  ; a picker-props térkép változása indította el a component-did-update életciklust!
   (let [last-content   (get-in db [:contents :content-picker/meta-items picker-id :picked-content])
         picked-content (get-in db value-path)]
        (not= picked-content last-content)))

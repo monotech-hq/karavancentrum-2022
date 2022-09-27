@@ -1,6 +1,7 @@
 
 (ns app.contents.frontend.picker.views
     (:require [app.contents.frontend.picker.prototypes :as picker.prototypes]
+              [app-fruits.html                         :as html]
               [mid-fruits.random                       :as random]
               [reagent.api                             :as reagent]
               [x.app-core.api                          :as a]
@@ -12,12 +13,14 @@
 (defn- content-picker-preview-content
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  [picker-id picker-props]
+  ;  {:max-lines (integer)(opt)}
+  [picker-id {:keys [max-lines] :as picker-props}]
   (let [content-body @(a/subscribe [:contents.content-picker/get-content-body picker-id])]
        [elements/text {:color       :muted
-                       :content     content-body
+                       :content     (html/to-hiccup content-body)
                        :font-size   :xs
                        :indent      {:horizontal :xxs :vertical :xs}
+                       :max-lines   max-lines
                        :placeholder :downloading...}]))
 
 (defn- content-picker-preview-card
@@ -56,7 +59,7 @@
   ;  {:disabled? (boolean)(opt)
   ;   :value-path (vector)}
   [picker-id {:keys [disabled? value-path]}]
-  (let [on-click [:contents.content-selector/load-selector! picker-id {:value-path value-path}]]
+  (let [on-click [:contents.content-selector/load-selector! :contents.content-selector {:value-path value-path}]]
        [:div {:style {:display :flex}}
              [elements/button {:color     :muted
                                :disabled? disabled?
@@ -102,6 +105,7 @@
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
+  ;   :max-lines (integer)(opt)
   ;   :required? (boolean)(opt)
   ;    Default: false
   ;   :value-path (vector)}

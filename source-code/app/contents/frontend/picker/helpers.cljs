@@ -6,6 +6,7 @@
 ;; ----------------------------------------------------------------------------
 
 (defn request-content-query
-  ; @param (keyword) content-id
-  [content-id]
-  [`(~:contents.content-picker/get-content ~{:content-id content-id})])
+  ; @param (map) picked-content
+  ;  {:content/id (string)}
+  [{:content/keys [id]}]
+  [`(~:contents.content-picker/get-content ~{:content-id id})])

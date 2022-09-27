@@ -12,11 +12,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-editor-ghost-view :pages.page-editor
-                                 {}])
-
 (defn- menu-bar
   []
   [common/item-editor-menu-bar :pages.page-editor
@@ -63,13 +58,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- header
+  []
+  [:<> [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :xxl}]
+       [menu-bar]])
+
 (defn- view-structure
   []
   [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [label-bar]
-        [breadcrumbs]
-        [elements/horizontal-separator {:size :xxl}]
-        [menu-bar]
+        [header]
         [view-selector]
         [elements/horizontal-separator {:size :xxl}]
         [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
@@ -80,7 +79,7 @@
   [item-editor/body :pages.page-editor
                     {:auto-title?      true
                      :form-element     #'view-structure
-                     :ghost-element    #'ghost-view
+                     :ghost-element    #'common/item-editor-ghost-view
                      :initial-item     {:visibility :public}
                      :item-path        [:pages :page-editor/edited-item]
                      :label-key        :name

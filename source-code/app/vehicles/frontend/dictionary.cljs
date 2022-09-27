@@ -10,10 +10,4 @@
             :hu "Keresés a járművek között"}
            :unnamed-vehicle
            {:en "Unnamed vehicle"
-            :hu "Névtelen Jármű"}
-           :vehicle-visibility
-           {:en "Vehicle visibility"
-            :hu "Jármű láthatósága"}
-           :vehicle-content
-           {:en "Vehicle content"
-            :hu "Jármű tartalma"}})  
+            :hu "Névtelen Jármű"}})

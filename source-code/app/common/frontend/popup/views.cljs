@@ -29,6 +29,7 @@
   [_ {:keys [secondary-button]}]
   [elements/button ::popup-secondary-button
                    (merge {:font-size   :xs
+                          ;:font-weight :extra-bold
                            :hover-color :highlight
                            :indent      {:horizontal :xxs :vertical :xxs}
                            :keypress    {:key-code 27}}
@@ -50,6 +51,7 @@
   [elements/button ::popup-primary-button
                    (merge {:color       :primary
                            :font-size   :xs
+                          ;:font-weight :extra-bold
                            :hover-color :highlight
                            :indent      {:horizontal :xxs :vertical :xxs}
                            :keypress    {:key-code 13}}
@@ -76,6 +78,7 @@
 ;; -- Progress-indicator components ---------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+; WARNING! DEPRECATED! DO NOT USE!
 (defn popup-progress-label
   ; @param (keyword) popup-id
   ; @param (map) indicator-props
@@ -88,7 +91,9 @@
   [elements/label ::popup-progress-label
                   {:color   (or color :muted)
                    :content label}])
+; WARNING! DEPRECATED! DO NOT USE!
 
+; WARNING! DEPRECATED! DO NOT USE!
 (defn popup-progress-indicator
   ; @param (keyword) popup-id
   ; @param (map) indicator-props
@@ -105,3 +110,4 @@
                     :indent              indent
                     :stretch-orientation :vertical
                     :vertical-align      :center}])
+; WARNING! DEPRECATED! DO NOT USE!

@@ -1,22 +1,9 @@
 
 (ns app.vehicles.backend.editor.mutations
-    (:require [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
+    (:require [app.common.backend.api                :as common]
+              [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]
-              [utils.normalize :as utils]))
-
-
-
-(defn create-link [{:vehicle/keys [name construction-year]}]
-  (->> ["berelheto" name construction-year]
-    (remove clojure.string/blank?)
-    (clojure.string/join "-")
-    (utils/clean-url)))
-
-(defn with-link [item]
-  (let [link (create-link item)]
-    (assoc item :vehicle/link link)))
+              [pathom.api                            :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -29,9 +16,9 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(user/added-document-prototype request :vehicle %)]
-    (mongo-db/save-document! "vehicles" (with-link item)
-                             {:prototype-f prototype-f})))
+  (let [prototype-f #(common/added-document-prototype request :vehicle %)]
+       (mongo-db/save-document! "vehicles"
+                                {:prototype-f prototype-f})))
 
 (defmutation add-item!
              ; @param (map) env
@@ -54,8 +41,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(user/updated-document-prototype request :vehicle %)]
-       (mongo-db/save-document! "vehicles" (with-link item)
+  (let [prototype-f #(common/updated-document-prototype request :vehicle %)]
+       (mongo-db/save-document! "vehicles"
                                 {:prototype-f prototype-f})))
 
 (defmutation save-item!

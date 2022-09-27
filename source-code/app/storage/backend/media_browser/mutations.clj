@@ -1,6 +1,7 @@
 
 (ns app.storage.backend.media-browser.mutations
-    (:require [app.storage.backend.core.helpers             :as core.helpers]
+    (:require [app.common.backend.api                       :as common]
+              [app.storage.backend.core.helpers             :as core.helpers]
               [app.storage.backend.media-browser.config     :as media-browser.config]
               [app.storage.backend.media-browser.prototypes :as media-browser.prototypes]
               [app.storage.backend.core.side-effects        :as core.side-effects]
@@ -11,8 +12,7 @@
               [mongo-db.api                                 :as mongo-db]
               [pathom.api                                   :as pathom]
               [plugins.item-browser.api                     :as item-browser]
-              [server-fruits.io                             :as io]
-              [x.server-user.api                            :as user]))
+              [server-fruits.io                             :as io]))
 
 ;; -- Permanently delete item(s) functions ------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -176,7 +176,7 @@
   [{:keys [request] :as env} {:keys [destination-id item-id parent-id] :as mutation-props} document]
   (letfn [(f2 [{:media/keys [id] :as %}] (if (= id parent-id) {:media/id destination-id} %))
           (f1 [%]                        (vector/->items % f2))]
-         (as-> document % (user/duplicated-document-prototype request :media %)
+         (as-> document % (common/duplicated-document-prototype request :media %)
                           (if (= destination-id parent-id) % (update % :media/path f1)))))
 
 (defn duplicated-file-prototype
@@ -193,7 +193,7 @@
   (letfn [(f3 [{:media/keys [id filename] :as %}] (assoc % :media/filename (core.helpers/file-id->filename id filename)))
           (f2 [{:media/keys [id]          :as %}] (if (= id parent-id) {:media/id destination-id} %))
           (f1 [%]                                 (vector/->items % f2))]
-         (as-> document % (user/duplicated-document-prototype request :media %)
+         (as-> document % (common/duplicated-document-prototype request :media %)
                           (if (= destination-id parent-id) % (update % :media/path f1))
                           (f3 %))))
 
@@ -321,7 +321,7 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (mongo-db/save-document! "storage" item {:prototype-f #(user/updated-document-prototype request :media %)}))
+  (mongo-db/save-document! "storage" item {:prototype-f #(common/updated-document-prototype request :media %)}))
 
 (defmutation update-item!
              ; @param (map) env

@@ -29,20 +29,15 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-lister-ghost-view :pages.page-lister
-                                 {:padding "0 12px"}])
-
-(defn- page-lister
+(defn- page-lister-body
   []
   [item-lister/body :pages.page-lister
                     {:default-order-by :modified-at/descending
                      :items-path       [:pages :page-lister/downloaded-items]
-                     :ghost-element    #'ghost-view
+                     :ghost-element    #'common/item-lister-body-ghost-view
                      :list-element     #'page-item}])
 
-(defn- header
+(defn- page-lister-header
   []
   [common/item-lister-header :pages.page-lister
                              {:cells [[common/item-lister-header-spacer :pages.page-lister
@@ -54,45 +49,73 @@
                                       [common/item-lister-header-spacer :pages.page-lister
                                                                         {:width "36px"}]]}])
 
-(defn- wrapper
-  []
-  [common/item-lister-wrapper :pages.page-lister
-                              {:item-list        #'page-lister
-                               :item-list-header #'header}])
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+(defn create-item-button
+  []
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])
+        create-page-uri (str "/@app-home/pages/create")]
+       [common/item-lister-create-item-button :pages.page-lister
+                                              {:disabled?       lister-disabled?
+                                               :create-item-uri create-page-uri}]))
 
 (defn- search-block
   []
-  [common/item-lister-search-block :pages.page-lister
-                                   {:field-placeholder :search-in-pages}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])]
+       [common/item-lister-search-block :pages.page-lister
+                                        {:disabled?         lister-disabled?
+                                         :field-placeholder :search-in-pages}]))
 
 (defn- breadcrumbs
   []
-  [common/item-lister-breadcrumbs :pages.page-lister
-                                  {:crumbs [{:label :app-home
-                                             :route "/@app-home"}
-                                            {:label :pages}]}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])]
+       [common/surface-breadcrumbs :pages.page-lister/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :pages}]
+                                    :disabled? lister-disabled?}]))
 
 (defn- label-bar
   []
-  [common/item-lister-label-bar :pages.page-lister
-                                {:create-item-uri "/@app-home/pages/create"
-                                 :label           :pages}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])]
+       [common/surface-label :pages.page-lister/view
+                             {:disabled? lister-disabled?
+                              :label     :pages}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- footer
+  []
+  [common/item-lister-download-info :pages.page-lister {}])
+
+(defn- body
+  []
+  [:div {:style {:display :flex :flex-direction :column-reverse}}
+        [:div {:style {:width "100%"}}
+              [page-lister-body]]
+        [page-lister-header]])
+
+(defn- header
+  []
+  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.page-lister])]
+          [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
+                     [label-bar]
+                     [create-item-button]]
+               [breadcrumbs]
+               [search-block]]
+          [common/item-lister-header-ghost-view :pages.page-lister {}]))
 
 (defn- view-structure
   []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [search-block]
-       [elements/horizontal-separator {:size :xxl}]
-       [wrapper]])
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [header]
+        [elements/horizontal-separator {:size :xxl}]
+        [body]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [footer]]])
 
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:page #'view-structure}])
+                    {:content #'view-structure}])

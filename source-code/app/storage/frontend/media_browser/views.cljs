@@ -23,10 +23,11 @@
 
 (defn- breadcrumbs
   []
-  [common/item-browser-breadcrumbs :storage.media-browser
-                                   {:crumbs [{:label :app-home
-                                              :route "/@app-home"}
-                                             {:label :storage}]}])
+  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+       [common/surface-breadcrumbs :storage.media-browser/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :storage}]
+                                    :disabled? browser-disabled?}]))
 
 (defn- label-bar
   []
@@ -35,9 +36,14 @@
         items @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
         size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
                     (components/content {:content :n-items :replacements [(count items)]}))]
-       [common/item-browser-label-bar :storage.media-browser
-                                      {:description size
-                                       :label       directory-alias}]))
+       [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
+             [common/surface-label :storage.media-browser/view
+                                   {:label directory-alias}]
+             [elements/label ::directory-info
+                             {:color     :highlight
+                              :content   size
+                              :indent    {:vertical :xs}
+                              :font-size :xxs}]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -71,10 +77,10 @@
                                                 (let [thumbnail (media/filename->media-thumbnail-uri filename)]
                                                      [common/list-item-thumbnail browser-id item-dex {:thumbnail thumbnail}])
                                                 [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
-                                            [common/list-item-label     browser-id item-dex {:content   alias     :stretch? true}]
-                                            [common/list-item-detail    browser-id item-dex {:content   size      :width "160px"}]
-                                            [common/list-item-detail    browser-id item-dex {:content   timestamp :width "160px"}]
-                                            [common/list-item-end-icon  browser-id item-dex {:icon      :more_vert}]]}]))
+                                            [common/list-item-label     browser-id item-dex {:content alias     :stretch? true}]
+                                            [common/list-item-detail    browser-id item-dex {:content size      :width "160px"}]
+                                            [common/list-item-detail    browser-id item-dex {:content timestamp :width "160px"}]
+                                            [common/list-item-end-icon  browser-id item-dex {:icon    :more_vert}]]}]))
 
 (defn file-item
   [browser-id item-dex file-item]
@@ -91,18 +97,13 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-lister-ghost-view :storage.media-browser
-                                 {:padding "0 12px"}])
-
-(defn media-browser
+(defn media-browser-body
   []
   [item-browser/body :storage.media-browser
                      {:auto-title?      true
                       :default-item-id   core.config/ROOT-DIRECTORY-ID
                       :default-order-by :modified-at/descending
-                      :ghost-element    #'ghost-view
+                      :ghost-element    #'common/item-lister-body-ghost-view
                       :item-path        [:storage :media-browser/browsed-item]
                       :items-path       [:storage :media-browser/downloaded-items]
                       :items-key        :items
@@ -117,7 +118,8 @@
   []
   (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
        [elements/icon-button ::upload-files-icon-button
-                             {:disabled?     browser-disabled?
+                             {:color         :secondary
+                              :disabled?     browser-disabled?
                               :border-radius :s
                               :hover-color   :highlight
                               :indent        {:top :xxs}
@@ -128,12 +130,14 @@
   []
   (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
        [elements/icon-button ::create-folder-icon-button
-                             {:disabled?     browser-disabled?
+                             {:color         :secondary
+                              :disabled?     browser-disabled?
                               :border-radius :s
                               :hover-color   :highlight
                               :indent        {:top :xxs}
                               :on-click      [:storage.media-browser/create-directory!]
-                              :icon          :create_new_folder}]))
+                              :icon          :create_new_folder
+                              :icon-family   :material-icons-outlined}]))
 
 (defn go-home-icon-button
   []
@@ -187,16 +191,33 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn view-structure
+(defn- footer
   []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [search-block]
-       [elements/horizontal-separator {:size :xxl}]
-       [:div {:style {:display :flex :flex-direction :column-reverse}}
-             [:div {:style {:width "100%"}}
-                   [media-browser]]
-             [media-browser-header]]])
+  [common/item-lister-download-info :storage.media-browser {}])
+
+(defn- body
+  []
+  [:div {:style {:display :flex :flex-direction :column-reverse}}
+        [:div {:style {:width "100%"}}
+              [media-browser-body]]
+        [media-browser-header]])
+
+(defn- header
+  []
+  (if-let [data-received? @(a/subscribe [:item-browser/data-received? :storage.media-browser])]
+          [:<> [label-bar]
+               [breadcrumbs]
+               [search-block]]
+          [common/item-lister-header-ghost-view :parts.part-lister {}]))
+
+(defn- view-structure
+  []
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [header]
+        [elements/horizontal-separator {:size :xxl}]
+        [body]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [footer]]])
 
 (defn view
   [surface-id]

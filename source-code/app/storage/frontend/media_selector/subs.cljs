@@ -1,10 +1,11 @@
 
 (ns app.storage.frontend.media-selector.subs
-    (:require [mid-fruits.candy  :refer [return]]
-              [mid-fruits.io     :as io]
-              [mid-fruits.vector :as vector]
-              [x.app-core.api    :as a :refer [r]]
-              [x.app-media.api   :as media]))
+    (:require [mid-fruits.candy         :refer [return]]
+              [mid-fruits.io            :as io]
+              [mid-fruits.vector        :as vector]
+              [plugins.item-browser.api :as item-browser]
+              [x.app-core.api           :as a :refer [r]]
+              [x.app-media.api          :as media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -31,7 +32,7 @@
 
 (defn file-selectable?
   [db [_ {:keys [mime-type]}]]
-  (if-let [extensions (get-in db [:storage :media-selector/selector-props :extensions])]
+  (if-let [extensions (r item-browser/get-meta-item db :storage.media-selector :extensions)]
           (let [extension (io/mime-type->extension mime-type)]
                (vector/contains-item? extensions extension))
           (return true)))

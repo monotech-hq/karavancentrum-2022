@@ -29,20 +29,15 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-lister-ghost-view :contents.content-lister
-                                 {:padding "0 12px"}])
-
-(defn- content-lister
+(defn- content-lister-body
   []
   [item-lister/body :contents.content-lister
                     {:default-order-by :modified-at/descending
                      :items-path       [:contents :content-lister/downloaded-items]
-                     :ghost-element    #'ghost-view
+                     :ghost-element    #'common/item-lister-body-ghost-view
                      :list-element     #'content-item}])
 
-(defn- header
+(defn- content-lister-header
   []
   [common/item-lister-header :contents.content-lister
                              {:cells [[common/item-lister-header-spacer :contents.content-lister
@@ -54,43 +49,71 @@
                                       [common/item-lister-header-spacer :contents.content-lister
                                                                         {:width "36px"}]]}])
 
-(defn- wrapper
-  []
-  [common/item-lister-wrapper :contents.content-lister
-                              {:item-list        #'content-lister
-                               :item-list-header #'header}])
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+(defn create-item-button
+  []
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.content-lister])
+        create-content-uri (str "/@app-home/contents/create")]
+       [common/item-lister-create-item-button :contents.content-lister
+                                              {:disabled?       lister-disabled?
+                                               :create-item-uri create-content-uri}]))
 
 (defn- search-block
   []
-  [common/item-lister-search-block :contents.content-lister
-                                   {:field-placeholder :search-in-contents}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.content-lister])]
+       [common/item-lister-search-block :contents.content-lister
+                                        {:disabled?         lister-disabled?
+                                         :field-placeholder :search-in-contents}]))
 
 (defn- breadcrumbs
   []
-  [common/item-lister-breadcrumbs :contents.content-lister
-                                  {:crumbs [{:label :app-home
-                                             :route "/@app-home"}
-                                            {:label :contents}]}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.content-lister])]
+       [common/surface-breadcrumbs :contents.content-lister/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :contents}]
+                                    :disabled? lister-disabled?}]))
 
 (defn- label-bar
   []
-  [common/item-lister-label-bar :contents.content-lister
-                                {:create-item-uri "/@app-home/contents/create"
-                                 :label           :contents}])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.content-lister])]
+       [common/surface-label :contents.content-lister/view
+                             {:disabled? lister-disabled?
+                              :label     :contents}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- footer
+  []
+  [common/item-lister-download-info :contents.content-lister {}])
+
+(defn- body
+  []
+  [:div {:style {:display :flex :flex-direction :column-reverse}}
+        [:div {:style {:width "100%"}}
+              [content-lister-body]]
+        [content-lister-header]])
+
+(defn- header
+  []
+  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :contents.content-lister])]
+          [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
+                     [label-bar]
+                     [create-item-button]]
+               [breadcrumbs]
+               [search-block]]
+          [common/item-lister-header-ghost-view :contents.content-lister {}]))
 
 (defn- view-structure
   []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [search-block]
-       [elements/horizontal-separator {:size :xxl}]
-       [wrapper]])
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [header]
+        [elements/horizontal-separator {:size :xxl}]
+        [body]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [footer]]])
 
 (defn view
   [surface-id]

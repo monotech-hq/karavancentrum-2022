@@ -15,7 +15,7 @@
   ;  {:content (map)}
   ;
   ; @return (map)
-  [env {:keys [content]}]
+  [_ {:keys [content]}]
   (io/write-edn-file! handler.config/WEBSITE-CONFIG-FILEPATH content)
   (return content))
 

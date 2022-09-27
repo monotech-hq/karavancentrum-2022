@@ -66,11 +66,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- ghost-view
-  []
-  [common/item-editor-ghost-view :contents.content-editor
-                                 {}])
-
 (defn- menu-bar
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
@@ -122,13 +117,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- header
+  []
+  [:<> [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :xxl}]
+       [menu-bar]])
+
 (defn- view-structure
   []
   [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [label-bar]
-        [breadcrumbs]
-        [elements/horizontal-separator {:size :xxl}]
-        [menu-bar]
+        [header]
         [view-selector]
         [elements/horizontal-separator {:size :xxl}]
         [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
@@ -139,7 +138,7 @@
   [item-editor/body :contents.content-editor
                     {:auto-title?      true
                      :form-element     #'view-structure
-                     :ghost-element    #'ghost-view
+                     :ghost-element    #'common/item-editor-ghost-view
                      :initial-item     {:visibility :public}
                      :item-path        [:contents :content-editor/edited-item]
                      :label-key        :name

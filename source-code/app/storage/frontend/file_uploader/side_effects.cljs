@@ -2,8 +2,8 @@
 (ns app.storage.frontend.file-uploader.side-effects
     (:require [app.storage.frontend.file-uploader.views :as file-uploader.views]
               [dom.api                                  :as dom]
-              [x.app-core.api                           :as a]
-              [x.app-tools.api                          :as tools]))
+              [tools.temporary-component.api            :as temporary-component]
+              [x.app-core.api                           :as a]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -18,8 +18,8 @@
 
 (defn open-file-selector!
   [uploader-id uploader-props]
-  (tools/append-temporary-component! [file-uploader.views/file-selector uploader-id uploader-props]
-                                    #(-> "storage--file-selector" dom/get-element-by-id .click)))
+  (temporary-component/append-component! [file-uploader.views/file-selector uploader-id uploader-props]
+                                        #(-> "storage--file-selector" dom/get-element-by-id .click)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

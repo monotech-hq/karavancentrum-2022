@@ -1,11 +1,12 @@
 
 (ns app.common.frontend.item-lister.views
-    (:require [app.common.frontend.surface.views :as surface.views]
-              [mid-fruits.candy                  :refer [param]]
-              [mid-fruits.keyword                :as keyword]
-              [x.app-components.api              :as components]
-              [x.app-core.api                    :as a]
-              [x.app-elements.api                :as elements]))
+    (:require [mid-fruits.candy     :refer [param]]
+              [mid-fruits.css       :as css]
+              [mid-fruits.keyword   :as keyword]
+              [mid-fruits.math      :as math]
+              [x.app-components.api :as components]
+              [x.app-core.api       :as a]
+              [x.app-elements.api   :as elements]))
 
 ;; -- List-item components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -106,17 +107,40 @@
         (if timestamp              [elements/label {:content timestamp   :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])
         (if description            [elements/label {:content description :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])])
 
+(defn list-item-end-icon-progress
+  ; @param (keyword) lister-id
+  ; @param (integer) item-dex
+  ; @param (map) cell-props
+  ;  {:icon (keyword)
+  ;   :progress (percent)
+  ;   :progress-duration (ms)
+  ;   :style (map)(opt)}
+  ;
+  ; @usage
+  ;  [common/list-item-end-icon-progress :my-lister 0 {...}]
+  [_ _ {:keys [progress progress-duration]}]
+  (let [percent             (math/percent-result 69.11 progress)
+        stroke-dasharray    (str percent" "(- 100 percent))
+        transition-duration (css/ms progress-duration)
+        transition          (if progress (str "stroke-dasharray " transition-duration " linear"))]
+       [:svg {:view-box "0 0 24 24" :style {:position "absolute" :width "24px" :height "24px"}}
+             [:circle {:style {:width "24px" :height "24px" :fill "transparent" :transition transition}
+                       :stroke "var( --border-color-primary )" :stroke-dasharray stroke-dasharray
+                       :stroke-width "2" :cx "12" :cy "12" :r "11"}]]))
+
 (defn list-item-end-icon
   ; @param (keyword) lister-id
   ; @param (integer) item-dex
   ; @param (map) cell-props
   ;  {:icon (keyword)
+  ;   :progress (percent)
   ;   :style (map)(opt)}
   ;
   ; @usage
   ;  [common/list-item-end-icon :my-lister 0 {...}]
-  [_ _ {:keys [icon style]}]
-  [elements/icon {:icon icon :indent {:right :xs} :size :s :style style}])
+  [lister-id item-dex {:keys [icon style] :as cell-props}]
+  [:div [list-item-end-icon-progress lister-id item-dex cell-props]
+        [elements/icon {:icon icon :indent {:right :xs} :size :s :style style}]])
 
 (defn list-item-structure
   ; @param (keyword) lister-id
@@ -135,132 +159,55 @@
        (reduce conj [:div {:style {:align-items "center" :border-bottom (if-not item-last? "1px solid #f0f0f0") :display "flex"}}]
                     (param cells))))
 
-;; -- Breadcrumbs components --------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn item-lister-breadcrumbs
-  ; @param (keyword) lister-id
-  ; @param (map) breadcrumbs-props
-  ;  {:crumbs (maps in vector)}
-  ;
-  ; @usage
-  ;  [common/item-lister-breadcrumbs :my-lister {...}]
-  [lister-id {:keys [crumbs]}]
-  (if-let [error-mode? @(a/subscribe [:item-lister/get-meta-item lister-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-lister felületen nem jelenik meg!
-          (let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])
-                lister-disabled?     @(a/subscribe [:item-lister/lister-disabled?     lister-id])]
-               [surface.views/surface-breadcrumbs nil
-                                                  {:crumbs    crumbs
-                                                   :disabled? lister-disabled?
-                                                   :loading?  (not first-data-received?)}])))
-
-;; -- Label-bar components ----------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn create-item-button
-  ; @param (keyword) lister-id
-  ; @param (map) bar-props
-  ;  {:create-item-uri (string)}
-  ;
-  ; @usage
-  ;  [common/create-item-button :my-lister {...}]
-  [lister-id {:keys [create-item-uri]}]
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])]
-          (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? lister-id])]
-               [elements/button ::create-item-button
-                                {:background-color "#5a4aff"
-                                 :color            "white"
-                                 :disabled?        lister-disabled?
-                                 :font-size        :xs
-                                 :font-weight      :extra-bold
-                                 :icon             :add
-                                 :label            :add!
-                                 :on-click         [:router/go-to! create-item-uri]
-                                 :style            {:line-height "48px"}}])))
-
-(defn item-lister-label
-  ; @param (keyword) lister-id
-  ; @param (map) bar-props
-  ;  {:label (metamorphic-content)}
-  ;
-  ; @usage
-  ;  [common/item-lister-label :my-lister {...}]
-  [lister-id {:keys [label]}]
-  (let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])
-        lister-disabled?     @(a/subscribe [:item-lister/lister-disabled?     lister-id])]
-       [surface.views/surface-label nil
-                                    {:disabled? lister-disabled?
-                                     :label     label
-                                     :loading?  (not first-data-received?)}]))
-
-(defn item-lister-label-bar
-  ; @param (keyword) lister-id
-  ; @param (map) bar-props
-  ;  {:create-item-uri (string)(opt)
-  ;   :label (metamorphic-content)}
-  ;
-  ; @usage
-  ;  [common/item-lister-label-bar :my-lister {...}]
-  [lister-id {:keys [create-item-uri] :as bar-props}]
-  (if-let [error-mode? @(a/subscribe [:item-lister/get-meta-item lister-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-lister felületen nem jelenik meg!
-          [elements/horizontal-polarity ::item-lister-label-bar
-                                        {:start-content                     [item-lister-label  lister-id bar-props]
-                                         :end-content   (if create-item-uri [create-item-button lister-id bar-props])}]))
-
 ;; -- Search-block components -------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn item-lister-search-field
   ; @param (keyword) lister-id
   ; @param (map) block-props
-  ;  {:field-placeholder (metamorphic-content)(opt)}
+  ;  {:disabled? (boolean)(opt)
+  ;   :field-placeholder (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/item-lister-search-field :my-lister {...}]
-  [lister-id {:keys [field-placeholder]}]
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? lister-id])]
-          (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? lister-id])
-                search-event [:item-lister/search-items! lister-id {:search-keys [:name]}]]
-               [elements/search-field ::search-items-field
-                                      {:autoclear?    true
-                                       :autofocus?    true
-                                       :disabled?     lister-disabled?
-                                       :indent        {:left :xs :right :xs}
-                                       :on-empty      search-event
-                                       :on-type-ended search-event
-                                       :placeholder   field-placeholder}])
-          [elements/ghost {:height :l :indent {:left :xs :right :xs}}]))
+  [lister-id {:keys [disabled? field-placeholder]}]
+  (let [search-event [:item-lister/search-items! lister-id {:search-keys [:name]}]]
+       [elements/search-field ::search-items-field
+                              {:autoclear?    true
+                               :autofocus?    true
+                               :disabled?     disabled?
+                               :indent        {:left :xs :right :xs}
+                               :on-empty      search-event
+                               :on-type-ended search-event
+                               :placeholder   field-placeholder}]))
 
 (defn item-lister-search-description
   ; @param (keyword) lister-id
   ; @param (map) block-props
+  ;  {:disabled? (boolean)(opt)}
   ;
   ; @usage
   ;  [common/item-lister-search-description :my-lister {...}]
-  [lister-id _]
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled?   lister-id])
-        all-item-count   @(a/subscribe [:item-lister/get-all-item-count lister-id])
-        description       (components/content {:content :search-results-n :replacements [all-item-count]})]
+  [lister-id {:keys [disabled?]}]
+  (let [all-item-count @(a/subscribe [:item-lister/get-all-item-count lister-id])
+        description     (components/content {:content :search-results-n :replacements [all-item-count]})]
        [elements/label ::search-items-description
                        {:color     :muted
-                        :content   (if-not lister-disabled? description)
+                        :content   (if-not disabled? description)
                         :font-size :xxs
                         :indent    {:top :m :left :xs}}]))
 
 (defn item-lister-search-block
   ; @param (keyword) lister-id
   ; @param (map) block-props
-  ;  {:field-placeholder (metamorphic-content)(opt)}
+  ;  {:disabled? (boolean)(opt)}
+  ;   :field-placeholder (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/item-lister-search-block :my-lister {...}]
   [lister-id block-props]
-  (if-let [error-mode? @(a/subscribe [:item-lister/get-meta-item lister-id :error-mode?])]
-          [:<>] ; A komponens {:error-mode? true} állapotú item-lister felületen nem jelenik meg!
-          [:<> [item-lister-search-description lister-id block-props]
-               [item-lister-search-field       lister-id block-props]]))
+  [:<> [item-lister-search-description lister-id block-props]
+       [item-lister-search-field       lister-id block-props]])
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -322,50 +269,84 @@
   ;  [common/item-lister-header :my-lister {...}]
   [lister-id {:keys [cells control-bar]}]
   (if-let [data-received? @(a/subscribe [:item-lister/data-received? lister-id])]
-          [:div {:style {:background-color "rgba(255,255,255,.95)" :border-bottom "1px solid #ddd" :display "flex"
+          [:div {:style {:background-color "rgba(255,255,255,.98)" :border-bottom "1px solid #ddd" :display "flex"
                          :flex-direction   "column"  :position      "sticky"         :top     "48px"}}
                 (if control-bar [components/content control-bar])
                 (letfn [(f [wrapper cell] (conj wrapper cell))]
                        (reduce f [:div {:style {:display "flex" :width "100%"}}] cells))]))
 
-(defn item-lister-wrapper
-  ; @param (keyword) lister-id
-  ; @param (map) wrapper-props
-  ;  {:item-list (symbol)
-  ;   :item-list-header (symbol)}
-  ;
-  ; @usage
-  ;  [common/item-lister-wrapper :my-lister {...}]
-  ;
-  ; @usage
-  ;  (defn my-item-list [])
-  ;  (defn my-item-list-header [])
-  ;  [common/item-lister-wrapper :my-lister {:item-list        #'my-item-list
-  ;                                          :item-list-header #'my-item-list-header}]
-  [_ {:keys [item-list item-list-header]}]
-  ; Az item-list-header komponenst szükséges a DOM-fában később elhelyezni, mint az item-list komponenst,
-  ; így biztosítható, hogy görgetéskor a {position: sticky} pozícionálással megjelenített item-list-header
-  ; komponens az item-list komponens felett (z-tengely) jelenjen meg.
-  ;
-  ; A {:flex-direction :column-reverse} beállítás használatával kiküszöbölhető, hogy a {z-index: ...}
-  ; css tulajdonságot kelljen használni (𖤐 z-index 𖤐 666 𖤐 satan 𖤐)
-  [:div {:style {:display :flex :flex-direction :column-reverse}}
-        [:div {:style {:width "100%"}}
-              [item-list]]
-        [item-list-header]])
-
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn item-lister-ghost-view
+(defn item-lister-body-ghost-view
   ; @param (keyword) lister-id
   ; @param (map) view-props
-  ;  {:padding (string)(opt)}
   ;
   ; @usage
-  ;  [common/item-lister-ghost-view :my-lister {...}]
-  [_ {:keys [padding]}]
-  [:div {:style {:width "100%" :display "flex" :flex-direction "column" :padding padding}}
-        [elements/ghost {:height :l :style {:flex-grow :1} :indent {}}]
-        [elements/ghost {:height :l :style {:flex-grow :1} :indent {:top :xs}}]
-        [elements/ghost {:height :l :style {:flex-grow :1} :indent {:top :xs}}]])
+  ;  [common/item-lister-body-ghost-view :my-lister {...}]
+  [_ {:keys []}]
+  [:div {:style {:padding "0 12px" :width "100%"}}
+        [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px"}}
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]]])
+
+(defn item-lister-header-ghost-view
+  ; @param (keyword) lister-id
+  ; @param (map) view-props
+  ;
+  ; @usage
+  ;  [common/item-lister-header-view :my-lister {...}]
+  [_ {:keys []}]
+  [:div {:style {:padding "0 12px" :width "100%"}}
+        [:div {:style {:padding-bottom "6px" :width "240px"}}
+              [elements/ghost {:height :xl}]]
+        [:div {:style {:display "flex" :grid-column-gap "12px" :padding-top "6px"}}
+              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]
+              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]]
+        [:div {:style {:width "100%" :padding-top "48px"}}
+              [elements/ghost {:height :l}]]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-lister-create-item-button
+  ; @param (keyword) lister-id
+  ; @param (map) button-props
+  ;  {:disabled? (boolean)(opt)
+  ;   :create-item-uri (string)}
+  ;
+  ; @usage
+  ;  [common/item-lister-create-item-button :my-lister {...}]
+  [_ {:keys [disabled? create-item-uri]}]
+  [elements/button ::create-item-button
+                   {:background-color "#5a4aff"
+                    :color            "white"
+                    :disabled?        disabled?
+                    :font-size        :xs
+                    :font-weight      :extra-bold
+                    :icon             :add
+                    :indent           {:vertical :xs}
+                    :label            :add!
+                    :on-click         [:router/go-to! create-item-uri]
+                    :style            {:line-height "48px" :padding "0 24px 0 18px"}}])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-lister-download-info
+  ; @param (keyword) lister-id
+  ; @param (map) info-props
+  ;
+  ; @usage
+  ;  [common/item-lister-download-info :my-lister {...}]
+  [lister-id _]
+  (let [all-item-count        @(a/subscribe [:item-lister/get-all-item-count        lister-id])
+        downloaded-item-count @(a/subscribe [:item-lister/get-downloaded-item-count lister-id])
+        content {:content :npn-items-downloaded :replacements [downloaded-item-count all-item-count]}]
+       [elements/horizontal-polarity ::item-lister-download-info
+                                     {:middle-content [elements/label ::item-lister-download-info-label
+                                                                      {:color     :highlight
+                                                                       :content   content
+                                                                       :font-size :xxs
+                                                                       :indent    {:horizontal :xxs}}]}]))

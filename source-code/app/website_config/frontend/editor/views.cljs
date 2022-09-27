@@ -17,12 +17,15 @@
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [storage/media-picker ::company-logo-picker
-                             {:disabled?    editor-disabled?
-                              :indent       {:top :l :vertical :xs}
-                              :label        :logo
-                              :toggle-label :select-image!
-                              :thumbnails   {:height :2xl :width :4xl}
-                              :value-path   [:website-config :config-editor/edited-item :company-logo-uri]}]))
+                             {:autosave?     true
+                              :disabled?     editor-disabled?
+                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
+                              :indent        {:top :l :vertical :xs}
+                              :label         :logo
+                              :multi-select? false
+                              :toggle-label  :select-image!
+                              :thumbnails    {:height :2xl :width :4xl}
+                              :value-path    [:website-config :config-editor/edited-item :company-logo-uri]}]))
 
 (defn- company-slogan-field
   []
@@ -333,13 +336,16 @@
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
        [storage/media-picker ::share-preview-picker
-                             {:disabled?    editor-disabled?
-                              :indent       {:top :l :vertical :xs}
-                              :info-text    {:content :recommended-image-size-n :replacements ["1200" "630"]}
-                              :label        :share-preview
-                              :toggle-label :select-image!
-                              :thumbnails   {:height :2xl :width :4xl}
-                              :value-path   [:website-config :config-editor/edited-item :share-preview-uri]}]))
+                             {:autosave?     true
+                              :disabled?     editor-disabled?
+                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
+                              :indent        {:top :l :vertical :xs}
+                              :info-text     {:content :recommended-image-size-n :replacements ["1200" "630"]}
+                              :label         :share-preview
+                              :multi-select? false
+                              :toggle-label  :select-image!
+                              :thumbnails    {:height :2xl :width :4xl}
+                              :value-path    [:website-config :config-editor/edited-item :share-preview-uri]}]))
 
 (defn- share
   []
@@ -350,70 +356,77 @@
 
 (defn- menu-bar
   []
-  [common/file-editor-menu-bar :website-config
-                               {:menu-items [{:change-keys [:company-name :company-slogan :company-logo]
-                                              :label   :basic-info
-                                              :view-id :basic-info}
-                                             {:change-keys [:contact-groups]
-                                              :label   :contacts-data
-                                              :view-id :contacts-data}
-                                             {:change-keys [:address-groups]
-                                              :label   :address-data
-                                              :view-id :address-data}
-                                             {:change-keys [:facebook-links :instagram-links :youtube-links]
-                                              :label   :social-media
-                                              :view-id :social-media}
-                                             {:change-keys [:meta-name :meta-title :meta-keywords :meta-description]
-                                              :label   :seo
-                                              :view-id :seo}
-                                             {:change-keys [:share-preview]
-                                              :label   :share
-                                              :view-id :share}]}])
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
+       [common/file-editor-menu-bar :website-config
+                                    {:menu-items [{:label :basic-info    :change-keys [:company-name :company-slogan :company-logo]}
+                                                  {:label :contacts-data :change-keys [:contact-groups]}
+                                                  {:label :address-data  :change-keys [:address-groups]}
+                                                  {:label :social-media  :change-keys [:facebook-links :instagram-links :youtube-links]}
+                                                  {:label :seo           :change-keys [:meta-name :meta-title :meta-keywords :meta-description]}
+                                                  {:label :share         :change-keys [:share-preview]}]
+                                     :disabled? editor-disabled?}]))
 
 (defn- view-selector
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :website-config])]
-       [:<> [menu-bar]
-            (case current-view-id :basic-info    [basic-info]
-                                  :contacts-data [contacts-data]
-                                  :address-data  [address-data]
-                                  :social-media  [social-media]
-                                  :seo           [seo]
-                                  :share         [share])]))
+       (case current-view-id :basic-info    [basic-info]
+                             :contacts-data [contacts-data]
+                             :address-data  [address-data]
+                             :social-media  [social-media]
+                             :seo           [seo]
+                             :share         [share])))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- control-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
+       [common/file-editor-control-bar :website-config
+                                       {:disabled? editor-disabled?}]))
+
+(defn- breadcrumbs
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
+       [common/surface-breadcrumbs :website-config/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :website-config}]
+                                    :disabled? editor-disabled?}]))
+
+(defn- label-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-config])]
+       [common/surface-label :website-config/view
+                             {:disabled? editor-disabled?
+                              :label     :website-config}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- header
+  []
+  [:<> [label-bar]
+       [breadcrumbs]
+       [elements/horizontal-separator {:size :xxl}]
+       [menu-bar]])
+
+(defn- view-structure
+  []
+  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+        [header]
+        [view-selector]
+        [elements/horizontal-separator {:size :xxl}]
+        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
+              [control-bar]]])
 
 (defn- website-config-editor
   []
   [file-editor/body :website-config
                     {:content-path  [:website-config :config-editor/edited-item]
-                     :form-element  #'view-selector
+                     :form-element  #'view-structure
                      :ghost-element #'common/file-editor-ghost-view}])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- breadcrumbs
-  []
-  [common/file-editor-breadcrumbs :website-config
-                                  {:crumbs [{:label :app-home
-                                             :route "/@app-home"}
-                                            {:label :website-config}]}])
-
-(defn- label-bar
-  []
-  [common/file-editor-label-bar :website-config
-                                {:label :website-config}])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- view-structure
-  []
-  [:<> [label-bar]
-       [breadcrumbs]
-       [elements/horizontal-separator {:size :xxl}]
-       [website-config-editor]])
 
 (defn view
   [surface-id]
   [surface-a/layout surface-id
-                    {:content #'view-structure}])
+                    {:content #'website-config-editor}])
