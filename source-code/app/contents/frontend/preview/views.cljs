@@ -69,7 +69,8 @@
 (defn- content-preview-body
   ; @param (keyword) preview-id
   ; @param (map) preview-props
-  [preview-id {:keys [item-id] :as preview-props}]
+  ;  {}
+  [preview-id {:keys [item-id preview] :as preview-props}]
   [item-preview/body preview-id
                      {:ghost-element   #'common/item-preview-ghost-element
                       :error-element   [common/error-element {:error :the-content-has-been-broken}]

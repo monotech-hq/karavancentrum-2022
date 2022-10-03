@@ -1,6 +1,7 @@
 
 (ns site.karavancentrum.pages.vehicle.frontend.views
-  (:require [app.contents.frontend.api :as contents]
+  (:require [app.common.frontend.api :as common]
+            [app.contents.frontend.api :as contents]
     [re-frame.api :as r]
     [utils.html-parser :refer [html->hiccup]]
     [site.karavancentrum.components.api :as site.karavancentrum.components.frontend]
@@ -16,16 +17,14 @@
            ^{:key src}
            [:div {:style {:align-self "center"}}
             [:img {:src src}]])
-         images)]
-   [:div (str images "xxx")]])
+         images)]])
 
 (defn vehicle-name [{:vehicle/keys [name]}]
   [:h1#vehicle-page--title name])
 
 (defn vehicle-content [{:vehicle/keys [description]}]
   [:div#vehicle-page--content
-    [contents/content-preview {:item-id (:content/id description)}]
-    [:div "xxx"]])
+    [contents/content-preview {:item-id (:content/id description)}]])
 
 (defn vehicle-view [vehicle]
     [:<> [slideshow vehicle]
@@ -65,11 +64,11 @@
 
 (defn view-structure []
   (let [vehicles @(r/subscribe [:vehicle/get-all-by-link])]
-       [:main#vehicle-page--content
+       [:main#vehicle-page--wrapper
           (if (= 1 (count vehicles))
             [vehicle-view (first vehicles)]
-            [vehicles-view vehicles])
-          [:div "xx"]]))
+            [vehicles-view vehicles])]))
+
 
 ;; ---- Components ----
 ;; --------------------------------------------------------------------------

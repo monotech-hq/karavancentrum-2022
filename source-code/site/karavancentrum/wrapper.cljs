@@ -1,6 +1,6 @@
 
 (ns site.karavancentrum.wrapper
-  (:require
+  (:require [app.common.frontend.api :as common]
    [x.app-core.api :as a :refer [r]]
    [x.app-components.api :as components]
 
@@ -37,20 +37,14 @@
 (defn header []
   [navbar])
 
-(defn footer []
-  [site.karavancentrum.modules.frontend/footer
-   [:div [site.karavancentrum.components.frontend/link {:prefix "mailto:"} "iroda@karavancentrum.hu"]]
-   [:div [site.karavancentrum.components.frontend/link {:href "hali"} "karavancentrum.hu"]]])
-
 (defn site-wrapper [ui-structure]
   [:div#karavancentrum
    [header]
-   [ui-structure]])
-   ; [footer]])
+   [ui-structure]
+   [common/credits]])
 
 (defn view [ui-structure]
-  [site-wrapper
-   ui-structure])
+  [site-wrapper ui-structure])
 
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------

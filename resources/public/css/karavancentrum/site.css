@@ -8,8 +8,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 
 body {
-  --site-width: 1200px;
-  font-family: 'Poppins'
+  --site-width: 1024px;
+  font-family: 'Poppins';
+  background-color: #f4f7f6;
 }
 
 /***** Website *****/
@@ -268,10 +269,10 @@ body {
 
   justify-content: space-between;
 
-  max-width: var(--site-width);
+  -max-width: var(--site-width);
   height: 75px;
   margin: 0px auto;
-  padding: 0 12px;
+  padding: 0 24px;
 }
 
 #navbar[data-layout="mobile"] #navbar--container {
@@ -640,17 +641,25 @@ body {
 /******************************************************************************/
 /**** Vehicle page ****/
 
-#vehicle-page--content {
+#vehicle-page--wrapper {
   max-width: var(--site-width);
   margin: 0 auto;
-  padding: 75px 0; /* push content down with navbar height */
+  padding: 150px 0;
   display: flex;
+
   flex-direction: column;
   align-items: center;
 }
 
+#vehicle-page--content {
+  padding: 24px;
+  border-radius: 25px;
+  background-color: white }
+
 #vehicle-page--slider li {
     align-self: center;
+    border-radius: 25px;
+    overflow: hidden;
 }
 
 #vehicle-page--title {
