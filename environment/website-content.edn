@@ -1,7 +1,21 @@
 
-{:debug "x" 
- :about-us nil 
- :rent-informations "6329e1f1e041041784616b84" 
- :address-data-information nil 
+{:about-us {:content/id "633ac0b2e0410454f019cb92"} 
+ :about-us-section {:content/id "633ac0b2e0410454f019cb92"} 
+ :debug "x" 
+ :webshop-link "webshop.karavancentrum.hu" 
+ :contacts-data-information {:content/id "633ac074e0410454f019cb91"} 
+ :about-us-page {:content/id "633ac0c8e0410454f019cb93"} 
+ :address-data-information {:content/id "633ac053e0410454f019cb8f"} 
  :more-brands [] 
- :contacts-data-information nil}
+ :rent-informations {:content/id "633abf61e0410454f019cb86"} 
+ :brands 
+ [{:label "XGO lakóautók" 
+   :link "xgolakoautok.hu" 
+   :description 
+   "Kimagaslóan jó ár-érték arányú járművek a több, mint 40 éves lakóautó\ngyártási tapasztalattal rendelkező olasz Rimor cégtől.\n7 alkóvos, 6 részintegrált, 2 kempingbusz modell" 
+   :logo "/media/storage/633ac00ae0410454f019cb8c.png"} 
+  {:label "Wörmann utánfutók" 
+   :link "woermann.karavancentrum.hu" 
+   :description 
+   "Közel 400 utánfutó modell\n2.000 db azonnal elhozható utánfutó\nForgalomba helyezés, házhoz szállítás" 
+   :logo "/media/storage/633abfbae0410454f019cb88.png"}]}

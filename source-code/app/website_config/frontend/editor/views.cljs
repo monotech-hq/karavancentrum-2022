@@ -31,7 +31,7 @@
                             {:autofocus?  true
                              :disabled?   editor-disabled?
                              :indent      {:top :m :vertical :s}
-                             :label       :company-name
+                             :label       :name
                              :min-width   :xs
                              :placeholder :company-name-placeholder
                              :value-path  [:website-config :editor/edited-item :company-name]}]))

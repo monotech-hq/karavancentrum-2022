@@ -14,24 +14,55 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- about-us-picker
+(defn- about-us-section-picker
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [contents/content-picker ::about-us-picker
+       [contents/content-picker ::about-us-section-picker
                                 {:disabled?  editor-disabled?
                                  :indent     {:vertical :s}
-                                 :value-path [:website-content :editor/edited-item :about-us]}]))
+                                 :value-path [:website-content :editor/edited-item :about-us-section]}]))
+
+(defn- about-us-section
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::about-us-section
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [about-us-section-picker]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :about-us-section}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- about-us-page-picker
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [contents/content-picker ::about-us-page-picker
+                                {:disabled?  editor-disabled?
+                                 :indent     {:vertical :s}
+                                 :value-path [:website-content :editor/edited-item :about-us-page]}]))
+
+(defn- about-us-page
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::about-us-page
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [about-us-page-picker]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :indent    {:top :m}
+                            :label     :about-us-page}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- about-us
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::about-us
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [about-us-picker]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :about-us}]))
+  [:<> [about-us-section]
+       [about-us-page]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -279,7 +310,7 @@
                                                   {:label :selling  :change-keys [:brands]}
                                                   {:label :webshop  :change-keys [:webshop-link]}
                                                   {:label :contacts :change-keys [:address-data-information :contacts-data-information]}
-                                                  {:label :about-us :change-keys [:about-us]}]
+                                                  {:label :about-us :change-keys [:about-us-section :about-us-page]}]
                                      :disabled? editor-disabled?}]))
 
 (defn- body

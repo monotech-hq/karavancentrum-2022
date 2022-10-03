@@ -57,11 +57,9 @@
     [:div#vehicles--container
        (map vehicle data)]))
 
-
 (defn section-2 []
   (lifecycles
-    {:component-did-mount (fn []
-                            (r/dispatch [:main-page.filters/init!]))
+    {:component-did-mount (fn [] (r/dispatch [:main-page.filters/init!]))
      :reagent-render
      (fn []
        [:section#section-2

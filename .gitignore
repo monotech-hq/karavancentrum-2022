@@ -1,15 +1,15 @@
 
 # log files
-monoset-environment/log
+environment/log
 
 # uploaded files
-monoset-environment/media/storage/*
-monoset-environment/media/thumbnails/*
+environment/media/storage/*
+environment/media/thumbnails/*
 
 # default thumbnail & sample file
-!monoset-environment/media/thumbnails/default.png
-!monoset-environment/media/thumbnails/sample.png
-!monoset-environment/media/storage/sample.png
+!environment/media/thumbnails/default.png
+!environment/media/thumbnails/sample.png
+!environment/media/storage/sample.png
 
 # config files
 resources/public/x.app-build.edn
@@ -18,10 +18,7 @@ resources/public/x.app-build.edn
 mono-app.jar
 
 # Log
-log/x.server-events.log
-log/pathom.handler-regs.log
-log/x.server-events.log
-monoset-environment/log/pathom.handler-regs.log
+environment/log
 
 # system files
 .DS_Store

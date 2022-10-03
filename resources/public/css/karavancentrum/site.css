@@ -271,6 +271,7 @@ body {
   max-width: var(--site-width);
   height: 75px;
   margin: 0px auto;
+  padding: 0 12px;
 }
 
 #navbar[data-layout="mobile"] #navbar--container {
@@ -330,14 +331,13 @@ body {
 
 #hero {
     height: calc(var(--vh) * 100);
-    background-position: left 60%;
+    background-position: 55% 60%;
     background-image: url(/images/hero.jpg);
     background-size: cover;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center
-}
+    justify-content: center }
 
 #company-name-and-slogan {
   display: flex;

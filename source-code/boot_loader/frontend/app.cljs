@@ -11,16 +11,16 @@
               [app.views.frontend.api]
               [app.website-config.frontend.api]
               [app.website-content.frontend.api]
-
-              ; *
-              [x.boot-loader.api :as boot-loader]))
+              [x.app-developer.api :as developer]
+              [x.boot-loader.api   :as boot-loader]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- app-structure
   [ui-structure]
-  [ui-structure])
+  [:<> [ui-structure]
+       [developer/magic-button]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
