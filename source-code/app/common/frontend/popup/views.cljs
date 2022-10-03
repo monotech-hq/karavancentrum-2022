@@ -78,7 +78,6 @@
 ;; -- Progress-indicator components ---------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; WARNING! DEPRECATED! DO NOT USE!
 (defn popup-progress-label
   ; @param (keyword) popup-id
   ; @param (map) indicator-props
@@ -91,9 +90,7 @@
   [elements/label ::popup-progress-label
                   {:color   (or color :muted)
                    :content label}])
-; WARNING! DEPRECATED! DO NOT USE!
 
-; WARNING! DEPRECATED! DO NOT USE!
 (defn popup-progress-indicator
   ; @param (keyword) popup-id
   ; @param (map) indicator-props
@@ -110,4 +107,3 @@
                     :indent              indent
                     :stretch-orientation :vertical
                     :vertical-align      :center}])
-; WARNING! DEPRECATED! DO NOT USE!

@@ -59,36 +59,22 @@
 
 (defn- breadcrumbs
   []
-  (let [loaded? @(a/subscribe [:db/get-item [:home :menu-handler/loaded?]])]
-       [common/surface-breadcrumbs :home/view
-                                   {:crumbs [{:label :app-home}]
-                                    :loading? (not loaded?)}]))
+  [common/surface-breadcrumbs :home/view
+                              {:crumbs [{:label :app-home}]}])
 
 (defn- home-title
   []
-  (let [loaded?   @(a/subscribe [:db/get-item [:home :menu-handler/loaded?]])
-        app-title @(a/subscribe [:core/get-app-config-item :app-title])]
+  (let [app-title @(a/subscribe [:core/get-app-config-item :app-title])]
        [common/surface-label :home/view
-                             {:label app-title
-                              :loading? (not loaded?)}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- ghost-view
-  []
-  [:div {:style {:display :flex :flex-wrap :wrap}}
-        [elements/ghost {:border-radius :m :height :xxl :style {:width "240px"} :indent {:vertical :xs :top :xxl}}]
-        [elements/ghost {:border-radius :m :height :xxl :style {:width "240px"} :indent {:vertical :xs :top :xxl}}]
-        [elements/ghost {:border-radius :m :height :xxl :style {:width "240px"} :indent {:vertical :xs :top :xxl}}]])
+                             {:label app-title}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- label-group-item-content
-  [{:keys [color icon icon-family label]}]
+  [{:keys [icon icon-color icon-family label]}]
   [:div {:style {:display :flex}}
-        [elements/icon {:color       color
+        [elements/icon {:color       icon-color
                         :icon        icon
                         :icon-family icon-family
                         :indent      {:horizontal :xs}
@@ -123,38 +109,27 @@
                   (conj label-group-list [label-group label (get label-groups label)]))]
               (reduce f [:<>] (-> label-groups keys sort)))))
 
-(defn- vertical-group-label
-  [group-name]
-  (let [group-items @(a/subscribe [:home/get-menu-group-items group-name])]
-       (if (vector/nonempty? group-items)
-           [elements/label {:color     :muted
-                            :content   group-name
-                            :font-size :l
-                            :indent    {:bottom :xs :left :xs :top :xxs}}])))
-
 (defn- vertical-group
   [group-name]
   ; Az azonos vertical-group csoportokban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
   (let [group-items @(a/subscribe [:home/get-menu-group-items group-name])]
        (if (vector/nonempty? group-items)
-           [:div {:style {:margin-top "48px"}}
-                 [vertical-group-label group-name]
-                 [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px"}}
-                       (let [horizontal-groups (group-by :horizontal-weight group-items)]
-                            (letfn [(f [horizontal-group-list horizontal-weight]
-                                       (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
-                                   (reduce f [:<>] (-> horizontal-groups keys sort))))]])))
+           [common/surface-box {:indent  {:top :m}
+                                :content [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px" :padding "12px 0"}}
+                                               (let [horizontal-groups (group-by :horizontal-weight group-items)]
+                                                    (letfn [(f [horizontal-group-list horizontal-weight]
+                                                               (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
+                                                           (reduce f [:<>] (-> horizontal-groups keys sort))))]
+                                :label group-name}])))
 
 (defn- menu-groups
   []
   ; A menü elemek elsődlegesen a group tulajdonságuk szerint csoportosítva
   ; vannak felsorolva a vertical-group csoportokban.
-  (if-let [loaded? @(a/subscribe [:db/get-item [:home :menu-handler/loaded?]])]
-          (letfn [(f [vertical-group-list group-name]
-                     (conj vertical-group-list [vertical-group group-name]))]
-                 (reduce f [:<>] config/GROUP-ORDER))
-          [ghost-view]))
+  (letfn [(f [vertical-group-list group-name]
+             (conj vertical-group-list [vertical-group group-name]))]
+         (reduce f [:<>] config/GROUP-ORDER)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -162,10 +137,12 @@
 (defn- view-structure
   ; @param (keyword) surface-id
   [surface-id]
-  [:<> [home-title]
-       [breadcrumbs]
-       ;[elements/horizontal-separator {:size :xxl}]
-       [menu-groups]])
+  (if-let [loaded? @(a/subscribe [:db/get-item [:home :menu-handler/loaded?]])]
+          [:<> [home-title]
+               [breadcrumbs]
+               ;[elements/horizontal-separator {:size :xxl}]
+               [menu-groups]]
+          [common/surface-box-layout-ghost-view :home/view {:breadcrumb-count 1}]))
 
 (defn view
   ; @param (keyword) surface-id

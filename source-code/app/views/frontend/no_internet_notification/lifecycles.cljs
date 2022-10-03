@@ -1,11 +1,11 @@
 
 (ns app.views.frontend.no-internet-notification.lifecycles
-    (:require [x.app-core.api :as a]))
+    (:require [x.app-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
   {:on-browser-offline [:views.no-internet-notification/blow-no-internet-bubble?!]
    :on-app-launch      [:views.no-internet-notification/blow-no-internet-bubble?!]

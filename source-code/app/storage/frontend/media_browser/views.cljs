@@ -16,10 +16,28 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- directory-info
+  []
+  (let [size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
+        items @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
+        size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
+                    (components/content {:content :n-items :replacements [(count items)]}))]
+       [elements/label ::directory-info
+                       {:color            :highlight
+                        :content          size
+                        :indent           {:top :m :vertical :xs}
+                        :font-size        :xxs
+                        :horizontal-align :right}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- search-block
   []
-  [common/item-browser-search-block :storage.media-browser
-                                    {:field-placeholder :search-in-the-directory}])
+  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+       [common/item-browser-search-block :storage.media-browser
+                                         {:disabled?         browser-disabled?
+                                          :field-placeholder :search-in-the-directory}]))
 
 (defn- breadcrumbs
   []
@@ -31,19 +49,11 @@
 
 (defn- label-bar
   []
-  (let [directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])
-        size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
-        items @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
-        size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
-                    (components/content {:content :n-items :replacements [(count items)]}))]
-       [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
-             [common/surface-label :storage.media-browser/view
-                                   {:label directory-alias}]
-             [elements/label ::directory-info
-                             {:color     :highlight
-                              :content   size
-                              :indent    {:vertical :xs}
-                              :font-size :xxs}]]))
+  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])
+        directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])]
+       [common/surface-label :storage.media-browser/view
+                             {:disabled? browser-disabled?
+                              :label     directory-alias}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -59,14 +69,14 @@
                                             [common/list-item-label          browser-id item-dex {:content alias :stretch? true}]
                                             [common/list-item-details        browser-id item-dex {:contents [size item-count]      :width "160px"}]
                                             [common/list-item-detail         browser-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-end-icon       browser-id item-dex {:icon    :more_vert}]]}]))
+                                            [common/list-item-end-icon       browser-id item-dex {:icon    :navigate_next}]]}]))
 
 (defn directory-item
   [browser-id item-dex {:keys [id] :as directory-item}]
   [elements/toggle {:content        [directory-item-structure browser-id item-dex directory-item]
                     :hover-color    :highlight
                     :on-click       [:item-browser/browse-item! :storage.media-browser id]
-                    :on-right-click [:storage.media-browser/render-directory-menu! directory-item]}])
+                    :on-right-click [:storage.media-menu/render-directory-menu! directory-item]}])
 
 (defn file-item-structure
   [browser-id item-dex {:keys [alias id modified-at filename size] :as file-item}]
@@ -86,8 +96,8 @@
   [browser-id item-dex file-item]
   [elements/toggle {:content        [file-item-structure browser-id item-dex file-item]
                     :hover-color    :highlight
-                    :on-click       [:storage.media-browser/render-file-menu! file-item]
-                    :on-right-click [:storage.media-browser/render-file-menu! file-item]}])
+                    :on-click       [:storage.media-menu/render-file-menu! file-item]
+                    :on-right-click [:storage.media-menu/render-file-menu! file-item]}])
 
 (defn media-item
   [browser-id item-dex {:keys [mime-type] :as media-item}]
@@ -103,7 +113,8 @@
                      {:auto-title?      true
                       :default-item-id   core.config/ROOT-DIRECTORY-ID
                       :default-order-by :modified-at/descending
-                      :ghost-element    #'common/item-lister-body-ghost-view
+                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
+                      :ghost-element    #'common/item-lister-ghost-element
                       :item-path        [:storage :media-browser/browsed-item]
                       :items-path       [:storage :media-browser/downloaded-items]
                       :items-key        :items
@@ -114,30 +125,32 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn upload-files-icon-button
+(defn upload-files-button
   []
   (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
-       [elements/icon-button ::upload-files-icon-button
-                             {:color         :secondary
-                              :disabled?     browser-disabled?
-                              :border-radius :s
-                              :hover-color   :highlight
-                              :indent        {:top :xxs}
-                              :on-click      [:storage.media-browser/upload-files!]
-                              :icon          :upload_file}]))
+       [elements/button ::upload-files-button
+                        {:border-radius :s
+                         :disabled?     browser-disabled?
+                         :font-size     :xs
+                         :hover-color   :highlight
+                         :icon          :upload_file
+                         :indent        {:right :xs :top :xs}
+                         :label         :upload-file!
+                         :on-click      [:storage.media-browser/upload-files!]}]))
 
-(defn create-folder-icon-button
+(defn create-folder-button
   []
   (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
-       [elements/icon-button ::create-folder-icon-button
-                             {:color         :secondary
-                              :disabled?     browser-disabled?
-                              :border-radius :s
-                              :hover-color   :highlight
-                              :indent        {:top :xxs}
-                              :on-click      [:storage.media-browser/create-directory!]
-                              :icon          :create_new_folder
-                              :icon-family   :material-icons-outlined}]))
+       [elements/button ::create-folder-button
+                        {:border-radius :s
+                         :disabled?     browser-disabled?
+                         :font-size     :xs
+                         :hover-color   :highlight
+                         :indent        {:right :xs :top :xs}
+                         :on-click      [:storage.media-browser/create-directory!]
+                         :icon          :create_new_folder
+                         :icon-family   :material-icons-outlined
+                         :label         :create-directory!}]))
 
 (defn go-home-icon-button
   []
@@ -170,8 +183,8 @@
   [elements/horizontal-polarity ::control-bar
                                 {:start-content [:<> [go-up-icon-button]
                                                      [go-home-icon-button]]
-                                 :end-content   [:<> [create-folder-icon-button]
-                                                     [upload-files-icon-button]]}])
+                                 :end-content   [:<> [create-folder-button]
+                                                     [upload-files-button]]}])
 
 (defn media-browser-header
   []
@@ -193,31 +206,30 @@
 
 (defn- footer
   []
-  [common/item-lister-download-info :storage.media-browser {}])
+  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
+          [common/item-lister-download-info :storage.media-browser {}]))
 
 (defn- body
   []
-  [:div {:style {:display :flex :flex-direction :column-reverse}}
-        [:div {:style {:width "100%"}}
-              [media-browser-body]]
-        [media-browser-header]])
+  [common/item-lister-wrapper :storage.media-browser
+                              {:body   #'media-browser-body
+                               :header #'media-browser-header}])
 
 (defn- header
   []
-  (if-let [data-received? @(a/subscribe [:item-browser/data-received? :storage.media-browser])]
+  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
           [:<> [label-bar]
                [breadcrumbs]
-               [search-block]]
-          [common/item-lister-header-ghost-view :parts.part-lister {}]))
+               [search-block]
+               [directory-info]]
+          [:<> [common/item-lister-ghost-header :parts.part-lister {}]
+               [elements/horizontal-separator {:size :xxl}]]))
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [elements/horizontal-separator {:size :xxl}]
-        [body]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [footer]]])
+  [:<> [header]
+       [body]
+       [footer]])
 
 (defn view
   [surface-id]

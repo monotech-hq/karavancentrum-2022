@@ -7,8 +7,8 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :pages.page-viewer/load-viewer!
-  {:dispatch-n [[:gestures/init-view-handler! :pages.page-viewer
+  :pages.viewer/load-viewer!
+  {:dispatch-n [[:gestures/init-view-handler! :pages.viewer
                                               {:default-view-id :overview}]
-                [:ui/render-surface! :pages.page-viewer/view
+                [:ui/render-surface! :pages.viewer/view
                                      {:content #'viewer.views/view}]]})

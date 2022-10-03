@@ -1,16 +1,17 @@
 
 (ns app.pages.frontend.lister.lifecycles
-    (:require [x.app-core.api :as a]))
+    (:require [x.app-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-app-boot [:home/add-menu-item! {:disabled? true
-                                       :group    :content
-                                       :icon     :description
+  {:on-app-boot [:home/add-menu-item! {:disabled?   true
+                                       :group       :content
+                                       :icon        :description
+                                       :icon-color  "#5564b1"
                                        :icon-family :material-icons-outlined
-                                       :label    :pages
-                                       :on-click [:router/go-to! "/@app-home/pages"]
+                                       :label       :pages
+                                       :on-click    [:router/go-to! "/@app-home/pages"]
                                        :horizontal-weight 0}]})

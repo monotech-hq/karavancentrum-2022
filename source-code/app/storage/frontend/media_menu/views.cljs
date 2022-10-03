@@ -11,7 +11,7 @@
 
 (defn media-menu-header
   [{:keys [alias] :as media-item}]
-  [common/context-menu-label-bar :storage.media-menu/view {:label alias}])
+  [common/menu-header :storage.media-menu/view {:label alias}])
 
 ;; -- Directory-item menu components ------------------------------------------
 ;; ----------------------------------------------------------------------------

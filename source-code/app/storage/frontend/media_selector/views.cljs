@@ -68,7 +68,8 @@
   [item-browser/body :storage.media-selector
                      {:default-item-id  core.config/ROOT-DIRECTORY-ID
                       :default-order-by :modified-at/descending
-                      :ghost-element    #'common/item-selector-body-ghost-view
+                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
+                      :ghost-element    #'common/item-selector-ghost-element
                       :item-path        [:storage :media-selector/browsed-item]
                       :items-key        :items
                       :items-path       [:storage :media-selector/downloaded-items]
@@ -174,10 +175,15 @@
 
 (defn- footer
   []
-  (let [selected-media-count @(a/subscribe [:item-lister/get-selected-item-count :storage.media-selector])]
+  (let [selected-media-count           @(a/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
+        all-downloaded-media-selected? @(a/subscribe [:item-browser/all-downloaded-items-selected? :storage.media-selector])
+        any-downloaded-media-selected? @(a/subscribe [:item-browser/any-downloaded-item-selected?  :storage.media-selector])
+        on-discard-selection [:item-browser/discard-selection! :storage.media-selector]]
        [common/item-selector-footer :storage.media-selector
-                                    {:on-discard [:item-lister/discard-selection! :storage.media-selector]
-                                     :selected-item-count selected-media-count}]))
+                                    {:on-discard-selection          on-discard-selection
+                                     :all-downloaded-item-selected? all-downloaded-media-selected?
+                                     :any-downloaded-item-selected? any-downloaded-media-selected?
+                                     :selected-item-count           selected-media-count}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

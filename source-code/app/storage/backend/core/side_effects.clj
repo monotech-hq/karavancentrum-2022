@@ -43,7 +43,7 @@
   ([{:keys [request]} {:media/keys [size path]} operation]
    ; Mappák és fájlok létrehozásakor/feltöltésekor/törlésekor/duplikálásakor szükséges
    ;  a tartalmazó (felmenő) mappák adatait aktualizálni:
-   ; - Utolsó módosítás dátuma, és a felhasználó azonosítója {:media/modified-at ... :media/modified-by ...}
+   ; - Utolsó módosítás dátuma és a felhasználó azonosítója {:media/modified-at ... :media/modified-by ...}
    ; - Tartalom méretének {:media/size ...} aktualizálása
    (letfn [(prototype-f [document] (common/updated-document-prototype request :media document))
            (update-f    [document] (update document :media/size operation size))

@@ -1,17 +1,17 @@
 
 (ns app.pages.backend.viewer.lifecycles
     (:require [plugins.item-viewer.api]
-              [x.server-core.api :as a]))
+              [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:item-viewer/init-viewer! :pages.page-viewer
+  {:on-server-boot [:item-viewer/init-viewer! :pages.viewer
                                               {:base-route      "/@app-home/pages"
                                                :collection-name "pages"
-                                               :handler-key     :pages.page-viewer
+                                               :handler-key     :pages.viewer
                                                :item-namespace  :page
-                                               :on-route        [:pages.page-viewer/load-viewer!]
+                                               :on-route        [:pages.viewer/load-viewer!]
                                                :route-title     :pages}]})

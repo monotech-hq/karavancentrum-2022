@@ -8,6 +8,6 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :vehicles.vehicle-lister/load!
-  [:ui/render-surface! :vehicles.vehicle-lister/view
+  :vehicles.lister/load!
+  [:ui/render-surface! :vehicles.lister/view
                        {:content #'lister.views/view}])

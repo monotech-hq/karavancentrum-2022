@@ -28,7 +28,7 @@
              ;
              ; @return (namespaced map)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-editor/add-item!}
+             {::pathom.co/op-name 'contents.editor/add-item!}
              (add-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
@@ -53,7 +53,7 @@
              ;
              ; @return (namespaced map)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-editor/save-item!}
+             {::pathom.co/op-name 'contents.editor/save-item!}
              (save-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------

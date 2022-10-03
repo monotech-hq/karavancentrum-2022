@@ -55,7 +55,7 @@
         org.jsoup/jsoup                                 {:mvn/version "1.14.3"}
         commons-io/commons-io                           {:mvn/version "2.6"}}
  :aliases
- {:site.dev  {:exec-fn    backend/dev
+ {:site.dev  {:exec-fn    boot-loader.backend.main/dev
               :exec-args  {:shadow-build :site
                            :port         3000}
               :jvm-opts ["-Dclojure.server.repl={:port,5555,:accept,clojure.core.server/repl}"]
@@ -63,8 +63,8 @@
                            com.wsscode/pathom-viz-connector {:mvn/version "2021.01.25"}
                            org.clojure/tools.namespace      {:mvn/version "1.0.0"}}}
 
-  :admin.dev  {:exec-fn    backend/dev
-               :exec-args  {:shadow-build :admin
+  :app.dev    {:exec-fn    boot-loader.backend.main/dev
+               :exec-args  {:shadow-build :app
                             :port         3000}
                :jvm-opts ["-Dclojure.server.repl={:port,5555,:accept,clojure.core.server/repl}"]
                :extra-deps {binaryage/devtools               {:mvn/version "1.0.0"}
@@ -77,5 +77,5 @@
          :exec-args {:java-config {:aot true
                                    :jar "karavancentrum.jar"
                                    :jar-type :uber
-                                   :main-class backend}
-                     :js-builds [:site-ready :admin-ready]}}}}
+                                   :main-class boot-loader.backend.main}
+                     :js-builds [:site-ready :app-ready]}}}}

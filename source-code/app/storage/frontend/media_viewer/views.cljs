@@ -12,12 +12,13 @@
 
 (defn close-icon-button
   [viewer-id]
-  [elements/icon-button ::close-icon-button
-                        {:color    :invert
-                         :keypress {:key-code 27}
-                         :on-click [:ui/close-popup! :storage.media-viewer/view]
-                         :preset   :close
-                         :style    {:position :fixed :right 0 :top :0}}])
+  [:div {:style {:position :fixed :right 0 :top :0}}
+        [elements/icon-button ::close-icon-button
+                              {:color    :invert
+                               :keypress {:key-code 27}
+                               :on-click [:ui/close-popup! :storage.media-viewer/view]
+                               :preset   :close}]])
+
 
 ;; -- PDF-item components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------

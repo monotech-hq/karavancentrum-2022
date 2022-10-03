@@ -34,4 +34,4 @@
   ; @return (string)
   [n]
   (let [{:keys [filename]} @(a/subscribe [:item-browser/get-item :storage.media-selector n])]
-       (media/filename->media-storage-uri filename)))
+       (if filename (media/filename->media-storage-uri filename))))

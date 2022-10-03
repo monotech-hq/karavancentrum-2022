@@ -1,218 +1,259 @@
 
 (ns app.vehicles.frontend.viewer.views
-    (:require [app.common.frontend.api :as common]
-              [forms.api               :as forms]
-              [layouts.surface-a.api   :as surface-a]
-              [plugins.item-lister.api :as item-lister]
-              [plugins.item-viewer.api :as item-viewer]
-              [x.app-core.api          :as a]
-              [x.app-elements.api      :as elements]))
+    (:require [app.common.frontend.api   :as common]
+              [app.contents.frontend.api :as contents]
+              [app.storage.frontend.api  :as storage]
+              [forms.api                 :as forms]
+              [layouts.surface-a.api     :as surface-a]
+              [plugins.item-lister.api   :as item-lister]
+              [plugins.item-viewer.api   :as item-viewer]
+              [re-frame.api              :as r]
+              [x.app-elements.api        :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- vehicle-images-label
+(defn- vehicle-description
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-images-label
-                       {:color               :default
-                        :content             :images
-                        :disabled?           viewer-disabled?
-                        :horizontal-position :left
-                        :indent              {:vertical :xs :top :l}}]))
+  (let [viewer-disabled?    @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-description @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :description]])]
+       [contents/content-preview ::vehicle-description
+                                 {:disabled? viewer-disabled?
+                                  :indent    {:top :m :vertical :s}
+                                  :item-id   (:content/id vehicle-description)}]))
 
-(defn- vehicle-image-list
+(defn- vehicle-content
   []
-  (let [vehicle-images @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :images]])]
-       [common/item-viewer-image-list :vehicles.vehicle-viewer
-                                      {:images          vehicle-images
-                                       :no-images-label :no-images-selected}]))
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])]
+       [common/surface-box ::vehicle-content
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [vehicle-description]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :description}]))
 
-(defn- vehicle-thumbnail-label
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-thumbnail-label
-                       {:color     :default
-                        :content   :thumbnail
-                        :disabled? viewer-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
-(defn- vehicle-thumbnail
+(defn- vehicle-images-preview
   []
-  (let [viewer-disabled?  @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-thumbnail @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :thumbnail]])]
-       [elements/thumbnail ::vehicle-thumbnail
-                           {:border-radius :s
-                            :disabled?     viewer-disabled?
-                            :height        :2xl
-                            :indent        {:top :xxs :vertical :xs}
-                            :uri           vehicle-thumbnail
-                            :width         :4xl}]))
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-images   @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :images]])]
+       [storage/media-preview ::vehicle-image-list
+                              {:disabled?      viewer-disabled?
+                               :media          vehicle-images
+                               :indent         {:top :m :vertical :s}
+                               :no-media-label :no-images-selected}]))
 
 (defn- vehicle-images
   []
-  [:<> [vehicle-thumbnail-label]
-       [vehicle-thumbnail]
-       [vehicle-images-label]
-       [vehicle-image-list]])
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])]
+       [common/surface-box ::vehicle-images
+                           {:content [:<> [vehicle-images-preview]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :images}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- vehicle-number-of-seats-label
+(defn- vehicle-thumbnail-preview
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-number-of-seats-label
-                       {:color               :default
-                        :content             :number-of-seats
-                        :disabled?           viewer-disabled?
-                        :horizontal-position :left
-                        :indent              {:vertical :xs :top :l}}]))
+  (let [viewer-disabled?  @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-thumbnail @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :thumbnail]])]
+       [storage/media-preview ::vehicle-thumbnail
+                              {:disabled?      viewer-disabled?
+                               :indent         {:top :m :vertical :s}
+                               :media          vehicle-thumbnail
+                               :no-media-label :no-thumbnail-selected}]))
 
-(defn- vehicle-number-of-seats-value
+(defn- vehicle-thumbnail
   []
-  (let [viewer-disabled?        @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-number-of-seats @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :number-of-seats]])]
-       [elements/label ::vehicle-number-of-seats-value
-                       {:color               :muted
-                        :disabled?           viewer-disabled?
-                        :content             vehicle-number-of-seats
-                        :horizontal-position :left
-                        :indent              {:vertical :xs}
-                        :min-width           :xxs
-                        :placeholder         "-"
-                        :selectable?         true}]))
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])]
+       [common/surface-box ::vehicle-thumbnail
+                           {:content [:<> [vehicle-thumbnail-preview]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :thumbnail}]))
 
-(defn- vehicle-number-of-bunks-label
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-number-of-bunks-label
-                       {:color               :default
-                        :content             :number-of-bunks
-                        :disabled?           viewer-disabled?
-                        :horizontal-position :left
-                        :indent              {:vertical :xs :top :l}}]))
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
-(defn- vehicle-number-of-bunks-value
+(defn- vehicle-number-of-seats
   []
-  (let [viewer-disabled?        @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-number-of-bunks @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :number-of-bunks]])]
-       [elements/label ::vehicle-number-of-bunks-value
-                       {:color               :muted
-                        :disabled?           viewer-disabled?
-                        :content             vehicle-number-of-bunks
-                        :horizontal-position :left
-                        :indent              {:vertical :xs}
-                        :min-width           :xxs
-                        :placeholder         "-"
-                        :selectable?         true}]))
+  (let [viewer-disabled?        @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-number-of-seats @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :number-of-seats]])]
+       [common/data-element ::vehicle-number-of-seats
+                            {:indent      {:top :m :vertical :s}
+                             :label       :number-of-seats
+                             :placeholder "-"
+                             :value       vehicle-number-of-seats}]))
 
-(defn- vehicle-type-label
+(defn- vehicle-number-of-bunks
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-type-label
-                       {:color               :default
-                        :content             :type
-                        :disabled?           viewer-disabled?
-                        :horizontal-position :left
-                        :indent              {:vertical :xs :top :l}}]))
+  (let [viewer-disabled?        @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-number-of-bunks @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :number-of-bunks]])]
+       [common/data-element ::vehicle-number-of-bunks
+                            {:indent      {:top :m :vertical :s}
+                             :label       :number-of-bunks
+                             :placeholder "-"
+                             :value       vehicle-number-of-bunks}]))
 
-(defn- vehicle-type-value
+(defn- vehicle-construction-year
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-type     @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :type]])]
-       [elements/label ::vehicle-type-value
-                       {:color               :muted
-                        :disabled?           viewer-disabled?
-                        :content             vehicle-type
-                        :horizontal-position :left
-                        :indent              {:vertical :xs}
-                        :min-width           :xxs
-                        :placeholder         "-"
-                        :selectable?         true}]))
+  (let [viewer-disabled?          @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-construction-year @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :construction-year]])]
+       [common/data-element ::vehicle-construction-year
+                            {:indent      {:top :m :vertical :s}
+                             :label       :construction-year
+                             :placeholder "-"
+                             :value       vehicle-construction-year}]))
 
-(defn- vehicle-construction-year-label
+(defn- vehicle-technical-data
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])]
-       [elements/label ::vehicle-construction-year-label
-                       {:color               :default
-                        :content             :construction-year
-                        :disabled?           viewer-disabled?
-                        :horizontal-position :left
-                        :indent              {:vertical :xs :top :l}}]))
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])]
+       [common/surface-box ::vehicle-technical-data
+                           {:indent  {:top :m}
+                            :content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 33})
+                                                      [vehicle-construction-year]]
+                                                [:div (forms/form-block-attributes {:ratio 33})
+                                                      [vehicle-number-of-seats]]
+                                                [:div (forms/form-block-attributes {:ratio 34})
+                                                      [vehicle-number-of-bunks]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :technical-data}]))
 
-(defn- vehicle-construction-year-value
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- vehicle-visibility
   []
-  (let [viewer-disabled?          @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-construction-year @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :construction-year]])]
-       [elements/label ::vehicle-construction-year-value
-                       {:color               :muted
-                        :disabled?           viewer-disabled?
-                        :content             vehicle-construction-year
-                        :horizontal-position :left
-                        :indent              {:vertical :xs}
-                        :min-width           :xxs
-                        :placeholder         "-"
-                        :selectable?         true}]))
+  (let [viewer-disabled?    @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-visibility  @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :visibility]])]
+       [common/data-element ::vehicle-visibility
+                            {:disabled? viewer-disabled?
+                             :indent    {:top :m :vertical :s}
+                             :label     :visibility-on-the-website
+                             :value     (case vehicle-visibility :public :public-content :private :private-content)}]))
+
+(defn- vehicle-public-link
+  []
+  (let [viewer-disabled?    @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-public-link @(r/subscribe [:vehicles.viewer/get-vehicle-public-link])]
+       [common/data-element ::vehicle-public-link
+                            {:disabled? viewer-disabled?
+                             :indent    {:top :m :vertical :s}
+                             :label     :public-link
+                             :value     vehicle-public-link}]))
+
+(defn- vehicle-more-data
+  []
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])]
+       [common/surface-box ::vehicle-more-data
+                           {:indent  {:top :m}
+                            :content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 33})
+                                                      [vehicle-visibility]]
+                                                [:div (forms/form-block-attributes {:ratio 67})
+                                                      [vehicle-public-link]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :more-data}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- vehicle-name
+  []
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-name     @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])]
+       [common/data-element ::vehicle-name
+                            {:indent      {:top :m :vertical :s}
+                             :label       :name
+                             :placeholder "-"
+                             :value       vehicle-name}]))
+
+(defn- vehicle-type
+  []
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-type     @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :type]])]
+       [common/data-element ::vehicle-type
+                            {:indent      {:top :m :vertical :s}
+                             :label       :type
+                             :placeholder "-"
+                             :value       vehicle-type}]))
+
+(defn- vehicle-basic-data
+  []
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])]
+       [common/surface-box ::vehicle-basic-data
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 66})
+                                                      [vehicle-name]]
+                                                [:div (forms/form-block-attributes {:ratio 34})
+                                                      [vehicle-type]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :basic-data}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- vehicle-overview
   []
-  [:<> [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-type-label]
-                   [vehicle-type-value]]
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-construction-year-label]
-                   [vehicle-construction-year-value]]
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-number-of-seats-label]
-                   [vehicle-number-of-seats-value]]
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-number-of-bunks-label]
-                   [vehicle-number-of-bunks-value]]]])
+  [:<> [vehicle-basic-data]
+       [vehicle-technical-data]
+       [vehicle-more-data]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- menu-bar
   []
-  [common/item-viewer-menu-bar :vehicles.vehicle-viewer
+  [common/item-viewer-menu-bar :vehicles.viewer
                                {:menu-items [{:label :overview}
-                                             {:label :images}]}])
+                                             {:label :thumbnail}
+                                             {:label :images}
+                                             {:label :content}]}])
 
-(defn- view-selector
+(defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :vehicles.vehicle-viewer])]
-       (case current-view-id :overview [vehicle-overview]
-                             :images   [vehicle-images])))
+  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :vehicles.viewer])]
+       (case current-view-id :overview  [vehicle-overview]
+                             :thumbnail [vehicle-thumbnail]
+                             :images    [vehicle-images]
+                             :content   [vehicle-content])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- control-bar
+(defn- controls
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-id       @(a/subscribe [:router/get-current-route-path-param :item-id])
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-id       @(r/subscribe [:router/get-current-route-path-param :item-id])
         edit-item-uri    (str "/@app-home/vehicles/"vehicle-id"/edit")]
-       [common/item-viewer-control-bar :vehicles.vehicle-viewer
-                                       {:disabled?     viewer-disabled?
-                                        :edit-item-uri edit-item-uri}]))
+       [common/item-viewer-controls :vehicles.viewer
+                                    {:disabled?     viewer-disabled?
+                                     :edit-item-uri edit-item-uri}]))
 
 (defn- breadcrumbs
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :name]])]
-       [common/surface-breadcrumbs :vehicles.vehicle-viewer/view
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-name     @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])]
+       [common/surface-breadcrumbs :vehicles.viewer/view
                                    {:crumbs [{:label :app-home    :route "/@app-home"}
                                              {:label :vehicles    :route "/@app-home/vehicles"}
                                              {:label vehicle-name :placeholder :unnamed-vehicle}]
                                     :disabled? viewer-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :vehicles.vehicle-viewer])
-        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-viewer/viewed-item :name]])]
-       [common/surface-label :vehicles.vehicle-viewer/view
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :vehicles.viewer])
+        vehicle-name     @(r/subscribe [:db/get-item [:vehicles :viewer/viewed-item :name]])]
+       [common/surface-label :vehicles.viewer/view
                              {:disabled?   viewer-disabled?
                               :label       vehicle-name
                               :placeholder :unnamed-vehicle}]))
@@ -222,27 +263,26 @@
 
 (defn- header
   []
-  [:<> [label-bar]
-       [breadcrumbs]
+  [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+             [:div [label]
+                   [breadcrumbs]]
+             [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [view-selector]
-        [elements/horizontal-separator {:size :xxl}]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [control-bar]]])
+  [:<> [header]
+       [body]])
 
 (defn- vehicle-viewer
   []
-  [item-viewer/body :vehicles.vehicle-viewer
+  [item-viewer/body :vehicles.viewer
                     {:auto-title?   true
-                     :ghost-element #'common/item-viewer-ghost-view
+                     :error-element [common/error-content {:error :the-item-you-opened-may-be-broken}]
+                     :ghost-element #'common/item-viewer-ghost-element
                      :item-element  #'view-structure
-                     :item-path     [:vehicles :vehicle-viewer/viewed-item]
+                     :item-path     [:vehicles :viewer/viewed-item]
                      :label-key     :name}])
 
 (defn view

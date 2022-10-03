@@ -18,43 +18,43 @@
 
 (defn- menu-bar
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])]
-       [common/item-viewer-menu-bar :pages.page-viewer
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])]
+       [common/item-viewer-menu-bar :pages.viewer
                                     {:disabled?  viewer-disabled?
                                      :menu-items [{:label :overview}]}]))
 
-(defn- view-selector
+(defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.page-viewer])]
+  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.viewer])]
        (case current-view-id :overview [page-overview])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- control-bar
+(defn- controls
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
         page-id          @(a/subscribe [:router/get-current-route-path-param :item-id])
         edit-item-uri     (str "/@app-home/pages/"page-id"/edit")]
-       [common/item-viewer-control-bar :pages.page-viewer
-                                       {:disabled?     viewer-disabled?
-                                        :edit-item-uri edit-item-uri}]))
+       [common/item-viewer-controls :pages.viewer
+                                    {:disabled?     viewer-disabled?
+                                     :edit-item-uri edit-item-uri}]))
 
 (defn- breadcrumbs
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])
-        page-name        @(a/subscribe [:db/get-item [:pages :page-viewer/viewed-item :name]])]
-       [common/surface-breadcrumbs :pages.page-viewer/view
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
+        page-name        @(a/subscribe [:db/get-item [:pages :viewer/viewed-item :name]])]
+       [common/surface-breadcrumbs :pages.viewer/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :pages    :route "/@app-home/pages"}
                                              {:label page-name :placeholder :unnamed-page}]
                                     :disabled? viewer-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.page-viewer])
-        page-name        @(a/subscribe [:db/get-item [:pages :page-viewer/viewed-item :name]])]
-       [common/surface-label :pages.page-viewer/view
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
+        page-name        @(a/subscribe [:db/get-item [:pages :viewer/viewed-item :name]])]
+       [common/surface-label :pages.viewer/view
                              {:disabled?   viewer-disabled?
                               :label       page-name
                               :placeholder :unnamed-page}]))
@@ -64,27 +64,26 @@
 
 (defn- header
   []
-  [:<> [label-bar]
-       [breadcrumbs]
+  [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+             [:div [label]
+                   [breadcrumbs]]
+             [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [view-selector]
-        [elements/horizontal-separator {:size :xxl}]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [control-bar]]])
+  [:<> [header]
+       [body]])
 
 (defn- page-viewer
   []
-  [item-viewer/body :pages.page-viewer
+  [item-viewer/body :pages.viewer
                     {:auto-title?   true
-                     :ghost-element #'common/item-viewer-ghost-view
+                     :error-element [common/error-content {:error :the-item-you-opened-may-be-broken}]
+                     :ghost-element #'common/item-viewer-ghost-element
                      :item-element  #'view-structure
-                     :item-path     [:pages :page-viewer/viewed-item]
+                     :item-path     [:pages :viewer/viewed-item]
                      :label-key     :name}])
 
 (defn view

@@ -1,17 +1,17 @@
 
 (ns app.vehicles.backend.lister.lifecycles
     (:require [plugins.item-lister.api]
-              [x.server-core.api :as a]))
+              [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:item-lister/init-lister! :vehicles.vehicle-lister
+  {:on-server-boot [:item-lister/init-lister! :vehicles.lister
                                               {:base-route      "/@app-home/vehicles"
                                                :collection-name "vehicles"
-                                               :handler-key     :vehicles.vehicle-lister
+                                               :handler-key     :vehicles.lister
                                                :item-namespace  :vehicle
-                                               :on-route        [:vehicles.vehicle-lister/load!]
+                                               :on-route        [:vehicles.lister/load!]
                                                :route-title     :vehicles}]})

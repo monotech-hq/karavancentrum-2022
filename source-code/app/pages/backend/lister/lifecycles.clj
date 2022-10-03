@@ -1,17 +1,17 @@
 
 (ns app.pages.backend.lister.lifecycles
     (:require [plugins.item-lister.api]
-              [x.server-core.api :as a]))
+              [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:item-lister/init-lister! :pages.page-lister
+  {:on-server-boot [:item-lister/init-lister! :pages.lister
                                               {:base-route      "/@app-home/pages"
                                                :collection-name "pages"
-                                               :handler-key     :pages.page-lister
+                                               :handler-key     :pages.lister
                                                :item-namespace  :page
-                                               :on-route        [:pages.page-lister/load-lister!]
+                                               :on-route        [:pages.lister/load-lister!]
                                                :route-title     :pages}]})

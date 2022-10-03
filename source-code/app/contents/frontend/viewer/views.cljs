@@ -1,113 +1,117 @@
 
 (ns app.contents.frontend.viewer.views
-    (:require [app.common.frontend.api :as common]
-              [app-fruits.html         :as html]
-              [layouts.surface-a.api   :as surface-a]
-              [plugins.item-lister.api :as item-lister]
-              [plugins.item-viewer.api :as item-viewer]
-              [x.app-core.api          :as a]
-              [x.app-elements.api      :as elements]))
+    (:require [app.common.frontend.api               :as common]
+              [app.contents.frontend.handler.helpers :as handler.helpers]
+              [forms.api                             :as forms]
+              [layouts.surface-a.api                 :as surface-a]
+              [plugins.item-lister.api               :as item-lister]
+              [plugins.item-viewer.api               :as item-viewer]
+              [x.app-core.api                        :as a]
+              [x.app-elements.api                    :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
-
-(defn- content-info
-  []
-  [common/item-viewer-item-info :contents.content-viewer
-                                {:indent {:top :l :vertical :xs}}])
-
-(defn- content-visibility-label
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])]
-       [elements/label ::content-visibility-label
-                       {:content   :content-visibility
-                        :disabled? viewer-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
-
-(defn- content-visibility-value
-  []
-  (let [viewer-disabled?   @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])
-        content-visibility @(a/subscribe [:db/get-item [:contents :content-viewer/viewed-item :visibility]])]
-       [elements/label ::content-visibility-value
-                       {:color     :muted
-                        :content   (case content-visibility :public :public-content :private :private-content)
-                        :disabled? viewer-disabled?
-                        :indent    {:vertical :xs}}]))
 
 (defn- content-visibility
   []
-  [:<> [content-visibility-label]
-       [content-visibility-value]])
+  (let [viewer-disabled?   @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-visibility @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :visibility]])
+        content-visibility  (case content-visibility :public :public-content :private :private-content)]
+       [common/data-element ::content-visibility
+                            {:disabled?   viewer-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :content-visibility
+                             :placeholder "-"
+                             :value       content-visibility}]))
 
-(defn- content-body-label
+(defn- content-more-data
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])]
-       [elements/label ::content-body-label
-                       {:content   :body
-                        :disabled? viewer-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
+       [common/surface-box ::content-more-data
+                           {:indent  {:top :m}
+                            :content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [content-visibility]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :more-data}]))
 
-(defn- content-body-value
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])
-        content-body     @(a/subscribe [:db/get-item [:contents :content-viewer/viewed-item :body]])]
-       [elements/text ::content-body-value
-                      {:color   :muted
-                       :content (html/to-hiccup (str "<div>"content-body"</div>"))
-                       :indent  {:vertical :xs}}]))
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- content-body
   []
-  [:<> [content-body-label]
-       [content-body-value]])
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-body     @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :body]])
+        content-body      (handler.helpers/parse-content-body content-body)]
+       [common/data-element ::content-body
+                            {:disabled?   viewer-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :body
+                             :placeholder "-"
+                             :value       content-body}]))
+
+(defn- content-basic-data
+  []
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
+       [common/surface-box ::content-basic-data
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [content-body]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? viewer-disabled?
+                            :label     :content}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- content-overview
   []
-  [:<> [content-body]
-       [content-visibility]])
+  [:<> [content-basic-data]
+       [content-more-data]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- menu-bar
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])]
-       [common/item-viewer-menu-bar :contents.content-viewer
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
+       [common/item-viewer-menu-bar :contents.viewer
                                     {:disabled?  viewer-disabled?
                                      :menu-items [{:label :overview}]}]))
 
-(defn- view-selector
+(defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.content-viewer])]
+  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.viewer])]
        (case current-view-id :overview [content-overview])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- control-bar
+(defn- controls
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
         content-id       @(a/subscribe [:router/get-current-route-path-param :item-id])
         edit-item-uri     (str "/@app-home/contents/"content-id"/edit")]
-       [common/item-viewer-control-bar :contents.content-viewer
-                                       {:disabled?     viewer-disabled?
-                                        :edit-item-uri edit-item-uri}]))
+       [common/item-viewer-controls :contents.viewer
+                                    {:disabled?     viewer-disabled?
+                                     :edit-item-uri edit-item-uri}]))
 
 (defn- breadcrumbs
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])
-        content-name     @(a/subscribe [:db/get-item [:contents :content-viewer/viewed-item :name]])]
-       [common/surface-breadcrumbs :contents.content-viewer/view
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-name     @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :name]])]
+       [common/surface-breadcrumbs :contents.viewer/view
                                    {:crumbs [{:label :app-home   :route "/@app-home"}
                                              {:label :contents    :route "/@app-home/contents"}
                                              {:label content-name :placeholder :unnamed-content}]
                                     :disabled? viewer-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.content-viewer])
-        content-name     @(a/subscribe [:db/get-item [:contents :content-viewer/viewed-item :name]])]
-       [common/surface-label :contents.content-viewer/view
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-name     @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :name]])]
+       [common/surface-label :contents.viewer/view
                              {:disabled?   viewer-disabled?
                               :label       content-name
                               :placeholder :unnamed-content}]))
@@ -117,27 +121,26 @@
 
 (defn- header
   []
-  [:<> [label-bar]
-       [breadcrumbs]
+  [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+             [:div [label]
+                   [breadcrumbs]]
+             [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [view-selector]
-        [elements/horizontal-separator {:size :xxl}]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [control-bar]]])
+  [:<> [header]
+       [body]])
 
 (defn- content-viewer
   []
-  [item-viewer/body :contents.content-viewer
+  [item-viewer/body :contents.viewer
                     {:auto-title?   true
-                     :ghost-element #'common/item-viewer-ghost-view
+                     :error-element [common/error-content {:error :the-item-you-opened-may-be-broken}]
+                     :ghost-element #'common/item-viewer-ghost-element
                      :item-element  #'view-structure
-                     :item-path     [:contents :content-viewer/viewed-item]
+                     :item-path     [:contents :viewer/viewed-item]
                      :label-key     :name}])
 
 (defn view

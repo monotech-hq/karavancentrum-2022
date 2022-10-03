@@ -11,6 +11,12 @@
            :add-brand!
            {:en "Add brand"
             :hu "Márka hozzáadása"}
+           :brand-name
+           {:en "Brand name"
+            :hu "Márka neve"}
+           :brand-description-placeholder
+           {:en "Short description of the brand"
+            :hu "A márka rövid leírása"}
            :contacts-data-information
            {:en "Contacts data information"
             :hu "Kapcsolati adatok információ"}

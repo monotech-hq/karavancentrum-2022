@@ -24,7 +24,7 @@
              ;
              ; @return (strings in vector)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-lister/delete-items!}
+             {::pathom.co/op-name 'contents.lister/delete-items!}
              (delete-items-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
@@ -46,7 +46,7 @@
              ;
              ; @return (namespaced maps in vector)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-lister/undo-delete-items!}
+             {::pathom.co/op-name 'contents.lister/undo-delete-items!}
              (undo-delete-items-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
@@ -70,7 +70,7 @@
              ;
              ; @return (keywords in vector)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-lister/duplicate-items!}
+             {::pathom.co/op-name 'contents.lister/duplicate-items!}
              (duplicate-items-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------

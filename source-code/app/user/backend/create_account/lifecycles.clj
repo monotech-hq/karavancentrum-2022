@@ -1,11 +1,11 @@
 
 (ns app.user.backend.create-account.lifecycles
-    (:require [x.server-core.api :as a]))
+    (:require [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
   {:on-server-boot [:router/add-route! :user.create-account/route
                                        {:client-event   [:user.create-account/render!]

@@ -2,7 +2,7 @@
 (ns app.views.backend.loading-screen.views
     (:require [mid-fruits.candy  :refer [param]]
               [mid-fruits.css    :as css]
-              [x.server-core.api :as a]
+              [re-frame.api      :as r]
               [x.server-user.api :as user]))
 
 ;; ----------------------------------------------------------------------------
@@ -10,7 +10,7 @@
 
 (defn- app-title
   [request]
-  (let [title @(a/subscribe [:core/get-app-config-item :app-title])]
+  (let [title @(r/subscribe [:core/get-app-config-item :app-title])]
        [:div {:style (css/parse {:font-size      (css/var "font-size-xs")
                                  :font-weight    "600"
                                  :padding        "12px 0"

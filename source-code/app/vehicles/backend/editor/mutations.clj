@@ -17,7 +17,7 @@
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
   (let [prototype-f #(common/added-document-prototype request :vehicle %)]
-       (mongo-db/save-document! "vehicles"
+       (mongo-db/save-document! "vehicles" item
                                 {:prototype-f prototype-f})))
 
 (defmutation add-item!
@@ -27,7 +27,7 @@
              ;
              ; @return (namespaced map)
              [env mutation-props]
-             {::pathom.co/op-name 'vehicles.vehicle-editor/add-item!}
+             {::pathom.co/op-name 'vehicles.editor/add-item!}
              (add-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
@@ -42,7 +42,7 @@
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
   (let [prototype-f #(common/updated-document-prototype request :vehicle %)]
-       (mongo-db/save-document! "vehicles"
+       (mongo-db/save-document! "vehicles" item
                                 {:prototype-f prototype-f})))
 
 (defmutation save-item!
@@ -52,7 +52,7 @@
              ;
              ; @return (namespaced map)
              [env mutation-props]
-             {::pathom.co/op-name 'vehicles.vehicle-editor/save-item!}
+             {::pathom.co/op-name 'vehicles.editor/save-item!}
              (save-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------

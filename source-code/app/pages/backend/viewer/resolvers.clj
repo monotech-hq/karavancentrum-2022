@@ -21,9 +21,9 @@
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:pages.page-viewer/get-item (namespaced map)}
+             ;  {:pages.viewer/get-item (namespaced map)}
              [env resolver-props]
-             {:pages.page-viewer/get-item (get-item-f env resolver-props)})
+             {:pages.viewer/get-item (get-item-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -27,9 +27,9 @@
              ;  {:content-id (string)}
              ;
              ; @return (map)
-             ;  {:contents.content-handler/get-content (namespaced map)}
+             ;  {:contents.handler/get-content (namespaced map)}
              [env resolver-props]
-             {:contents.content-handler/get-content (get-content-f env resolver-props)})
+             {:contents.handler/get-content (get-content-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

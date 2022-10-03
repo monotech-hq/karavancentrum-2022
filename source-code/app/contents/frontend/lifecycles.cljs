@@ -1,11 +1,11 @@
 
 (ns app.contents.frontend.lifecycles
     (:require [app.contents.frontend.dictionary :as dictionary]
-              [x.app-core.api                   :as a]))
+              [x.app-core.api                   :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
   {:on-app-boot [:dictionary/add-terms! dictionary/BOOK]})

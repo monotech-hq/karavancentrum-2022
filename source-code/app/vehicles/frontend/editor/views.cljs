@@ -5,7 +5,7 @@
               [app.storage.frontend.api  :as storage]
               [forms.api                 :as forms]
               [layouts.surface-a.api     :as surface-a]
-              [mid-fruits.normalize      :as normalize]
+              [mid-fruits.time           :as time]
               [plugins.item-editor.api   :as item-editor]
               [x.app-core.api            :as a]
               [x.app-elements.api        :as elements]))
@@ -13,228 +13,265 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn- vehicle-public-link-label
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [elements/label ::vehicle-public-link-label
-                       {:content   :public-link
-                        :disabled? editor-disabled?
-                        :indent    {:top :l :vertical :xs}}]))
-
-(defn- vehicle-public-link-value
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
-        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])
-        normalized-name   (normalize/clean-url vehicle-name)
-        public-link       (str "/berelheto-jarmuveink/"normalized-name)]
-       [elements/label ::vehicle-public-link-value
-                       {:color     :highlight
-                        :content   public-link
-                        :disabled? editor-disabled?
-                        :indent    {:vertical :xs}}]))
-
 (defn- vehicle-public-link
   []
-  [:<> [vehicle-public-link-label]
-       [vehicle-public-link-value]])
+  (let [editor-disabled?    @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])
+        vehicle-public-link @(a/subscribe [:vehicles.editor/get-vehicle-public-link])]
+       [common/data-element ::vehicle-public-link
+                            {:disabled? editor-disabled?
+                             :indent    {:top :m :vertical :s}
+                             :label     :public-link
+                             :value     vehicle-public-link}]))
 
 (defn- vehicle-visibility-radio-button
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
        [elements/radio-button ::vehicle-visibility-radio-button
                               {:disabled?       editor-disabled?
-                               :indent          {:top :l :vertical :xs}
+                               :indent          {:top :m :vertical :s}
                                :label           :visibility-on-the-website
                                :options         [{:label :public-content  :helper :visible-to-everyone     :value :public}
                                                  {:label :private-content :helper :only-visible-to-editors :value :private}]
                                :option-helper-f :helper
                                :option-label-f  :label
                                :option-value-f  :value
-                               :value-path      [:vehicles :vehicle-editor/edited-item :visibility]}]))
+                               :value-path      [:vehicles :editor/edited-item :visibility]}]))
 
 (defn- vehicle-settings
   []
-  [:<> [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-visibility-radio-button]]]
-       [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-public-link]]]])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/surface-box ::vehicle-settings
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [vehicle-visibility-radio-button]]]
+                                          [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [vehicle-public-link]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :settings}]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn- vehicle-description-picker
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
        [contents/content-picker ::vehicle-description-picker
                                 {:disabled?  editor-disabled?
-                                 :indent     {:top :l :vertical :xs}
-                                 :label      :description
-                                 :value-path [:vehicles :vehicle-editor/edited-item :description]}]))
+                                 :indent     {:vertical :s}
+                                 :value-path [:vehicles :editor/edited-item :description]}]))
 
-(defn- vehicle-description
+(defn- vehicle-content
   []
-  [:<> [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 100})
-                   [vehicle-description-picker]]]])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/surface-box ::vehicle-content
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [vehicle-description-picker]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :description}]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
-
-(defn- vehicle-name-field
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [elements/combo-box ::vehicle-name-field
-                           {:autofocus?   true
-                            :disabled?    editor-disabled?
-                            :indent       {:top :l :vertical :xs}
-                            :label        :name
-                            :options-path [:vehicles :vehicle-editor/suggestions :name]
-                            :value-path   [:vehicles :vehicle-editor/edited-item :name]}]))
 
 (defn- vehicle-construction-year-field
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])
+        current-year      (time/get-year)]
        [elements/text-field ::vehicle-construction-year-field
-                            {:disabled?  editor-disabled?
-                             :indent     {:top :l :vertical :xs}
-                             :label      :construction-year
-                             :value-path [:vehicles :vehicle-editor/edited-item :construction-year]}]))
+                            {:disabled?   editor-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :construction-year
+                             :placeholder current-year
+                             :value-path  [:vehicles :editor/edited-item :construction-year]}]))
 
 (defn- vehicle-number-of-seats-counter
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
        [elements/counter ::vehicle-number-of-seats-counter
                             {:disabled?  editor-disabled?
-                             :indent     {:top :l :vertical :xs}
+                             :indent     {:top :m :vertical :s}
                              :label      :number-of-seats
                              :min-value  0
                              :max-value  10
-                             :value-path [:vehicles :vehicle-editor/edited-item :number-of-seats]}]))
+                             :value-path [:vehicles :editor/edited-item :number-of-seats]}]))
 
 (defn- vehicle-number-of-bunks-counter
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
        [elements/counter ::vehicle-number-of-bunks-counter
                             {:disabled?  editor-disabled?
-                             :indent     {:top :l :vertical :xs}
+                             :indent     {:top :m :vertical :s}
                              :label      :number-of-bunks
                              :min-value  0
                              :max-value  10
-                             :value-path [:vehicles :vehicle-editor/edited-item :number-of-bunks]}]))
+                             :value-path [:vehicles :editor/edited-item :number-of-bunks]}]))
 
-(defn- vehicle-type-select
+(defn- vehicle-technical-data
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [elements/select ::vehicle-type-select
-                        {:disabled?     editor-disabled?
-                         :indent        {:top :l :vertical :xs}
-                         :label         :type
-                         :layout        :select
-                         :options-label :vehicle-type
-                         :options       [:alcove-rv :semi-integrated-rv :van-rv :caravan :trailer]
-                         :value-path    [:vehicles :vehicle-editor/edited-item :type]}]))
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/surface-box ::vehicle-technical-data
+                           {:indent  {:top :m}
+                            :content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 40})
+                                                      [vehicle-construction-year-field]]
+                                                [:div (forms/form-block-attributes {:ratio 10})]
+                                                [:div (forms/form-block-attributes {:ratio 25})
+                                                      [vehicle-number-of-seats-counter]]
+                                                [:div (forms/form-block-attributes {:ratio 25})
+                                                      [vehicle-number-of-bunks-counter]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :technical-data}]))
 
-(defn- vehicle-data
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn- vehicle-image-picker
   []
-  [:<> [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 100})
-                   [vehicle-name-field]]]
-       [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 50})
-                   [vehicle-type-select]]
-             [:div (forms/form-block-attributes {:ratio 50})
-                   [vehicle-construction-year-field]]]
-       [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-number-of-seats-counter]]
-             [:div (forms/form-block-attributes {:ratio 25})
-                   [vehicle-number-of-bunks-counter]]
-             [:div (forms/form-block-attributes {:ratio 50})]]])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [storage/media-picker ::vehicle-image-picker
+                             {:autosave?     false
+                              :disabled?     editor-disabled?
+                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
+                              :indent        {:vertical :s}
+                              :multi-select? true
+                              :toggle-label  :select-images!
+                              :thumbnail     {:height :3xl :width :5xl}
+                              :value-path    [:vehicles :editor/edited-item :images]}]))
+
+(defn- vehicle-images
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/surface-box ::vehicle-images
+                           {:content [:<> [vehicle-image-picker]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :images}]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn- vehicle-thumbnail-picker
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
        [storage/media-picker ::vehicle-thumbnail-picker
                              {:autosave?     true
                               :disabled?     editor-disabled?
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
-                              :indent        {:top :l :vertical :xs}
-                              :label         :thumbnail
+                              :indent        {:vertical :s}
                               :multi-select? false
                               :toggle-label  :select-image!
-                              :thumbnails    {:height :2xl :width :4xl}
-                              :value-path    [:vehicles :vehicle-editor/edited-item :thumbnail]}]))
+                              :thumbnail     {:height :3xl :width :5xl}
+                              :value-path    [:vehicles :editor/edited-item :thumbnail]}]))
 
-(defn- vehicle-images-picker
+(defn- vehicle-thumbnail
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [storage/media-picker ::vehicle-images-picker
-                             {:autosave?     false
-                              :disabled?     editor-disabled?
-                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
-                              :indent        {:top :l :vertical :xs}
-                              :label         :images
-                              :multi-select? true
-                              :toggle-label  :select-images!
-                              :thumbnails    {:height :2xl :width :4xl}
-                              :value-path    [:vehicles :vehicle-editor/edited-item :images]}]))
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/surface-box ::vehicle-thumbnail
+                           {:content [:<> [vehicle-thumbnail-picker]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :thumbnail}]))
 
-(defn- vehicle-images
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn- vehicle-name-field
   []
-  [:<> [vehicle-thumbnail-picker]
-       [vehicle-images-picker]])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [elements/combo-box ::vehicle-name-field
+                           {:autofocus?   true
+                            :disabled?    editor-disabled?
+                            :indent       {:top :m :vertical :s}
+                            :label        :name
+                            :options-path [:vehicles :editor/suggestions :name]
+                            :placeholder  :vehicle-name
+                            :value-path   [:vehicles :editor/edited-item :name]}]))
+
+(defn- vehicle-type-select
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [elements/select ::vehicle-type-select
+                        {:disabled?     editor-disabled?
+                         :indent        {:top :m :vertical :s}
+                         :label         :type
+                         :layout        :select
+                         :options-label :vehicle-type
+                         :options       [:alcove-rv :semi-integrated-rv :van-rv :caravan :trailer]
+                         :value-path    [:vehicles :editor/edited-item :type]}]))
+
+(defn- vehicle-basic-data
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/surface-box ::vehicle-basic-data
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 60})
+                                                      [vehicle-name-field]]
+                                                [:div (forms/form-block-attributes {:ratio 40})
+                                                      [vehicle-type-select]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :basic-data}]))
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn- vehicle-data
+  []
+  [:<> [vehicle-basic-data]
+       [vehicle-technical-data]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn- menu-bar
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [common/item-editor-menu-bar :vehicles.vehicle-editor
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/item-editor-menu-bar :vehicles.editor
                                     {:disabled?  editor-disabled?
-                                     :menu-items [{:label :data        :change-keys [:name :type :construction-year
-                                                                                     :number-of-bunks :number-of-seats]}
-                                                  {:label :description :change-keys [:description]}
-                                                  {:label :images      :change-keys [:images :thumbnail]}
-                                                  {:label :settings    :change-keys [:visibility]}]}]))
+                                     :menu-items [{:label :data      :change-keys [:name :type :construction-year
+                                                                                   :number-of-bunks :number-of-seats]}
+                                                  {:label :thumbnail :change-keys [:thumbnail]}
+                                                  {:label :images    :change-keys [:images]}
+                                                  {:label :content   :change-keys [:description]}
+                                                  {:label :settings  :change-keys [:visibility]}]}]))
 
-(defn- view-selector
+(defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :vehicles.vehicle-editor])]
-       (case current-view-id :data        [vehicle-data]
-                             :description [vehicle-description]
-                             :images      [vehicle-images]
-                             :settings    [vehicle-settings])))
+  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :vehicles.editor])]
+       (case current-view-id :data      [vehicle-data]
+                             :content   [vehicle-content]
+                             :thumbnail [vehicle-thumbnail]
+                             :images    [vehicle-images]
+                             :settings  [vehicle-settings])))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn- control-bar
+(defn- controls
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])]
-       [common/item-editor-control-bar :vehicles.vehicle-editor
-                                       {:disabled? editor-disabled?}]))
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])]
+       [common/item-editor-controls :vehicles.editor
+                                    {:disabled? editor-disabled?}]))
 
 (defn- breadcrumbs
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
-        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])]
-       [common/surface-breadcrumbs :vehicles.vehicle-editor/view
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])
+        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name]])]
+       [common/surface-breadcrumbs :vehicles.editor/view
                                    {:crumbs [{:label :app-home    :route "/@app-home"}
                                              {:label :vehicles    :route "/@app-home/vehicles"}
                                              {:label vehicle-name :placeholder :unnamed-vehicle}]
                                     :disabled? editor-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.vehicle-editor])
-        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :vehicle-editor/edited-item :name]])]
-       [common/surface-label :vehicles.vehicle-editor/view
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :vehicles.editor])
+        vehicle-name     @(a/subscribe [:db/get-item [:vehicles :editor/edited-item :name]])]
+       [common/surface-label :vehicles.editor/view
                              {:disabled?   editor-disabled?
                               :label       vehicle-name
                               :placeholder :unnamed-vehicle}]))
@@ -244,34 +281,35 @@
 
 (defn- header
   []
-  [:<> [label-bar]
-       [breadcrumbs]
+  [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+             [:div [label]
+                   [breadcrumbs]]
+             [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [view-selector]
-        [elements/horizontal-separator {:size :xxl}]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [control-bar]]])
+  [:<> [header]
+       [body]])
 
 (defn- vehicle-editor
   []
-  [item-editor/body :vehicles.vehicle-editor
-                    {:auto-title?      true
-                     :form-element     #'view-structure
-                     :ghost-element    #'common/item-editor-ghost-view
-                     :initial-item     {:number-of-bunks 0
-                                        :number-of-seats 0
-                                        :type       :alcove-rv
-                                        :visibility :public}
-                     :item-path        [:vehicles :vehicle-editor/edited-item]
-                     :label-key        :name
-                     :suggestion-keys  [:name]
-                     :suggestions-path [:vehicles :vehicle-editor/suggestions]}])
+  (let [current-year (time/get-year)]
+       [item-editor/body :vehicles.editor
+                         {:auto-title?      true
+                          :form-element     #'view-structure
+                          :error-element    [common/error-content {:error :the-item-you-opened-may-be-broken}]
+                          :ghost-element    #'common/item-editor-ghost-element
+                          :initial-item     {:construction-year current-year
+                                             :number-of-bunks   0
+                                             :number-of-seats   0
+                                             :type              :alcove-rv
+                                             :visibility        :public}
+                          :item-path        [:vehicles :editor/edited-item]
+                          :label-key        :name
+                          :suggestion-keys  [:name]
+                          :suggestions-path [:vehicles :editor/suggestions]}]))
 
 (defn view
   [surface-id]

@@ -7,8 +7,8 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :vehicles.vehicle-editor/load!
-  {:dispatch-n [[:gestures/init-view-handler! :vehicles.vehicle-editor
+  :vehicles.editor/load!
+  {:dispatch-n [[:gestures/init-view-handler! :vehicles.editor
                                               {:default-view-id :data}]
-                [:ui/render-surface! :vehicles.vehicle-editor/view
+                [:ui/render-surface! :vehicles.editor/view
                                      {:content #'editor.views/view}]]})

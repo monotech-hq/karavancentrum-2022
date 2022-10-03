@@ -26,7 +26,7 @@
              ;
              ; @return (map)
              [env mutation-props]
-             {::pathom.co/op-name 'website-content/save-content!}
+             {::pathom.co/op-name 'website-content.editor/save-content!}
              (save-content-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------

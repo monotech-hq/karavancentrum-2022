@@ -26,6 +26,8 @@
   ;   :extensions (strings in vector)(opt)
   ;   :multi-select? (boolean)(opt)
   ;    Default: false
+  ;   :on-save (metamorphic-event)(opt)
+  ;    Az esemény utolsó paraméterként megkapja a kiválasztott elem(ek)et.
   ;   :value-path (vector)}
   ;
   ; @usage
@@ -34,16 +36,24 @@
   ; @usage
   ;  [:storage.media-selector/load-selector! :my-selector {...}]
   [a/event-vector<-id]
-  (fn [_ [_ _ {:keys [autosave? extensions multi-select? value-path]}]]
+  (fn [_ [_ _ {:keys [autosave? extensions multi-select? on-save value-path]}]]
       {:dispatch-n [[:item-selector/load-selector! :storage.media-selector
                                                    {:autosave?     autosave?
                                                     :extensions    extensions
                                                     :export-id-f   media-selector.helpers/export-id-f
                                                     :import-id-f   media-selector.helpers/import-id-f
                                                     :multi-select? multi-select?
-                                                    :on-save       [:ui/close-popup! :storage.media-selector/view]
+                                                    :on-save       [:storage.media-selector/selection-saved on-save]
                                                     :value-path    value-path}]
                     [:storage.media-selector/render-selector!]]}))
+
+(a/reg-event-fx
+  :storage.media-selector/selection-saved
+  ; @param (metamorphic-event) on-save
+  ; @param (string or strings in vector) exported-items
+  (fn [_ [_ on-save exported-items]]
+      (let [on-save (a/metamorphic-event<-params on-save exported-items)]
+           {:dispatch-n [on-save [:ui/close-popup! :storage.media-selector/view]]})))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

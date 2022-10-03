@@ -16,8 +16,8 @@
   ;  {:document-count (integer)
   ;   :documents (namespaced maps in vector)}
   [env resolver-props]
-  (let [get-pipeline   (item-lister/env->get-pipeline   env :vehicles.vehicle-lister)
-        count-pipeline (item-lister/env->count-pipeline env :vehicles.vehicle-lister)]
+  (let [get-pipeline   (item-lister/env->get-pipeline   env :vehicles.lister)
+        count-pipeline (item-lister/env->count-pipeline env :vehicles.lister)]
        {:documents      (mongo-db/get-documents-by-pipeline   "vehicles" get-pipeline)
         :document-count (mongo-db/count-documents-by-pipeline "vehicles" count-pipeline)}))
 
@@ -26,11 +26,11 @@
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:vehicles.vehicle-lister/get-items (map)
+             ;  {:vehicles.lister/get-items (map)
              ;    {:document-count (integer)
              ;     :documents (namespaced maps in vector)}}
              [env resolver-props]
-             {:vehicles.vehicle-lister/get-items (get-items-f env resolver-props)})
+             {:vehicles.lister/get-items (get-items-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

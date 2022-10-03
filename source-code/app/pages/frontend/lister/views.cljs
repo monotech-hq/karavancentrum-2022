@@ -31,22 +31,23 @@
 
 (defn- page-lister-body
   []
-  [item-lister/body :pages.page-lister
+  [item-lister/body :pages.lister
                     {:default-order-by :modified-at/descending
-                     :items-path       [:pages :page-lister/downloaded-items]
-                     :ghost-element    #'common/item-lister-body-ghost-view
+                     :items-path       [:pages :lister/downloaded-items]
+                     :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
+                     :ghost-element    #'common/item-lister-ghost-element
                      :list-element     #'page-item}])
 
 (defn- page-lister-header
   []
-  [common/item-lister-header :pages.page-lister
-                             {:cells [[common/item-lister-header-spacer :pages.page-lister
+  [common/item-lister-header :pages.lister
+                             {:cells [[common/item-lister-header-spacer :pages.lister
                                                                         {:width "108px"}]
-                                      [common/item-lister-header-cell   :pages.page-lister
+                                      [common/item-lister-header-cell   :pages.lister
                                                                         {:label :name          :order-by-key :name :stretch? true}]
-                                      [common/item-lister-header-cell   :pages.page-lister
+                                      [common/item-lister-header-cell   :pages.lister
                                                                         {:label :last-modified :order-by-key :modified-at :width "160px"}]
-                                      [common/item-lister-header-spacer :pages.page-lister
+                                      [common/item-lister-header-spacer :pages.lister
                                                                         {:width "36px"}]]}])
 
 ;; ----------------------------------------------------------------------------
@@ -54,31 +55,31 @@
 
 (defn create-item-button
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])
         create-page-uri (str "/@app-home/pages/create")]
-       [common/item-lister-create-item-button :pages.page-lister
+       [common/item-lister-create-item-button :pages.lister
                                               {:disabled?       lister-disabled?
                                                :create-item-uri create-page-uri}]))
 
 (defn- search-block
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])]
-       [common/item-lister-search-block :pages.page-lister
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
+       [common/item-lister-search-block :pages.lister
                                         {:disabled?         lister-disabled?
                                          :field-placeholder :search-in-pages}]))
 
 (defn- breadcrumbs
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])]
-       [common/surface-breadcrumbs :pages.page-lister/view
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
+       [common/surface-breadcrumbs :pages.lister/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :pages}]
                                     :disabled? lister-disabled?}]))
 
 (defn- label-bar
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.page-lister])]
-       [common/surface-label :pages.page-lister/view
+  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
+       [common/surface-label :pages.lister/view
                              {:disabled? lister-disabled?
                               :label     :pages}]))
 
@@ -87,33 +88,31 @@
 
 (defn- footer
   []
-  [common/item-lister-download-info :pages.page-lister {}])
+  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
+          [common/item-lister-download-info :pages.lister {}]))
 
 (defn- body
   []
-  [:div {:style {:display :flex :flex-direction :column-reverse}}
-        [:div {:style {:width "100%"}}
-              [page-lister-body]]
-        [page-lister-header]])
+  [common/item-lister-wrapper :pages.lister
+                              {:body   #'page-lister-body
+                               :header #'page-lister-header}])
 
 (defn- header
   []
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.page-lister])]
+  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
           [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
                      [label-bar]
                      [create-item-button]]
                [breadcrumbs]
                [search-block]]
-          [common/item-lister-header-ghost-view :pages.page-lister {}]))
+          [common/item-lister-ghost-header :pages.lister {}]))
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [elements/horizontal-separator {:size :xxl}]
-        [body]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [footer]]])
+  [:<> [header]
+       [elements/horizontal-separator {:size :xxl}]
+       [body]
+       [footer]])
 
 (defn view
   [surface-id]

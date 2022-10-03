@@ -11,4 +11,5 @@
                   :parts
                   :content
                   :website
+                  :settings
                   :other])

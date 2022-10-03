@@ -21,9 +21,9 @@
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:contents.content-editor/get-item (namespaced map)}
+             ;  {:contents.editor/get-item (namespaced map)}
              [env resolver-props]
-             {:contents.content-editor/get-item (get-item-f env resolver-props)})
+             {:contents.editor/get-item (get-item-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

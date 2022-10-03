@@ -24,7 +24,7 @@
              ;
              ; @return (string)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-viewer/delete-item!}
+             {::pathom.co/op-name 'contents.viewer/delete-item!}
              (delete-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
@@ -46,7 +46,7 @@
              ;
              ; @return (namespaced map)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-viewer/undo-delete-item!}
+             {::pathom.co/op-name 'contents.viewer/undo-delete-item!}
              (undo-delete-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
@@ -71,7 +71,7 @@
              ;
              ; @return (string)
              [env mutation-props]
-             {::pathom.co/op-name 'contents.content-viewer/duplicate-item!}
+             {::pathom.co/op-name 'contents.viewer/duplicate-item!}
              (duplicate-item-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------

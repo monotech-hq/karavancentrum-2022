@@ -21,9 +21,9 @@
              ; @param (map) resolver-props
              ;
              ; @return (map)
-             ;  {:vehicles.vehicle-editor/get-item (namespaced map)}
+             ;  {:vehicles.editor/get-item (namespaced map)}
              [env resolver-props]
-             {:vehicles.vehicle-editor/get-item (get-item-f env resolver-props)})
+             {:vehicles.editor/get-item (get-item-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -28,4 +28,4 @@
   ; @return (map)
   ;  {:content/id (string)}
   [n]
-  {:content/id n})
+  (if n {:content/id n}))

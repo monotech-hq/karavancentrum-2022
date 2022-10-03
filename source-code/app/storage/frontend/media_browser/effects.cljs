@@ -82,7 +82,7 @@
             directory-uri (r router/use-app-home         db directory-uri)
             uri-base      (window/get-uri-base)]
            {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
-                         [:tools/copy-to-clipboard! (str uri-base directory-uri)]]})))
+                         [:clipboard/copy-text! (str uri-base directory-uri)]]})))
 
 ;; -- File-item effect events -------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -106,7 +106,7 @@
       (let [file-uri (media/filename->media-storage-uri filename)
             uri-base (window/get-uri-base)]
            {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
-                         [:tools/copy-to-clipboard! (str uri-base file-uri)]]})))
+                         [:clipboard/copy-text! (str uri-base file-uri)]]})))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

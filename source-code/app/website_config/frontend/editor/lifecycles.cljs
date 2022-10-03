@@ -1,14 +1,15 @@
 
 (ns app.website-config.frontend.editor.lifecycles
-    (:require [x.app-core.api :as a]))
+    (:require [x.app-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-app-boot [:home/add-menu-item! {:group    :website
-                                       :icon     :tune
-                                       :label    :website-config
-                                       :on-click [:router/go-to! "/@app-home/website-config"]
+  {:on-app-boot [:home/add-menu-item! {:group      :website
+                                       :icon       :tune
+                                       :icon-color "#8655b1"
+                                       :label      :website-config
+                                       :on-click   [:router/go-to! "/@app-home/website-config"]
                                        :horizontal-weight 2}]})

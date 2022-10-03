@@ -1,14 +1,14 @@
 
 (ns app.contents.backend.selector.lifecycles
     (:require [plugins.item-lister.api]
-              [x.server-core.api :as a]))
+              [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:item-lister/init-lister! :contents.content-selector
+  {:on-server-boot [:item-lister/init-lister! :contents.selector
                                               {:collection-name "contents"
-                                               :handler-key     :contents.content-lister
+                                               :handler-key     :contents.lister
                                                :item-namespace  :content}]})

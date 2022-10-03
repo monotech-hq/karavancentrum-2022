@@ -7,13 +7,13 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :storage.media-browser/render-directory-menu!
+  :storage.media-menu/render-directory-menu!
   (fn [{:keys [db]} [_ directory-item]]
       [:ui/render-popup! :storage.media-menu/view
                          {:content [media-menu.views/directory-menu directory-item]}]))
 
 (a/reg-event-fx
-  :storage.media-browser/render-file-menu!
+  :storage.media-menu/render-file-menu!
   (fn [{:keys [db]} [_ file-item]]
       [:ui/render-popup! :storage.media-menu/view
                          {:content [media-menu.views/file-menu file-item]}]))

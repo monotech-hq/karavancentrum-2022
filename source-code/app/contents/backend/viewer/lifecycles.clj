@@ -1,17 +1,17 @@
 
 (ns app.contents.backend.viewer.lifecycles
     (:require [plugins.item-viewer.api]
-              [x.server-core.api :as a]))
+              [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:item-viewer/init-viewer! :contents.content-viewer
+  {:on-server-boot [:item-viewer/init-viewer! :contents.viewer
                                               {:base-route      "/@app-home/contents"
                                                :collection-name "contents"
-                                               :handler-key     :contents.content-viewer
+                                               :handler-key     :contents.viewer
                                                :item-namespace  :content
-                                               :on-route        [:contents.content-viewer/load-viewer!]
+                                               :on-route        [:contents.viewer/load-viewer!]
                                                :route-title     :contents}]})

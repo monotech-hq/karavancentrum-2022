@@ -1,6 +1,7 @@
 
 (ns app.common.frontend.surface.views
     (:require [layouts.surface-a.api :as surface-a]
+              [x.app-components.api  :as components]
               [x.app-core.api        :as a]
               [x.app-elements.api    :as elements]))
 
@@ -24,19 +25,15 @@
   ; @param (keyword) surface-id
   ; @param (map) breadcrumbs-props
   ;  {:crumbs (maps in vector)
-  ;   :disabled? (boolean)(opt)
-  ;   :loading? (boolean)(opt)}
+  ;   :disabled? (boolean)(opt)}
   ;
   ; @usage
   ;  [common/surface-breadcrumbs :my-surface {...}]
-  [surface-id {:keys [crumbs disabled? loading?]}]
-  (if loading? (let [ghost-props {:height :xs :indent {:left :xs :top :xxs} :style {:width "80px"}}]
-                    (letfn [(f [ghost-list _] (conj ghost-list [elements/ghost ghost-props]))]
-                           (reduce f [:div {:style {:display :flex}}] crumbs)))
-               [elements/breadcrumbs ::breadcrumbs
-                                     {:crumbs    crumbs
-                                      :disabled? disabled?
-                                      :indent    {:left :xs}}]))
+  [surface-id {:keys [crumbs disabled?]}]
+  [elements/breadcrumbs ::surface-breadcrumbs
+                        {:crumbs    crumbs
+                         :disabled? disabled?
+                         :indent    {:left :xs}}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -46,39 +43,57 @@
   ; @param (map) description-props
   ;  {:disabled? (boolean)(opt)
   ;   :label (metamorphic-content)
-  ;   :loading? (boolean)(opt)
   ;   :placeholder (metamorphic-content)(opt)}
   ;
   ; @usage
   ;  [common/surface-label :my-surface {...}]
-  [surface-id {:keys [disabled? label loading? placeholder]}]
-  (if loading? [elements/ghost {:height :l :indent {:bottom :xs :left :xs} :style {:width "240px"}}]
-               ; Ha nem egy közös elemben (pl. div) volt a sensor és a label, akkor bizonoyos
-               ; esetekben (pl. horizontal-polarity elemben) nem megfelelő helyen érzékelt a sensor
-               [:div [surface-a/title-sensor {:title label :offset -12}]
-                     (let [viewport-small? @(a/subscribe [:environment/viewport-small?])]
-                          [elements/label ::surface-label
-                                          {:content     label
-                                           :disabled?   disabled?
-                                           :font-size   (if viewport-small? :l :xxl)
-                                           :font-weight :extra-bold
-                                           :indent      {:left :xs}
-                                           :placeholder placeholder}])]))
+  [surface-id {:keys [disabled? label placeholder]}]
+  ; Ha nem egy közös elemben (pl. div) volt a sensor és a label, akkor bizonoyos
+  ; esetekben (pl. horizontal-polarity elemben) nem megfelelő helyen érzékelt a sensor
+  [:div [surface-a/title-sensor {:title label :offset -12}]
+        (let [viewport-large? @(a/subscribe [:environment/viewport-large?])]
+             [elements/label ::surface-label
+                             {:content     label
+                              :disabled?   disabled?
+                              :font-size   (if viewport-large? :xxl :l)
+                              :font-weight :extra-bold
+                              :indent      {:left :xs}
+                              :placeholder placeholder}])])
 
 (defn surface-description
   ; @param (keyword) surface-id
   ; @param (map) description-props
   ;  {:description (metamorphic-content)
-  ;   :disabled? (boolean)(opt)
-  ;   :loading? (boolean)(opt)}
+  ;   :disabled? (boolean)(opt)}
   ;
   ; @usage
   ;  [common/surface-description :my-surface {...}]
-  [surface-id {:keys [description disabled? loading?]}]
-  (if loading? [elements/ghost {:height :s :indent {:left :xs} :style {:width "180px"}}]
-               [elements/label ::surface-description
-                               {:color     :muted
-                                :content   description
-                                :disabled? disabled?
-                                :font-size :xxs
-                                :indent    {:left :xs}}]))
+  [surface-id {:keys [description disabled?]}]
+  [elements/label ::surface-description
+                  {:color     :muted
+                   :content   description
+                   :disabled? disabled?
+                   :font-size :xxs
+                   :indent    {:left :xs}}])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn surface-box-layout-ghost-view
+  ; @param (keyword) editor-id
+  ; @param (map) view-props
+  ;  {:breadcrumb-count (integer)}
+  ;
+  ; @usage
+  ;  [common/surface-box-layout-ghost-view :my-editor {...}]
+  [editor-id {:keys [breadcrumb-count]}]
+  [:div {:style {:padding "0 12px" :width "100%"}}
+        [:div {:style {:padding-bottom "6px" :width "240px"}}
+              [elements/ghost {:height :xl}]]
+        [:div {:style {:display "flex" :grid-column-gap "12px" :padding-top "6px"}}
+              (letfn [(f [%1 %2] (conj %1 [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]))]
+                     (reduce f [:<>] (range breadcrumb-count)))]
+        [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px" :padding-top "96px"}}
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :5xl :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :5xl :indent {}}]]
+              [:div {:style {:flex-grow 1}} [elements/ghost {:height :5xl :indent {}}]]]])

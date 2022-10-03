@@ -7,8 +7,8 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :pages.page-editor/load-editor!
-  {:dispatch-n [[:gestures/init-view-handler! :pages.page-editor
+  :pages.editor/load-editor!
+  {:dispatch-n [[:gestures/init-view-handler! :pages.editor
                                               {:default-view-id :data}]
-                [:ui/render-surface! :pages.page-editor/view
+                [:ui/render-surface! :pages.editor/view
                                      {:page #'editor.views/view}]]})

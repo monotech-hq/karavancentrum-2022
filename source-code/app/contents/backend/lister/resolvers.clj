@@ -16,8 +16,8 @@
   ;  {:document-count (integer)
   ;   :documents (namespaced maps in vector)}
   [env resolver-props]
-  (let [get-pipeline   (item-lister/env->get-pipeline   env :contents.content-lister)
-        count-pipeline (item-lister/env->count-pipeline env :contents.content-lister)]
+  (let [get-pipeline   (item-lister/env->get-pipeline   env :contents.lister)
+        count-pipeline (item-lister/env->count-pipeline env :contents.lister)]
        {:documents      (mongo-db/get-documents-by-pipeline   "contents"   get-pipeline)
         :document-count (mongo-db/count-documents-by-pipeline "contents" count-pipeline)}))
 
@@ -26,11 +26,11 @@
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:contents.content-lister/get-items (map)
+             ;  {:contents.lister/get-items (map)
              ;    {:document-count (integer)
              ;     :documents (namespaced maps in vector)}}
              [env resolver-props]
-             {:contents.content-lister/get-items (get-items-f env resolver-props)})
+             {:contents.lister/get-items (get-items-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

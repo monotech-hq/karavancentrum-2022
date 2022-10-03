@@ -20,8 +20,8 @@
   ; @return (map)
   [db [_ selector-id {:keys [import-id-f value-path]}]]
   (let [stored-selection (get-in db value-path)]
-       (cond (string? stored-selection) (r item-lister/import-single-selection! db selector-id (import-id-f    stored-selection))
-             (vector? stored-selection) (r item-lister/import-selection!        db selector-id (vector/->items stored-selection import-id-f))
+       (cond (vector? stored-selection) (r item-lister/import-selection!        db selector-id (vector/->items stored-selection import-id-f))
+             (some?   stored-selection) (r item-lister/import-single-selection! db selector-id (import-id-f    stored-selection))
              :else                      (return db))))
 
 (defn export-selection!
@@ -36,13 +36,15 @@
           ; ...
           (let [value-path     (r item-lister/get-meta-item    db selector-id :value-path)
                 export-id-f    (r item-lister/get-meta-item    db selector-id :export-id-f)
-                selected-items (r item-lister/export-selection db selector-id)]
-               (assoc-in db value-path (vector/->items selected-items export-id-f)))
+                selected-items (r item-lister/export-selection db selector-id)
+                exported-items (vector/->items selected-items export-id-f)]
+               (assoc-in db value-path exported-items))
           ; ...
           (let [value-path    (r item-lister/get-meta-item           db selector-id :value-path)
                 export-id-f   (r item-lister/get-meta-item           db selector-id :export-id-f)
-                selected-item (r item-lister/export-single-selection db selector-id)]
-               (assoc-in db value-path (export-id-f selected-item)))))
+                selected-item (r item-lister/export-single-selection db selector-id)
+                exported-item (export-id-f selected-item)]
+               (assoc-in db value-path exported-item))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -71,3 +73,13 @@
   [db [_ selector-id selector-props]]
   (as-> db % (r import-selection!     % selector-id selector-props)
              (r store-selector-props! % selector-id selector-props)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn abort-autosave!
+  ; @param (keyword) selector-id
+  ;
+  ; @return (map)
+  [db [_ selector-id]]
+  (r item-lister/set-meta-item! db selector-id :autosave-id))

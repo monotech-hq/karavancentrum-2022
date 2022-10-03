@@ -11,6 +11,12 @@
            :search-in-contents
            {:en "Search in contents"
             :hu "Keresés az tartalmak között"}
+           :select-content!
+           {:en "Select content"
+            :hu "Tartalom kiválasztása"}
+           :select-contents!
+           {:en "Select contents"
+            :hu "Tartalmak kiválasztása"}
            :unnamed-content
            {:en "Unnamed content"
             :hu "Névtelen tartalom"}})

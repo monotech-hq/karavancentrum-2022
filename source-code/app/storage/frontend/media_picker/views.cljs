@@ -1,10 +1,9 @@
 
 (ns app.storage.frontend.media-picker.views
     (:require [app.storage.frontend.media-picker.prototypes :as media-picker.prototypes]
-              [mid-fruits.candy                             :refer [param]]
+              [app.storage.frontend.media-preview.views     :as media-preview.views]
               [mid-fruits.random                            :as random]
-              [mid-fruits.vector                            :as vector]
-              [x.app-core.api                               :as a]
+              [re-frame.api                                 :as r]
               [x.app-elements.api                           :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -15,9 +14,9 @@
   ; @param (map) picker-props
   ;  {:multi-select? (boolean)(opt)}
   [picker-id {:keys [multi-select?] :as picker-props}]
-  (if-let [no-items-picked? @(a/subscribe [:storage.media-picker/no-items-picked? picker-id picker-props])]
+  (if-let [no-items-picked? @(r/subscribe [:storage.media-picker/no-items-picked? picker-id picker-props])]
           (if multi-select? :no-items-selected :no-item-selected)
-          (let [picked-item-count @(a/subscribe [:storage.media-picker/get-picked-item-count picker-id picker-props])]
+          (let [picked-item-count @(r/subscribe [:storage.media-picker/get-picked-item-count picker-id picker-props])]
                {:content :n-items-selected :replacements [picked-item-count]})))
 
 (defn media-picker-toggle-label
@@ -53,46 +52,20 @@
                              :info-text info-text
                              :required? required?}]))
 
-(defn media-picker-thumbnail
+(defn media-picker-preview
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  ;  {:disabled? (boolean)(opt)
-  ;   :thumbnails (map)
-  ; @param (string) thumbnail-uri
-  [picker-id {:keys [disabled? thumbnails] :as picker-props} thumbnail-uri]
-  [elements/thumbnail {:border-radius :s
-                       :disabled?     disabled?
-                       :height        (:height thumbnails)
-                       :width         (:width  thumbnails)
-                       :uri           thumbnail-uri}])
-
-(defn media-picker-thumbnail-list
-  ; @param (keyword) picker-id
-  ; @param (map) picker-props
-  ;  {:thumbnails (map)
-  ;    {:max-count (integer)(opt)}}
-  [picker-id {:keys [thumbnails] :as picker-props}]
-  (letfn [(f [thumbnail-list thumbnail-uri] (conj thumbnail-list [media-picker-thumbnail picker-id picker-props thumbnail-uri]))]
-         (let [picked-items @(a/subscribe [:storage.media-picker/get-picked-items picker-id picker-props])]
-              [:div {:style {:display :flex :flex-wrap :wrap :grid-column-gap "12px"}}
-                    (reduce f [:<>] (if-let [max-count (:max-count thumbnails)]
-                                            (vector/first-items picked-items max-count)
-                                            (param              picked-items)))])))
-
-(defn media-picker-thumbnails
-  ; @param (keyword) picker-id
-  ; @param (map) picker-props
-  ;  {:thumbnails (map)(opt)}
-  [picker-id {:keys [thumbnails] :as picker-props}]
-  (if thumbnails [media-picker-thumbnail-list picker-id picker-props]))
+  [picker-id picker-props]
+  (let [preview-props (media-picker.prototypes/preview-props-prototype picker-id picker-props)]
+       [media-preview.views/element picker-id preview-props]))
 
 (defn media-picker-body
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   [picker-id picker-props]
-  [:<> [media-picker-label      picker-id picker-props]
-       [media-picker-button     picker-id picker-props]
-       [media-picker-thumbnails picker-id picker-props]])
+  [:<> [media-picker-label   picker-id picker-props]
+       [media-picker-button  picker-id picker-props]
+       [media-picker-preview picker-id picker-props]])
 
 (defn- media-picker
   ; @param (keyword) picker-id
@@ -116,16 +89,19 @@
   ;   :label (metamorphic-content)(opt)
   ;   :multi-select? (boolean)(opt)
   ;    Default: false
+  ;   :no-media-label (metamorphic-content)(opt)
+  ;   :on-save (metamorphic-event)(opt)
+  ;    Az esemény utolsó paraméterként megkapja a kiválasztott elemet.
   ;   :required? (boolean)(opt)
-  ;   :thumbnails (map)(opt)
+  ;   :thumbnail (map)(opt)
   ;    {:max-count (integer)(opt)
   ;      Default: 8
   ;     :height (keyword)(opt)
-  ;      :xxs, :xs, :s, :m, :l, :xl, :xxl, :2xl, :3xl, :4xl
-  ;      Default: :4xl
+  ;      :xxs, :xs, :s, :m, :l, :xl, :xxl, :3xl, :4xl, :5xl
+  ;      Default: :5xl
   ;     :width (keyword)(opt)
-  ;      :xxs, :xs, :s, :m, :l, :xl, :xxl, :2xl, :3xl, :4xl
-  ;      Default: :4xl}
+  ;      :xxs, :xs, :s, :m, :l, :xl, :xxl, :3xl, :4xl, :5xl
+  ;      Default: :5xl}
   ;   :toggle-label (metamorphic-content)(opt)
   ;   :value-path (vector)}
   ;
@@ -138,5 +114,5 @@
    [element (random/generate-keyword) picker-props])
 
   ([picker-id picker-props]
-   (let [picker-props (media-picker.prototypes/picker-props-prototype picker-props)]
+   (let [picker-props (media-picker.prototypes/picker-props-prototype picker-id picker-props)]
         [media-picker picker-id picker-props])))

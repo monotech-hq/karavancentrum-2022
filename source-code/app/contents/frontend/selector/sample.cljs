@@ -7,5 +7,5 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :load-my-content-selector!
-  [:contents.content-selector/load-selector! :my-selector {:value-path [:my-item]}])
+  :load-my-selector!
+  [:contents.selector/load-selector! :my-selector {:value-path [:my-item]}])

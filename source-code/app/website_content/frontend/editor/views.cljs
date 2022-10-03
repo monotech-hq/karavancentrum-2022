@@ -14,189 +14,304 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- address-data-information
+(defn- about-us-picker
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [contents/content-picker ::address-data-information-picker
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [contents/content-picker ::about-us-picker
                                 {:disabled?  editor-disabled?
-                                 :indent     {:top :l :vertical :xs}
-                                 :label      :address-data-information
-                                 :value-path [:website-content :content-editor/edited-item :address-data-information]}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- contacts-data-information
-  []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [contents/content-picker ::contacts-data-information-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:top :l :vertical :xs}
-                                 :label      :contacts-data-information
-                                 :value-path [:website-content :content-editor/edited-item :contacts-data-information]}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- rent-informations
-  []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [contents/content-picker ::rent-informations-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:top :l :vertical :xs}
-                                 :label      :rent-informations
-                                 :value-path [:website-content :content-editor/edited-item :rent-informations]}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
+                                 :indent     {:vertical :s}
+                                 :value-path [:website-content :editor/edited-item :about-us]}]))
 
 (defn- about-us
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [contents/content-picker ::about-us-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:top :l :vertical :xs}
-                                 :label      :about-us
-                                 :value-path [:website-content :content-editor/edited-item :about-us]}]))
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::about-us
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [about-us-picker]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :about-us}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- main-page
+(defn- address-data-information-picker
   []
-  [:<> [rent-informations]
-       [about-us]
-       [contacts-data-information]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [contents/content-picker ::address-data-information-picker
+                                {:disabled?  editor-disabled?
+                                 :indent     {:vertical :s}
+                                 :value-path [:website-content :editor/edited-item :address-data-information]}]))
+
+(defn- address-data-information
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::address-data-information
+                           {:indent  {:top :m}
+                            :content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [address-data-information-picker]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :address-data-information}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- contacts-data-information-picker
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [contents/content-picker ::contacts-data-information-picker
+                                {:disabled?  editor-disabled?
+                                 :indent     {:vertical :s}
+                                 :value-path [:website-content :editor/edited-item :contacts-data-information]}]))
+
+(defn- contacts-data-information
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::contacts-data-information
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [contacts-data-information-picker]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :contacts-data-information}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- contacts
+  []
+  [:<> [contacts-data-information]
        [address-data-information]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- brand-logo-picker
-  [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [storage/media-picker {:autosave?     true
-                              :disabled?     editor-disabled?
-                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
-                              :indent        {:all :xs}
-                              :label         :logo
-                              :multi-select? false
-                              :toggle-label  :select-image!
-                              :thumbnails    {:height :2xl :width :4xl}
-                              :value-path    [:website-content :content-editor/edited-item :more-brands brand-dex :logo]}]))
+(defn- webshop-link-field
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [elements/text-field ::webshop-link-field
+                            {:disabled?   editor-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :link
+                             :placeholder :webshop-link-placeholder
+                             :value-path  [:website-content :editor/edited-item :webshop-link]}]))
+
+(defn- webshop-settings
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::webshop-settings
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 50})
+                                                      [webshop-link-field]]
+                                                [:div (forms/form-block-attributes {:ratio 50})]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :webshop}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- webshop
+  []
+  [:<> [webshop-settings]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- duplicate-brand-button
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/button {:color     :primary
                          :disabled? editor-disabled?
                          :font-size :xs
-                         :indent    {:right :xs :bottom :xxs}
+                         :indent    {:right :s :top :m}
                          :label     :duplicate!
-                         :on-click  [:db/apply-item! [:website-content :content-editor/edited-item :more-brands]
+                         :on-click  [:db/apply-item! [:website-content :editor/edited-item :brands]
                                                      vector/duplicate-nth-item brand-dex]}]))
 
 (defn- delete-brand-button
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/button {:color     :warning
                          :disabled? editor-disabled?
                          :font-size :xs
-                         :indent    {:right :xs :bottom :xxs}
+                         :indent    {:right :s :top :m}
                          :label     :delete!
-                         :on-click  [:db/apply-item! [:website-content :content-editor/edited-item :more-brands]
+                         :on-click  [:db/apply-item! [:website-content :editor/edited-item :brands]
                                                      vector/remove-nth-item brand-dex]}]))
+
+(defn- brand-description-field
+  [brand-dex _]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [elements/multiline-field {:disabled?   editor-disabled?
+                                  :label       :description
+                                  :indent      {:top :m :vertical :s}
+                                  :placeholder :brand-description-placeholder
+                                  :value-path  [:website-content :editor/edited-item :brands brand-dex :description]}]))
+
+(defn- brand-logo-picker
+  [brand-dex _]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [storage/media-picker {:autosave?     true
+                              :disabled?     editor-disabled?
+                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
+                              :indent        {:top :m :vertical :s}
+                              :label         :logo
+                              :multi-select? false
+                              :toggle-label  :select-image!
+                              :thumbnail     {:height :3xl :width :5xl}
+                              :value-path    [:website-content :editor/edited-item :brands brand-dex :logo]}]))
 
 (defn- brand-label-field
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [elements/text-field {:autofocus?  true
-                             :disabled?   editor-disabled?
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [elements/text-field {:disabled?   editor-disabled?
                              :label       :label
-                             :indent      {:all :xs}
-                             :value-path  [:website-content :content-editor/edited-item :more-brands brand-dex :label]}]))
+                             :indent      {:top :m :vertical :s}
+                             :placeholder :brand-name
+                             :value-path  [:website-content :editor/edited-item :brands brand-dex :label]}]))
 
 (defn- brand-link-field
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field {:disabled?   editor-disabled?
                              :label       :link
-                             :indent      {:all :xs}
-                             :value-path  [:website-content :content-editor/edited-item :more-brands brand-dex :link]}]))
+                             :indent      {:top :m :vertical :s}
+                             :placeholder :website-link-placeholder
+                             :value-path  [:website-content :editor/edited-item :brands brand-dex :link]}]))
 
 (defn- brand
   [brand-dex brand-props]
-  [:<> [elements/horizontal-separator {:size :l}]
-       [:div {:style {:background-color (css/var "background-color-highlight")
-                      :border-radius    (css/var "border-radius-m")
-                      :margin "0 12px"}}
-             [:div (forms/form-row-attributes)
-                   [:div (forms/form-block-attributes {:ratio 30})
-                         [brand-logo-picker brand-dex brand-props]]
-                   [:div (forms/form-block-attributes {:ratio 70})
-                         [brand-label-field brand-dex brand-props]
-                         [brand-link-field brand-dex brand-props]]]
-             [:div {:style {:display :flex :justify-content :flex-end}}
-                   [duplicate-brand-button brand-dex brand-props]
-                   [delete-brand-button    brand-dex brand-props]]]])
+  [common/surface-box {:indent  {:top :m}
+                       :content [:<> [:div (forms/form-row-attributes)
+                                           [:div (forms/form-block-attributes {:ratio 30})
+                                                 [brand-logo-picker brand-dex brand-props]]
+                                           [:div (forms/form-block-attributes {:ratio 70})
+                                                 [brand-label-field brand-dex brand-props]
+                                                 [brand-link-field  brand-dex brand-props]]]
+                                     [:div (forms/form-row-attributes)
+                                           [:div (forms/form-block-attributes {:ratio 100})
+                                                 [brand-description-field brand-dex brand-props]]]
+                                     [:div {:style {:display :flex :justify-content :flex-end}}
+                                           [duplicate-brand-button brand-dex brand-props]
+                                           [delete-brand-button    brand-dex brand-props]]
+                                     [elements/horizontal-separator {:size :xs}]]}])
 
-(defn- more-brands-list
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- brand-list
   []
   (letfn [(f [%1 %2 %3] (conj %1 [brand %2 %3]))]
-         (let [more-brands @(a/subscribe [:db/get-item [:website-content :content-editor/edited-item :more-brands]])]
-              (reduce-kv f [:<>] more-brands))))
+         (let [brands @(a/subscribe [:db/get-item [:website-content :editor/edited-item :brands]])]
+              (reduce-kv f [:<>] brands))))
 
-(defn- more-brands-action-bar
-  []
-  [common/file-editor-action-bar :website-content
-                                 {:label    :add-brand!
-                                  :on-click [:db/apply-item! [:website-content :content-editor/edited-item :more-brands]
-                                                             vector/cons-item {}]}])
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
-(defn- more-brands
+(defn- brand-controls-action-bar
   []
-  [:<> [more-brands-action-bar]
-       [more-brands-list]])
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])
+        on-click [:db/apply-item! [:website-content :editor/edited-item :brands] vector/cons-item {}]]
+       [common/action-bar ::brand-controls-action-bar
+                          {:disabled? editor-disabled?
+                           :label     :add-brand!
+                           :on-click  on-click}]))
+
+(defn- brand-controls
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::brand-controls
+                           {:content [:<> [brand-controls-action-bar]
+                                          [elements/horizontal-separator {:size :xs}]]
+                            :disabled? editor-disabled?
+                            :label     :selling}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- selling
+  []
+  [:<> [brand-controls]
+       [brand-list]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- rent-informations-picker
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [contents/content-picker ::rent-informations-picker
+                                {:disabled?  editor-disabled?
+                                 :indent     {:vertical :s}
+                                 :value-path [:website-content :editor/edited-item :rent-informations]}]))
+
+(defn- rent-informations
+  []
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-box ::rent-informations
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 33})
+                                                      [rent-informations-picker]]
+                                                [:div (forms/form-block-attributes {:ratio 67})]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :rent-informations}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- renting
+  []
+  [:<> [rent-informations]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- menu-bar
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [common/file-editor-menu-bar :website-content
-                                    {:menu-items [{:label :main-page   :change-keys [:address-data-information :contacts-data-information
-                                                                                     :about-us :rent-informations]}
-                                                  {:label :more-brands :change-keys [:more-brands]}]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/file-editor-menu-bar :website-content.editor
+                                    {:menu-items [{:label :renting  :change-keys [:rent-informations]}
+                                                  {:label :selling  :change-keys [:brands]}
+                                                  {:label :webshop  :change-keys [:webshop-link]}
+                                                  {:label :contacts :change-keys [:address-data-information :contacts-data-information]}
+                                                  {:label :about-us :change-keys [:about-us]}]
                                      :disabled? editor-disabled?}]))
 
-(defn- view-selector
+(defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :website-content])]
-       (case current-view-id :main-page   [main-page]
-                             :more-brands [more-brands])))
+  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :website-content.editor])]
+       (case current-view-id :renting  [renting]
+                             :selling  [selling]
+                             :webshop  [webshop]
+                             :contacts [contacts]
+                             :about-us [about-us])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- control-bar
+(defn- controls
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [common/file-editor-control-bar :website-content
-                                       {:disabled? editor-disabled?}]))
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/file-editor-controls :website-content.editor
+                                    {:disabled? editor-disabled?}]))
 
 (defn- breadcrumbs
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [common/surface-breadcrumbs :website-content/view
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-breadcrumbs :website-content.editor/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :website-content}]
                                     :disabled? editor-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content])]
-       [common/surface-label :website-content/view
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [common/surface-label :website-content.editor/view
                              {:disabled? editor-disabled?
                               :label     :website-content}]))
 
@@ -205,26 +320,25 @@
 
 (defn- header
   []
-  [:<> [label-bar]
-       [breadcrumbs]
+  [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+             [:div [label]
+                   [breadcrumbs]]
+             [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [view-selector]
-        [elements/horizontal-separator {:size :xxl}]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [control-bar]]])
+  [:<> [header]
+       [body]])
 
 (defn- website-content-editor
   []
-  [file-editor/body :website-content
-                    {:content-path  [:website-content :content-editor/edited-item]
+  [file-editor/body :website-content.editor
+                    {:content-path  [:website-content :editor/edited-item]
                      :form-element  #'view-structure
-                     :ghost-element #'common/file-editor-ghost-view}])
+                     :error-element [common/error-content {:error :the-content-you-opened-may-be-broken}]
+                     :ghost-element #'common/file-editor-ghost-element}])
 
 (defn view
   [surface-id]

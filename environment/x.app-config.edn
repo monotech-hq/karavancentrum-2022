@@ -30,7 +30,7 @@
 ; @usage
 ;  {:app-domain    "https://my-app.com"
 ;   :app-home      "/"
-;   :app-home      "/admin"
+;   :app-home      "/app"
 ;   :app-themes    [{:id :my-theme :name "My theme"}
 ;                   {:id :light    :name :light-theme}]
 ;   :plugin-js-paths [{:uri "/js/plugins/external-plugin.js"}
@@ -39,7 +39,7 @@
 {; App details
  :author        "Monotech.hu"
  :app-domain    "https://my-app.com"
- :app-home      "/admin"
+ :app-home      "/app"
  :app-languages [:en :hu]
  :app-themes    [{:id :light :name :light-theme}
                  {:id :dark  :name :dark-theme}]
@@ -52,10 +52,9 @@
  :css-paths
  [
  ;; ---- Site ----
-  {:uri "/css/site.css" :core-js "site.js"}
+  {:uri "/css/karavancentrum/site.css" :core-js "site.js"}]
 
- ;; ---- Admin ----
-  {:uri "/css/app.css"  :core-js "app.js"}]
+ ;; ---- App ----
   ; {:uri "/css/slider/carousel.css"     :core-js "site.js"}
   ; {:uri "/css/slider/carousel.min.css" :core-js "site.js"}]
 

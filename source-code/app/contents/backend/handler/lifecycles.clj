@@ -1,13 +1,13 @@
 
 (ns app.contents.backend.handler.lifecycles
     (:require [app.contents.backend.handler.routes :as handler.routes]
-              [x.server-core.api                   :as a]))
+              [x.server-core.api                   :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-init [:router/add-route! :contents/download-content
+  {:on-server-init [:router/add-route! :contents.handler/download-content
                                        {:route-template "/contents/:content-id"
                                         :get {:handler handler.routes/download-content}}]})

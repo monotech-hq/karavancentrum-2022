@@ -19,10 +19,16 @@
               [app.storage.frontend.media-viewer.effects]
               [app.storage.frontend.media-viewer.events]
               [app.storage.frontend.media-viewer.subs]
-              [app.storage.frontend.media-picker.views :as media-picker.views]))
+              [tools.clipboard.api]
+              [tools.temporary-component.api]
+              [app.storage.frontend.media-picker.views  :as media-picker.views]
+              [app.storage.frontend.media-preview.views :as media-preview.views]))
 
 ;; -- Redirects ---------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; app.storage.frontend.media-picker.views
 (def media-picker media-picker.views/element)
+
+; app.storage.frontend.media-preview.views
+(def media-preview media-preview.views/element)

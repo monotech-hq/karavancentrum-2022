@@ -1,6 +1,6 @@
 
 (ns app.common.frontend.item-browser.views
-    (:require [app.common.frontend.item-lister.views :as lister.views]
+    (:require [app.common.frontend.item-lister.views :as item-lister.views]
               [x.app-components.api                  :as components]
               [x.app-core.api                        :as a]
               [x.app-elements.api                    :as elements]))
@@ -17,12 +17,13 @@
   ; @usage
   ;  [common/item-browser-search-field :my-browser {...}]
   [browser-id {:keys [disabled? field-placeholder]}]
-  (let [search-event [:item-browser/search-items! browser-id {:search-keys [:name]}]]
+  (let [viewport-small? @(a/subscribe [:environment/viewport-small?])
+        search-event [:item-browser/search-items! browser-id {:search-keys [:name]}]]
        [elements/search-field ::search-items-field
                               {:autoclear?    true
                                :autofocus?    true
+                               :border-radius (if viewport-small? :none :l)
                                :disabled?     disabled?
-                               :indent        {:left :xs :right :xxs}
                                :on-empty      search-event
                                :on-type-ended search-event
                                :placeholder   field-placeholder}]))
@@ -41,7 +42,7 @@
                        {:color     :muted
                         :content   (if-not disabled? description)
                         :font-size :xxs
-                        :indent    {:top :s :left :xs}}]))
+                        :indent    {:top :m :left :xs}}]))
 
 (defn item-browser-search-block
   ; @param (keyword) browser-id

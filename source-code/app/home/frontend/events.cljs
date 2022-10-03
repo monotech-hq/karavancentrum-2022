@@ -28,6 +28,7 @@
   ;   :horizontal-weight (integer)(opt)
   ;    Default: 0
   ;   :icon (keyword)
+  ;   :icon-color (string)(opt)
   ;   :icon-family (keyword)(opt)
   ;   :label (string)
   ;   :on-click (metamorphic-event)}

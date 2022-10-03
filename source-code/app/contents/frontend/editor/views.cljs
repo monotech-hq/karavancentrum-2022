@@ -12,90 +12,122 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- content-content-editor
+(defn- content-body-editor
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
-       [text-editor/body ::content-content-editor
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [text-editor/body ::content-body-editor
                          {:disabled?  editor-disabled?
-                          :indent     {:vertical :xs :top :l}
+                          :indent     {:top :m :vertical :s}
                           :label      :body
-                          :value-path [:contents :content-editor/edited-item :body]}]))
+                          :value-path [:contents :editor/edited-item :body]}]))
 
 (defn- content-content
   []
-  [content-content-editor])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/surface-box ::content-content
+                           {:content [:<> [content-body-editor]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :content}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- content-visibility-radio-button
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [elements/radio-button ::content-visibility-radio-button
                               {:disabled?       editor-disabled?
-                               :indent          {:top :l :vertical :xs}
+                               :indent          {:top :m :vertical :s}
                                :label           :content-visibility
                                :options         [{:label :public-content  :helper :visible-to-everyone     :value :public}
                                                  {:label :private-content :helper :only-visible-to-editors :value :private}]
                                :option-helper-f :helper
                                :option-label-f  :label
                                :option-value-f  :value
-                               :value-path      [:contents :content-editor/edited-item :visibility]}]))
+                               :value-path      [:contents :editor/edited-item :visibility]}]))
+
+(defn- content-settings
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/surface-box ::content-settings
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [content-visibility-radio-button]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :label     :settings
+                            :disabled? editor-disabled?}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- content-name-field
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [elements/combo-box ::content-name-field
                            {:autofocus?   true
                             :disabled?    editor-disabled?
                             :emptiable?   false
-                            :indent       {:top :l :vertical :xs}
+                            :indent       {:top :m :vertical :s}
                             :label        :name
-                            :options-path [:contents :content-editor/suggestions :name]
+                            :options-path [:contents :editor/suggestions :name]
                             :placeholder  :content-name
                             :required?    true
-                            :value-path   [:contents :content-editor/edited-item :name]}]))
+                            :value-path   [:contents :editor/edited-item :name]}]))
+
+(defn- content-basic-data
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/surface-box ::content-basic-data
+                           {:content [:<> [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [content-name-field]]]
+                                          [elements/horizontal-separator {:size :s}]]
+                            :disabled? editor-disabled?
+                            :label     :basic-data}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- content-data
   []
-  [:<> [:div (forms/form-row-attributes)
-             [:div (forms/form-block-attributes {:ratio 100})
-                   [content-name-field]]]
-       [content-visibility-radio-button]])
+  [:<> [content-basic-data]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- menu-bar
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
-       [common/item-editor-menu-bar :contents.content-editor
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/item-editor-menu-bar :contents.editor
                                     {:disabled?  editor-disabled?
-                                     :menu-items [{:label :data    :change-keys [:name]}
-                                                  {:label :content :change-keys [:body]}]}]))
+                                     :menu-items [{:label :data     :change-keys [:name]}
+                                                  {:label :content  :change-keys [:body]}
+                                                  {:label :settings :change-keys [:visibility]}]}]))
 
-(defn- view-selector
+(defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.content-editor])]
-       (case current-view-id :data    [content-data]
-                             :content [content-content])))
+  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.editor])]
+       (case current-view-id :data     [content-data]
+                             :content  [content-content]
+                             :settings [content-settings])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- control-bar
+(defn- controls
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])]
-       [common/item-editor-control-bar :contents.content-editor
-                                       {:disabled? editor-disabled?}]))
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/item-editor-controls :contents.editor
+                                    {:disabled? editor-disabled?}]))
 
 (defn- breadcrumbs
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])
-        content-name     @(a/subscribe [:db/get-item [:contents :content-editor/edited-item :name]])
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])
+        content-name     @(a/subscribe [:db/get-item [:contents :editor/edited-item :name]])
         content-id       @(a/subscribe [:router/get-current-route-path-param :item-id])
         content-uri       (str "/@app-home/contents/" content-id)]
-       [common/surface-breadcrumbs :contents.content-editor/view
+       [common/surface-breadcrumbs :contents.editor/view
                                    {:crumbs (if content-id [{:label :app-home    :route "/@app-home"}
                                                             {:label :contents    :route "/@app-home/contents"}
                                                             {:label content-name :route content-uri :placeholder :unnamed-content}
@@ -105,11 +137,11 @@
                                                             {:label :add!}])
                                     :disabled? editor-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.content-editor])
-        content-name     @(a/subscribe [:db/get-item [:contents :content-editor/edited-item :name]])]
-       [common/surface-label :contents.content-editor/view
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])
+        content-name     @(a/subscribe [:db/get-item [:contents :editor/edited-item :name]])]
+       [common/surface-label :contents.editor/view
                              {:disabled?   editor-disabled?
                               :label       content-name
                               :placeholder :unnamed-content}]))
@@ -119,31 +151,30 @@
 
 (defn- header
   []
-  [:<> [label-bar]
-       [breadcrumbs]
+  [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+             [:div [label]
+                   [breadcrumbs]]
+             [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
 
 (defn- view-structure
   []
-  [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
-        [header]
-        [view-selector]
-        [elements/horizontal-separator {:size :xxl}]
-        [:div {:style {:flex-grow "1" :display "flex" :align-items "flex-end"}}
-              [control-bar]]])
+  [:<> [header]
+       [body]])
 
 (defn- content-editor
   []
-  [item-editor/body :contents.content-editor
+  [item-editor/body :contents.editor
                     {:auto-title?      true
                      :form-element     #'view-structure
-                     :ghost-element    #'common/item-editor-ghost-view
+                     :error-element    [common/error-content {:error :the-item-you-opened-may-be-broken}]
+                     :ghost-element    #'common/item-editor-ghost-element
                      :initial-item     {:visibility :public}
-                     :item-path        [:contents :content-editor/edited-item]
+                     :item-path        [:contents :editor/edited-item]
                      :label-key        :name
                      :suggestion-keys  [:name]
-                     :suggestions-path [:contents :content-editor/suggestions]}])
+                     :suggestions-path [:contents :editor/suggestions]}])
 
 (defn view
   [surface-id]

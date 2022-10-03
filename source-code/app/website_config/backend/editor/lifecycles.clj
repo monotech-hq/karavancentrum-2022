@@ -1,15 +1,15 @@
 
 (ns app.website-config.backend.editor.lifecycles
     (:require [plugins.file-editor.api]
-              [x.server-core.api :as a]))
+              [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
-  {:on-server-boot [:file-editor/init-editor! :website-config
+  {:on-server-boot [:file-editor/init-editor! :website-config.editor
                                               {:base-route  "/@app-home/website-config"
-                                               :handler-key :website-config
-                                               :on-route    [:website-config/load-editor!]
+                                               :handler-key :website-config.editor
+                                               :on-route    [:website-config.editor/load-editor!]
                                                :route-title :website-config}]})

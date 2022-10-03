@@ -1,14 +1,15 @@
 
 (ns app.contents.frontend.lister.lifecycles
-    (:require [x.app-core.api :as a]))
+    (:require [x.app-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
   {:on-app-boot [:home/add-menu-item! {:group       :content
                                        :icon        :article
+                                       :icon-color  "#5564b1"
                                        :icon-family :material-icons-outlined
                                        :label       :contents
                                        :on-click    [:router/go-to! "/@app-home/contents"]

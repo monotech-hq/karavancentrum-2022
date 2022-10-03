@@ -7,9 +7,9 @@
 ;; ----------------------------------------------------------------------------
 
 (a/reg-event-fx
-  :vehicles.vehicle-viewer/load!
+  :vehicles.viewer/load!
   (fn [_ [_ view-id]]
-      {:dispatch-n [[:gestures/init-view-handler! :vehicles.vehicle-viewer
+      {:dispatch-n [[:gestures/init-view-handler! :vehicles.viewer
                                                   {:default-view-id (or view-id :overview)}]
-                    [:ui/render-surface! :vehicles.vehicle-viewer/view
+                    [:ui/render-surface! :vehicles.viewer/view
                                          {:content #'viewer.views/view}]]}))

@@ -1,15 +1,36 @@
 
 (ns app.common.frontend.item-lister.views
-    (:require [mid-fruits.candy     :refer [param]]
-              [mid-fruits.css       :as css]
-              [mid-fruits.keyword   :as keyword]
-              [mid-fruits.math      :as math]
-              [x.app-components.api :as components]
-              [x.app-core.api       :as a]
-              [x.app-elements.api   :as elements]))
+    (:require [app.common.frontend.item-editor.views    :as item-editor.views]
+              [app.common.frontend.surface-button.views :as surface-button.views]
+              [dom.api                                  :as dom]
+              [mid-fruits.candy                         :refer [param]]
+              [mid-fruits.css                           :as css]
+              [mid-fruits.keyword                       :as keyword]
+              [mid-fruits.math                          :as math]
+              [re-frame.api                             :as r]
+              [x.app-components.api                     :as components]
+              [x.app-elements.api                       :as elements]))
 
 ;; -- List-item components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn list-item-icon-button
+  ; @param (keyword) lister-id
+  ; @param (integer) item-dex
+  ; @param (map) cell-props
+  ;  {:disabled? (boolean)(opt)
+  ;   :icon (keyword)
+  ;   :icon-family (keyword)(opt)
+  ;   :on-click (metamorphic-event)}
+  ;
+  ; @usage
+  ;  [common/list-item-icon-button :my-lister 0 {...}]
+  [_ _ {:keys [disabled? icon icon-family on-click]}]
+  [:button {:on-click #(do (dom/stop-propagation! %)
+                           (if-not disabled? (r/dispatch on-click)))
+            :data-disabled disabled?}
+           (if icon-family [elements/icon {:icon icon :icon-family icon-family}]
+                           [elements/icon {:icon icon :indent {:vertical :xxs}}])])
 
 (defn list-item-thumbnail
   ; @param (keyword) lister-id
@@ -107,6 +128,7 @@
         (if timestamp              [elements/label {:content timestamp   :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])
         (if description            [elements/label {:content description :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])])
 
+
 (defn list-item-end-icon-progress
   ; @param (keyword) lister-id
   ; @param (integer) item-dex
@@ -155,7 +177,7 @@
   ;  (defn my-cell [])
   ;  [common/list-item-structure :my-lister 0 {:cells [[my-cell]]}]
   [lister-id item-dex {:keys [cells]}]
-  (let [item-last? @(a/subscribe [:item-lister/item-last? lister-id item-dex])]
+  (let [item-last? @(r/subscribe [:item-lister/item-last? lister-id item-dex])]
        (reduce conj [:div {:style {:align-items "center" :border-bottom (if-not item-last? "1px solid #f0f0f0") :display "flex"}}]
                     (param cells))))
 
@@ -171,12 +193,13 @@
   ; @usage
   ;  [common/item-lister-search-field :my-lister {...}]
   [lister-id {:keys [disabled? field-placeholder]}]
-  (let [search-event [:item-lister/search-items! lister-id {:search-keys [:name]}]]
-       [elements/search-field ::search-items-field
+  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])
+        search-event     [:item-lister/search-items! lister-id {:search-keys [:name]}]]
+       [elements/search-field ::item-lister-search-field
                               {:autoclear?    true
                                :autofocus?    true
                                :disabled?     disabled?
-                               :indent        {:left :xs :right :xs}
+                               :border-radius (if viewport-small? :none :l)
                                :on-empty      search-event
                                :on-type-ended search-event
                                :placeholder   field-placeholder}]))
@@ -189,9 +212,9 @@
   ; @usage
   ;  [common/item-lister-search-description :my-lister {...}]
   [lister-id {:keys [disabled?]}]
-  (let [all-item-count @(a/subscribe [:item-lister/get-all-item-count lister-id])
+  (let [all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
         description     (components/content {:content :search-results-n :replacements [all-item-count]})]
-       [elements/label ::search-items-description
+       [elements/label ::item-lister-search-description
                        {:color     :muted
                         :content   (if-not disabled? description)
                         :font-size :xxs
@@ -233,7 +256,7 @@
   ; @usage
   ;  [common/item-lister-header-cell :my-lister {...}]
   [lister-id {:keys [label order-by-key stretch? width]}]
-  (let [current-order-by @(a/subscribe [:item-lister/get-current-order-by lister-id])
+  (let [current-order-by @(r/subscribe [:item-lister/get-current-order-by lister-id])
         current-order-by-key       (keyword/get-namespace current-order-by)
         current-order-by-direction (keyword/get-name      current-order-by)]
        [:div {:style {:display "flex" :width width :flex-grow (if stretch? 1 0)}}
@@ -268,35 +291,56 @@
   ; @usage
   ;  [common/item-lister-header :my-lister {...}]
   [lister-id {:keys [cells control-bar]}]
-  (if-let [data-received? @(a/subscribe [:item-lister/data-received? lister-id])]
-          [:div {:style {:background-color "rgba(255,255,255,.98)" :border-bottom "1px solid #ddd" :display "flex"
-                         :flex-direction   "column"  :position      "sticky"         :top     "48px"}}
+  (if-let [data-received? @(r/subscribe [:item-lister/data-received? lister-id])]
+          [:div {:style {:background-color "var( --fill-color )" :border-bottom "1px solid var( --border-color-highlight )"
+                         :display "flex" :opacity ".98" :flex-direction "column"  :position "sticky" :top "48px"
+                         :border-radius "var( --border-radius-m ) var( --border-radius-m ) 0 0"}}
                 (if control-bar [components/content control-bar])
                 (letfn [(f [wrapper cell] (conj wrapper cell))]
                        (reduce f [:div {:style {:display "flex" :width "100%"}}] cells))]))
 
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-lister-wrapper
+  ; @param (keyword) lister-id
+  ; @param (map) wrapper-props
+  ;  {:body (metamorphic-content)
+  ;   :header (metamorphic-content)}
+  ;
+  ; @usage
+  ;  [common/item-lister-wrapper :my-lister {...}]
+  [lister-id {:keys [body header]}]
+  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])]
+       [:div {:style {:display "flex" :flex-direction "column-reverse"
+                      :background-color "var( --fill-color )" :border "1px solid var( --border-color-highlight )"
+                      :border-radius (if viewport-small? "0" "var( --border-radius-m )")}}
+             [:div {:style {:width "100%" :overflow "hidden" :border-radius "0 0 var( --border-radius-m ) var( --border-radius-m )"}}
+                   [components/content body]]
+             [components/content header]]))
+
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn item-lister-body-ghost-view
+(defn item-lister-ghost-element
   ; @param (keyword) lister-id
-  ; @param (map) view-props
+  ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-lister-body-ghost-view :my-lister {...}]
+  ;  [common/item-lister-ghost-element :my-lister {...}]
   [_ {:keys []}]
-  [:div {:style {:padding "0 12px" :width "100%"}}
+  [:div {:style {:padding "12px 12px" :width "100%"}}
         [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px"}}
               [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
               [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
               [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]]])
 
-(defn item-lister-header-ghost-view
+(defn item-lister-ghost-header
   ; @param (keyword) lister-id
-  ; @param (map) view-props
+  ; @param (map) header-props
   ;
   ; @usage
-  ;  [common/item-lister-header-view :my-lister {...}]
+  ;  [common/item-lister-ghost-header :my-lister {...}]
   [_ {:keys []}]
   [:div {:style {:padding "0 12px" :width "100%"}}
         [:div {:style {:padding-bottom "6px" :width "240px"}}
@@ -319,17 +363,13 @@
   ; @usage
   ;  [common/item-lister-create-item-button :my-lister {...}]
   [_ {:keys [disabled? create-item-uri]}]
-  [elements/button ::create-item-button
-                   {:background-color "#5a4aff"
-                    :color            "white"
-                    :disabled?        disabled?
-                    :font-size        :xs
-                    :font-weight      :extra-bold
-                    :icon             :add
-                    :indent           {:vertical :xs}
-                    :label            :add!
-                    :on-click         [:router/go-to! create-item-uri]
-                    :style            {:line-height "48px" :padding "0 24px 0 18px"}}])
+  [surface-button.views/element ::item-lister-create-item-button
+                                {:background-color "#5a4aff"
+                                 :color            "white"
+                                 :disabled?        disabled?
+                                 :icon             :add
+                                 :label            :add!
+                                 :on-click         [:router/go-to! create-item-uri]}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -341,8 +381,8 @@
   ; @usage
   ;  [common/item-lister-download-info :my-lister {...}]
   [lister-id _]
-  (let [all-item-count        @(a/subscribe [:item-lister/get-all-item-count        lister-id])
-        downloaded-item-count @(a/subscribe [:item-lister/get-downloaded-item-count lister-id])
+  (let [all-item-count        @(r/subscribe [:item-lister/get-all-item-count        lister-id])
+        downloaded-item-count @(r/subscribe [:item-lister/get-downloaded-item-count lister-id])
         content {:content :npn-items-downloaded :replacements [downloaded-item-count all-item-count]}]
        [elements/horizontal-polarity ::item-lister-download-info
                                      {:middle-content [elements/label ::item-lister-download-info-label

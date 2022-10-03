@@ -21,9 +21,9 @@
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:website-config/get-content (map)}
+             ;  {:website-config.editor/get-content (map)}
              [env resolver-props]
-             {:website-config/get-content (get-content-f env resolver-props)})
+             {:website-config.editor/get-content (get-content-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

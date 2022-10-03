@@ -1,11 +1,11 @@
 
 (ns app.views.backend.privacy-policy.lifecycles
-    (:require [x.server-core.api :as a]))
+    (:require [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
   {:on-server-boot [:router/add-route! :views.privacy-policy/route
                                        {:client-event   [:views.privacy-policy/render!]

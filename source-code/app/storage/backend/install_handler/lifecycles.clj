@@ -1,10 +1,10 @@
 
 (ns app.storage.backend.install-handler.lifecycles
-    (:require [x.server-core.api :as a]))
+    (:require [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-lifecycles!
+(core/reg-lifecycles!
   ::lifecycles
   {:on-server-launch {:fx [:storage/check-install!]}})

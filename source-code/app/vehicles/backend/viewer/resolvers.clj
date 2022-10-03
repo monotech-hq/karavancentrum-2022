@@ -21,9 +21,9 @@
              ; @param (map) resolver-props
              ;
              ; @return (map)
-             ;  {:vehicles.vehicle-viewer/get-item (namespaced map)}
+             ;  {:vehicles.viewer/get-item (namespaced map)}
              [env resolver-props]
-             {:vehicles.vehicle-viewer/get-item (get-item-f env resolver-props)})
+             {:vehicles.viewer/get-item (get-item-f env resolver-props)})
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
