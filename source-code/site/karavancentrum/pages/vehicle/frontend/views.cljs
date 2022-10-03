@@ -34,11 +34,6 @@
 ;; -----------------------------------------------------------------------------
 ;; ---- Comment ----
 
-(defn back-button []
-  [:button {:style {:margin "15px 0"}
-            :on-click #(r/dispatch [:vehicle/clear-selected-vehicle!])}
-   "Vissza"])
-
 (defn  vehicle-cards [vehicles]
   [:div#vehicles--container
    (map (fn [{:vehicle/keys [id thumbnail name]}]
@@ -48,12 +43,10 @@
                                                           :name name}]])
         vehicles)])
 
-
 (defn vehicles-view [vehicles]
   (let [selected-vehicle @(r/subscribe [:vehicle/get])]
       (if selected-vehicle
         [:<>
-         [back-button]
          [vehicle-view selected-vehicle]]
         [:<>
          [vehicle-name (first vehicles)]
@@ -68,7 +61,6 @@
           (if (= 1 (count vehicles))
             [vehicle-view (first vehicles)]
             [vehicles-view vehicles])]))
-
 
 ;; ---- Components ----
 ;; --------------------------------------------------------------------------

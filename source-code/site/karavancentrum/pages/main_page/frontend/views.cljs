@@ -9,7 +9,7 @@
 ;; -----------------------------------------------------------------------------
 ;; ---- Components ----
 
-(defn main-page []
+(defn main-page [props]
   [:main#main-page--content
    [sections/section-1]
    [sections/section-2]
@@ -25,5 +25,10 @@
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------
 
-(defn view [_]
-  [main-page])
+(defn view [scroll-target]
+  (lifecycles
+    {:component-did-mount #(a/dispatch [:utils/scroll-into scroll-target])
+     :component-did-update #();println scroll-target)
+     :reagent-render
+     (fn [scroll-target]
+       [main-page scroll-target])}))

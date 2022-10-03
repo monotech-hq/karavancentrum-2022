@@ -13,7 +13,7 @@
     (first (filter #(= id (:vehicle/id %)) vehicles))))
 
 (defn get-all-by-link [db [_]]
-  (let [link-name (get-in db [:router :route-handler/meta-items :route-path-params :link])
+  (let [link-name (get-in db [:router :route-handler/meta-items :route-path-params :name])
         vehicles  (get-in db [:site :vehicles])]
     (filter #(= link-name (:vehicle/link-name %)) vehicles)))
 

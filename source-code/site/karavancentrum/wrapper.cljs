@@ -18,21 +18,19 @@
       [:div#company-name "Karaván Centrum"]
       [:div#company-slogan "Lakóautók és kempingcikkek"]]]])
 
-(defn navbar-item [config label]
-  [:a.link.effect--underline (merge {:style {"--underline-color" "black"}}
-                                    config)
+(defn navbar-item [{:keys [scroll-target] :as config} label]
+  [:a.link.effect--underline (merge {:style {"--underline-color" "black"}
+                                     :on-mouse-up #(.blur (.-target %))}
+                                    (dissoc config :scroll-target))
    label])
 
 (defn navbar []
-  [site.karavancentrum.modules.frontend/navbar {:threshold 800 :align-x :right :max-width 1200
+  [site.karavancentrum.modules.frontend/navbar {:threshold 800 :align-x :right ;:max-width 1200
                                                 :logo [logo]}
-   [navbar-item {:href ""} "Bérbeadás"]
-   [navbar-item {:href ""} "Értékesítés"]
-   [navbar-item {:href ""} "Magunkról"]
-   [navbar-item {:href ""} "Webáruház"]
-   [navbar-item {:href "/" :on-click #(utils/scroll-into "contacts" {:behavior "smooth"
-                                                                     :block    "start"
-                                                                     :inline   "start"})}
+   [navbar-item {:href "/berbeadas"} "Bérbeadás"]
+   [navbar-item {:href "/ertekesites"} "Értékesítés"]
+   [navbar-item {:href "/"} "Webáruház"]
+   [navbar-item {:href "/kapcsolat" :scroll-target "contacts"}
     "Kapcsolat"]])
 
 (defn header []

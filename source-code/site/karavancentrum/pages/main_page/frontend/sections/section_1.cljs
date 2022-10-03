@@ -10,7 +10,7 @@
 (defn scroll-down-icon []
   [:div#scroll-icon
    [:button {:tab-index "-1"
-             :on-click #(utils/scroll-into "section-2")}
+             :on-click #(utils/scroll-into "renting")}
     [:span]]])
 
 (defn hero []

@@ -19,13 +19,6 @@
 ;; ---- Configurations ----
 ;; -----------------------------------------------------------------------------
 
-(defn get-content
-  [{:content/keys [id]}]
-  (mongo-db/get-document-by-id "contents" id))
-
-(defn update-vals [map vals f]
-  (reduce #(update-in % [%2] f) map vals))
-
 (core/reg-transfer!
   ::vehicles
   {:data-f (fn [request]
@@ -33,7 +26,7 @@
                                 "rental-vehicles"
                                 [{"$match" {"vehicle/visibility" "*:public"}}
                                  {"$project" project}])]
-               (mapv #(update-vals % [:vehicle/content] get-content) vehicles)))
+                vehicles))
 
    :target-path [:site :vehicles]})
 

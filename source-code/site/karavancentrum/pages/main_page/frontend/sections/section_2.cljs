@@ -28,13 +28,13 @@
 (defn vehicle-type-button [id {:keys [icon]}]
   (let [checked @(r/subscribe [:main-page.filters/contains? [:main-page.filters] id])
         disabled? @(r/subscribe [:main-page.filters/disabled? id])]
-    [:div.filters--icon
-     [:input.filters--icon-input {:type "checkbox" :id id :name id
-                                  :checked  checked
-                                  :disabled disabled?
-                                  :on-change #(r/dispatch [:main-page.filters/select [:main-page.filters] id])}]
-     [:label.filters--icon-img {:for id}
-      [:img {:src icon}]]]))
+    (if-not disabled?
+      [:div.filters--icon
+       [:input.filters--icon-input {:type "checkbox" :id id :name id
+                                    :checked  checked
+                                    :on-change #(r/dispatch [:main-page.filters/select [:main-page.filters] id])}]
+       [:label.filters--icon-img {:for id}
+        [:img {:src icon}]]])))
 
 (defn filters []
   [:div#filters--container
@@ -62,7 +62,7 @@
     {:component-did-mount (fn [] (r/dispatch [:main-page.filters/init!]))
      :reagent-render
      (fn []
-       [:section#section-2
+       [:section#renting
         [section-title]
         [:a#kc-rent-informations-button "Bérlési feltételek"]
         [filters]

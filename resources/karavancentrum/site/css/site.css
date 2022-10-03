@@ -461,8 +461,8 @@ body {
 /******************************************************************************/
 /**** Section 2 ****/
 
-#section-2 {
-  padding: 0 0 150px 0;
+#renting {
+  padding: 150px 0 105px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
