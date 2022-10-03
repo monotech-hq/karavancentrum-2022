@@ -5,8 +5,6 @@
     [server-fruits.io  :as io]
     [mongo-db.api      :as mongo-db]))
 
-
-
 ;; -----------------------------------------------------------------------------
 ;; ---- Configurations ----
 

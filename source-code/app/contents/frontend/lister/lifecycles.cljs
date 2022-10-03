@@ -1,6 +1,7 @@
 
 (ns app.contents.frontend.lister.lifecycles
-    (:require [x.app-core.api :as core]))
+    (:require [app.home.frontend.api]
+              [x.app-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

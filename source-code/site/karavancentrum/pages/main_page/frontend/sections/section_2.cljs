@@ -45,10 +45,10 @@
 (defn vehicle-name [name]
   [:p.link.effect--underline.name name])
 
-(defn vehicle [{:vehicle/keys [id public-link thumbnail name] :as props}]
+(defn vehicle [{:vehicle/keys [id link-name thumbnail name] :as props}]
   [:a {:style {:text-decoration "none"}
        :key id
-       :href public-link}
+       :href (str "/berelheto-jarmuveink/" link-name)}
    [site.karavancentrum.components.frontend/card {:name name
                                                   :src  thumbnail}]])
 
