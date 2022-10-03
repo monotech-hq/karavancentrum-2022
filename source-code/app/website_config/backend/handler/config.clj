@@ -5,4 +5,4 @@
 ;; ----------------------------------------------------------------------------
 
 ; @constant (string)
-(def WEBSITE-CONFIG-FILEPATH "monoset-environment/website-config.edn")
+(def WEBSITE-CONFIG-FILEPATH "environment/website-config.edn")

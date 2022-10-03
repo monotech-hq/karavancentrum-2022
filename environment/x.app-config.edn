@@ -4,6 +4,7 @@
 ;
 ; @param (map) app-config
 ;  {:author (string)
+;   :app-domain (string)
 ;   :app-home (string)
 ;   :app-languages (keywords in vector)
 ;   :app-themes (maps in vector)
@@ -27,7 +28,8 @@
 ;    https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta/name/theme-color
 ;
 ; @usage
-;  {:app-home      "/"
+;  {:app-domain    "https://my-app.com"
+;   :app-home      "/"
 ;   :app-home      "/admin"
 ;   :app-themes    [{:id :my-theme :name "My theme"}
 ;                   {:id :light    :name :light-theme}]
@@ -36,7 +38,7 @@
 
 {; App details
  :author        "Monotech.hu"
- :app-build     "0.1"
+ :app-domain    "https://my-app.com"
  :app-home      "/admin"
  :app-languages [:en :hu]
  :app-themes    [{:id :light :name :light-theme}

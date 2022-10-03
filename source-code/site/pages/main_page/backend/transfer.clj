@@ -39,7 +39,7 @@
 (a/reg-transfer!
   ::contents
   {:data-f (fn [_]
-             (let [contents (io/read-edn-file "monoset-environment/website-content.edn")]
+             (let [contents (io/read-edn-file "environment/website-content.edn")]
                (update-vals contents [:about-us
                                       :rent-informations
                                       :address-data-information
@@ -50,5 +50,5 @@
 (a/reg-transfer!
   ::config
   {:data-f (fn [_]
-             (io/read-edn-file "monoset-environment/website-config.edn"))
+             (io/read-edn-file "environment/website-config.edn"))
    :target-path [:site :config]})

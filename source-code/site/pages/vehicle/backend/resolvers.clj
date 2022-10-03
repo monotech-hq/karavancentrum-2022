@@ -9,7 +9,7 @@
 ;; -----------------------------------------------------------------------------
 ;; ---- Configurations ----
 
-(def FILE_PATH "monoset-environment/db/contents.edn")
+(def FILE_PATH "environment/db/contents.edn")
 
 ;; ---- Configurations ----
 ;; -----------------------------------------------------------------------------
