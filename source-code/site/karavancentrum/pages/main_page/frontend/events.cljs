@@ -22,7 +22,7 @@
       (assoc-in db path (conj-or-disj coll item)))))
 
 (defn init-filters [db _]
-  (let [filters #{:alcove :caravan :semi-integrated :trailer :van}
+  (let [filters #{:alcove-rv :caravan :semi-integrated-rv :trailer :van-rv}
         result  (reduce (fn [m k]
                           (if (empty? (filter #(= k (:vehicle/type %)) (get-in db [:site :vehicles])))
                             m

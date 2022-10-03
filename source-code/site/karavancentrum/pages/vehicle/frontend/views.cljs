@@ -63,11 +63,12 @@
 ;; -----------------------------------------------------------------------------
 
 (defn view-structure []
-  (let [vehicles         @(r/subscribe [:vehicle/get-all-by-link])]
-   [:main#vehicle-page--content
-    (if (= 1 (count vehicles))
-      [vehicle-view (first vehicles)]
-      [vehicles-view vehicles])]))
+  (let [vehicles @(r/subscribe [:vehicle/get-all-by-link])]
+       [:main#vehicle-page--content
+         [:div (str vehicles)
+          (if (= 1 (count vehicles))
+            [vehicle-view (first vehicles)]
+            [vehicles-view vehicles])]]))
 
 ;; ---- Components ----
 ;; --------------------------------------------------------------------------

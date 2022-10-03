@@ -13,9 +13,10 @@
     (first (filter #(= id (:vehicle/id %)) vehicles))))
 
 (defn get-all-by-link [db [_]]
-  (let [link     (get-in db [:router :route-handler/meta-items :route-path-params :link])
-        vehicles (get-in db [:site :vehicles])]
-    (filter #(= link (:vehicle/link %)) vehicles)))
+  (let [public-link (get-in db [:router :route-handler/meta-items :route-path-params :link])
+        vehicles    (get-in db [:site :vehicles])]
+    (filter #(= public-link (:vehicle/link-name %)) vehicles)
+    public-link))
 
 ;; ---- Subscriptions ----
 ;; -----------------------------------------------------------------------------

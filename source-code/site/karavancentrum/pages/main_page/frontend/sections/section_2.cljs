@@ -10,11 +10,11 @@
 ;; ---- Configurations ----
 
 (def filter-config
-  {:alcove          {:icon "/icons/alcove.png"}
-   :caravan         {:icon "/icons/caravan.png"}
-   :semi-integrated {:icon "/icons/semi-integrated.png"}
-   :trailer         {:icon "/icons/trailer.png"}
-   :van             {:icon "/icons/van.png"}})
+  {:alcove-rv          {:icon "/icons/alcove-rv.png"}
+   :caravan            {:icon "/icons/caravan.png"}
+   :semi-integrated-rv {:icon "/icons/semi-integrated-rv.png"}
+   :trailer            {:icon "/icons/trailer.png"}
+   :van-rv             {:icon "/icons/van-rv.png"}})
 
 ;; ---- Configurations ----
 ;; -----------------------------------------------------------------------------
@@ -45,10 +45,10 @@
 (defn vehicle-name [name]
   [:p.link.effect--underline.name name])
 
-(defn vehicle [{:vehicle/keys [id link thumbnail name] :as props}]
+(defn vehicle [{:vehicle/keys [id public-link thumbnail name] :as props}]
   [:a {:style {:text-decoration "none"}
        :key id
-       :href (str "/berelheto-jarmuveink/" link)}
+       :href public-link}
    [site.karavancentrum.components.frontend/card {:name name
                                                   :src  thumbnail}]])
 

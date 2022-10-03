@@ -38,7 +38,7 @@
 
 {; App details
  :author        "Monotech.hu"
- :app-domain    "https://my-app.com"
+ :app-domain    "https://karavancentrum.hu"
  :app-home      "/app"
  :app-languages [:en :hu]
  :app-themes    [{:id :light :name :light-theme}

@@ -1,9 +1,10 @@
 
 (ns app.vehicles.backend.editor.mutations
-    (:require [app.common.backend.api                :as common]
-              [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
-              [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]))
+    (:require [app.common.backend.api                 :as common]
+              [app.vehicles.backend.editor.prototypes :as editor.prototypes]
+              [com.wsscode.pathom3.connect.operation  :as pathom.co :refer [defmutation]]
+              [mongo-db.api                           :as mongo-db]
+              [pathom.api                             :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -16,7 +17,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(common/added-document-prototype request :vehicle %)]
+  (let [prototype-f #(->> % (common/added-document-prototype request :vehicle)
+                            (editor.prototypes/vehicle-item-prototype))]
        (mongo-db/save-document! "vehicles" item
                                 {:prototype-f prototype-f})))
 
@@ -41,7 +43,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(common/updated-document-prototype request :vehicle %)]
+  (let [prototype-f #(->> % (common/updated-document-prototype request :vehicle)
+                            (editor.prototypes/vehicle-item-prototype))]
        (mongo-db/save-document! "vehicles" item
                                 {:prototype-f prototype-f})))
 
