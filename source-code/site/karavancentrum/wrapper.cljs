@@ -1,6 +1,6 @@
 
 (ns site.karavancentrum.wrapper
-  (:require [app.common.frontend.api :as common]
+  (:require
    [x.app-core.api :as a :refer [r]]
    [x.app-components.api :as components]
 
@@ -28,6 +28,7 @@
                                                 :logo [logo]}
    [navbar-item {:href ""} "Bérbeadás"]
    [navbar-item {:href ""} "Értékesítés"]
+   [navbar-item {:href ""} "Magunkról"]
    [navbar-item {:href ""} "Webáruház"]
    [navbar-item {:href "/" :on-click #(utils/scroll-into "contacts" {:behavior "smooth"
                                                                      :block    "start"
@@ -40,8 +41,7 @@
 (defn site-wrapper [ui-structure]
   [:div#karavancentrum
    [header]
-   [ui-structure]
-   [common/credits]])
+   [ui-structure]])
 
 (defn view [ui-structure]
   [site-wrapper ui-structure])

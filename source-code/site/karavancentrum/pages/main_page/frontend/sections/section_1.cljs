@@ -3,7 +3,8 @@
   (:require
     [reagent.api :refer [lifecycles]]
     [utils.api :as utils]))
-;; -----------------------------------------------------------------------------
+
+;; --------------------
 ;; ---- Components ----
 
 (defn scroll-down-icon []

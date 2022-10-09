@@ -27,12 +27,15 @@
   (let [selected-theme (user/request->user-settings-item request :selected-theme)]
        [:div {:style (css/parse {:background-image (case selected-theme :light (css/url "/logo/logo-light.png")
                                                                         :dark  (css/url "/logo/logo-dark.png"))
-                                 :background-position "center"
                                  :background-repeat   "no-repeat"
                                  :background-size     "contain"
-                                 :height              "100px"
+                                 :height              "150px"
                                  :overflow            "hidden"
-                                 :width               "100px"})}]))
+                                 :width               "150px"
+
+                                ; A fekvő képarányú logók a felirat felett jelenjenek meg!
+                                ;:background-position "center"
+                                 :background-position "bottom"})}]))
 
 (defn view
   [request]

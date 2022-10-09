@@ -9,13 +9,19 @@
 ;; ----------------------------------------------------------------------------
 
 (defn copyright-label
+  ; @param (map) element-props
+  ;  {:theme (keyword)(opt)
+  ;    :light, :dark
+  ;    Default: :light}
+  ;
   ; @usage
   ;  [common/copyright-label]
-  []
+  [{:keys [theme]}]
   (let [server-year          @(a/subscribe [:core/get-server-year])
         copyright-information (details/copyright-information server-year)]
        [elements/label ::copyright-label
-                       {:content          copyright-information
+                       {:color            (case theme :dark :invert :default)
+                        :content          copyright-information
                         :font-size        :xs
                         :horizontal-align :center
                         :indent           {:bottom :xs :vertical :xs}
@@ -25,42 +31,64 @@
 ;; ----------------------------------------------------------------------------
 
 (defn mt-logo
+  ; @param (map) element-props
+  ;  {:theme (keyword)(opt)
+  ;    :light, :dark
+  ;    Default: :light}
+  ;
   ; @usage
   ;  [common/mt-logo]
-  []
-  [:div {:style {:background-image (css/url "/logo/mt-logo-light.png")
+  [{:keys [theme]}]
+  [:div {:style {:background-image (case theme :dark (css/url "/logo/mt-logo-dark.png")
+                                                     (css/url "/logo/mt-logo-light.png"))
                  :background-size  "cover"
                  :height           "72px"
                  :width            "72px"}}])
 
 (defn created-by-label
+  ; @param (map) element-props
+  ;  {:theme (keyword)(opt)
+  ;    :light, :dark
+  ;    Default: :light}
+  ;
   ; @usage
   ;  [common/created-by-label]
-  []
+  [{:keys [theme]}]
   [elements/label ::created-by-label
-                  {:content   "Created by"
+                  {:color     (case theme :dark :invert :default)
+                   :content   "Created by"
                    :font-size :xs
                    :indent    {:top :xxs}}])
 
 (defn created-by
+  ; @param (map) element-props
+  ;  {:theme (keyword)(opt)
+  ;    :light, :dark
+  ;    Default: :light}
+  ;
   ; @usage
   ;  [common/created-by]
-  []
+  [element-props]
   [elements/toggle ::created-by
                    {:on-click {:fx [:environment/go-to! "https://www.monotech.hu"]}
                     :content  [:div {:style {:align-items "center" :display "flex" :flex-direction "column"}}
-                                    [mt-logo]
-                                    [created-by-label]]
+                                    [mt-logo          element-props]
+                                    [created-by-label element-props]]
                     :indent   {:bottom :xxs}}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn credits
+  ; @param (map) element-props
+  ;  {:theme (keyword)(opt)
+  ;    :light, :dark
+  ;    Default: :light}
+  ;
   ; @usage
   ;  [common/credits]
-  []
+  [element-props]
   [:div {:style {}}
         [:div {:style {:display "flex" :justify-content "center"}}
-              [created-by]]
-        [copyright-label]])
+              [created-by element-props]]
+        [copyright-label element-props]])

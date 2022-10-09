@@ -27,32 +27,22 @@
 (defn- content-preview-content-body
   ; @param (keyword) preview-id
   ; @param (map) preview-props
-  ;  {:disabled? (boolean)(opt)
+  ;  {:color (keyword)
+  ;   :disabled? (boolean)(opt)
   ;   :max-lines (integer)(opt)}
-  [preview-id {:keys [disabled? max-lines] :as preview-props}]
+  [preview-id {:keys [color disabled? max-lines] :as preview-props}]
   (let [content-body @(r/subscribe [:db/get-item [:contents :preview/downloaded-items preview-id :body]])]
-       [elements/text {:color     :highlight
+       [elements/text {:color     color
                        :content   (handler.helpers/parse-content-body content-body)
                        :disabled? disabled?
                        :font-size :xs
                        :max-lines max-lines}]))
 
-(defn- content-preview-content-name
-  ; @param (keyword) preview-id
-  ; @param (map) preview-props
-  ;  {:disabled? (boolean)(opt)}
-  [preview-id {:keys [disabled?]}]
-  (let [content-name @(r/subscribe [:db/get-item [:contents :preview/downloaded-items preview-id :name]])]
-       [elements/label {:content     content-name
-                        :disabled?   disabled?
-                        :placeholder :unnamed-content}]))
-
 (defn- content-preview-element
   ; @param (keyword) preview-id
   ; @param (map) preview-props
   [preview-id preview-props]
-  [:<> [content-preview-content-name preview-id preview-props]
-       [content-preview-content-body preview-id preview-props]])
+  [content-preview-content-body preview-id preview-props])
 
 (defn- content-preview-label
   ; @param (keyword) preview-id
@@ -93,7 +83,10 @@
 (defn element
   ; @param (keyword)(opt) preview-id
   ; @param (map) preview-props
-  ;  {:disabled? (boolean)(opt)
+  ;  {:color (keyword)(opt)
+  ;    :default, :highlight, :muted
+  ;    Default: :default
+  ;   :disabled? (boolean)(opt)
   ;    Default: false
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)

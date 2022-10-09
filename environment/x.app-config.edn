@@ -37,13 +37,13 @@
 ;                     {:uri "https://external-plugin.com/plugin.js"}]}
 
 {; App details
- :author        "Monotech.hu"
  :app-domain    "https://karavancentrum.hu"
  :app-home      "/app"
  :app-languages [:en :hu]
  :app-themes    [{:id :light :name :light-theme}
                  {:id :dark  :name :dark-theme}]
  :app-title     "Karaváncentrum.hu"
+ :author        "Monotech.hu"
 
  ; Browser details
  :theme-color "#111111"

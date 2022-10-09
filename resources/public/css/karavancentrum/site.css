@@ -2,14 +2,12 @@
 /******************************************************************************/
 /***** Website *****/
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 
 body {
   --site-width: 1024px;
-  font-family: 'Poppins';
   background-color: #f4f7f6;
 }
 
@@ -253,6 +251,8 @@ body {
   /* padding: 0px 25px; */
   z-index: 10;
   transition: background-color 0.15s;
+  font-family: 'Poppins';
+  -font-weight: 100;
 }
 
 #navbar[data-top="true"] {
@@ -325,6 +325,18 @@ body {
 /**** Navbar ****/
 /******************************************************************************/
 
+
+.kc-title {
+  font-size: 30px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 200;
+  font-family: 'Poppins';
+  height: 150px;
+  display: flex;
+  align-items: center;
+}
+
 /******************************************************************************/
 /**** Section 1 ****/
 
@@ -351,7 +363,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 3.5px;
   font-weight: 300;
-  font-size: 22px;
+  font-size: 20px;
   font-family: 'Poppins';
   color: #007cff;
 }
@@ -365,7 +377,7 @@ body {
   line-height: 26px;
 }
 
-/**** scroll icon ****/
+/* scroll icon */
 
 #scroll-icon {
   position: absolute;
@@ -404,7 +416,6 @@ body {
   content: '';
 }
 
-
 #scroll-icon button span::before {
   top: 5px;
   width: 5px;
@@ -422,7 +433,6 @@ body {
   border-bottom: 2px solid #fff;
   border-left: 2px solid #fff;
 }
-
 
 @keyframes scroll-icon-anim {
   0% {
@@ -442,35 +452,27 @@ body {
     opacity: 0;
   }
 }
-/**** scroll icon ****/
 
-/**** Hero ****/
-
-/**** Section 1 ****/
+/* scroll icon */
+/*** Hero ***/
+/***** Section 1 *****/
 /******************************************************************************/
 
 /******************************************************************************/
 /**** Section 2 ****/
 
 #section-2 {
-  padding: 150px 0 105px 0;
+  padding: 0 0 150px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#title {
-  font-size: 20px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 200;
-  font-family: 'Poppins';
+  min-height: 90vh;
 }
 
 /**** Filters ****/
 
 #filters--container {
-  padding: 30px 0;
+  padding: 60px 0 0px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -519,7 +521,17 @@ body {
   justify-content: center;
   flex-wrap: wrap;
   max-width: 90vw;
+}
 
+#kc-rent-informations-button {
+  border-radius: 15px;
+  -margin-top: 30px;
+  background-color: #e6efec;
+  line-height: 20px;
+  padding: 10px 40px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
 }
 
 .vehicle--card {
@@ -527,7 +539,6 @@ body {
   width: 350px;
   height: 400px;
   border: 1px solid #ddd;
-  margin: 45px 45px;
   overflow: hidden;
 }
 
@@ -549,15 +560,101 @@ body {
   width: 100%;
   text-align: center;
   padding: 15px 0;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
   color: #333;
-  background-color: hsl(0deg 0% 100% / 80%);
+  background-color: hsl(0deg 0% 100% / 85%);
   text-decoration: none;
 }
 
 /**** Vehicles ****/
 
 /**** Section 2 ****/
+/******************************************************************************/
+
+
+/******************************************************************************/
+
+#kc-brands {
+  align-items: center;
+  background-color: #e7edeb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#kc-brands--brand-list {
+  width: 100%;
+}
+
+.kc-brand {
+  align-items: center;
+  padding: 0 0 200px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.kc-brand--label {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+}
+
+.kc-brand--link {
+  font-size: 11px;
+  padding-bottom: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.kc-brand--card {
+  border-radius: 15px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 320px;
+  padding: 0 30px 30px 30px;
+}
+
+.kc-brand--card:hover {
+  background-color: rgba(0,0,0,.06);
+}
+
+.kc-brand--description {
+  font-size: 15px;
+  max-width: 720px;
+}
+
+.kc-brand--logo {
+  align-self: center;
+  width: 120px;
+  height: 120px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center 80%;
+}
+
+.kc-brand--goto {
+  align-self: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #644141;
+}
+
+/******************************************************************************/
+
+/******************************************************************************/
+
+#about-us {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -justify-content: center;
+  min-height: 100vh;
+}
+
 /******************************************************************************/
 
 /******************************************************************************/
@@ -570,9 +667,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  -font-family: 'Oxygen';
-  padding: 150px 0 0 0;
-}
+  -padding: 150px 0 0 0}
 
 #section-3--background {
   background-image: url(/images/footer.jpg);
@@ -581,6 +676,47 @@ body {
   height: 800px;
 }
 
+#contact-groups,
+#address-groups {
+}
+
+#contact-groups {
+  padding-top: 60px;
+}
+
+.kc-contact-group,
+.kc-address-group {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 60px }
+
+.kc-contact-information {
+  margin-bottom: 60px }
+
+.kc-contact-information,
+.kc-contact-group--label,
+.kc-address-group--label {
+  padding: 0 6px;
+  font-size: 15px;
+  line-height: 35px;
+  letter-spacing: 2px }
+
+.kc-contact-group--value,
+.kc-address-group--value {
+  padding: 0 6px;
+  color: #007cff !important;
+  font-size: 21px;
+  line-height: 35px;
+  letter-spacing: 2px }
+
+.kc-contact-group--value:hover,
+.kc-address-group--value:hover {
+  text-decoration: none }
+
+.kc-address-information {
+  font-size: 13px;
+  max-width: 780px;
+  padding: 0 6px }
 
 /**** Section 3 ****/
 /******************************************************************************/
@@ -644,7 +780,7 @@ body {
 #vehicle-page--wrapper {
   max-width: var(--site-width);
   margin: 0 auto;
-  padding: 150px 0;
+  padding: 150px 0 50px 0;
   display: flex;
 
   flex-direction: column;
@@ -656,10 +792,13 @@ body {
   border-radius: 25px;
   background-color: white }
 
+#vehicle-page--slider {
+  border-radius: 25px;
+  overflow: hidden;
+}
+
 #vehicle-page--slider li {
     align-self: center;
-    border-radius: 25px;
-    overflow: hidden;
 }
 
 #vehicle-page--title {
@@ -676,75 +815,3 @@ body {
 
 /**** Vehicle page ****/
 /******************************************************************************/
-
-/******************************************************************************/
-/**** Footer ****/
-
-#footer {
-  padding: 50px 25px;
-
-  text-align: center;
-
-  color: white;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-#footer h2 {
-  margin: 0px 0px 50px;
-
-  letter-spacing: 3px;
-
-  font-weight: 500;
-}
-
-#footer--links-wrapper {
-  display: flex;
-  flex-direction: column;
-
-  gap: 20px;
-}
-
-#footer--links-wrapper > * {
-  letter-spacing: 4px;
-
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 20px;
-}
-
-#mt--container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 40px 0px 0px;
-}
-
-#mt--container a {
-  text-decoration: none;
-}
-
-#mt--wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 10px;
-}
-
-#mt--wrapper p {
-  font-size: 0.9rem;
-}
-
-#mt--wrapper img {
-  width: 40px;
-
-  transition: transform 0.2s;
-
-  filter: brightness(0.6);
-}
-
-#mt--link:hover img,
-#mt--link:focus img {
-  transform: scale(1.1);
-}

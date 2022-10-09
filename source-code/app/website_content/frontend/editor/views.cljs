@@ -196,14 +196,23 @@
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:website-content :editor/edited-item :brands brand-dex :logo]}]))
 
-(defn- brand-label-field
+(defn- brand-title-field
   [brand-dex _]
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field {:disabled?   editor-disabled?
-                             :label       :label
+                             :label       :section-title
+                             :indent      {:top :m :vertical :s}
+                             :placeholder :section-title-placeholder
+                             :value-path  [:website-content :editor/edited-item :brands brand-dex :title]}]))
+
+(defn- brand-link-label-field
+  [brand-dex _]
+  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [elements/text-field {:disabled?   editor-disabled?
+                             :label       :link-label
                              :indent      {:top :m :vertical :s}
                              :placeholder :brand-name
-                             :value-path  [:website-content :editor/edited-item :brands brand-dex :label]}]))
+                             :value-path  [:website-content :editor/edited-item :brands brand-dex :link-label]}]))
 
 (defn- brand-link-field
   [brand-dex _]
@@ -221,8 +230,9 @@
                                            [:div (forms/form-block-attributes {:ratio 30})
                                                  [brand-logo-picker brand-dex brand-props]]
                                            [:div (forms/form-block-attributes {:ratio 70})
-                                                 [brand-label-field brand-dex brand-props]
-                                                 [brand-link-field  brand-dex brand-props]]]
+                                                 [brand-title-field      brand-dex brand-props]
+                                                 [brand-link-label-field brand-dex brand-props]
+                                                 [brand-link-field       brand-dex brand-props]]]
                                      [:div (forms/form-row-attributes)
                                            [:div (forms/form-block-attributes {:ratio 100})
                                                  [brand-description-field brand-dex brand-props]]]

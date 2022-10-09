@@ -23,7 +23,7 @@
 ;; ---- Components ----
 
 (defn section-title []
-  [:p#title "BÉRELHETŐ JÁRMŰVEINK"])
+  [:p.kc-title "Bérelhető járműveink"])
 
 (defn vehicle-type-button [id {:keys [icon]}]
   (let [checked @(r/subscribe [:main-page.filters/contains? [:main-page.filters] id])
@@ -46,7 +46,7 @@
   [:p.link.effect--underline.name name])
 
 (defn vehicle [{:vehicle/keys [id link-name thumbnail name] :as props}]
-  [:a {:style {:text-decoration "none"}
+  [:a {:style {:text-decoration "none" :margin "45px"}
        :key id
        :href (str "/berelheto-jarmuveink/" link-name)}
    [site.karavancentrum.components.frontend/card {:name name
@@ -64,6 +64,7 @@
      (fn []
        [:section#section-2
         [section-title]
+        [:a#kc-rent-informations-button "Bérlési feltételek"]
         [filters]
         [vehicles]])}))
 

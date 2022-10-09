@@ -5,6 +5,7 @@
               [forms.api                :as forms]
               [layouts.surface-a.api    :as surface-a]
               [mid-fruits.css           :as css]
+              [mid-fruits.href          :as href]
               [mid-fruits.vector        :as vector]
               [plugins.file-editor.api  :as file-editor]
               [re-frame.api             :as r]
@@ -235,14 +236,26 @@
                              :placeholder :full-address-placeholder
                              :value-path  [:website-config :editor/edited-item :address-groups group-dex :company-address]}]))
 
-(defn- google-maps-link-field
+(defn- google-maps-link
   [group-dex _]
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [elements/text-field {:disabled?   editor-disabled?
-                             :label       :google-maps-link
-                             :indent      {:top :m :vertical :s}
-                             :placeholder :google-maps-link-placeholder
-                             :value-path  [:website-config :editor/edited-item :address-groups group-dex :google-maps-link]}]))
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])
+        company-address  @(r/subscribe [:db/get-item [:website-config :editor/edited-item :address-groups group-dex :company-address]])]
+       [common/data-element {:disabled? editor-disabled?
+                             :label     :google-maps-link
+                             :value     (href/address company-address)
+                             :indent    {:top :xxl :vertical :s}}]))
+
+(defn- google-maps-link-toggle
+  [group-dex _]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])
+        company-address  @(r/subscribe [:db/get-item [:website-config :editor/edited-item :address-groups group-dex :company-address]])]
+       [:div {:style {:display :flex}}
+             [elements/button {:color     :primary
+                               :disabled? editor-disabled?
+                               :font-size :xs
+                               :label     :open-link!
+                               :on-click  {:fx [:environment/open-new-browser-tab! (href/address company-address)]}
+                               :indent    {:vertical :s}}]]))
 
 (defn- address-group
   [group-dex group-props]
@@ -255,7 +268,8 @@
                                                  [company-address-field group-dex group-props]]]]
                                      [:div (forms/form-row-attributes)
                                            [:div (forms/form-block-attributes {:ratio 100})
-                                                 [google-maps-link-field group-dex group-props]]]
+                                                 [google-maps-link        group-dex group-props]
+                                                 [google-maps-link-toggle group-dex group-props]]]
                                      [:div {:style {:display :flex :justify-content :flex-end}}
                                            [duplicate-address-group-button group-dex group-props]
                                            [delete-address-group-button    group-dex group-props]]
