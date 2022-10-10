@@ -1,21 +1,17 @@
 
 (ns site.karavancentrum.modules.sidebar.views
-  (:require
-   [re-frame.api :as r :refer [dispatch]]
-   [x.app-elements.api :as elements]
-   [x.app-components.api :as components]))
+    (:require [re-frame.api         :as r :refer [dispatch]]
+              [x.app-components.api :as components]
+              [x.app-elements.api   :as elements]))
 
 ;; -----------------------------------------------------------------------------
-;; ---- Utils ----
+;; -----------------------------------------------------------------------------
 
 (defn sidebar-in? [db id]
   (get-in db [::sidebar id :in] false))
 
-;; ---- Utils ----
 ;; -----------------------------------------------------------------------------
-
 ;; -----------------------------------------------------------------------------
-;; ---- Subscriptions ----
 
 (defn get-view-props [db [_ {:keys [id]}]]
     {:id id
@@ -23,11 +19,8 @@
 
 (r/reg-sub ::get-view-props get-view-props)
 
-;; ---- Subscriptions ----
 ;; -----------------------------------------------------------------------------
-
 ;; -----------------------------------------------------------------------------
-;; ---- Components ----
 
 (defn close-button [id]
   [:div.sidebar--close-button
@@ -56,11 +49,8 @@
    {:component  [sidebar id comp]
     :subscriber [::get-view-props id]}])
 
-;; ---- Components ----
 ;; -----------------------------------------------------------------------------
-
 ;; -----------------------------------------------------------------------------
-;; ---- Effect events ----
 
 (r/reg-event-fx
   :open-sidebar!
@@ -72,5 +62,5 @@
   (fn [{:keys [db]} [_ id]]
     {:dispatch [:db/set-item! [::sidebar id :in] false]}))
 
-;; ---- Effect events ----
+;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

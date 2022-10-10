@@ -326,7 +326,7 @@ body {
 /******************************************************************************/
 
 
-.kc-title {
+.kc-section-title {
   font-size: 30px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -345,11 +345,12 @@ body {
 #hero {
     height: calc(var(--vh) * 100);
     background-position: 55% 60%;
-    background-image: url(/images/hero.jpg);
+    background-image: url(/site/images/hero.jpg);
     background-size: cover;
     width: 100%;
     display: flex;
     align-items: center;
+    overflow: hidden;
     justify-content: center }
 
 #company-name-and-slogan {
@@ -669,8 +670,8 @@ body {
   align-items: center;
   -padding: 150px 0 0 0}
 
-#section-3--background {
-  background-image: url(/images/footer.jpg);
+#contacts--background {
+  background-image: url(/site/images/footer.jpg);
   background-position: bottom;
   background-size: cover;
   height: 800px;
@@ -722,57 +723,6 @@ body {
 /******************************************************************************/
 
 
-/******************************************************************************/
-/**** Section 4 ****/
-
-#section-4 {
-  border-top: 1px solid #555;
-  background-color: #f0f0f0;
-  background-color: #1a1a1a;
-  width: 100%;
-}
-
-#brands--container {
-  display: flex;
-  column-gap: 200px;
-  row-gap: 100px;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  padding: 75px 0 150px 0;
-}
-
-.brand--container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.brand--logo {
-  background-size: 80%;
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  height: 100px;
-  width: 100%;
-}
-
-.brand--label {
-  color: #ddd;
-  -text-transform: uppercase;
-  font-size: 13px;
-  padding-top: 20px;
-}
-
-.brand--link {
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 20px;
-  color: #777 !important;
-}
-
-/**** Section 4 ****/
-/******************************************************************************/
 
 /******************************************************************************/
 /**** Vehicle page ****/

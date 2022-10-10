@@ -1,15 +1,12 @@
 
 (ns site.karavancentrum.modules.navbar
-  (:require
-   [re-frame.api :as r :refer [r]]
-   [x.app-elements.api :as elements]
-   [x.app-components.api :as components]
-   [x.app-environment.api :as environment]
-
-   [dom.api :as dom]
-   [reagent.api :as reagent :refer [lifecycles]]
-
-   [site.karavancentrum.modules.sidebar.views :as sidebar]))
+    (:require [dom.api                                   :as dom]
+              [reagent.api                               :as reagent :refer [lifecycles]]
+              [re-frame.api                              :as r :refer [r]]
+              [site.karavancentrum.modules.sidebar.views :as sidebar]
+              [x.app-elements.api                        :as elements]
+              [x.app-components.api                      :as components]
+              [x.app-environment.api                     :as environment]))
 
 ;; -----------------------------------------------------------------------------
 ;; ---- Utils ----

@@ -1,39 +1,28 @@
 
 (ns site.karavancentrum.pages.vehicle.frontend.slider
-  (:require
-   [x.app-core.api :as a :refer [r]]
-   [x.app-environment.api :as env]
-
-   [reagent.core :as reagent]
-
-   ["react-responsive-carousel" :refer [Carousel]]))
+  (:require [reagent.core                :as reagent]
+            [x.app-core.api              :as a :refer [r]]
+            [x.app-environment.api       :as env]
+            ["react-responsive-carousel" :refer [Carousel]]))
 
 ;; -----------------------------------------------------------------------------
-;; ---- Configurations ----
-
-(def DEFAULT-CONFIG
-  {:emulateTouch   true
-   :infiniteLoop   true
-   :showThumbs     false
-   :showIndicators false
-   :showStatus     false})
-
-
-;; ---- Configurations ----
 ;; -----------------------------------------------------------------------------
 
-;; -----------------------------------------------------------------------------
-;; ---- Components ----
+(def DEFAULT-CONFIG {:emulateTouch   true
+                     :infiniteLoop   true
+                     :showThumbs     false
+                     :showIndicators false
+                     :showStatus     false})
 
-(defn slider [data]
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn slider
+  [data]
   (let [configurations DEFAULT-CONFIG]
-    [:div
-     [:> Carousel configurations
-      data]]))
+       [:div [:> Carousel configurations
+                 data]]))
 
-(defn view [& data]
-  [:div
-   [slider data]])
-
-;; ---- Components ----
-;; -----------------------------------------------------------------------------
+(defn view
+  [& data]
+  [:div [slider data]])

@@ -1,34 +1,32 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.views
-  (:require
-    [tools.image-preloader.api :as image-preloader]
-    [x.app-core.api :as a]
-    [app.common.frontend.api :as common]
-    [site.karavancentrum.pages.main-page.frontend.sections.api :as sections]))
+    (:require [app.common.frontend.api                                   :as common]
+              [reagent.api                                               :as reagent]
+              [re-frame.api                                              :as r]
+              [site.karavancentrum.pages.main-page.frontend.sections.api :as sections]
+              [tools.image-preloader.api                                 :as image-preloader]))
 
 ;; -----------------------------------------------------------------------------
-;; ---- Components ----
-
-(defn main-page [props]
-  [:main#main-page--content
-   [sections/section-1]
-   [sections/section-2]
-   [sections/brands]
-   [sections/about-us]
-   [sections/section-3]
-   ;[sections/section-4]
-   [:div {:style {:background "#2d2925"
-                  :padding "60px 0 15px 0"}}
-         [common/credits {:theme :dark}]]
-   [image-preloader/component {:uri "/site/images/hero.jpg"}]])
-
-;; ---- Components ----
 ;; -----------------------------------------------------------------------------
 
-(defn view [scroll-target]
-  (lifecycles
-    {:component-did-mount #(a/dispatch [:utils/scroll-into scroll-target])
-     :component-did-update #();println scroll-target)
-     :reagent-render
-     (fn [scroll-target]
-       [main-page scroll-target])}))
+(defn main-page
+  [props]
+  [:main#main-page--content [sections/hero]
+                            [sections/renting]
+                            [sections/brands]
+                            [sections/about-us]
+                            [sections/contacts]
+                            [:div {:style {:background "#2d2925"
+                                           :padding "60px 0 15px 0"}}
+                                  [common/credits {:theme :dark}]]
+                            [image-preloader/component {:uri "/site/images/hero.jpg"}]])
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn view
+  [scroll-target]
+  (reagent/lifecycles
+    {:component-did-mount (fn [] (r/dispatch [:utils/scroll-into scroll-target]))
+     :reagent-render      (fn [scroll-target]
+                             [main-page scroll-target])}))

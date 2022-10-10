@@ -1,11 +1,9 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.subs
-  (:require
-    [re-frame.api :as r]))
-
+    (:require [re-frame.api :as r]))
 
 ;; -----------------------------------------------------------------------------
-;; ---- Subscriptions ----
+;; -----------------------------------------------------------------------------
 
 (defn site-get [db [_ path]]
   (get-in db (concat [:site] path)))
@@ -18,19 +16,13 @@
 
 (defn vehicles [db _]
   (let [filters (get db :main-page.filters)]
-    (filter #(contains? filters (:vehicle/type %))
-            (get-in db [:site :vehicles]))))
-
-;; ---- Subscriptions ----
-;; -----------------------------------------------------------------------------
+       (filter #(contains? filters (:vehicle/type %))
+               (get-in db [:site :vehicles]))))
 
 ;; -----------------------------------------------------------------------------
-;; ---- Resgistry ----
+;; -----------------------------------------------------------------------------
 
-(r/reg-sub :site/get site-get)
-(r/reg-sub :site/vehicles vehicles)
+(r/reg-sub :site/get                    site-get)
+(r/reg-sub :site/vehicles               vehicles)
 (r/reg-sub :main-page.filters/contains? filter-contains?)
 (r/reg-sub :main-page.filters/disabled? filter-disabled?)
-
-;; ---- Resgistry ----
-;; -----------------------------------------------------------------------------

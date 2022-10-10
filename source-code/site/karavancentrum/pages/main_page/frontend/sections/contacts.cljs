@@ -1,12 +1,12 @@
 
-(ns site.karavancentrum.pages.main-page.frontend.sections.section-3
-  (:require [app.contents.frontend.api :as contents]
-            [mid-fruits.href :as href]
-            [re-frame.api     :as r]
-            [utils.api        :refer [html->hiccup]]))
+(ns site.karavancentrum.pages.main-page.frontend.sections.contacts
+    (:require [app.contents.frontend.api :as contents]
+              [mid-fruits.href           :as href]
+              [re-frame.api              :as r]
+              [utils.api                 :refer [html->hiccup]]))
 
 ;; -----------------------------------------------------------------------------
-;; ---- Components ----
+;; -----------------------------------------------------------------------------
 
 (defn contact-information
   []
@@ -47,18 +47,17 @@
                   (conj address-groups [address-group group-props]))]
               (reduce f [:<>] address-groups))))
 
-(defn section-3 []
-  [:<> [:section [:div#contacts [:p.kc-title "Kapcsolat"]
+(defn contacts
+  []
+  [:<> [:section [:div#contacts [:p.kc-section-title "Kapcsolat"]
                                 [:div#contact-groups [contact-groups]
                                                      [contact-information]
                                                      [address-groups]]
                                 [:div#x
 
                                  [address-information]]]
-                 [:section#section-3--background]]])
+                 [:section#contacts--background]]])
 
-;; ---- Components ----
-;; -----------------------------------------------------------------------------
-
-(defn view []
-  [section-3])
+(defn view
+  []
+  [contacts])

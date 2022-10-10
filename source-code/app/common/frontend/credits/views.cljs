@@ -39,8 +39,8 @@
   ; @usage
   ;  [common/mt-logo]
   [{:keys [theme]}]
-  [:div {:style {:background-image (case theme :dark (css/url "/logo/mt-logo-dark.png")
-                                                     (css/url "/logo/mt-logo-light.png"))
+  [:div {:style {:background-image (case theme :dark (css/url "/app/logo/mt-logo-dark.png")
+                                                     (css/url "/app/logo/mt-logo-light.png"))
                  :background-size  "cover"
                  :height           "72px"
                  :width            "72px"}}])
