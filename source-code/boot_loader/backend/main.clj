@@ -5,8 +5,8 @@
               [shadow.cljs.devtools.api    :as shadow]
 
               ; *
+              [project.router.backend.api]
               [boot-loader.backend.app]
-              [boot-loader.backend.project]
               [boot-loader.backend.site]
               [x.boot-loader.api :as boot-loader])
     (:gen-class))

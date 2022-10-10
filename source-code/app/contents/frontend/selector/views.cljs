@@ -5,29 +5,25 @@
               [layouts.popup-a.api                   :as popup-a]
               [mid-fruits.hiccup                     :as hiccup]
               [plugins.item-lister.api               :as item-lister]
+              [re-frame.api                          :as r]
               [x.app-components.api                  :as components]
-              [x.app-core.api                        :as a]
               [x.app-elements.api                    :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn content-item-structure
-  [lister-id item-dex {:keys [body name id modified-at] :as content-item}]
-  (let [timestamp   @(a/subscribe [:activities/get-actual-timestamp modified-at])
+  [selector-id item-dex {:keys [body name id modified-at] :as content-item}]
+  (let [timestamp   @(r/subscribe [:activities/get-actual-timestamp modified-at])
         content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
-       [common/list-item-structure lister-id item-dex
-                                   {:cells [[common/list-item-thumbnail-icon lister-id item-dex {:icon :article :icon-family :material-icons-outlined}]
-                                            [common/list-item-primary-cell   lister-id item-dex {:label name :timestamp timestamp :stretch? true}]
-                                            (if-let [content-selected? @(a/subscribe [:item-lister/item-selected? :contents.selector id])]
-                                                    (if-let [autosaving? @(a/subscribe [:item-selector/autosaving? :contents.selector])]
-                                                            [common/list-item-end-icon lister-id item-dex {:icon :check_circle_outline :progress 100 :progress-duration 1000}]
-                                                            [common/list-item-end-icon lister-id item-dex {:icon :check_circle_outline}])
-                                                    [common/list-item-end-icon lister-id item-dex {:icon :radio_button_unchecked}])]}]))
+       [common/list-item-structure selector-id item-dex
+                                   {:cells [[common/list-item-thumbnail-icon selector-id item-dex {:icon :article :icon-family :material-icons-outlined}]
+                                            [common/list-item-primary-cell   selector-id item-dex {:label name :timestamp timestamp :stretch? true}]
+                                            [common/selector-item-marker     selector-id item-dex {:item-id id}]]}]))
 
 (defn content-item
-  [lister-id item-dex {:keys [id] :as content-item}]
-  [elements/toggle {:content     [content-item-structure lister-id item-dex content-item]
+  [selector-id item-dex {:keys [id] :as content-item}]
+  [elements/toggle {:content     [content-item-structure selector-id item-dex content-item]
                     :hover-color :highlight
                     :on-click    [:item-selector/item-clicked :contents.selector id]}])
 
@@ -53,7 +49,7 @@
 
 (defn- control-bar
   []
-  (let [selector-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.selector])]
+  (let [selector-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.selector])]
        [common/item-selector-control-bar :contents.selector
                                          {:disabled?        selector-disabled?
                                           :order-by-options [:modified-at/ascending :modified-at/descending :name/ascending :name/descending]
@@ -62,10 +58,10 @@
 
 (defn- label-bar
   []
-  (let [multi-select? @(a/subscribe [:item-lister/get-meta-item :contents.selector :multi-select?])]
+  (let [multi-select? @(r/subscribe [:item-lister/get-meta-item :contents.selector :multi-select?])]
        [common/popup-label-bar :contents.selector/view
                                {:primary-button   {:label :save! :on-click [:item-selector/save-selection! :contents.selector]}
-                                :secondary-button (if-let [autosaving? @(a/subscribe [:item-selector/autosaving? :contents.selector])]
+                                :secondary-button (if-let [autosaving? @(r/subscribe [:item-selector/autosaving? :contents.selector])]
                                                           {:label :abort!  :on-click [:item-selector/abort-autosave! :contents.selector]}
                                                           {:label :cancel! :on-click [:ui/close-popup! :contents.selector/view]})
                                 :label            (if multi-select? :select-contents! :select-content!)}]))
@@ -73,7 +69,7 @@
 (defn- header
   []
   [:<> [label-bar]
-       (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :contents.selector])]
+       (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.selector])]
                [control-bar]
                [elements/horizontal-separator {:size :xxl}])])
 
@@ -82,7 +78,7 @@
 
 (defn- footer
   []
-  (let [selected-content-count @(a/subscribe [:item-lister/get-selected-item-count :contents.selector])
+  (let [selected-content-count @(r/subscribe [:item-lister/get-selected-item-count :contents.selector])
         on-discard-selection [:item-lister/discard-selection! :contents.selector]]
        [common/item-selector-footer :contents.selector
                                     {:on-discard-selection on-discard-selection

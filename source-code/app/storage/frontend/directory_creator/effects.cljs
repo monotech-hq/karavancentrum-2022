@@ -11,8 +11,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.directory-creator/load-creator!
+(a/reg-event-fx :storage.directory-creator/load-creator!
   ; @param (keyword)(opt) creator-id
   ; @param (map) creator-props
   ;  {:destination-id (string)}
@@ -33,8 +32,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.directory-creator/create-directory!
+(a/reg-event-fx :storage.directory-creator/create-directory!
   (fn [{:keys [db]} [_ creator-id]]
       (let [directory-name (get-in db [:storage :directory-creator/meta-items :directory-name])
             query          (r directory-creator.queries/get-create-directory-query          db creator-id directory-name)
@@ -46,8 +44,7 @@
                                                :on-success [:storage.directory-creator/directory-created         creator-id]
                                                :on-failure [:storage.directory-creator/directory-creation-failed creator-id]}]]})))
 
-(a/reg-event-fx
-  :storage.directory-creator/directory-created
+(a/reg-event-fx :storage.directory-creator/directory-created
   (fn [{:keys [db]} [_ creator-id server-response]]
       ; Ha a sikeres mappalétrehozás után még a célmappa az aktuálisan böngészett elem,
       ; akkor újratölti a listaelemeket.
@@ -56,8 +53,7 @@
            (if (r item-browser/browsing-item? db browser-id destination-id)
                [:item-browser/reload-items! browser-id]))))
 
-(a/reg-event-fx
-  :storage.directory-creator/directory-creation-failed
+(a/reg-event-fx :storage.directory-creator/directory-creation-failed
   (fn [_ [_ creator-id server-response]]
       {:dispatch-n [[:ui/end-fake-process!]
                     [:ui/render-bubble! {:body :failed-to-create-directory}]]}))
@@ -65,8 +61,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.directory-creator/render-dialog!
+(a/reg-event-fx :storage.directory-creator/render-dialog!
   (fn [{:keys [db]} [_ creator-id]]
       [:ui/render-popup! :storage.directory-creator/view
                          {:content [directory-creator.views/view creator-id]}]))

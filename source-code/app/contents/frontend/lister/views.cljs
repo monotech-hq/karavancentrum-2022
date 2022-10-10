@@ -5,7 +5,7 @@
               [layouts.surface-a.api                 :as surface-a]
               [mid-fruits.hiccup                     :as hiccup]
               [plugins.item-lister.api               :as item-lister]
-              [x.app-core.api                        :as a]
+              [re-frame.api                          :as r]
               [x.app-elements.api                    :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 
 (defn- content-item-structure
   [lister-id item-dex {:keys [body modified-at name]}]
-  (let [timestamp   @(a/subscribe [:activities/get-actual-timestamp modified-at])
+  (let [timestamp   @(r/subscribe [:activities/get-actual-timestamp modified-at])
         content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
        [common/list-item-structure lister-id item-dex
                                    {:cells [[common/list-item-thumbnail-icon lister-id item-dex {:icon :article :icon-family :material-icons-outlined}]
@@ -21,7 +21,7 @@
                                                                                                  :placeholder :unnamed-content
                                                                                                  :description content-body}]
                                             [common/list-item-detail         lister-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-end-icon       lister-id item-dex {:icon    :navigate_next}]]}]))
+                                            [common/list-item-marker         lister-id item-dex {:icon    :navigate_next}]]}]))
 
 (defn- content-item
   [lister-id item-dex {:keys [id] :as content-item}]
@@ -58,7 +58,7 @@
 
 (defn create-item-button
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.lister])
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])
         create-content-uri (str "/@app-home/contents/create")]
        [common/item-lister-create-item-button :contents.lister
                                               {:disabled?       lister-disabled?
@@ -66,14 +66,14 @@
 
 (defn- search-block
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.lister])]
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
        [common/item-lister-search-block :contents.lister
                                         {:disabled?         lister-disabled?
                                          :field-placeholder :search-in-contents}]))
 
 (defn- breadcrumbs
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.lister])]
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
        [common/surface-breadcrumbs :contents.lister/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :contents}]
@@ -81,7 +81,7 @@
 
 (defn- label-bar
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :contents.lister])]
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
        [common/surface-label :contents.lister/view
                              {:disabled? lister-disabled?
                               :label     :contents}]))
@@ -91,7 +91,7 @@
 
 (defn- footer
   []
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :contents.lister])]
+  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.lister])]
           [common/item-lister-download-info :contents.lister {}]))
 
 (defn- body
@@ -102,7 +102,7 @@
 
 (defn- header
   []
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :contents.lister])]
+  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.lister])]
           [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
                      [label-bar]
                      [create-item-button]]

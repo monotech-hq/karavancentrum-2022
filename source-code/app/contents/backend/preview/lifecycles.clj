@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-preview/init-preview! :contents.preview
                                                 {:collection-name "contents"
                                                  :handler-key     :contents.preview

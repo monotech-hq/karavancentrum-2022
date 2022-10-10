@@ -2,7 +2,6 @@
 (ns boot-loader.frontend.main
     (:require ; *
               [boot-loader.frontend.app]
-              [boot-loader.frontend.project]
               [boot-loader.frontend.site]))
 
 ;; ----------------------------------------------------------------------------

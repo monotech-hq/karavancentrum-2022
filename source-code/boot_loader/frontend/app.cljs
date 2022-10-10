@@ -1,6 +1,13 @@
 
 (ns boot-loader.frontend.app
-    (:require [app.common.frontend.api]
+    (:require ; Monoset modules
+              [pathom.api]
+              [x.app-developer.api :as developer]
+              [x.boot-loader.api   :as boot-loader]
+
+              ; App modules
+             ;[app.calendar.frontend.api]
+              [app.common.frontend.api]
               [app.contents.frontend.api]
               [app.home.frontend.api]
               [app.pages.frontend.api]
@@ -10,9 +17,7 @@
               [app.user.frontend.api]
               [app.views.frontend.api]
               [app.website-config.frontend.api]
-              [app.website-content.frontend.api]
-              [x.app-developer.api :as developer]
-              [x.boot-loader.api   :as boot-loader]))
+              [app.website-content.frontend.api]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

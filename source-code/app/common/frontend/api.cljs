@@ -2,25 +2,29 @@
 (ns app.common.frontend.api
     (:require [app.common.frontend.item-selector.effects]
               [app.common.frontend.item-selector.events]
-              [app.common.frontend.action-bar.views     :as action-bar.views]
-              [app.common.frontend.credits.views        :as credits.views]
-              [app.common.frontend.data-element.views   :as data-element.views]
-              [app.common.frontend.data-table.views     :as data-table.views]
-              [app.common.frontend.error-content.views  :as error-content.views]
-              [app.common.frontend.error-element.views  :as error-element.views]
-              [app.common.frontend.file-editor.views    :as file-editor.views]
-              [app.common.frontend.ghost-element.views  :as ghost-element.views]
-              [app.common.frontend.item-browser.views   :as item-browser.views]
-              [app.common.frontend.item-editor.views    :as item-editor.views]
-              [app.common.frontend.item-lister.views    :as item-lister.views]
-              [app.common.frontend.item-preview.views   :as item-preview.views]
-              [app.common.frontend.item-selector.subs   :as item-selector.subs]
-              [app.common.frontend.item-selector.views  :as item-selector.views]
-              [app.common.frontend.item-viewer.views    :as item-viewer.views]
-              [app.common.frontend.menu-header.views    :as menu-header.views]
-              [app.common.frontend.popup.views          :as popup.views]
-              [app.common.frontend.surface.views        :as surface.views]
-              [app.common.frontend.surface-box.views    :as surface-box.views]))
+              [app.common.frontend.action-bar.views        :as action-bar.views]
+              [app.common.frontend.credits.views           :as credits.views]
+              [app.common.frontend.data-element.views      :as data-element.views]
+              [app.common.frontend.data-table.views        :as data-table.views]
+              [app.common.frontend.error-content.views     :as error-content.views]
+              [app.common.frontend.error-element.views     :as error-element.views]
+              [app.common.frontend.file-editor.views       :as file-editor.views]
+              [app.common.frontend.ghost-element.views     :as ghost-element.views]
+              [app.common.frontend.item-browser.views      :as item-browser.views]
+              [app.common.frontend.item-editor.views           :as item-editor.views]
+              [app.common.frontend.item-lister.views           :as item-lister.views]
+              [app.common.frontend.item-preview.views          :as item-preview.views]
+              [app.common.frontend.item-selector.subs          :as item-selector.subs]
+              [app.common.frontend.item-selector.views         :as item-selector.views]
+              [app.common.frontend.item-viewer.views           :as item-viewer.views]
+              [app.common.frontend.list-item-marker.views      :as list-item-marker.views]
+              [app.common.frontend.menu-header.views           :as menu-header.views]
+              [app.common.frontend.popup.views                 :as popup.views]
+              [app.common.frontend.pdf-preview.views           :as pdf-preview.views]
+              [app.common.frontend.selector-item-counter.views :as selector-item-counter.views]
+              [app.common.frontend.selector-item-marker.views  :as selector-item-marker.views]
+              [app.common.frontend.surface.views               :as surface.views]
+              [app.common.frontend.surface-box.views           :as surface-box.views]))
 
 ;; -- Redirects ---------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -73,7 +77,6 @@
 (def list-item-details              item-lister.views/list-item-details)
 (def list-item-detail               item-lister.views/list-item-detail)
 (def list-item-primary-cell         item-lister.views/list-item-primary-cell)
-(def list-item-end-icon             item-lister.views/list-item-end-icon)
 (def item-lister-search-block       item-lister.views/item-lister-search-block)
 (def item-lister-header-spacer      item-lister.views/item-lister-header-spacer)
 (def item-lister-header-cell        item-lister.views/item-lister-header-cell)
@@ -99,12 +102,24 @@
 (def item-viewer-ghost-element item-viewer.views/item-viewer-ghost-element)
 (def item-viewer-controls      item-viewer.views/item-viewer-controls)
 
+; app.common.frontend.list-item-marker.views
+(def list-item-marker list-item-marker.views/element)
+
+; app.common.frontend.selector-item-counter.views
+(def selector-item-counter selector-item-counter.views/element)
+
+; app.common.frontend.selector-item-marker.views
+(def selector-item-marker selector-item-marker.views/element)
+
 ; app.common.frontend.menu-header.views
 (def menu-header menu-header.views/element)
 
 ; app.common.frontend.popup.views
 (def popup-label-bar          popup.views/popup-label-bar)
 (def popup-progress-indicator popup.views/popup-progress-indicator)
+
+; app.common.frontend.pdf-preview.views
+(def pdf-preview pdf-preview.views/element)
 
 ; app.common.frontend.surface.views
 (def go-back-button                surface.views/go-back-button)

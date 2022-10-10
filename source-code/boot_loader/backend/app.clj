@@ -1,6 +1,13 @@
 
 (ns boot-loader.backend.app
-    (:require [app.common.backend.api]
+    (:require ; Monoset modules
+              [forms.api]
+              [layouts.popup-a.api]
+              [layouts.surface-a.api]
+              [pathom.api]
+
+              ; App modules
+              [app.common.backend.api]
               [app.contents.backend.api]
               [app.home.backend.api]
               [app.pages.backend.api]

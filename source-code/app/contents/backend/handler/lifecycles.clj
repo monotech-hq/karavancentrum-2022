@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-init [:router/add-route! :contents.handler/download-content
                                        {:route-template "/contents/:content-id"
                                         :get {:handler handler.routes/download-content}}]})

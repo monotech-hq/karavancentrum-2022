@@ -1,5 +1,5 @@
 
-(ns app.views.backend.loading-screen.views
+(ns project.ui.backend.loading-screen
     (:require [mid-fruits.candy  :refer [param]]
               [mid-fruits.css    :as css]
               [re-frame.api      :as r]
@@ -25,17 +25,14 @@
 (defn- app-logo
   [request]
   (let [selected-theme (user/request->user-settings-item request :selected-theme)]
-       [:div {:style (css/parse {:background-image (case selected-theme :light (css/url "/logo/logo-light.png")
-                                                                        :dark  (css/url "/logo/logo-dark.png"))
+       [:div {:style (css/parse {:background-image (case selected-theme :light (css/url "/app/logo/logo-light.png")
+                                                                        :dark  (css/url "/app/logo/logo-dark.png"))
+                                 :background-position "bottom"
                                  :background-repeat   "no-repeat"
                                  :background-size     "contain"
-                                 :height              "150px"
+                                 :height              "100px"
                                  :overflow            "hidden"
-                                 :width               "150px"
-
-                                ; A fekvő képarányú logók a felirat felett jelenjenek meg!
-                                ;:background-position "center"
-                                 :background-position "bottom"})}]))
+                                 :width               "100px"})}]))
 
 (defn view
   [request]

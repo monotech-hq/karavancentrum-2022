@@ -8,17 +8,28 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn media-preview-no-media-label
+(defn media-preview-empty-thumbnail
   ; @param (keyword) preview-id
   ; @param (map) preview-props
   ;  {:disabled? (boolean)(opt)
-  ;   :no-media-label (metamorphic-content)(opt)}
-  [editor-id {:keys [disabled? no-media-label]}]
-  (if no-media-label [elements/label {:color               :muted
-                                      :content             no-media-label
-                                      :disabled?           disabled?
-                                      :font-size           :xs
-                                      :horizontal-position :left}]))
+  ;   :show-empty? (boolean)(opt)}
+  [editor-id {:keys [disabled? show-empty? thumbnail]}]
+  (if show-empty? [elements/thumbnail {:border-radius :s
+                                       :disabled?     disabled?
+                                       :height        (:height thumbnail)
+                                       :width         (:width  thumbnail)}]))
+
+(defn media-preview-placeholder
+  ; @param (keyword) preview-id
+  ; @param (map) preview-props
+  ;  {:disabled? (boolean)(opt)
+  ;   :placeholder (metamorphic-content)(opt)}
+  [editor-id {:keys [disabled? placeholder]}]
+  (if placeholder [elements/label {:color               :muted
+                                   :content             placeholder
+                                   :disabled?           disabled?
+                                   :font-size           :xs
+                                   :horizontal-position :left}]))
 
 (defn media-preview-label
   ; @param (keyword) preview-id
@@ -53,9 +64,10 @@
   (let [media (vector/first-items media (:max-count thumbnail))]
        (letfn [(f [thumbnail-list thumbnail-uri] (conj thumbnail-list [media-preview-thumbnail preview-id preview-props thumbnail-uri]))]
               (if (vector/nonempty? media)
-                  [:div {:style {:display "flex" :flex-wrap "wrap" :grid-column-gap "12px"}}
+                  [:div {:style {:display "flex" :flex-wrap "wrap" :grid-gap "12px"}}
                         (reduce f [:<>] media)]
-                  [media-preview-no-media-label preview-id preview-props]))))
+                  [:<> [media-preview-placeholder     preview-id preview-props]
+                       [media-preview-empty-thumbnail preview-id preview-props]]))))
 
 (defn media-preview-body
   ; @param (keyword) preview-id
@@ -81,8 +93,10 @@
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :media (string or strings in vector)(opt)
-  ;   :no-media-label (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)
+  ;   :show-empty? (boolean)(opt)
+  ;    Default: false
   ;   :thumbnail (map)(opt)
   ;    {:max-count (integer)(opt)
   ;      Default: 8

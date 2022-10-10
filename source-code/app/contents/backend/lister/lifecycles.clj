@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-lister/init-lister! :contents.lister
                                               {:base-route      "/@app-home/contents"
                                                :collection-name "contents"

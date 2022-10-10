@@ -5,6 +5,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:views/set-menu-screen! [:views.menu-screen/render!]]})

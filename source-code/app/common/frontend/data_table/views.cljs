@@ -24,8 +24,9 @@
   ; @param (keyword) table-id
   ; @param (map) table-props
   ;  {}
-  [table-id {:keys [rows] :as table-props}]
-  [:table (letfn [(f [row-list row-cells] (conj row-list [data-table-row row-cells]))]
+  [table-id {:keys [disabled? rows] :as table-props}]
+  [:table {:data-disabled disabled?}
+          (letfn [(f [row-list row-cells] (conj row-list [data-table-row row-cells]))]
                  (reduce f [:tbody] rows))])
 
 ;; ----------------------------------------------------------------------------
@@ -47,8 +48,9 @@
   ; @param (keyword) table-id
   ; @param (map) table-props
   ;  {}
-  [table-id {:keys [columns] :as table-props}]
-  [:table (letfn [(f [column-list column-cells] (conj column-list [data-table-column column-cells]))]
+  [table-id {:keys [columns disabled?] :as table-props}]
+  [:table {:data-disabled disabled?}
+          (letfn [(f [column-list column-cells] (conj column-list [data-table-column column-cells]))]
                  (reduce f [:tbody] columns))])
 
 ;; ----------------------------------------------------------------------------

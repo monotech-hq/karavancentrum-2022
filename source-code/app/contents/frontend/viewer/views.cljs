@@ -24,10 +24,10 @@
                              :placeholder "-"
                              :value       content-visibility}]))
 
-(defn- content-more-data
+(defn- content-more-data-box
   []
   (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
-       [common/surface-box ::content-more-data
+       [common/surface-box ::content-more-data-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
@@ -51,10 +51,10 @@
                              :placeholder "-"
                              :value       content-body}]))
 
-(defn- content-basic-data
+(defn- content-content-box
   []
   (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
-       [common/surface-box ::content-basic-data
+       [common/surface-box ::content-content-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [content-body]]]
@@ -67,8 +67,8 @@
 
 (defn- content-overview
   []
-  [:<> [content-basic-data]
-       [content-more-data]])
+  [:<> [content-content-box]
+       [content-more-data-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

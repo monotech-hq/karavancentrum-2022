@@ -5,8 +5,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-browser-offline [:views.no-internet-notification/blow-no-internet-bubble?!]
    :on-app-launch      [:views.no-internet-notification/blow-no-internet-bubble?!]
    :on-browser-online  [:ui/close-bubble! :views.no-internet-notification/notification]})

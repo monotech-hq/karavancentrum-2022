@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(r/reg-event-fx
-  :website-config.editor/load-editor!
+(r/reg-event-fx :website-config.editor/load-editor!
   {:dispatch-n [[:gestures/init-view-handler! :website-config.editor
                                               {:default-view-id :basic-data}]
                 [:ui/render-surface! :website-config.editor/view

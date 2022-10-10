@@ -5,7 +5,6 @@
               [forms.api                :as forms]
               [layouts.surface-a.api    :as surface-a]
               [mid-fruits.css           :as css]
-              [mid-fruits.href          :as href]
               [mid-fruits.vector        :as vector]
               [plugins.file-editor.api  :as file-editor]
               [re-frame.api             :as r]
@@ -37,10 +36,10 @@
                              :placeholder :company-name-placeholder
                              :value-path  [:website-config :editor/edited-item :company-name]}]))
 
-(defn- company-data
+(defn- company-data-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::company-data
+       [common/surface-box ::company-data-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [company-name-field]]
@@ -68,22 +67,22 @@
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:website-config :editor/edited-item :company-logo]}]))
 
-(defn- company-logo
+(defn- company-logo-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::company-logo
+       [common/surface-box ::company-logo-box
                            {:content [:<> [company-logo-picker]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
-                            :label     :logo}]))
+                            :label     :company-logo}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- basic-data
   []
-  [:<> [company-logo]
-       [company-data]])
+  [:<> [company-logo-box]
+       [company-data-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -138,7 +137,7 @@
                               :placeholder :phone-number-placeholder
                               :value-path  [:website-config :editor/edited-item :contact-groups group-dex :phone-numbers]}]))
 
-(defn- contact-group
+(defn- contact-group-box
   [group-dex group-props]
   [common/surface-box {:content [:<> [:div (forms/form-row-attributes)
                                            [:div (forms/form-block-attributes {:ratio 100})
@@ -159,7 +158,7 @@
 
 (defn- contact-group-list
   []
-  (letfn [(f [%1 %2 %3] (conj %1 [contact-group %2 %3]))]
+  (letfn [(f [%1 %2 %3] (conj %1 [contact-group-box %2 %3]))]
          (let [contact-groups @(r/subscribe [:db/get-item [:website-config :editor/edited-item :contact-groups]])]
               (reduce-kv f [:<>] contact-groups))))
 
@@ -175,10 +174,10 @@
                            :label     :add-contacts-data!
                            :on-click  on-click}]))
 
-(defn- contact-controls
+(defn- contacts-data-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::contact-controls
+       [common/surface-box ::contacts-data-box
                            {:content [:<> [contacts-controls-action-bar]
                                           [elements/horizontal-separator {:size :xs}]]
                             :disabled? editor-disabled?
@@ -189,7 +188,7 @@
 
 (defn- contacts-data
   []
-  [:<> [contact-controls]
+  [:<> [contacts-data-box]
        [contact-group-list]])
 
 ;; ----------------------------------------------------------------------------
@@ -242,22 +241,23 @@
         company-address  @(r/subscribe [:db/get-item [:website-config :editor/edited-item :address-groups group-dex :company-address]])]
        [common/data-element {:disabled? editor-disabled?
                              :label     :google-maps-link
-                             :value     (href/address company-address)
+                             :value     (str "https://www.google.com/maps/search/?api=1&query=" company-address)
                              :indent    {:top :xxl :vertical :s}}]))
 
 (defn- google-maps-link-toggle
   [group-dex _]
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])
-        company-address  @(r/subscribe [:db/get-item [:website-config :editor/edited-item :address-groups group-dex :company-address]])]
+        company-address  @(r/subscribe [:db/get-item [:website-config :editor/edited-item :address-groups group-dex :company-address]])
+        company-address-link (str "https://www.google.com/maps/search/?api=1&query=" company-address)]
        [:div {:style {:display :flex}}
              [elements/button {:color     :primary
                                :disabled? editor-disabled?
                                :font-size :xs
                                :label     :open-link!
-                               :on-click  {:fx [:environment/open-new-browser-tab! (href/address company-address)]}
+                               :on-click  {:fx [:environment/open-new-browser-tab! company-address-link]}
                                :indent    {:vertical :s}}]]))
 
-(defn- address-group
+(defn- address-group-box
   [group-dex group-props]
   [common/surface-box {:indent  {:top :m}
                        :content [:<> [:div (forms/form-row-attributes)
@@ -280,7 +280,7 @@
 
 (defn- address-group-list
   []
-  (letfn [(f [%1 %2 %3] (conj %1 [address-group %2 %3]))]
+  (letfn [(f [%1 %2 %3] (conj %1 [address-group-box %2 %3]))]
          (let [address-groups @(r/subscribe [:db/get-item [:website-config :editor/edited-item :address-groups]])]
               (reduce-kv f [:<>] address-groups))))
 
@@ -296,10 +296,10 @@
                            :label     :add-address-data!
                            :on-click  on-click}]))
 
-(defn- address-controls
+(defn- address-data-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::address-controls
+       [common/surface-box ::address-data-box
                            {:content [:<> [address-controls-action-bar]
                                           [elements/horizontal-separator {:size :xs}]]
                             :disabled? editor-disabled?
@@ -310,7 +310,7 @@
 
 (defn- address-data
   []
-  [:<> [address-controls]
+  [:<> [address-data-box]
        [address-group-list]])
 
 ;; ----------------------------------------------------------------------------
@@ -347,10 +347,10 @@
                               :placeholder :youtube-link-placeholder
                               :value-path  [:website-config :editor/edited-item :youtube-links]}]))
 
-(defn- social-media
+(defn- social-media-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::social-media
+       [common/surface-box ::social-media-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [facebook-links-field]]]
@@ -363,6 +363,13 @@
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
                             :label     :social-media}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- social-media
+  []
+  [:<> [social-media-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -413,10 +420,10 @@
                                   :placeholder :meta-keywords-placeholder
                                   :value-path  [:website-config :editor/edited-item :meta-keywords]}]))
 
-(defn- seo
+(defn- seo-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::seo
+       [common/surface-box ::seo-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [meta-name-field]]]
@@ -436,6 +443,13 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- seo
+  []
+  [:<> [seo-box]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- share-preview-picker
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
@@ -449,15 +463,22 @@
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:website-config :editor/edited-item :share-preview]}]))
 
-(defn- share
+(defn- share-preview-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/surface-box ::company-logo
+       [common/surface-box ::share-preview-box
                            {:content [:<> [share-preview-picker]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
                             :info-text {:content :recommended-image-size-n :replacements ["1200" "630"]}
                             :label     :share-preview}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- share
+  []
+  [:<> [share-preview-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

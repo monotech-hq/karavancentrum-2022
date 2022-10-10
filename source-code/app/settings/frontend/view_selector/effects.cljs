@@ -6,11 +6,9 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :settings.view-selector/load-selector!
+(a/reg-event-fx :settings.view-selector/load-selector!
   [:settings.view-selector/render-selector!])
 
-(a/reg-event-fx
-  :settings.view-selector/render-selector!
+(a/reg-event-fx :settings.view-selector/render-selector!
   [:ui/render-surface! :settings.view-selector/view
                        {:content #'view-selector.views/view}])

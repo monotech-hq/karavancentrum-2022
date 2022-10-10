@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-editor/init-editor! :contents.editor
                                               {:base-route      "/@app-home/contents"
                                                :collection-name "contents"

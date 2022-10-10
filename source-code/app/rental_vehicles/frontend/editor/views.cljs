@@ -5,8 +5,8 @@
               [app.storage.frontend.api  :as storage]
               [forms.api                 :as forms]
               [layouts.surface-a.api     :as surface-a]
-              [mid-fruits.time           :as time]
               [plugins.item-editor.api   :as item-editor]
+              [time.api                  :as time]
               [x.app-core.api            :as a]
               [x.app-elements.api        :as elements]))
 
@@ -37,10 +37,10 @@
                                :option-value-f  :value
                                :value-path      [:rental-vehicles :editor/edited-item :visibility]}]))
 
-(defn- vehicle-settings
+(defn- vehicle-settings-box
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/surface-box ::vehicle-settings
+       [common/surface-box ::vehicle-settings-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [vehicle-visibility-radio-button]]]
@@ -54,6 +54,13 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
+(defn- vehicle-settings
+  []
+  [:<> [vehicle-settings-box]])
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
 (defn- vehicle-description-picker
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
@@ -62,16 +69,23 @@
                                  :indent     {:vertical :s}
                                  :value-path [:rental-vehicles :editor/edited-item :description]}]))
 
-(defn- vehicle-content
+(defn- vehicle-description-box
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/surface-box ::vehicle-content
+       [common/surface-box ::vehicle-description-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [vehicle-description-picker]]]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
                             :label     :description}]))
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn- vehicle-content
+  []
+  [:<> [vehicle-description-box]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -109,10 +123,10 @@
                              :max-value  10
                              :value-path [:rental-vehicles :editor/edited-item :number-of-bunks]}]))
 
-(defn- vehicle-technical-data
+(defn- vehicle-technical-data-box
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/surface-box ::vehicle-technical-data
+       [common/surface-box ::vehicle-technical-data-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 40})
@@ -142,14 +156,21 @@
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:rental-vehicles :editor/edited-item :images]}]))
 
-(defn- vehicle-images
+(defn- vehicle-images-box
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/surface-box ::vehicle-images
+       [common/surface-box ::vehicle-images-box
                            {:content [:<> [vehicle-image-picker]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
                             :label     :images}]))
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn- vehicle-images
+  []
+  [:<> [vehicle-images-box]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -167,14 +188,21 @@
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:rental-vehicles :editor/edited-item :thumbnail]}]))
 
-(defn- vehicle-thumbnail
+(defn- vehicle-thumbnail-box
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/surface-box ::vehicle-thumbnail
+       [common/surface-box ::vehicle-thumbnail-box
                            {:content [:<> [vehicle-thumbnail-picker]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
                             :label     :thumbnail}]))
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn- vehicle-thumbnail
+  []
+  [:<> [vehicle-thumbnail-box]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -188,7 +216,7 @@
                             :indent       {:top :m :vertical :s}
                             :label        :name
                             :options-path [:rental-vehicles :editor/suggestions :name]
-                            :placeholder  :vehicle-name
+                            :placeholder  :vehicle-name-placeholder
                             :value-path   [:rental-vehicles :editor/edited-item :name]}]))
 
 (defn- vehicle-type-select
@@ -203,10 +231,10 @@
                          :options       [:alcove-rv :semi-integrated-rv :van-rv :caravan :trailer]
                          :value-path    [:rental-vehicles :editor/edited-item :type]}]))
 
-(defn- vehicle-basic-data
+(defn- vehicle-basic-data-box
   []
   (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/surface-box ::vehicle-basic-data
+       [common/surface-box ::vehicle-basic-data-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 60})
                                                       [vehicle-name-field]]
@@ -221,8 +249,8 @@
 
 (defn- vehicle-data
   []
-  [:<> [vehicle-basic-data]
-       [vehicle-technical-data]])
+  [:<> [vehicle-basic-data-box]
+       [vehicle-technical-data-box]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

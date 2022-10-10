@@ -57,7 +57,7 @@
        [elements/label {:content :there-is-no-available-settings
                         :color :muted
                         :font-size :xs
-                        :indent {:top :l :vertical :xs}}]])
+                        :indent {:top :l :vertical :s}}]])
 
 (defn view
   [surface-id]

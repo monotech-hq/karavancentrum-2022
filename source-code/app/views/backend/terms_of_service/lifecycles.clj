@@ -5,8 +5,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :views.terms-of-service/route
                                        {:client-event   [:views.terms-of-service/render!]
                                         :restricted?    true

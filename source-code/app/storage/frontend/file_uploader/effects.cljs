@@ -14,8 +14,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.file-uploader/load-uploader!
+(a/reg-event-fx :storage.file-uploader/load-uploader!
   ; @param (keyword) uploader-id
   ; @param (map) uploader-props
   ;  {:allowed-extensions (strings in vector)(opt)
@@ -42,8 +41,7 @@
       {:db (r file-uploader.events/store-uploader-props! db uploader-id uploader-props)
        :fx [:storage.file-uploader/open-file-selector! uploader-id uploader-props]}))
 
-(a/reg-event-fx
-  :storage.file-uploader/cancel-uploader!
+(a/reg-event-fx :storage.file-uploader/cancel-uploader!
   (fn [{:keys [db]} [_ uploader-id]]
       {:db       (r file-uploader.events/clean-uploader! db uploader-id)
        :dispatch [:ui/close-popup! :storage.file-uploader/view]}))
@@ -51,8 +49,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.file-uploader/start-progress!
+(a/reg-event-fx :storage.file-uploader/start-progress!
   (fn [{:keys [db]} [_ uploader-id]]
       (let [query        (r file-uploader.queries/get-upload-files-query          db uploader-id)
             form-data    (r file-uploader.subs/get-form-data                      db uploader-id)
@@ -64,22 +61,19 @@
                                                :on-failure [:storage.file-uploader/progress-failured  uploader-id]
                                                :validator-f validator-f}]]})))
 
-(a/reg-event-fx
-  :storage.file-uploader/files-selected-to-upload
+(a/reg-event-fx :storage.file-uploader/files-selected-to-upload
   (fn [{:keys [db]} [_ uploader-id]]
       ; A storage--file-selector input on-change eseménye indítja el a feltöltés inicializálását.
       (if-let [any-file-selected? (file-uploader.side-effects/any-file-selected?)]
               {:db       (r file-uploader.events/init-uploader! db uploader-id)
                :dispatch [:storage.file-uploader/render-uploader! uploader-id]})))
 
-(a/reg-event-fx
-  :storage.file-uploader/progress-started
+(a/reg-event-fx :storage.file-uploader/progress-started
   (fn [_ [_ uploader-id]]
       {:dispatch-n [[:storage.file-uploader/render-progress-notification! uploader-id]
                     [:ui/close-popup! :storage.file-uploader/view]]}))
 
-(a/reg-event-fx
-  :storage.file-uploader/progress-successed
+(a/reg-event-fx :storage.file-uploader/progress-successed
   (fn [{:keys [db]} [_ uploader-id]]
       ; - XXX#5087
       ;   Az egyes feltöltési folyamatok befejezése/megszakadása után késleltetve zárja le az adott
@@ -92,14 +86,12 @@
             :dispatch-if    [(r item-browser/browsing-item? db browser-id destination-id)
                              [:item-browser/reload-items! browser-id]]})))
 
-(a/reg-event-fx
-  :storage.file-uploader/progress-failured
+(a/reg-event-fx :storage.file-uploader/progress-failured
   (fn [_ [_ uploader-id]]
       {; XXX#5087
        :dispatch-later [{:ms 8000 :dispatch [:storage.file-uploader/end-uploader! uploader-id]}]}))
 
-(a/reg-event-fx
-  :storage.file-uploader/end-uploader!
+(a/reg-event-fx :storage.file-uploader/end-uploader!
   (fn [{:keys [db]} [_ uploader-id]]
       ; - A feltöltő lezárása után késleltetve törli ki annak adatait, hogy a még
       ;   látszódó folyamatjelző számára elérhetők maradjanak az adatok.
@@ -110,8 +102,7 @@
        :dispatch-if [(not (r file-uploader.subs/file-upload-in-progress? db))
                      [:ui/close-bubble! :storage.file-uploader/progress-notification]]}))
 
-(a/reg-event-fx
-  :storage.file-uploader/render-uploader!
+(a/reg-event-fx :storage.file-uploader/render-uploader!
   (fn [_ [_ uploader-id]]
       [:ui/render-popup! :storage.file-uploader/view
                          {:content [file-uploader.views/view uploader-id]}]))
@@ -119,8 +110,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.file-uploader/render-progress-notification!
+(a/reg-event-fx :storage.file-uploader/render-progress-notification!
   [:ui/render-bubble! :storage.file-uploader/progress-notification
                       {:body        #'file-uploader.views/progress-notification-body
                        :autoclose?  false

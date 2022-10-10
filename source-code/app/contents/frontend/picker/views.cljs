@@ -68,7 +68,7 @@
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
   ;   :max-lines (integer)(opt)
-  ;   :no-item-label (metamorphic-content)(opt)
+  ;   :placeholder (metamorphic-content)(opt)
   ;   :on-change (metamorphic-event)(opt)
   ;    Az esemény utolsó paraméterként megkapja a kiválasztott elemet.
   ;   :on-save (metamorphic-event)(opt)

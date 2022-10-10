@@ -49,7 +49,7 @@
   (letfn [(f [menu-items menu-item] (conj menu-items (file-editor-menu-item-props editor-id bar-props menu-item)))]
          [:<> [elements/menu-bar ::file-editor-menu-bar {:disabled?  disabled?
                                                          :menu-items (reduce f [] menu-items)}]]))
-              ;[elements/horizontal-line {:color :highlight :indent {:vertical :xs}}]]))
+              ;[elements/horizontal-line {:color :highlight :indent {:vertical :s}}]]))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

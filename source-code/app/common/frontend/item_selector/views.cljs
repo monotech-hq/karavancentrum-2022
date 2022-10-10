@@ -4,7 +4,7 @@
               [x.app-core.api                        :as a]
               [x.app-elements.api                    :as elements]))
 
-;; -- Footer components -------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn all-item-selected-button
@@ -62,7 +62,7 @@
   [selector-id {:keys [all-downloaded-item-selected? any-downloaded-item-selected?] :as footer-props}]
   (cond all-downloaded-item-selected? [all-item-selected-button  selector-id footer-props]
         any-downloaded-item-selected? [some-item-selected-button selector-id footer-props]
-        :else                         [no-item-selected-button   selector-id footer-props]))
+        :return                       [no-item-selected-button   selector-id footer-props]))
 
 
 (defn discard-selection-button

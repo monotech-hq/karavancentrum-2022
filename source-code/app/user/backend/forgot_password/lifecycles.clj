@@ -5,8 +5,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :user.forgot-password/route
                                        {:client-event   [:user.forgot-password/render!]
                                         :route-template "/@app-home/forgot-password"}]})

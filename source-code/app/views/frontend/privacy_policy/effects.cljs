@@ -6,7 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :views.privacy-policy/render!
+(a/reg-event-fx :views.privacy-policy/render!
   [:ui/render-surface! :views.privacy-policy/view
                        {:content #'privacy-policy.views/view}])

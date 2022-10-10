@@ -29,8 +29,7 @@
                                   :disabled? disabled?
                                   :helper    helper
                                   :info-text info-text
-                                  :indent    (if viewport-large? {:top :xs :vertical  :s}
-                                                                 {:top :xs :vertical :xs})
+                                  :indent    {:top :xs :vertical :s}
                                   :font-size (if viewport-large? :l :m)}])))
 
 (defn- surface-box-icon
@@ -40,10 +39,10 @@
   [box-id {:keys [icon icon-family] :as box-props}]
   (if icon (if-let [viewport-large? @(r/subscribe [:environment/viewport-large?])]
                    [:div {:style {:top "0" :position "absolute" :right "0" :height "100%"
-                                  :display "flex" :align-items "flex-end" :padding "8px 16px"}}
+                                  :display "flex" :align-items "center" :padding "0 96px"}}
                          [:i {:data-icon-family icon-family :style {:line-height "100%"
-                                                                    :font-size "72px"
-                                                                    :color "rgba(0, 0, 0, .042"}}
+                                                                    :font-size "96px"
+                                                                    :color "rgba(0, 0, 0, .03"}}
                              icon]])))
 
 (defn- surface-box-body

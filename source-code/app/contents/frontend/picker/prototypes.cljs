@@ -29,13 +29,13 @@
   ;
   ; @return (map)
   ;  {}
-  [_ {:keys [disabled? no-item-label value-path]}]
+  [_ {:keys [disabled? placeholder value-path]}]
   (let [picked-content @(r/subscribe [:db/get-item value-path])
         content-id      (:content/id picked-content)]
-       {:disabled?     disabled?
-        :item-id       content-id
-        :indent        {:top :m}
-        :no-item-label no-item-label}))
+       {:disabled?   disabled?
+        :item-id     content-id
+        :indent      {:top :m}
+        :placeholder placeholder}))
 
 (defn picker-props-prototype
   ; @param (keyword) picker-id

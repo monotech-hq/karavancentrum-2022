@@ -6,6 +6,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :load-my-media-selector!
+(a/reg-event-fx :load-my-media-selector!
   [:storage.media-selector/load-selector! :my-selector {:value-path [:my-item]}])

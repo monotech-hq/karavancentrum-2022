@@ -6,7 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :views.terms-of-service/render!
+(a/reg-event-fx :views.terms-of-service/render!
   [:ui/render-surface! :views.privacy-policy/view
                        {:content #'terms-of-service.views/view}])

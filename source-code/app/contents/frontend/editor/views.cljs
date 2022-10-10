@@ -6,7 +6,7 @@
               [layouts.surface-a.api    :as surface-a]
               [plugins.item-editor.api  :as item-editor]
               [plugins.text-editor.api  :as text-editor]
-              [x.app-core.api           :as a]
+              [re-frame.api             :as r]
               [x.app-elements.api       :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -14,17 +14,17 @@
 
 (defn- content-body-editor
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [text-editor/body ::content-body-editor
                          {:disabled?  editor-disabled?
                           :indent     {:top :m :vertical :s}
                           :label      :body
                           :value-path [:contents :editor/edited-item :body]}]))
 
-(defn- content-content
+(defn- content-content-box
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
-       [common/surface-box ::content-content
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/surface-box ::content-content-box
                            {:content [:<> [content-body-editor]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
@@ -33,9 +33,16 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- content-content
+  []
+  [:<> [content-content-box]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- content-visibility-radio-button
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [elements/radio-button ::content-visibility-radio-button
                               {:disabled?       editor-disabled?
                                :indent          {:top :m :vertical :s}
@@ -47,10 +54,10 @@
                                :option-value-f  :value
                                :value-path      [:contents :editor/edited-item :visibility]}]))
 
-(defn- content-settings
+(defn- content-settings-box
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
-       [common/surface-box ::content-settings
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/surface-box ::content-settings-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [content-visibility-radio-button]]]
@@ -61,9 +68,16 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- content-settings
+  []
+  [:<> [content-settings-box]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- content-name-field
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [elements/combo-box ::content-name-field
                            {:autofocus?   true
                             :disabled?    editor-disabled?
@@ -71,14 +85,14 @@
                             :indent       {:top :m :vertical :s}
                             :label        :name
                             :options-path [:contents :editor/suggestions :name]
-                            :placeholder  :content-name
+                            :placeholder  :content-name-placeholder
                             :required?    true
                             :value-path   [:contents :editor/edited-item :name]}]))
 
-(defn- content-basic-data
+(defn- content-basic-data-box
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
-       [common/surface-box ::content-basic-data
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
+       [common/surface-box ::content-basic-data-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [content-name-field]]]
@@ -91,14 +105,14 @@
 
 (defn- content-data
   []
-  [:<> [content-basic-data]])
+  [:<> [content-basic-data-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- menu-bar
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [common/item-editor-menu-bar :contents.editor
                                     {:disabled?  editor-disabled?
                                      :menu-items [{:label :data     :change-keys [:name]}
@@ -107,7 +121,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.editor])]
+  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :contents.editor])]
        (case current-view-id :data     [content-data]
                              :content  [content-content]
                              :settings [content-settings])))
@@ -117,15 +131,15 @@
 
 (defn- controls
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
        [common/item-editor-controls :contents.editor
                                     {:disabled? editor-disabled?}]))
 
 (defn- breadcrumbs
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])
-        content-name     @(a/subscribe [:db/get-item [:contents :editor/edited-item :name]])
-        content-id       @(a/subscribe [:router/get-current-route-path-param :item-id])
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])
+        content-name     @(r/subscribe [:db/get-item [:contents :editor/edited-item :name]])
+        content-id       @(r/subscribe [:router/get-current-route-path-param :item-id])
         content-uri       (str "/@app-home/contents/" content-id)]
        [common/surface-breadcrumbs :contents.editor/view
                                    {:crumbs (if content-id [{:label :app-home    :route "/@app-home"}
@@ -139,8 +153,8 @@
 
 (defn- label
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :contents.editor])
-        content-name     @(a/subscribe [:db/get-item [:contents :editor/edited-item :name]])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])
+        content-name     @(r/subscribe [:db/get-item [:contents :editor/edited-item :name]])]
        [common/surface-label :contents.editor/view
                              {:disabled?   editor-disabled?
                               :label       content-name

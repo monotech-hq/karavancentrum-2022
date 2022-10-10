@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:file-editor/init-editor! :website-config.editor
                                               {:base-route  "/@app-home/website-config"
                                                :handler-key :website-config.editor

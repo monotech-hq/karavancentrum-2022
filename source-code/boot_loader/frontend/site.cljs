@@ -1,10 +1,14 @@
 
 (ns boot-loader.frontend.site
-    (:require [site.karavancentrum.pages.frontend]
-              [site.karavancentrum.modules.api :as site.modules]
-              [site.karavancentrum.wrapper     :as site.wrapper]
-              [x.app-developer.api             :as developer]
-              [x.boot-loader.api               :as boot-loader]))
+    (:require ; Monoset modules
+              [pathom.api]
+              [x.app-developer.api :as developer]
+              [x.boot-loader.api   :as boot-loader]
+
+              ; Site modules
+              [site.karavancentrum.pages.frontend]
+              [site.karavancentrum.modules.api]
+              [site.karavancentrum.wrapper :as site.wrapper]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

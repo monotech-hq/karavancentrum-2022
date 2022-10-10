@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :rental-vehicles.viewer/load!
+(a/reg-event-fx :rental-vehicles.viewer/load!
   (fn [_ [_ view-id]]
       {:dispatch-n [[:gestures/init-view-handler! :rental-vehicles.viewer
                                                   {:default-view-id (or view-id :overview)}]

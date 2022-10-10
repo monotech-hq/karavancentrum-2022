@@ -10,7 +10,7 @@
 (defn get-vehicle-public-link
   [db _]
   (let [vehicle-name    (get-in db [:rental-vehicles :viewer/viewed-item :name])
-        normalized-name (normalize/clean-url vehicle-name)
+        normalized-name (normalize/clean-text vehicle-name)
         public-link     (str "/"normalized-name)]
        (r router/use-app-domain db public-link)))
 

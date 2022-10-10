@@ -24,7 +24,7 @@
                         :content          copyright-information
                         :font-size        :xs
                         :horizontal-align :center
-                        :indent           {:bottom :xs :vertical :xs}
+                        :indent           {:bottom :xs :vertical :s}
                         :style            {:opacity ".6"}}]))
 
 ;; ----------------------------------------------------------------------------

@@ -12,7 +12,7 @@
   [_]
   [elements/text ::content
                  {:content lorem-ipsum/LONG
-                  :indent  {:vertical :xs :top :xxl}}])
+                  :indent  {:top :xxl :vertical :s}}])
 
 (defn- breadcrumbs
   [_]

@@ -5,7 +5,7 @@
 ;; ----------------------------------------------------------------------------
 
 ; @constant (map)
-(def BOOK {:content-name
+(def BOOK {:content-name-placeholder
            {:en "Content name"
             :hu "Tartalom neve"}
            :search-in-contents

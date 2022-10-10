@@ -7,8 +7,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :settings/remove-stored-cookies!
+(a/reg-event-fx :settings/remove-stored-cookies!
   (fn [{:keys [db]} _]
       (let [message (r dictionary/look-up db :just-a-moment...)]
            {:dispatch-later [{:ms   0 :dispatch [:ui/set-shield! {:content message}]}
@@ -18,8 +17,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :settings.remove-stored-cookies/render-dialog!
+(a/reg-event-fx :settings.remove-stored-cookies/render-dialog!
   [:ui/render-popup! :settings.remove-stored-cookies/view
                      {:body   #'remove-stored-cookies.views/body
                       :header #'remove-stored-cookies.views/header}])

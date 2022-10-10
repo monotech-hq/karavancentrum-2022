@@ -25,7 +25,7 @@
        [elements/label ::directory-info
                        {:color            :highlight
                         :content          size
-                        :indent           {:top :m :vertical :xs}
+                        :indent           {:top :m :vertical :s}
                         :font-size        :xxs
                         :horizontal-align :right}]))
 
@@ -69,7 +69,7 @@
                                             [common/list-item-label          browser-id item-dex {:content alias :stretch? true}]
                                             [common/list-item-details        browser-id item-dex {:contents [size item-count]      :width "160px"}]
                                             [common/list-item-detail         browser-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-end-icon       browser-id item-dex {:icon    :navigate_next}]]}]))
+                                            [common/list-item-marker         browser-id item-dex {:icon    :navigate_next}]]}]))
 
 (defn directory-item
   [browser-id item-dex {:keys [id] :as directory-item}]
@@ -90,7 +90,7 @@
                                             [common/list-item-label     browser-id item-dex {:content alias     :stretch? true}]
                                             [common/list-item-detail    browser-id item-dex {:content size      :width "160px"}]
                                             [common/list-item-detail    browser-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-end-icon  browser-id item-dex {:icon    :more_vert}]]}]))
+                                            [common/list-item-marker    browser-id item-dex {:icon    :more_vert}]]}]))
 
 (defn file-item
   [browser-id item-dex file-item]

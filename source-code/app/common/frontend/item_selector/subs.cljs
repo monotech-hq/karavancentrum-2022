@@ -1,8 +1,78 @@
 
 (ns app.common.frontend.item-selector.subs
-    (:require [mid-fruits.vector       :as vector]
+    (:require [mid-fruits.candy        :refer [return]]
+              [mid-fruits.vector       :as vector]
               [plugins.item-lister.api :as item-lister]
-              [x.app-core.api          :as a :refer [r]]))
+              [re-frame.api            :as r :refer [r]]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn get-item-count
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (integer)
+  [db [_ selector-id item-id]]
+  ; TODO#5060
+  ;
+  ; BUG#8001
+  ; Ha az elem nem volt kiválasztva a kijelölések importálásakor (nem kapta meg a kezdeti darabszámot),
+  ; és nem volt még módosítva az elem darabszáma, akkor a függvény az alapértelmezett darabszámmal tér vissza.
+  (if-let [item-selected? (r item-lister/item-selected? db selector-id item-id)]
+          (get-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] 1)
+          (return 0)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn get-stored-selection
+  ; @param (keyword) selector-id
+  ; @param (map) selector-props
+  ;  {:value-path (vector)}
+  ;
+  ; @return (vector)
+  [db [_ selector-id]]
+  (let [value-path       (r item-lister/get-meta-item db selector-id :value-path)
+        stored-selection (get-in db value-path)]
+       (if (vector? stored-selection)
+           (return  stored-selection)
+           [stored-selection])))
+
+(defn import-selection
+  ; @param (keyword) selector-id
+  ;
+  ; @return (?)
+  [db [_ selector-id]]
+  (let [import-id-f      (r item-lister/get-meta-item db selector-id :import-id-f)
+        stored-selection (r get-stored-selection      db selector-id)]
+       (vector/->items stored-selection import-id-f)))
+
+(defn import-item-counts
+  ; @param (keyword) selector-id
+  ;
+  ; @return (map)
+  [db [_ selector-id]]
+  (let [import-count-f   (r item-lister/get-meta-item db selector-id :import-count-f)
+        import-id-f      (r item-lister/get-meta-item db selector-id :import-id-f)
+        stored-selection (r get-stored-selection db selector-id)]
+       (letfn [(f [result n] (assoc result (import-id-f    n)
+                                           (import-count-f n)))]
+              (reduce f {} stored-selection))))
+
+(defn export-selection
+  ; @param (keyword) selector-id
+  ;
+  ; @return (* or * in vector)
+  [db [_ selector-id]]
+  (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)]
+       (letfn [(f [item-id] (let [item-count (r get-item-count db selector-id item-id)]
+                                 (export-item-f item-id item-count)))]
+              (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
+                      (let [selected-items (r item-lister/export-selection db selector-id)]
+                           (vector/->items selected-items f))
+                      (let [item-id (r item-lister/export-single-selection db selector-id)]
+                           (f item-id))))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -12,28 +82,8 @@
   ;
   ; @return (boolean)
   [db [_ selector-id]]
-  (let [imported-selection (r item-lister/get-imported-selection db selector-id)]
-       (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
-               (let [selected-items (r item-lister/export-selection db selector-id)]
-                    (not= imported-selection selected-items))
-               (let [selected-item (r item-lister/export-single-selection db selector-id)]
-                    (not= imported-selection [selected-item])))))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn export-selection
-  ; @param (keyword) selector-id
-  ;
-  ; @return (* or * in vector)
-  [db [_ selector-id]]
-  (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
-          (let [export-id-f    (r item-lister/get-meta-item    db selector-id :export-id-f)
-                selected-items (r item-lister/export-selection db selector-id)]
-               (vector/->items selected-items export-id-f))
-          (let [export-id-f   (r item-lister/get-meta-item           db selector-id :export-id-f)
-                selected-item (r item-lister/export-single-selection db selector-id)]
-               (export-id-f selected-item))))
+  (not= (r get-stored-selection db selector-id)
+        (r export-selection     db selector-id)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -46,7 +96,7 @@
   (if-let [on-change (r item-lister/get-meta-item db selector-id :on-change)]
           (if-let [selection-changed? (r selection-changed? db selector-id)]
                   (let [exported-selection (r export-selection db selector-id)]
-                       (a/metamorphic-event<-params on-change exported-selection)))))
+                       (r/metamorphic-event<-params on-change exported-selection)))))
 
 (defn get-on-save
   ; @param (keyword) selector-id
@@ -55,7 +105,7 @@
   [db [_ selector-id]]
   (if-let [on-save (r item-lister/get-meta-item db selector-id :on-save)]
           (let [exported-selection (r export-selection db selector-id)]
-               (a/metamorphic-event<-params on-save exported-selection))))
+               (r/metamorphic-event<-params on-save exported-selection))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -71,5 +121,9 @@
 ;; ----------------------------------------------------------------------------
 
 ; @usage
+;  [:item-selector/get-item-count :my-selector "my-item"]
+(r/reg-sub :item-selector/get-item-count get-item-count)
+
+; @usage
 ;  [:item-selector/autosaving? :my-selector]
-(a/reg-sub :item-selector/autosaving? autosaving?)
+(r/reg-sub :item-selector/autosaving? autosaving?)

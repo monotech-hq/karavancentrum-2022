@@ -60,9 +60,8 @@
   ;
   ; @return (string)
   [{:keys [request]} {:keys [item-id]}]
-  (let [prototype-f #(common/duplicated-document-prototype request :vehicle %)]
-       (mongo-db/duplicate-document! "rental-vehicles" item-id
-                                     {:prototype-f prototype-f})))
+  (let [prototype-f #(common/duplicated-document-prototype request %)]
+       (mongo-db/duplicate-document! "rental-vehicles" item-id {:prototype-f prototype-f})))
 
 (defmutation duplicate-item!
              ; @param (map) env

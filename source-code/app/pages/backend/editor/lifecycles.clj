@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-editor/init-editor! :pages.editor
                                               {:base-route      "/@app-home/pages"
                                                :collection-name "pages"

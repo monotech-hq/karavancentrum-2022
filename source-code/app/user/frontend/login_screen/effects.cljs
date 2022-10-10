@@ -7,15 +7,13 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :user.login-screen/authenticate!
+(a/reg-event-fx :user.login-screen/authenticate!
   (fn [{:keys [db]} _]
       ; BUG#4677
       (let [login-data (get-in db [:user :login-screen/login-data])]
            [:user/authenticate! login-data])))
 
-(a/reg-event-fx
-  :user.login-screen/login!
+(a/reg-event-fx :user.login-screen/login!
   (fn [{:keys [db]} _]
       ; BUG#4677
       ; A valódi bejelentkezési esemény késleltetve történik, hogy ha a
@@ -27,7 +25,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :user.login-screen/render!
+(a/reg-event-fx :user.login-screen/render!
   [:ui/render-surface! :user.login-screen/view
                        {:content #'login-screen.views/view}])

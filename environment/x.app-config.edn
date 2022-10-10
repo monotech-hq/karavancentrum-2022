@@ -50,13 +50,9 @@
 
  ; CSS paths
  :css-paths
- [
- ;; ---- Site ----
-  {:uri "/css/karavancentrum/site.css" :core-js "site.js"}
-
- ;; ---- App ----
-  {:uri "/css/slider/carousel.css"     :core-js "site.js"}
-  {:uri "/css/slider/carousel.min.css" :core-js "site.js"}]
+ [{:uri "/site/css/site.css"               :core-js "site.js"}
+  {:uri "/plugins/slider/carousel.css"     :core-js "site.js"}
+  {:uri "/plugins/slider/carousel.min.css" :core-js "site.js"}]
 
  ; Favicon paths
  :favicon-paths

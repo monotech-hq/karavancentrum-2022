@@ -9,29 +9,33 @@
 ;; ----------------------------------------------------------------------------
 
 (defn import-id-f
-  ; @param (string) n
+  ; @param (string) media-uri
   ;
   ; @example
-  ;  (media-selector.helpers/import-id-f "/.../my-item.txt")
+  ;  (media-selector.helpers/import-id-f "/.../my-media.txt")
   ;  =>
-  ;  "my-item"
+  ;  "my-media"
   ;
   ; @return (string)
-  [n]
+  [media-uri]
   ; A tárhely előre feltöltött mintafájlja kivételt képez, mivel a fájlnév
   ; nem a dokumentum azonosítójából származik.
-  (let [id (-> n media/media-storage-uri->filename io/filename->basename)]
+  (let [id (-> media-uri media/media-storage-uri->filename io/filename->basename)]
        (case id "sample" core.config/SAMPLE-FILE-ID id)))
 
-(defn export-id-f
-  ; @param (string) n
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn export-item-f
+  ; @param (string) media-id
+  ; @param (string) media-count
   ;
   ; @example
-  ;  (media-selector.helpers/export-id-f "my-item")
+  ;  (media-selector.helpers/export-item-f "my-media")
   ;  =>
-  ;  "/.../my-item.txt"
+  ;  "/.../my-media.txt"
   ;
   ; @return (string)
-  [n]
-  (let [{:keys [filename]} @(a/subscribe [:item-browser/get-item :storage.media-selector n])]
+  [media-id _]
+  (let [{:keys [filename]} @(a/subscribe [:item-browser/get-item :storage.media-selector media-id])]
        (if filename (media/filename->media-storage-uri filename))))

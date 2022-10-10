@@ -12,6 +12,9 @@
 ;   :max-body (B)
 ;    Very important for projects which want to upload at least 1GB ...
 ;   :max-upload-size (B)
+;   :resources (maps in vector)
+;    [{:path (string)
+;      :root (string)}]
 ;   :storage-capacity (B)}
 
 {; Database details
@@ -19,6 +22,10 @@
  :database-name "karavancentrum"
  :database-port 27017
  :docker-database-host "mongo"
+
+ ; Resources details
+  :resources [{:path "/" :root "/karavancentrum"}
+              {:path "/" :root "/public"}]
 
  ; Storage details
  :max-upload-size   1000000000

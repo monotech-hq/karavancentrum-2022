@@ -17,7 +17,7 @@
                                             [common/list-item-primary-cell lister-id item-dex {:label name :stretch? true
                                                                                                :placeholder :unnamed-vehicle}]
                                             [common/list-item-detail    lister-id item-dex {:content   timestamp :width "160px"}]
-                                            [common/list-item-end-icon  lister-id item-dex {:icon      :navigate_next}]]}]))
+                                            [common/list-item-marker    lister-id item-dex {:icon      :navigate_next}]]}]))
 
 (defn- vehicle-item
   [lister-id item-dex {:keys [id] :as vehicle-item}]

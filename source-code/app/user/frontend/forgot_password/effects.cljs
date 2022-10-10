@@ -6,7 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :user.forgot-password/render!
+(a/reg-event-fx :user.forgot-password/render!
   [:ui/render-surface! :user.forgot-password/view
                        {:content #'forgot-password.views/view}])

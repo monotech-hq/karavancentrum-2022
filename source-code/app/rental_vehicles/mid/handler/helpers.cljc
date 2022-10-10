@@ -7,7 +7,7 @@
 
 (defn vehicle-link-name
   [vehicle-name]
-  (normalize/clean-url vehicle-name))
+  (normalize/clean-text vehicle-name))
 
 (defn vehicle-public-link
   [vehicle-name]

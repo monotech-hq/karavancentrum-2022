@@ -14,7 +14,7 @@
                   :font-size        :xxl
                   :font-weight      :bold
                   :horizontal-align :center
-                  :indent           {:top :xxl :vertical :xs}
+                  :indent           {:top :xxl :vertical :s}
                   :selectable?      false}])
 
 (defn- error-helper
@@ -23,7 +23,7 @@
                  {:content          helper
                   :font-size        :s
                   :horizontal-align :center
-                  :indent           {:vertical :xs}
+                  :indent           {:vertical :s}
                   :selectable?      false}])
 
 (defn- error-icon

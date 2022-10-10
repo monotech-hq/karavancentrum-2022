@@ -14,8 +14,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :settings.cookie-settings/render-settings!
+(a/reg-event-fx :settings.cookie-settings/render-settings!
   [:ui/render-popup! :settings.cookie-settings/view
                      {:body             #'cookie-settings.views/body
                       :header           #'cookie-settings.views/header

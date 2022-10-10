@@ -7,8 +7,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :views.error-screen/render!
+(a/reg-event-fx :views.error-screen/render!
   ; @param (keyword) error-id
   ;  :no-connection, :no-permission, :page-not-found, :under-construction, :under-maintenance
   (fn [_ [_ error-id]]

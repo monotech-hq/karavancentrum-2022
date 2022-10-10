@@ -1,20 +1,20 @@
 
-(ns app.home.frontend.events
-    (:require [app.home.frontend.prototypes :as prototypes]
-              [mid-fruits.map               :refer [dissoc-in]]
-              [mid-fruits.vector            :as vector]
-              [x.app-core.api               :as a]))
+(ns app.home.frontend.screen.events
+    (:require [app.home.frontend.screen.prototypes :as screen.prototypes]
+              [mid-fruits.map                      :refer [dissoc-in]]
+              [mid-fruits.vector                   :as vector]
+              [re-frame.api                        :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn load!
   [db _]
-  (dissoc-in db [:home :menu-handler/loaded?]))
+  (dissoc-in db [:home :screen/loaded?]))
 
 (defn loaded
   [db _]
-  (assoc-in db [:home :menu-handler/loaded?] true))
+  (assoc-in db [:home :screen/loaded?] true))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -32,17 +32,17 @@
   ;   :icon-family (keyword)(opt)
   ;   :label (string)
   ;   :on-click (metamorphic-event)}
-  ;
-  ; @usage
-  ;  [:home/add-menu-item! {:label "My item"
-  ;                         :icon  :festival
-  ;                         :on-click [:router/go-to! "/@app-home/my-item"]}]
   [db [_ item-props]]
-  (let [item-props (prototypes/item-props-prototype item-props)]
-       (update-in db [:home :menu-handler/menu-items] vector/conj-item item-props)))
+  (let [item-props (screen.prototypes/item-props-prototype item-props)]
+       (update-in db [:home :screen/menu-items] vector/conj-item item-props)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-db :home/loaded         loaded)
-(a/reg-event-db :home/add-menu-item! add-menu-item!)
+(r/reg-event-db :home.screen/loaded loaded)
+
+; @usage
+;  [:home.screen/add-menu-item! {:label    "My item"
+;                                :icon     :festival
+;                                :on-click [:router/go-to! "/@app-home/my-item"]}]
+(r/reg-event-db :home.screen/add-menu-item! add-menu-item!)

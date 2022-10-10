@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-editor/init-editor! :rental-vehicles.editor
                                               {:base-route      "/@app-home/rental-vehicles"
                                                :collection-name "rental-vehicles"

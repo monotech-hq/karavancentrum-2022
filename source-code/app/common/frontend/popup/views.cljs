@@ -1,7 +1,6 @@
 
 (ns app.common.frontend.popup.views
     (:require [mid-fruits.candy   :refer [param]]
-              [x.app-core.api     :as a]
               [x.app-elements.api :as elements]))
 
 ;; -- Label-bar components ----------------------------------------------------

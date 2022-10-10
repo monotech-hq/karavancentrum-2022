@@ -19,8 +19,7 @@
   [{:keys [request]} {:keys [item]}]
   (let [prototype-f #(->> % (common/added-document-prototype request :vehicle)
                             (editor.prototypes/vehicle-item-prototype))]
-       (mongo-db/save-document! "rental-vehicles" item
-                                {:prototype-f prototype-f})))
+       (mongo-db/save-document! "rental-vehicles" item {:prototype-f prototype-f})))
 
 (defmutation add-item!
              ; @param (map) env
@@ -45,8 +44,7 @@
   [{:keys [request]} {:keys [item]}]
   (let [prototype-f #(->> % (common/updated-document-prototype request :vehicle)
                             (editor.prototypes/vehicle-item-prototype))]
-       (mongo-db/save-document! "rental-vehicles" item
-                                {:prototype-f prototype-f})))
+       (mongo-db/save-document! "rental-vehicles" item {:prototype-f prototype-f})))
 
 (defmutation save-item!
              ; @param (map) env

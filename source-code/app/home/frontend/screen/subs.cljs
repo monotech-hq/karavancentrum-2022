@@ -1,7 +1,7 @@
 
-(ns app.home.frontend.subs
+(ns app.home.frontend.screen.subs
     (:require [mid-fruits.candy :refer [return]]
-              [x.app-core.api   :as a]))
+              [re-frame.api     :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -11,7 +11,7 @@
   ;
   ; @return (maps in vector)
   [db [_ group-name]]
-  (let [menu-items (get-in db [:home :menu-handler/menu-items] [])]
+  (let [menu-items (get-in db [:home :screen/menu-items] [])]
        (letfn [(f [group-items {:keys [group] :as menu-item}]
                   (if (=      group-name  group)
                       (conj   group-items menu-item)
@@ -21,4 +21,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :home/get-menu-group-items get-menu-group-items)
+(r/reg-sub :home.screen/get-menu-group-items get-menu-group-items)

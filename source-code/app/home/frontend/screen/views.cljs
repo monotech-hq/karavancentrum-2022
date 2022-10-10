@@ -1,20 +1,20 @@
 
-(ns app.home.frontend.views
-    (:require [app.common.frontend.api  :as common]
-              [app.home.frontend.config :as config]
-              [layouts.surface-a.api    :as surface-a]
-              [mid-fruits.css           :as css]
-              [mid-fruits.vector        :as vector]
-              [x.app-components.api     :as components]
-              [x.app-core.api           :as a]
-              [x.app-elements.api       :as elements]))
+(ns app.home.frontend.screen.views
+    (:require [app.common.frontend.api          :as common]
+              [app.home.frontend.handler.config :as handler.config]
+              [layouts.surface-a.api            :as surface-a]
+              [mid-fruits.css                   :as css]
+              [mid-fruits.vector                :as vector]
+              [re-frame.api                     :as r]
+              [x.app-components.api             :as components]
+              [x.app-elements.api               :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- user-profile-picture
   []
-  (let [user-profile-picture @(a/subscribe [:user/get-user-profile-picture])]
+  (let [user-profile-picture @(r/subscribe [:user/get-user-profile-picture])]
        [:div.x-user-profile-picture {:style {:backgroundImage     (css/url user-profile-picture)
                                              :background-color    (css/var "background-color-highlight")
                                              :border-radius       "50%";
@@ -27,7 +27,7 @@
 
 (defn- user-name-label
   []
-  (let [user-name @(a/subscribe [:user/get-user-name])]
+  (let [user-name @(r/subscribe [:user/get-user-name])]
        [elements/label ::user-name-label
                        {:content     user-name
                         :font-size   :s
@@ -37,7 +37,7 @@
 
 (defn- user-email-address-label
   []
-  (let [user-email-address @(a/subscribe [:user/get-user-email-address])]
+  (let [user-email-address (r/subscribe [:user/get-user-email-address])]
        [elements/label ::user-email-address-label
                        {:color     :muted
                         :content   user-email-address
@@ -59,13 +59,13 @@
 
 (defn- breadcrumbs
   []
-  [common/surface-breadcrumbs :home/view
+  [common/surface-breadcrumbs :home.screen/view
                               {:crumbs [{:label :app-home}]}])
 
-(defn- home-title
+(defn- label
   []
-  (let [app-title @(a/subscribe [:core/get-app-config-item :app-title])]
-       [common/surface-label :home/view
+  (let [app-title @(r/subscribe [:core/get-app-config-item :app-title])]
+       [common/surface-label :home.screen/view
                              {:label app-title}]))
 
 ;; ----------------------------------------------------------------------------
@@ -113,15 +113,18 @@
   [group-name]
   ; Az azonos vertical-group csoportokban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
-  (let [group-items @(a/subscribe [:home/get-menu-group-items group-name])]
+  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items group-name])]
        (if (vector/nonempty? group-items)
-           [common/surface-box {:indent  {:top :m}
-                                :content [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px" :padding "12px 0"}}
+           [common/surface-box {:content [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px" :padding "12px 0"}}
                                                (let [horizontal-groups (group-by :horizontal-weight group-items)]
                                                     (letfn [(f [horizontal-group-list horizontal-weight]
                                                                (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
                                                            (reduce f [:<>] (-> horizontal-groups keys sort))))]
-                                :label group-name}])))
+                                :indent {:top :m}
+                                :label  group-name
+
+                                ; TEMP
+                                :disabled? (= group-name :settings)}])))
 
 (defn- menu-groups
   []
@@ -129,7 +132,7 @@
   ; vannak felsorolva a vertical-group csoportokban.
   (letfn [(f [vertical-group-list group-name]
              (conj vertical-group-list [vertical-group group-name]))]
-         (reduce f [:<>] config/GROUP-ORDER)))
+         (reduce f [:<>] handler.config/GROUP-ORDER)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -137,12 +140,12 @@
 (defn- view-structure
   ; @param (keyword) surface-id
   [surface-id]
-  (if-let [loaded? @(a/subscribe [:db/get-item [:home :menu-handler/loaded?]])]
-          [:<> [home-title]
+  (if-let [loaded? @(r/subscribe [:db/get-item [:home :screen/loaded?]])]
+          [:<> [label]
                [breadcrumbs]
                ;[elements/horizontal-separator {:size :xxl}]
                [menu-groups]]
-          [common/surface-box-layout-ghost-view :home/view {:breadcrumb-count 1}]))
+          [common/surface-box-layout-ghost-view :home.screen/view {:breadcrumb-count 1}]))
 
 (defn view
   ; @param (keyword) surface-id

@@ -7,8 +7,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :views.menu-screen/render!
+(a/reg-event-fx :views.menu-screen/render!
   (fn [{:keys [db]} _]
       {:db       (r gestures/init-view-handler! db :views.menu-screen/handler {:default-view-id :main})
        :dispatch [:ui/render-popup! :views.menu-screen/view

@@ -9,9 +9,11 @@
   ; @param (map) selector-props
   ;
   ; @return (map)
-  ;  {:export-id-f (function)
+  ;  {:export-item-f (function)
+  ;   :import-count-f (function)
   ;   :import-id-f (function)}
   [selector-props]
-  (merge {:export-id-f return
-          :import-id-f return}
+  (merge {:export-item-f  (fn [item-id item-count] item-id)
+          :import-count-f (fn [_] 1)
+          :import-id-f    return}
          (param selector-props)))

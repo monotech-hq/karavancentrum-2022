@@ -18,7 +18,7 @@
                                                                                                  :placeholder :unnamed-page
                                                                                                  :description body}]
                                             [common/list-item-detail         lister-id item-dex {:page timestamp :width "160px"}]
-                                            [common/list-item-end-icon       lister-id item-dex {:icon :navigate_next}]]}]))
+                                            [common/list-item-marker         lister-id item-dex {:icon :navigate_next}]]}]))
 
 (defn- page-item
   [lister-id item-dex {:keys [id] :as page-item}]

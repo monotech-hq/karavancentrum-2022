@@ -48,8 +48,7 @@
 ;; -- Lifecycle events --------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.media-browser/render-target-selector!
+(a/reg-event-fx :storage.media-browser/render-target-selector!
   [:ui/render-popup! :storage.media-browser/target-selector
                      {:body   #'body
                       :header #'header}])

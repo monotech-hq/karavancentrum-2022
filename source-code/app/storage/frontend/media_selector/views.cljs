@@ -15,50 +15,46 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- directory-item-structure
-  [browser-id item-dex {:keys [alias size items modified-at]}]
+  [selector-id item-dex {:keys [alias size items modified-at]}]
   (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
         size       (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
                         (components/content {:content :n-items :replacements [(count items)]}))]
-       [common/list-item-structure browser-id item-dex
+       [common/list-item-structure selector-id item-dex
                                    {:cells [(let [icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
-                                                 [common/list-item-thumbnail-icon browser-id item-dex {:icon :folder :icon-family icon-family}])
-                                            [common/list-item-primary-cell browser-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
-                                            [common/list-item-end-icon     browser-id item-dex {:icon :navigate_next}]]}]))
+                                                 [common/list-item-thumbnail-icon selector-id item-dex {:icon :folder :icon-family icon-family}])
+                                            [common/list-item-primary-cell selector-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
+                                            [common/list-item-marker       selector-id item-dex {:icon :navigate_next}]]}]))
 
 (defn- directory-item
-  [browser-id item-dex {:keys [id] :as directory-item}]
-  [elements/toggle {:content     [directory-item-structure browser-id item-dex directory-item]
+  [selector-id item-dex {:keys [id] :as directory-item}]
+  [elements/toggle {:content     [directory-item-structure selector-id item-dex directory-item]
                     :hover-color :highlight
                     :on-click    [:item-browser/browse-item! :storage.media-selector id]}])
 
 (defn- file-item-structure
-  [browser-id item-dex {:keys [alias id modified-at filename size]}]
+  [selector-id item-dex {:keys [alias id modified-at filename size]}]
   (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
         size       (-> size io/B->MB format/decimals (str " MB"))]
-       [common/list-item-structure browser-id item-dex
+       [common/list-item-structure selector-id item-dex
                                    {:cells [(if (io/filename->image? alias)
                                                 (let [thumbnail (media/filename->media-thumbnail-uri filename)]
-                                                     [common/list-item-thumbnail browser-id item-dex {:thumbnail thumbnail}])
-                                                [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
-                                            [common/list-item-primary-cell browser-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
-                                            (if-let [file-selected? @(a/subscribe [:item-lister/item-selected? :storage.media-selector id])]
-                                                    (if-let [autosaving? @(a/subscribe [:item-selector/autosaving? :storage.media-selector])]
-                                                            [common/list-item-end-icon browser-id item-dex {:icon :check_circle_outline :progress 100 :progress-duration 1000}]
-                                                            [common/list-item-end-icon browser-id item-dex {:icon :check_circle_outline}])
-                                                    [common/list-item-end-icon browser-id item-dex {:icon :radio_button_unchecked}])]}]))
+                                                     [common/list-item-thumbnail selector-id item-dex {:thumbnail thumbnail}])
+                                                [common/list-item-thumbnail-icon selector-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
+                                            [common/list-item-primary-cell selector-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
+                                            [common/selector-item-marker   selector-id item-dex {:item-id id}]]}]))
 
 (defn- file-item
-  [browser-id item-dex {:keys [id] :as file-item}]
+  [selector-id item-dex {:keys [id] :as file-item}]
   (let [file-selectable? @(a/subscribe [:storage.media-selector/file-selectable? file-item])]
-       [elements/toggle {:content     [file-item-structure browser-id item-dex file-item]
+       [elements/toggle {:content     [file-item-structure selector-id item-dex file-item]
                          :disabled?   (not file-selectable?)
                          :hover-color :highlight
                          :on-click    [:item-selector/item-clicked :storage.media-selector id]}]))
 
 (defn- media-item
-  [browser-id item-dex {:keys [mime-type] :as media-item}]
-  (case mime-type "storage/directory" [directory-item browser-id item-dex media-item]
-                                      [file-item      browser-id item-dex media-item]))
+  [selector-id item-dex {:keys [mime-type] :as media-item}]
+  (case mime-type "storage/directory" [directory-item selector-id item-dex media-item]
+                                      [file-item      selector-id item-dex media-item]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

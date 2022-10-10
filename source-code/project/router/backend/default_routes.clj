@@ -12,8 +12,8 @@
 
 ; @constant (function)
 ;  Handler returned nil
-(def NOT-ACCEPTABLE     #(http/html-wrap {:body (ui/main %) :status 404}))
+(def NOT-ACCEPTABLE #(http/html-wrap {:body (ui/main %) :status 404}))
 
 ; @constant (function)
 ;  No route matched – {:status 200} handled at client-side
-(def NOT-FOUND          #(http/html-wrap {:body (ui/main %) :status 200}))
+(def NOT-FOUND #(http/html-wrap {:body (ui/main %) :status 200}))

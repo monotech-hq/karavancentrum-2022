@@ -89,9 +89,9 @@
   ;   :label (metamorphic-content)(opt)
   ;   :multi-select? (boolean)(opt)
   ;    Default: false
-  ;   :no-media-label (metamorphic-content)(opt)
   ;   :on-save (metamorphic-event)(opt)
   ;    Az esemény utolsó paraméterként megkapja a kiválasztott elemet.
+  ;   :placeholder (metamorphic-content)(opt)
   ;   :required? (boolean)(opt)
   ;   :thumbnail (map)(opt)
   ;    {:max-count (integer)(opt)

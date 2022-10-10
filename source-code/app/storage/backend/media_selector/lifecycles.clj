@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-browser/init-browser! :storage.media-selector
                                                 {:collection-name "storage"
                                                  :handler-key     :storage.media-browser

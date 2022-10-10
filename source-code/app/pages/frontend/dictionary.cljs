@@ -5,7 +5,7 @@
 ;; ----------------------------------------------------------------------------
 
 ; @constant (map)
-(def BOOK {:page-name
+(def BOOK {:page-name-placeholder
            {:en "Page name"
             :hu "Oldal neve"}
            :search-in-pages

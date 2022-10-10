@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.surface.views
     (:require [layouts.surface-a.api :as surface-a]
+              [re-frame.api          :as r]
               [x.app-components.api  :as components]
-              [x.app-core.api        :as a]
               [x.app-elements.api    :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -51,7 +51,7 @@
   ; Ha nem egy közös elemben (pl. div) volt a sensor és a label, akkor bizonoyos
   ; esetekben (pl. horizontal-polarity elemben) nem megfelelő helyen érzékelt a sensor
   [:div [surface-a/title-sensor {:title label :offset -12}]
-        (let [viewport-large? @(a/subscribe [:environment/viewport-large?])]
+        (let [viewport-large? @(r/subscribe [:environment/viewport-large?])]
              [elements/label ::surface-label
                              {:content     label
                               :disabled?   disabled?

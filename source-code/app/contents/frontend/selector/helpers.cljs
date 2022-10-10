@@ -5,27 +5,31 @@
 ;; ----------------------------------------------------------------------------
 
 (defn import-id-f
-  ; @param (map) n
+  ; @param (namespaced map) content-link
   ;  {:content/id (string)}
   ;
   ; @example
-  ;  (selector.helpers/import-id-f {:content/id "my-item"})
+  ;  (selector.helpers/import-id-f {:content/id "my-content"})
   ;  =>
-  ;  "my-item"
+  ;  "my-content"
   ;
   ; @return (string)
-  [n]
-  (:content/id n))
+  [content-link]
+  (:content/id content-link))
 
-(defn export-id-f
-  ; @param (string) n
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn export-item-f
+  ; @param (string) content-id
+  ; @param (integer) content-count
   ;
   ; @example
-  ;  (selector.helpers/export-id-f "my-item")
+  ;  (selector.helpers/export-item-f "my-content" 3)
   ;  =>
-  ;  {:content/id "my-item"}
+  ;  {:content/id "my-content"}
   ;
   ; @return (map)
   ;  {:content/id (string)}
-  [n]
-  (if n {:content/id n}))
+  [content-id _]
+  (if content-id {:content/id content-id}))

@@ -20,7 +20,7 @@
    [:div {:style {:background "#2d2925"
                   :padding "60px 0 15px 0"}}
          [common/credits {:theme :dark}]]
-   [image-preloader/component {:uri "/images/hero.jpg"}]])
+   [image-preloader/component {:uri "/site/images/hero.jpg"}]])
 
 ;; ---- Components ----
 ;; -----------------------------------------------------------------------------

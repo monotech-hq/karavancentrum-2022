@@ -5,8 +5,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :settings.appearance-settings/set-theme!
+(a/reg-event-fx :settings.appearance-settings/set-theme!
   ; @param (map) theme-props
   ;  {:id (keyword)
   ;   :name (metamorphic-content)}

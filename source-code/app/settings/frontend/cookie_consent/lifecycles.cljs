@@ -5,6 +5,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-;(core/reg-lifecycles!
-;  ::lifecycles
+;(core/reg-lifecycles! ::lifecycles
 ;  {:on-app-launch [:settings.cookie-consent/init-consent!]})

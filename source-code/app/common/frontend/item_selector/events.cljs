@@ -1,10 +1,11 @@
 
 (ns app.common.frontend.item-selector.events
-    (:require [mid-fruits.candy        :refer [return]]
-              [mid-fruits.map          :refer [dissoc-in]]
-              [mid-fruits.vector       :as vector]
-              [plugins.item-lister.api :as item-lister]
-              [x.app-core.api          :refer [r]]))
+    (:require [app.common.frontend.item-selector.subs :as item-selector.subs]
+              [mid-fruits.candy                       :refer [return]]
+              [mid-fruits.map                         :refer [dissoc-in]]
+              [mid-fruits.vector                      :as vector]
+              [plugins.item-lister.api                :as item-lister]
+              [re-frame.api                           :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -12,39 +13,53 @@
 (defn import-selection!
   ; @param (keyword) selector-id
   ; @param (map) selector-props
-  ;  {:value-path (vector)}
-  ;
-  ; @usage
-  ;  (r common/import-selection! db :my-selector {...})
   ;
   ; @return (map)
-  [db [_ selector-id {:keys [import-id-f value-path]}]]
-  (let [stored-selection (get-in db value-path)]
-       (cond (vector? stored-selection) (r item-lister/import-selection!        db selector-id (vector/->items stored-selection import-id-f))
-             (some?   stored-selection) (r item-lister/import-single-selection! db selector-id (import-id-f    stored-selection))
-             :else                      (return db))))
+  [db [_ selector-id]]
+  ; TODO#5060
+  (let [imported-selection   (r item-selector.subs/import-selection   db selector-id)
+        imported-item-counts (r item-selector.subs/import-item-counts db selector-id)]
+       (as-> db % (r item-lister/import-selection! % selector-id imported-selection)
+                  (assoc-in % [:plugins :plugin-handler/meta-items selector-id :item-count] imported-item-counts))))
 
 (defn export-selection!
   ; @param (keyword) selector-id
   ;
-  ; @usage
-  ;  (r common/export-selection! db :my-selector)
-  ;
   ; @return (map)
   [db [_ selector-id]]
-  (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
-          ; ...
-          (let [value-path     (r item-lister/get-meta-item    db selector-id :value-path)
-                export-id-f    (r item-lister/get-meta-item    db selector-id :export-id-f)
-                selected-items (r item-lister/export-selection db selector-id)
-                exported-items (vector/->items selected-items export-id-f)]
-               (assoc-in db value-path exported-items))
-          ; ...
-          (let [value-path    (r item-lister/get-meta-item           db selector-id :value-path)
-                export-id-f   (r item-lister/get-meta-item           db selector-id :export-id-f)
-                selected-item (r item-lister/export-single-selection db selector-id)
-                exported-item (export-id-f selected-item)]
-               (assoc-in db value-path exported-item))))
+  (let [value-path         (r item-lister/get-meta-item           db selector-id :value-path)
+        exported-selection (r item-selector.subs/export-selection db selector-id)]
+       (assoc-in db value-path exported-selection)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn increase-item-count!
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (map)
+  [db [_ selector-id item-id]]
+  ; TODO#5060 lecserélni majd a core.subs/set-meta-item! függvényre!
+  ;
+  ; BUG#8001
+  (if-let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id])]
+          (if (< item-count 256)
+              (update-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] inc)
+              (return    db))
+          (assoc-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] 2)))
+
+(defn decrease-item-count!
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (map)
+  [db [_ selector-id item-id]]
+  ; TODO#5060
+  (let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id])]
+       (if (> item-count 1)
+           (update-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] dec)
+           (return    db))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -71,8 +86,8 @@
   ;
   ; @return (map)
   [db [_ selector-id selector-props]]
-  (as-> db % (r import-selection!     % selector-id selector-props)
-             (r store-selector-props! % selector-id selector-props)))
+  (as-> db % (r store-selector-props! % selector-id selector-props)
+             (r import-selection!     % selector-id)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -83,3 +98,14 @@
   ; @return (map)
   [db [_ selector-id]]
   (r item-lister/set-meta-item! db selector-id :autosave-id))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+; @usage
+;  [:item-selector/increase-item-count! :my-selector "my-item"]
+(r/reg-event-db :item-selector/increase-item-count! increase-item-count!)
+
+; @usage
+;  [:item-selector/decrease-item-count! :my-selector "my-item"]
+(r/reg-event-db :item-selector/decrease-item-count! decrease-item-count!)

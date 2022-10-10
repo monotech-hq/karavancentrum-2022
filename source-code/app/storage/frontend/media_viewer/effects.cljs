@@ -8,8 +8,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.media-viewer/load-viewer!
+(a/reg-event-fx :storage.media-viewer/load-viewer!
   ; @param (keyword)(opt) viewer-id
   ; @param (map) viewer-props
   ;  {:current-item (string)(opt)
@@ -33,16 +32,14 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.media-viewer/request-directory-item!
+(a/reg-event-fx :storage.media-viewer/request-directory-item!
   (fn [{:keys [db]} [_ viewer-id]]
       [:pathom/send-query! :storage.media-viewer/request-directory-item!
                            {:display-progress? true
                             :on-success [:storage.media-viewer/receive-directory-item! viewer-id]
                             :query (r media-viewer.queries/get-request-directory-item-query db viewer-id)}]))
 
-(a/reg-event-fx
-  :storage.media-viewer/render-viewer!
+(a/reg-event-fx :storage.media-viewer/render-viewer!
   (fn [_ [_ viewer-id]]
       [:ui/render-popup! :storage.media-viewer/view
                          {:content [media-viewer.views/view viewer-id]}]))

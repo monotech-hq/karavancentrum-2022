@@ -13,7 +13,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- vehicle-description
+(defn- vehicle-description-preview
   []
   (let [viewer-disabled?    @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])
         vehicle-description @(r/subscribe [:db/get-item [:rental-vehicles :viewer/viewed-item :description]])]
@@ -22,16 +22,23 @@
                                   :indent    {:top :m :vertical :s}
                                   :item-id   (:content/id vehicle-description)}]))
 
-(defn- vehicle-content
+(defn- vehicle-description-box
   []
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])]
-       [common/surface-box ::vehicle-content
+       [common/surface-box ::vehicle-description-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
-                                                      [vehicle-description]]]
+                                                      [vehicle-description-preview]]]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? viewer-disabled?
                             :label     :description}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- vehicle-content
+  []
+  [:<> [vehicle-description-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -41,19 +48,26 @@
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])
         vehicle-images   @(r/subscribe [:db/get-item [:rental-vehicles :viewer/viewed-item :images]])]
        [storage/media-preview ::vehicle-image-list
-                              {:disabled?      viewer-disabled?
-                               :media          vehicle-images
-                               :indent         {:top :m :vertical :s}
-                               :no-media-label :no-images-selected}]))
+                              {:disabled?   viewer-disabled?
+                               :media       vehicle-images
+                               :indent      {:top :m :vertical :s}
+                               :placeholder :no-images-selected}]))
 
-(defn- vehicle-images
+(defn- vehicle-images-box
   []
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])]
-       [common/surface-box ::vehicle-images
+       [common/surface-box ::vehicle-images-box
                            {:content [:<> [vehicle-images-preview]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? viewer-disabled?
                             :label     :images}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- vehicle-images
+  []
+  [:<> [vehicle-images-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -63,19 +77,26 @@
   (let [viewer-disabled?  @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])
         vehicle-thumbnail @(r/subscribe [:db/get-item [:rental-vehicles :viewer/viewed-item :thumbnail]])]
        [storage/media-preview ::vehicle-thumbnail
-                              {:disabled?      viewer-disabled?
-                               :indent         {:top :m :vertical :s}
-                               :media          vehicle-thumbnail
-                               :no-media-label :no-thumbnail-selected}]))
+                              {:disabled?   viewer-disabled?
+                               :indent      {:top :m :vertical :s}
+                               :media       vehicle-thumbnail
+                               :placeholder :no-thumbnail-selected}]))
 
-(defn- vehicle-thumbnail
+(defn- vehicle-thumbnail-box
   []
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])]
-       [common/surface-box ::vehicle-thumbnail
+       [common/surface-box ::vehicle-thumbnail-box
                            {:content [:<> [vehicle-thumbnail-preview]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? viewer-disabled?
                             :label     :thumbnail}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- vehicle-thumbnail
+  []
+  [:<> [vehicle-thumbnail-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -110,10 +131,10 @@
                              :placeholder "-"
                              :value       vehicle-construction-year}]))
 
-(defn- vehicle-technical-data
+(defn- vehicle-technical-data-box
   []
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])]
-       [common/surface-box ::vehicle-technical-data
+       [common/surface-box ::vehicle-technical-data-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 33})
@@ -149,10 +170,10 @@
                              :label     :public-link
                              :value     vehicle-public-link}]))
 
-(defn- vehicle-more-data
+(defn- vehicle-more-data-box
   []
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])]
-       [common/surface-box ::vehicle-more-data
+       [common/surface-box ::vehicle-more-data-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 33})
@@ -186,10 +207,10 @@
                              :placeholder "-"
                              :value       vehicle-type}]))
 
-(defn- vehicle-basic-data
+(defn- vehicle-basic-data-box
   []
   (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])]
-       [common/surface-box ::vehicle-basic-data
+       [common/surface-box ::vehicle-basic-data-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 66})
                                                       [vehicle-name]]
@@ -204,9 +225,9 @@
 
 (defn- vehicle-overview
   []
-  [:<> [vehicle-basic-data]
-       [vehicle-technical-data]
-       [vehicle-more-data]])
+  [:<> [vehicle-basic-data-box]
+       [vehicle-technical-data-box]
+       [vehicle-more-data-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -16,9 +16,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(common/added-document-prototype request :page %)]
-       (mongo-db/save-document! "pages" item
-                                {:prototype-f prototype-f})))
+  (let [prototype-f #(common/added-document-prototype request %)]
+       (mongo-db/save-document! "pages" item {:prototype-f prototype-f})))
 
 (defmutation add-item!
              ; @param (map) env
@@ -41,9 +40,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(common/updated-document-prototype request :page %)]
-       (mongo-db/save-document! "pages" item
-                                {:prototype-f prototype-f})))
+  (let [prototype-f #(common/updated-document-prototype request %)]
+       (mongo-db/save-document! "pages" item {:prototype-f prototype-f})))
 
 (defmutation save-item!
              ; @param (map) env

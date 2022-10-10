@@ -62,7 +62,7 @@
 
 (defn insert-item!
   [{:keys [request] :as env} item]
-  (let [prototype-f #(common/added-document-prototype request :media %)]
+  (let [prototype-f #(common/added-document-prototype request %)]
        (mongo-db/insert-document! "storage" item {:prototype-f prototype-f})))
 
 (defn remove-item!

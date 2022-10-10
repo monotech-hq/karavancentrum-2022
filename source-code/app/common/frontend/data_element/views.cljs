@@ -12,12 +12,16 @@
   ; @param (map) element-props
   ;  {:disabled? (boolean)(opt)
   ;   :font-size (keyword)
+  ;   :helper (metamorphic-content)(opt)
+  ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)}
-  [_ {:keys [disabled? font-size label]}]
+  [_ {:keys [disabled? font-size helper info-text label]}]
   [elements/label {:content             label
                    :disabled?           disabled?
                    :font-size           font-size
+                   :helper              helper
                    :horizontal-position :left
+                   :info-text           info-text
                    :selectable?         false}])
 
 (defn- data-element-value
@@ -28,14 +32,14 @@
   ;   :placeholder (metamorphic-content)(opt)
   ;   :value (metamorphic-content)(opt)}
   [_ {:keys [disabled? font-size placeholder value]}]
-  [elements/label {:color               :muted
-                   :content             value
-                   :disabled?           disabled?
-                   :font-size           font-size
-                   :horizontal-position :left
-                   :min-width           :xxs
-                   :placeholder         placeholder
-                   :selectable?         true}])
+  [elements/text {:color               :muted
+                  :content             value
+                  :disabled?           disabled?
+                  :font-size           font-size
+                  :horizontal-position :left
+                  :min-width           :xxs
+                  :placeholder         placeholder
+                  :selectable?         true}])
 
 (defn- data-element
   ; @param (keyword) element-id
@@ -54,7 +58,9 @@
   ;   :font-size (keyword)(opt)
   ;    :xxs, :xs, :s, :m, :l, :xl, :xxl
   ;    Default: :s
+  ;   :helper (metamorphic-content)(opt)
   ;   :indent (map)(opt)
+  ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)
   ;   :placeholder (metamorphic-content)(opt)
   ;   :value (metamorphic-content)(opt)}

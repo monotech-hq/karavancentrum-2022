@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-viewer/init-viewer! :rental-vehicles.viewer
                                               {:base-route      "/@app-home/rental-vehicles"
                                                :collection-name "rental-vehicles"

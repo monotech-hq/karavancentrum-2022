@@ -6,7 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :pages.lister/load-lister!
+(a/reg-event-fx :pages.lister/load-lister!
   [:ui/render-surface! :pages.lister/view
                        {:page #'lister.views/view}])

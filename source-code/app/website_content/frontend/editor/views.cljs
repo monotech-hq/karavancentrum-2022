@@ -22,10 +22,10 @@
                                  :indent     {:vertical :s}
                                  :value-path [:website-content :editor/edited-item :about-us-section]}]))
 
-(defn- about-us-section
+(defn- about-us-section-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::about-us-section
+       [common/surface-box ::about-us-section-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [about-us-section-picker]]]
@@ -44,10 +44,10 @@
                                  :indent     {:vertical :s}
                                  :value-path [:website-content :editor/edited-item :about-us-page]}]))
 
-(defn- about-us-page
+(defn- about-us-page-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::about-us-page
+       [common/surface-box ::about-us-page-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [about-us-page-picker]]]
@@ -61,8 +61,8 @@
 
 (defn- about-us
   []
-  [:<> [about-us-section]
-       [about-us-page]])
+  [:<> [about-us-section-box]
+       [about-us-page-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -75,10 +75,10 @@
                                  :indent     {:vertical :s}
                                  :value-path [:website-content :editor/edited-item :address-data-information]}]))
 
-(defn- address-data-information
+(defn- address-data-information-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::address-data-information
+       [common/surface-box ::address-data-information-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
@@ -98,10 +98,10 @@
                                  :indent     {:vertical :s}
                                  :value-path [:website-content :editor/edited-item :contacts-data-information]}]))
 
-(defn- contacts-data-information
+(defn- contacts-data-information-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::contacts-data-information
+       [common/surface-box ::contacts-data-information-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
                                                       [contacts-data-information-picker]]]
@@ -114,8 +114,8 @@
 
 (defn- contacts
   []
-  [:<> [contacts-data-information]
-       [address-data-information]])
+  [:<> [contacts-data-information-box]
+       [address-data-information-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -130,10 +130,10 @@
                              :placeholder :webshop-link-placeholder
                              :value-path  [:website-content :editor/edited-item :webshop-link]}]))
 
-(defn- webshop-settings
+(defn- webshop-settings-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::webshop-settings
+       [common/surface-box ::webshop-settings-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 50})
                                                       [webshop-link-field]]
@@ -147,7 +147,7 @@
 
 (defn- webshop
   []
-  [:<> [webshop-settings]])
+  [:<> [webshop-settings-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -223,7 +223,7 @@
                              :placeholder :website-link-placeholder
                              :value-path  [:website-content :editor/edited-item :brands brand-dex :link]}]))
 
-(defn- brand
+(defn- brand-box
   [brand-dex brand-props]
   [common/surface-box {:indent  {:top :m}
                        :content [:<> [:div (forms/form-row-attributes)
@@ -246,7 +246,7 @@
 
 (defn- brand-list
   []
-  (letfn [(f [%1 %2 %3] (conj %1 [brand %2 %3]))]
+  (letfn [(f [%1 %2 %3] (conj %1 [brand-box %2 %3]))]
          (let [brands @(a/subscribe [:db/get-item [:website-content :editor/edited-item :brands]])]
               (reduce-kv f [:<>] brands))))
 
@@ -262,10 +262,10 @@
                            :label     :add-brand!
                            :on-click  on-click}]))
 
-(defn- brand-controls
+(defn- selling-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::brand-controls
+       [common/surface-box ::selling-box
                            {:content [:<> [brand-controls-action-bar]
                                           [elements/horizontal-separator {:size :xs}]]
                             :disabled? editor-disabled?
@@ -276,7 +276,7 @@
 
 (defn- selling
   []
-  [:<> [brand-controls]
+  [:<> [selling-box]
        [brand-list]])
 
 ;; ----------------------------------------------------------------------------
@@ -290,10 +290,10 @@
                                  :indent     {:vertical :s}
                                  :value-path [:website-content :editor/edited-item :rent-informations]}]))
 
-(defn- rent-informations
+(defn- rent-informations-box
   []
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::rent-informations
+       [common/surface-box ::rent-informations-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 33})
                                                       [rent-informations-picker]]
@@ -307,7 +307,7 @@
 
 (defn- renting
   []
-  [:<> [rent-informations]])
+  [:<> [rent-informations-box]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

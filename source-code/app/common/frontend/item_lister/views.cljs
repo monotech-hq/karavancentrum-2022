@@ -129,41 +129,6 @@
         (if description            [elements/label {:content description :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])])
 
 
-(defn list-item-end-icon-progress
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
-  ;  {:icon (keyword)
-  ;   :progress (percent)
-  ;   :progress-duration (ms)
-  ;   :style (map)(opt)}
-  ;
-  ; @usage
-  ;  [common/list-item-end-icon-progress :my-lister 0 {...}]
-  [_ _ {:keys [progress progress-duration]}]
-  (let [percent             (math/percent-result 69.11 progress)
-        stroke-dasharray    (str percent" "(- 100 percent))
-        transition-duration (css/ms progress-duration)
-        transition          (if progress (str "stroke-dasharray " transition-duration " linear"))]
-       [:svg {:view-box "0 0 24 24" :style {:position "absolute" :width "24px" :height "24px"}}
-             [:circle {:style {:width "24px" :height "24px" :fill "transparent" :transition transition}
-                       :stroke "var( --border-color-primary )" :stroke-dasharray stroke-dasharray
-                       :stroke-width "2" :cx "12" :cy "12" :r "11"}]]))
-
-(defn list-item-end-icon
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
-  ;  {:icon (keyword)
-  ;   :progress (percent)
-  ;   :style (map)(opt)}
-  ;
-  ; @usage
-  ;  [common/list-item-end-icon :my-lister 0 {...}]
-  [lister-id item-dex {:keys [icon style] :as cell-props}]
-  [:div [list-item-end-icon-progress lister-id item-dex cell-props]
-        [elements/icon {:icon icon :indent {:right :xs} :size :s :style style}]])
-
 (defn list-item-structure
   ; @param (keyword) lister-id
   ; @param (integer) item-dex

@@ -10,15 +10,13 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.media-selector/render-selector!
+(a/reg-event-fx :storage.media-selector/render-selector!
   ; @param (keyword) selector-id
   (fn [_ [_ selector-id]]
       [:ui/render-popup! :storage.media-selector/view
                          {:content [media-selector.views/view selector-id]}]))
 
-(a/reg-event-fx
-  :storage.media-selector/load-selector!
+(a/reg-event-fx :storage.media-selector/load-selector!
   ; @param (keyword)(opt) selector-id
   ; @param (map) selector-props
   ;  {:autosave? (boolean)(opt)
@@ -40,15 +38,14 @@
       {:dispatch-n [[:item-selector/load-selector! :storage.media-selector
                                                    {:autosave?     autosave?
                                                     :extensions    extensions
-                                                    :export-id-f   media-selector.helpers/export-id-f
+                                                    :export-item-f media-selector.helpers/export-item-f
                                                     :import-id-f   media-selector.helpers/import-id-f
                                                     :multi-select? multi-select?
                                                     :on-save       [:storage.media-selector/selection-saved on-save]
                                                     :value-path    value-path}]
                     [:storage.media-selector/render-selector!]]}))
 
-(a/reg-event-fx
-  :storage.media-selector/selection-saved
+(a/reg-event-fx :storage.media-selector/selection-saved
   ; @param (metamorphic-event) on-save
   ; @param (string or strings in vector) exported-items
   (fn [_ [_ on-save exported-items]]
@@ -58,14 +55,12 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :storage.media-selector/create-directory!
+(a/reg-event-fx :storage.media-selector/create-directory!
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-selector)]
            [:storage.directory-creator/load-creator! {:browser-id :storage.media-selector :destination-id destination-id}])))
 
-(a/reg-event-fx
-  :storage.media-selector/upload-files!
+(a/reg-event-fx :storage.media-selector/upload-files!
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-selector)]
            [:storage.file-uploader/load-uploader! {:browser-id :storage.media-selector :destination-id destination-id}])))

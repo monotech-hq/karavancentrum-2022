@@ -50,7 +50,7 @@
                        {:autoclear?    true
                         :autofocus?    true
                         :initial-value alias
-                        :indent        {:bottom :xs :top :m :vertical :xs}
+                        :indent        {:bottom :xs :top :m :vertical :s}
                         :validator     {:f               io/filename-valid?
                                         :invalid-message :invalid-name
                                         :pre-validate?   true}

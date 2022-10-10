@@ -6,7 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :user.create-account/render!
+(a/reg-event-fx :user.create-account/render!
   [:ui/render-surface! :user.create-account/view
                        {:content #'create-account.views/view}])

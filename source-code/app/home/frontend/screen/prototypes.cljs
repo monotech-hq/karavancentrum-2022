@@ -1,8 +1,8 @@
 
-(ns app.home.frontend.prototypes
-    (:require [app.home.frontend.config :as config]
-              [mid-fruits.candy         :refer [param]]
-              [mid-fruits.vector        :as vector]))
+(ns app.home.frontend.screen.prototypes
+    (:require [app.home.frontend.handler.config :as handler.config]
+              [mid-fruits.candy                 :refer [param]]
+              [mid-fruits.vector                :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -21,5 +21,5 @@
           :horizontal-weight 0
           :icon-family       :material-icons-filled}
          (param item-props)
-         (if-not (vector/contains-item? config/GROUP-ORDER group)
+         (if-not (vector/contains-item? handler.config/GROUP-ORDER group)
                  {:group :other})))

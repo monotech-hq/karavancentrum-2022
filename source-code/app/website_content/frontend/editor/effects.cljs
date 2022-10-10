@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :website-content.editor/load-editor!
+(a/reg-event-fx :website-content.editor/load-editor!
   (fn [{:keys [db]} _]
       {:dispatch-n [[:gestures/init-view-handler! :website-content.editor
                                                   {:default-view-id :renting}]

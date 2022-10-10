@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles!
-  ::lifecycles
+(core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-viewer/init-viewer! :pages.viewer
                                               {:base-route      "/@app-home/pages"
                                                :collection-name "pages"

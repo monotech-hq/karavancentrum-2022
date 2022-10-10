@@ -110,7 +110,7 @@
   (letfn [(f [menu-items menu-item] (conj menu-items (item-editor.views/item-editor-menu-item-props viewer-id bar-props menu-item)))]
          [:<> [elements/menu-bar ::item-viewer-menu-bar {:disabled?  disabled?
                                                          :menu-items (reduce f [] menu-items)}]]))
-              ;[elements/horizontal-line {:color :highlight :indent {:vertical :xs}}]]))
+              ;[elements/horizontal-line {:color :highlight :indent {:vertical :s}}]]))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

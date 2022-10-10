@@ -6,8 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :rental-vehicles.editor/load!
+(a/reg-event-fx :rental-vehicles.editor/load!
   {:dispatch-n [[:gestures/init-view-handler! :rental-vehicles.editor
                                               {:default-view-id :data}]
                 [:ui/render-surface! :rental-vehicles.editor/view

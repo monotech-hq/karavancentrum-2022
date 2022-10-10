@@ -8,8 +8,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx
-  :views.no-internet-notification/blow-no-internet-bubble?!
+(a/reg-event-fx :views.no-internet-notification/blow-no-internet-bubble?!
   (fn [{:keys [db]} _]
       (if (and (r environment/browser-offline? db)
                (r ui/application-interface?    db))
