@@ -30,14 +30,18 @@
   ; @param (map) preview-props
   ;  {:color (keyword)
   ;   :disabled? (boolean)(opt)
+  ;   :font-size (keyword)
+  ;   :font-weight (keyword)
   ;   :max-lines (integer)(opt)}
-  [preview-id {:keys [color disabled? max-lines] :as preview-props}]
+  [preview-id {:keys [color disabled? font-size font-weight max-lines style] :as preview-props}]
   (let [content-body @(r/subscribe [:db/get-item [:contents :preview/downloaded-items preview-id :body]])]
-       [elements/text {:color     color
-                       :content   (handler.helpers/parse-content-body content-body)
-                       :disabled? disabled?
-                       :font-size :s
-                       :max-lines max-lines}]))
+       [elements/text {:color       color
+                       :content     (handler.helpers/parse-content-body content-body)
+                       :disabled?   disabled?
+                       :font-size   font-size
+                       :font-weight font-weight
+                       :max-lines   max-lines
+                       :style       style}]))
 
 (defn- content-preview-element
   ; @param (keyword) preview-id
@@ -88,12 +92,18 @@
   ;    Default: :muted
   ;   :disabled? (boolean)(opt)
   ;    Default: false
+  ;   :font-size (keyword)(opt)
+  ;    Default: :s
+  ;   :font-weight (keyword)(opt)
+  ;    :bold, :extra-bold, :normal
+  ;    Default: :normal
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :item-id (string)(opt)
   ;   :label (metamorphic-content)(opt)
   ;   :max-lines (integer)(opt)
-  ;   :placeholder (metamorphic-content)(opt)}
+  ;   :placeholder (metamorphic-content)(opt)
+  ;   :style (map)(opt)}
   ;
   ; @usage
   ;  [contents/content-preview {...}]

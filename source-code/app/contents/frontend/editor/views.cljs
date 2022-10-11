@@ -18,7 +18,6 @@
        [text-editor/body ::content-body-editor
                          {:disabled?  editor-disabled?
                           :indent     {:top :m :vertical :s}
-                          :label      :body
                           :value-path [:contents :editor/edited-item :body]}]))
 
 (defn- content-content-box

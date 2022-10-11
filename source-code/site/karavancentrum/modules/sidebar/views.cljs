@@ -23,13 +23,13 @@
 ;; -----------------------------------------------------------------------------
 
 (defn close-button [id]
-  [:div.sidebar--close-button
+  [:div.kc-sidebar--close-button
    [:button {:on-click #(dispatch [:close-sidebar! id])}
     [elements/icon {:icon :close}]]])
 
 (defn sidebar-cover [{:keys [id in]}]
-  [:div.sidebar--cover {:on-click     #(dispatch [:close-sidebar! id])
-                        :data-visible in}])
+  [:div.kc-sidebar--cover {:on-click     #(dispatch [:close-sidebar! id])
+                           :data-visible in}])
 
 
 (defn sidebar [{:keys [id direction]
@@ -37,9 +37,9 @@
                comp {:keys [in] :as view-props}]
   [:<>
    [sidebar-cover view-props]
-   [:div.sidebar--container {:data-open in :data-direction direction}
+   [:div.kc-sidebar--container {:data-open in :data-direction direction}
     ;[open-button view-props]
-    [:div.sidebar--content
+    [:div.kc-sidebar--content
      [close-button id]
      comp]]])
 

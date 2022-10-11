@@ -1,5 +1,5 @@
 
-(ns site.karavancentrum.pages.vehicle.frontend.subs
+(ns site.karavancentrum.pages.vehicle-page.frontend.subs
     (:require [re-frame.api :as r]))
 
 ;; -----------------------------------------------------------------------------
@@ -19,5 +19,5 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(r/reg-sub :vehicle/get-vehicle     get-vehicle)
-(r/reg-sub :vehicle/get-all-by-link get-all-by-link)
+(r/reg-sub :vehicle-page/get-vehicle     get-vehicle)
+(r/reg-sub :vehicle-page/get-all-by-link get-all-by-link)

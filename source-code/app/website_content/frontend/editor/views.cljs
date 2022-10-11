@@ -183,18 +183,18 @@
                                   :placeholder :brand-description-placeholder
                                   :value-path  [:website-content :editor/edited-item :brands brand-dex :description]}]))
 
-(defn- brand-logo-picker
+(defn- brand-icon-picker
   [brand-dex _]
   (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [storage/media-picker {:autosave?     true
                               :disabled?     editor-disabled?
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
                               :indent        {:top :m :vertical :s}
-                              :label         :logo
+                              :label         :icon
                               :multi-select? false
                               :toggle-label  :select-image!
                               :thumbnail     {:height :3xl :width :5xl}
-                              :value-path    [:website-content :editor/edited-item :brands brand-dex :logo]}]))
+                              :value-path    [:website-content :editor/edited-item :brands brand-dex :icon]}]))
 
 (defn- brand-title-field
   [brand-dex _]
@@ -228,7 +228,7 @@
   [common/surface-box {:indent  {:top :m}
                        :content [:<> [:div (forms/form-row-attributes)
                                            [:div (forms/form-block-attributes {:ratio 30})
-                                                 [brand-logo-picker brand-dex brand-props]]
+                                                 [brand-icon-picker      brand-dex brand-props]]
                                            [:div (forms/form-block-attributes {:ratio 70})
                                                  [brand-title-field      brand-dex brand-props]
                                                  [brand-link-label-field brand-dex brand-props]

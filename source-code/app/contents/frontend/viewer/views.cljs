@@ -47,7 +47,6 @@
        [common/data-element ::content-body
                             {:disabled?   viewer-disabled?
                              :indent      {:top :m :vertical :s}
-                             :label       :body
                              :placeholder "-"
                              :value       content-body}]))
 

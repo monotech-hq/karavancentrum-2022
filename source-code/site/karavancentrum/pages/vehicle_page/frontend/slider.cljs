@@ -1,5 +1,5 @@
 
-(ns site.karavancentrum.pages.vehicle.frontend.slider
+(ns site.karavancentrum.pages.vehicle-page.frontend.slider
   (:require [reagent.core                :as reagent]
             [x.app-core.api              :as a :refer [r]]
             [x.app-environment.api       :as env]

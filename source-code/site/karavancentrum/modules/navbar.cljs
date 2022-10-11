@@ -38,7 +38,7 @@
 
 (defn logo-img [{:keys [src width]
                  :or {width "auto"}}]
-  [:div#logo {:style {"--logo-width" width}}
+  [:div#kc-logo {:style {"--logo-width" width}}
    [:a {:href "/"}
     [:img {:src src}]]])
 
@@ -48,7 +48,7 @@
     logo))
 
 (defn menu [items]
-  [:div#menu
+  [:div#kc-menu
    (map-indexed (fn [idx item]
                   ^{:key (str "Navbar-" idx)}
                   [:<> item])
@@ -56,7 +56,7 @@
 
 (defn open-button [layout]
   (if (= "mobile" layout)
-    [:div#navbar--menu-btn
+    [:div#kc-navbar--menu-btn
      [:button {:on-click #(r/dispatch [:open-sidebar! :nav-menu])}
       [elements/icon {:icon :menu :size :xl}]]]))
 
@@ -69,24 +69,24 @@
       (get options align-x "flex-start"))))
 
 (defn navbar-desktop [config items {:keys [layout] :as view-props}]
-  [:nav#navbar {:data-layout layout}
-   [:div#navbar--container {:style {:justify-content (get-alignment config)}}
-                                    ;:max-width (:max-width config)}}
+  [:nav#kc-navbar {:data-layout layout}
+   [:div#kc-navbar--container {:style {:justify-content (get-alignment config)}}
+                                      ;:max-width (:max-width config)}}
     [nav-logo (:logo config)]
     [menu items]]])
 
 (defn navbar-mobile [config items {:keys [layout] :as view-props}]
   [:<>
-   [:nav#navbar {:data-layout layout}
-    [:div#navbar--container
+   [:nav#kc-navbar {:data-layout layout}
+    [:div#kc-navbar--container
      [nav-logo (:logo config)]
      [open-button layout]]
-    [sidebar/view {:id :nav-menu}
+    [sidebar/view {:id :kc-nav-menu}
      [menu items]]]])
 
 (defn navbar [config items {:keys [layout] :as view-props}]
   [:<>
-   [:div#navbar-sensor {:style {:height "1px" :position "absolute" :top 0}}]
+   [:div#kc-navbar-sensor {:style {:height "1px" :position "absolute" :top 0}}]
    (if (= "mobile" layout)
      [navbar-mobile config items view-props]
      [navbar-desktop config items view-props])])
@@ -94,10 +94,10 @@
 (defn view [config & items]
   (lifecycles
     {:component-did-mount #(dom/setup-intersection-observer!
-                             (dom/get-element-by-id "navbar-sensor")
+                             (dom/get-element-by-id "kc-navbar-sensor")
                              (fn [intersecting?]
-                               (environment/set-element-attribute! "navbar" "data-top" intersecting?)
-                               (environment/set-element-attribute! "scroll-icon" "data-show" intersecting?)))
+                               (environment/set-element-attribute! "kc-navbar"      "data-top"  intersecting?)
+                               (environment/set-element-attribute! "kc-scroll-icon" "data-show" intersecting?)))
      :reagent-render
      (fn [config & items]
        (let [view-props @(r/subscribe [::get-view-props config])]

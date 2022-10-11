@@ -1,7 +1,5 @@
 
-{:about-us {:content/id "633ac0b2e0410454f019cb92"} 
- :about-us-section {:content/id "633ac0b2e0410454f019cb92"} 
- :debug "x" 
+{:about-us-section {:content/id "633ac0b2e0410454f019cb92"} 
  :webshop-link "webshop.karavancentrum.hu" 
  :contacts-data-information {:content/id "633ac074e0410454f019cb91"} 
  :about-us-page {:content/id "633ac0c8e0410454f019cb93"} 
@@ -15,18 +13,21 @@
    :description 
    "Termékeink között megtalálhatók a lakóautók, lakókocsik, kempingbuszok, furgonok, kisbuszok és utánfutók\nlegfontosabb felszerelési cikkei, valamint a kempingezéshez, túrázáshoz és a szabadidő eltöltéséhez ajánlott termékek." 
    :title "Webáruház" 
-   :link-label "Karaván Centrum webáruház"} 
+   :link-label "Karaván Centrum webáruház" 
+   :icon "/media/storage/634465f0e041045eff63d52c.png"} 
   {:label "XGO lakóautók" 
    :link "xgolakoautok.hu" 
    :description 
    "Kimagaslóan jó ár-érték arányú járművek a több, mint 40 éves lakóautó\ngyártási tapasztalattal rendelkező olasz Rimor cégtől.\n7 alkóvos, 6 részintegrált, 2 kempingbusz modell" 
    :logo "/media/storage/633c9aa5e0410487dc78df83.png" 
    :title "Lakóautó értékesítés" 
-   :link-label "XGO lakóautók"} 
+   :link-label "XGO lakóautók" 
+   :icon "/media/storage/634465eee041045eff63d520.png"} 
   {:label "Wörmann utánfutók" 
    :link "woermann.karavancentrum.hu" 
    :description 
    "Közel 400 utánfutó modell\n2.000 db azonnal elhozható utánfutó\nForgalomba helyezés, házhoz szállítás" 
    :logo "/media/storage/633c982de041048511ba5e43.png" 
    :title "Utánfutó értékesítés" 
-   :link-label "Wörmann utánfutók"}]}
+   :link-label "Wörmann utánfutók" 
+   :icon "/media/storage/634465f0e041045eff63d526.png"}]}

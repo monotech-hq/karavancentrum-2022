@@ -1,5 +1,5 @@
 
-(ns site.karavancentrum.pages.vehicle.frontend.events
+(ns site.karavancentrum.pages.vehicle-page.frontend.events
     (:require [re-frame.api :as r]))
 
 ;; -----------------------------------------------------------------------------
@@ -9,4 +9,4 @@
   [db _]
   (assoc db :selected-vehicle nil))
 
-(r/reg-event-db :vehicle/clear-selected-vehicle! clear-selected-vehicle)
+(r/reg-event-db :vehicle-page/clear-selected-vehicle! clear-selected-vehicle)

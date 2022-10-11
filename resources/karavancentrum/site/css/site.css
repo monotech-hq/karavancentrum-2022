@@ -4,30 +4,30 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
 
 body {
-  --site-width: 1024px;
   background-color: #f4f7f6;
 }
 
 /***** Website *****/
 /******************************************************************************/
 
+
+
 /******************************************************************************/
 /***** Effects *****/
 
-.effect--underline {
+.kc-effect--underline {
   text-decoration: none;
   --underline-color: white;
 }
 
-.effect--underline:hover::before,
-.effect--underline:focus::before {
+.kc-effect--underline:hover::before,
+.kc-effect--underline:focus::before {
   transform: scale(1);
 }
 
-.effect--underline::before {
+.kc-effect--underline::before {
 
   position: absolute;
   bottom: -5px;
@@ -44,11 +44,11 @@ body {
   background-color: var(--underline-color);
 }
 
-.effect--bg-grow {
+.kc-effect--bg-grow {
   z-index: 1;
 }
 
-.effect--bg-grow::before {
+.kc-effect--bg-grow::before {
   position: absolute;
   z-index: -1;
   top: 50%; left: 50%;
@@ -62,104 +62,59 @@ body {
   transition: transform 300ms;
   transform: translate(-50%, -50%) scale(0);
 
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
-.effect--bg-grow:hover::before,
-.effect--bg-grow:focus::before {
+.kc-effect--bg-grow:hover::before,
+.kc-effect--bg-grow:focus::before {
   transform: translate(-50%, -50%) scale(1)
 }
 
-.effect--bg-grow:hover,
-.effect--bg-grow:focus {
+.kc-effect--bg-grow:hover,
+.kc-effect--bg-grow:focus {
   color: white !important;
 }
 
 /***** Effects *****/
 /******************************************************************************/
 
-/******************************************************************************/
-/**** Utils ****/
 
-.grid {
+
+/******************************************************************************/
+/***** Utils *****/
+
+.kc-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-.link {
+.kc-link {
   cursor: pointer;
   text-decoration: none;
 }
 
-.link:hover,
-.link:focus {
+.kc-link:hover,
+.kc-link:focus {
   text-decoration: none;
 }
 
-.box {
-  padding: 25px;
-
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-
-.table-container {
-  overflow-x: auto;
-
-  border-radius: 10px;
-  box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 35%);
-
-}
-
-.table {
-  overflow: hidden;
-
-  width: 100%;
-}
-
-.table thead {
-  margin-bottom: 15px;
-
-  white-space: nowrap;
-  letter-spacing: 3px;
-
-  background-color: rgba(0,0,0,0.6);
-
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.table tbody {
-  background-color: rgba(0,0,0,0.4);
-}
-
-.table th,
-.table td {
-  padding: 10px;
-
-  text-align: center;
-  white-space: nowrap;
-}
-
-.table td {
-}
-
-/**** Utils ****/
+/***** Utils *****/
 /******************************************************************************/
 
-/******************************************************************************/
-/**** Sidebar ****/
 
-.sidebar,
-.sidebar--cover {
+
+/******************************************************************************/
+/***** Sidebar *****/
+
+.kc-sidebar,
+.kc-sidebar--cover {
   transition-property: transform;
   transition-duration: .25s;
   transition-timing-function: ease;
 }
 
-.sidebar--cover {
+.kc-sidebar--cover {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   /* background-color: var( --black-semi-transparent ); */
@@ -175,22 +130,22 @@ body {
   transition-duration: .3s;
 }
 
-.sidebar--cover[data-visible="true"] {
+.kc-sidebar--cover[data-visible="true"] {
   opacity: 1;
   transform: translateX(0%);
   z-index: 2;
 }
 
-.sidebar--cover[data-visible="false"] {
+.kc-sidebar--cover[data-visible="false"] {
   opacity: 0;
   z-index: -1;
 }
 
-.sidebar--container {
+.kc-sidebar--container {
   z-index: 5;
 }
 
-.sidebar--content {
+.kc-sidebar--content {
   position: fixed;
   top: 0px;
   width: 85%;
@@ -206,45 +161,47 @@ body {
   backdrop-filter: blur(5px);
 }
 
-.sidebar--container[data-direction="left"] .sidebar--content {
+.kc-sidebar--container[data-direction="left"] .kc-sidebar--content {
   left: 0px;
 }
 
-.sidebar--container[data-direction="right"] .sidebar--content {
+.kc-sidebar--container[data-direction="right"] .kc-sidebar--content {
   right: 0px;
 }
 
 
-.sidebar--container[data-direction="left"] .sidebar--close-button {
+.kc-sidebar--container[data-direction="left"] .kc-sidebar--close-button {
   text-align: left;
 }
-.sidebar--container[data-direction="right"] .sidebar--close-button {
+.kc-sidebar--container[data-direction="right"] .kc-sidebar--close-button {
   text-align: right;
 }
 
-.sidebar--container[data-open=false][data-direction="left"] .sidebar--content {
+.kc-sidebar--container[data-open=false][data-direction="left"] .kc-sidebar--content {
   transform: translateX(-110%);
 }
 
-.sidebar--container[data-open=true][data-direction="left"] .sidebar--content {
+.kc-sidebar--container[data-open=true][data-direction="left"] .kc-sidebar--content {
   transform: translateX(-0%);
 }
 
-.sidebar--container[data-open=false][data-direction="right"] .sidebar--content {
+.kc-sidebar--container[data-open=false][data-direction="right"] .kc-sidebar--content {
   transform: translateX(110%);
 }
 
-.sidebar--container[data-open=true][data-direction="right"] .sidebar--content {
+.kc-sidebar--container[data-open=true][data-direction="right"] .kc-sidebar--content {
   transform: translateX(0%);
 }
 
-/**** Sidebar ****/
+/***** Sidebar *****/
 /******************************************************************************/
 
-/******************************************************************************/
-/**** Navbar ****/
 
-#navbar {
+
+/******************************************************************************/
+/***** Navbar *****/
+
+#kc-navbar {
   position: fixed;
   top: 0;
   width: 100%;
@@ -255,47 +212,40 @@ body {
   -font-weight: 100;
 }
 
-#navbar[data-top="true"] {
+#kc-navbar[data-top="true"] {
   background: hsl(0deg 0% 100% / 0%)
 }
-#navbar[data-top="false"] {
+#kc-navbar[data-top="false"] {
   background: hsl(0deg 0% 100% / 80%)
 }
 
-#navbar--container {
+#kc-navbar--container {
   display: flex;
   align-items: center;
   z-index: 1;
-
   justify-content: space-between;
-
-  -max-width: var(--site-width);
   height: 75px;
   margin: 0px auto;
   padding: 0 24px;
 }
 
-#navbar[data-layout="mobile"] #navbar--container {
-  justify-content: center;
-}
-
-#logo {
+#kc-logo {
   width: var(--logo-width);
 
   transition: transform .2s;
   transform: scale(1);
 }
 
-#logo img {
+#kc-logo img {
   width: 100%;
 }
 
-#logo:hover,
-#logo:focus-within {
+#kc-logo:hover,
+#kc-logo:focus-within {
   transform: scale(1.05);
 }
 
-#navbar #menu {
+#kc-navbar #kc-menu {
   display: flex;
 
   text-transform: uppercase;
@@ -306,43 +256,69 @@ body {
   gap: 50px;
 }
 
-#navbar--menu-btn {
+#kc-navbar--menu-btn {
   display: flex;
   position: absolute;
   right: 0px;
 }
 
-#navbar[data-layout="mobile"] #menu {
+#kc-navbar[data-layout="mobile"] #kc-menu {
   flex-direction: column;
   align-items: center;
   gap: 12px;
 }
 
-#navbar #menu .effect--underline::before {
+#kc-navbar #kc-menu .effect--underline::before {
   bottom: 0px;
 }
 
-/**** Navbar ****/
+/***** Navbar *****/
 /******************************************************************************/
 
+
+
+/******************************************************************************/
+/***** Section *****/
 
 .kc-section-title {
-  font-size: 30px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 200;
-  font-family: 'Poppins';
-  height: 150px;
-  display: flex;
   align-items: center;
+  display: flex;
+  font-family: 'Poppins';
+  font-size: 30px;
+  font-weight: 200;
+  letter-spacing: 3px;
+  line-height: 30px;
+  padding: 120px 0 60px 0;
+  text-align: center;
+  text-transform: uppercase;
 }
 
+.kc-content-button {
+  border-radius: 10px;
+  background-color: #e6efec;
+  cursor: pointer;
+  line-height: 20px;
+  padding: 10px 40px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  user-select: none;
+}
+
+.kc-content-button:hover {
+  text-decoration: none;
+  background-color: #c5ede1;
+}
+
+/***** Section *****/
 /******************************************************************************/
-/**** Section 1 ****/
 
-/**** Hero ****/
 
-#hero {
+
+/******************************************************************************/
+/***** Hero *****/
+
+#kc-hero {
     height: calc(var(--vh) * 100);
     background-position: 55% 60%;
     background-image: url(/site/images/hero.jpg);
@@ -353,14 +329,22 @@ body {
     overflow: hidden;
     justify-content: center }
 
-#company-name-and-slogan {
+#kc-hero::after {
+  background-color: #9dc3fb;
+  bottom: 0;
+  content: '';
+  height: 5px;
+  position: absolute;
+  width: 100% }
+
+#kc-company-name-and-slogan {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#company-name {
+#kc-company-name {
   text-transform: uppercase;
   letter-spacing: 3.5px;
   font-weight: 300;
@@ -369,7 +353,7 @@ body {
   color: #007cff;
 }
 
-#company-slogan {
+#kc-company-slogan {
   font-family: 'Dancing script';
   letter-spacing: 2px;
   font-size: 18px;
@@ -380,7 +364,7 @@ body {
 
 /* scroll icon */
 
-#scroll-icon {
+#kc-scroll-icon {
   position: absolute;
   bottom: 30px;
   width: 21px;
@@ -388,15 +372,15 @@ body {
   transition: transform 0.5s;
 }
 
-#scroll-icon[data-show="false"] {
+#kc-scroll-icon[data-show="false"] {
   transform: translateY(100vh);
 }
 
-#scroll-icon button {
+#kc-scroll-icon button {
   position: unset;
 }
 
-#scroll-icon button span {
+#kc-scroll-icon button span {
   position: absolute;
   top: 0;
   left: 50%;
@@ -411,22 +395,22 @@ body {
   align-items: center;
 }
 
-#scroll-icon button span::before,
-#scroll-icon button span::after {
+#kc-scroll-icon button span::before,
+#kc-scroll-icon button span::after {
   position: absolute;
   content: '';
 }
 
-#scroll-icon button span::before {
+#kc-scroll-icon button span::before {
   top: 5px;
   width: 5px;
   height: 5px;
-  animation: scroll-icon-anim 2s infinite;
+  animation: kc-scroll-icon-anim 2s infinite;
   border-radius: 50%;
   background-color: #fff;
 }
 
-#scroll-icon button span::after {
+#kc-scroll-icon button span::after {
   bottom: -13px;
   width: 10.5px;
   height: 10.5px;
@@ -435,7 +419,7 @@ body {
   border-left: 2px solid #fff;
 }
 
-@keyframes scroll-icon-anim {
+@keyframes kc-scroll-icon-anim {
   0% {
     transform: translate(0, 0);
 
@@ -455,24 +439,25 @@ body {
 }
 
 /* scroll icon */
-/*** Hero ***/
-/***** Section 1 *****/
+/***** Hero *****/
 /******************************************************************************/
 
-/******************************************************************************/
-/**** Section 2 ****/
 
-#renting {
-  padding: 150px 0 105px 0;
+
+/******************************************************************************/
+/***** Renting *****/
+
+#kc-renting {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 90vh;
+  padding-bottom: 120px;
 }
 
-/**** Filters ****/
+/*** Filters ***/
 
-#filters--container {
+#kc-filters--container {
   padding: 60px 0 0px 0;
   display: flex;
   flex-wrap: wrap;
@@ -481,7 +466,7 @@ body {
   gap: 60px;
 }
 
-.filters--icon-input {
+.kc-filters--icon-input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -489,34 +474,34 @@ body {
   width: 0;
 }
 
-.filters--icon-input:disabled ~ .filters--icon-img img {
+.kc-filters--icon-input:disabled ~ .kc-filters--icon-img img {
 
 }
 
-.filters--icon-input:checked ~ .filters--icon-img img{
+.kc-filters--icon-input:checked ~ .kc-filters--icon-img img{
   opacity: 1;
 }
 
-.filters--icon label {
+.kc-filters--icon label {
   cursor: pointer;
 }
 
-.filters--icon img {
+.kc-filters--icon img {
   opacity: 0.4;
   height: 50px;
   width: 50px;
 }
 
-.filters--icon:hover,
-.filters--icon:focus-within {
+.kc-filters--icon:hover,
+.kc-filters--icon:focus-within {
   opacity: 0.7;
 }
 
-/**** Filters ****/
+/*** Filters ***/
 
-/**** Vehicles ****/
+/*** Vehicles ***/
 
-#vehicles--container {
+#kc-vehicles--container {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -524,30 +509,23 @@ body {
   max-width: 90vw;
 }
 
-#kc-rent-informations-button {
-  border-radius: 15px;
-  -margin-top: 30px;
-  background-color: #e6efec;
-  line-height: 20px;
-  padding: 10px 40px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
-}
-
-.vehicle--card {
-  border-radius: 25px;
-  width: 350px;
+.kc-vehicle-card {
+  border-radius: 10px;
+  width: 320px;
   height: 400px;
   border: 1px solid #ddd;
   overflow: hidden;
 }
 
-.vehicle--card:hover .vehicle--card-thumbnail {
+@media only screen and (max-width: 320px) {
+.kc-vehicle-card {
+  border-radius: 0 }}
+
+.kc-vehicle-card:hover .kc-vehicle-card--thumbnail {
   height: 105%;
 }
 
-.vehicle--card-thumbnail {
+.kc-vehicle-card--thumbnail {
   position: absolute;
   height: 100%; width: 100%;
   background-size: cover;
@@ -557,24 +535,59 @@ body {
   transition: height .3s;
 }
 
-.vehicle--card-name {
-  width: 100%;
-  text-align: center;
-  padding: 15px 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: #333;
+.kc-vehicle-card--header {
   background-color: hsl(0deg 0% 100% / 85%);
-  text-decoration: none;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 5px
 }
 
-/**** Vehicles ****/
+.kc-vehicle-card--name {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 15px 0 0 0;
+  text-align: center;
+  text-decoration: none;
+  width: 100%;
+}
 
-/**** Section 2 ****/
+.kc-vehicle-card--details {
+  display: flex;
+  grid-column-gap: 25px;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+
+.kc-vehicle-card--number-of-bunks,
+.kc-vehicle-card--number-of-seats {
+  align-items: flex-end;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  height: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 15px;
+  padding-left: 30px;
+}
+
+.kc-vehicle-card--number-of-bunks {
+  background-image: url('/site/icons/card-icons/bed-light.png');
+}
+
+.kc-vehicle-card--number-of-seats {
+  background-image: url('/site/icons/card-icons/seat-light.png');
+}
+
+/*** Vehicles ***/
+/***** Renting *****/
 /******************************************************************************/
 
 
 /******************************************************************************/
+/***** Brands *****/
 
 #kc-brands {
   align-items: center;
@@ -582,106 +595,153 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 120px;
 }
 
 #kc-brands--brand-list {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 120px;
   width: 100%;
 }
 
 .kc-brand {
-  align-items: center;
-  padding: 0 0 200px 0;
-  display: flex;
-  flex-direction: column;
+  align-items: left;
+  background-color: #7a8682;
+  border-radius: 10px;
+  max-width: 1200px;
+  padding: 35px 120px 35px 380px;
 }
 
+@media only screen and (max-width: 1000px) {
+.kc-brand { padding: 35px }}
+
+.kc-brand--title {
+  color: white;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 35px;
+  padding-bottom: 15px;
+}
+
+.kc-brand--icon {
+  background-size: contain;
+  bottom: 35px;
+  height: 260px;
+  left: 35px;
+  opacity: .3;
+  position: absolute;
+  width: 260px;
+}
+
+@media only screen and (max-width: 1000px) {
+.kc-brand--icon { opacity: .05 }}
+
 .kc-brand--label {
+  color: white;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 25px;
-  text-align: center;
+  padding-top: 60px;
+}
+
+.kc-brand--link-box {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  grid-column-gap: 24px;
+  justify-content: space-between;
 }
 
 .kc-brand--link {
-  font-size: 11px;
-  padding-bottom: 15px;
+  color: #ddd;
+  font-size: 15px;
   font-weight: 500;
-  text-align: center;
 }
 
-.kc-brand--card {
-  border-radius: 15px;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 320px;
-  padding: 0 30px 30px 30px;
-}
-
-.kc-brand--card:hover {
-  background-color: rgba(0,0,0,.06);
-}
+@media only screen and (max-width: 450px) {
+.kc-brand--link { font-size: 13px }}
 
 .kc-brand--description {
-  font-size: 15px;
-  max-width: 720px;
-}
-
-.kc-brand--logo {
-  align-self: center;
-  width: 120px;
-  height: 120px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center 80%;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
 }
 
 .kc-brand--goto {
-  align-self: center;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 500;
-  color: #644141;
+  color: #ffcbcb !important;
+  width: 120px;
 }
 
+.kc-brand--goto:hover {
+  text-decoration: none;
+  opacity: .8;
+}
+
+@media only screen and (max-width: 1200px) {
+.kc-brand {
+  border-radius: 0 }}
+
+/***** Brands *****/
 /******************************************************************************/
 
-/******************************************************************************/
 
-#about-us {
+
+/******************************************************************************/
+/***** About us *****/
+
+#kc-about-us {
   display: flex;
   flex-direction: column;
   align-items: center;
-  -justify-content: center;
-  min-height: 100vh;
+  -min-height: 100vh;
+  padding-bottom: 120px;
 }
 
+#kc-about-us--section {
+  max-width: 1024px;
+  padding: 0 30px 60px 30px }
+
+/***** About us *****/
 /******************************************************************************/
 
-/******************************************************************************/
-/**** Section 3 ****/
 
-#contacts {
+
+/******************************************************************************/
+/***** Contacts *****/
+
+#kc-contacts {
   border-top: 1px solid #ccc;
   background-color: #bddae5;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  -padding: 150px 0 0 0}
+  -padding: 150px 0 0 0 }
 
-#contacts--background {
+#kc-contacts--background {
   background-image: url(/site/images/footer.jpg);
   background-position: bottom;
   background-size: cover;
   height: 800px;
 }
 
-#contact-groups,
-#address-groups {
+#kc-contacts--background::after {
+  background-color: #9dc3fb;
+  bottom: 0;
+  content: '';
+  height: 5px;
+  position: absolute;
+  width: 100% }
+
+
+#kc-contact-groups,
+#kc-address-groups {
 }
 
-#contact-groups {
+#kc-contact-groups {
   padding-top: 60px;
 }
 
@@ -695,6 +755,7 @@ body {
   margin-bottom: 60px }
 
 .kc-contact-information,
+.kc-address-information,
 .kc-contact-group--label,
 .kc-address-group--label {
   padding: 0 6px;
@@ -710,58 +771,68 @@ body {
   line-height: 35px;
   letter-spacing: 2px }
 
+@media only screen and (max-width: 800px) {
+.kc-contact-group--value,
+.kc-address-group--value {
+    font-size: 15px }}
+
 .kc-contact-group--value:hover,
 .kc-address-group--value:hover {
   text-decoration: none }
 
 .kc-address-information {
-  font-size: 13px;
-  max-width: 780px;
-  padding: 0 6px }
+  max-width: 780px }
 
-/**** Section 3 ****/
+/***** Contacts *****/
 /******************************************************************************/
 
 
 
 /******************************************************************************/
-/**** Vehicle page ****/
+/***** Vehicle page, Rent-informations *****/
 
-#vehicle-page--wrapper {
-  max-width: var(--site-width);
-  margin: 0 auto;
-  padding: 150px 0 50px 0;
-  display: flex;
-
-  flex-direction: column;
+#kc-rent-informations--wrapper,
+#kc-vehicle-page--wrapper {
   align-items: center;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-#vehicle-page--content {
+#kc-rent-informations--content,
+#kc-vehicle-page--content {
+  /* ..., hogy a downloading... felirat középen jelenjen meg ... */
+  display: flex;
+  justify-content: center;
+
   padding: 24px;
-  border-radius: 25px;
-  background-color: white }
-
-#vehicle-page--slider {
-  border-radius: 25px;
-  overflow: hidden;
+  border-radius: 10px;
+  background-color: white;
+  width: 1024px;
 }
 
-#vehicle-page--slider li {
+@media only screen and (max-width: 1024px) {
+#kc-rent-informations--content,
+#kc-vehicle-page--content {
+  border-radius: 0;
+  width: 100% }}
+
+#kc-vehicle-page--slider {
+  border-radius: 10px;
+  margin-top: 150px;
+  overflow: hidden;
+  width: 1024px;
+}
+
+@media only screen and (max-width: 1024px) {
+#kc-vehicle-page--slider {
+  border-radius: 0;
+  width: 100% }}
+
+#kc-vehicle-page--slider li {
     align-self: center;
 }
 
-#vehicle-page--title {
-    text-align: center;
-    color: #303c48;
-    font-family: 'Roboto', sans-serif;
-    font-size: 19px;
-    letter-spacing: 10px;
-    font-weight: 200;
-    line-height: 30px;
-    margin: 80px 0;
-    text-transform: uppercase;
-}
-
-/**** Vehicle page ****/
+/***** Vehicle page, Rent-informations *****/
 /******************************************************************************/

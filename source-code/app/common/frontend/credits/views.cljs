@@ -70,7 +70,7 @@
   ;  [common/created-by]
   [element-props]
   [elements/toggle ::created-by
-                   {:on-click {:fx [:environment/go-to! "https://www.monotech.hu"]}
+                   {:on-click {:fx [:environment/open-new-browser-tab! "https://www.monotech.hu"]}
                     :content  [:div {:style {:align-items "center" :display "flex" :flex-direction "column"}}
                                     [mt-logo          element-props]
                                     [created-by-label element-props]]

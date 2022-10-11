@@ -10,16 +10,16 @@
 
 (defn logo []
   [:a {:href "/" :style {:text-decoration "none"}}
-    [:div#logo-and-company-name
-     [:div#company-name-and-slogan
-      [:div#company-name "Karaván Centrum"]
-      [:div#company-slogan "Lakóautók és kempingcikkek"]]]])
+    [:div#kc-logo-and-company-name
+     [:div#kc-company-name-and-slogan
+      [:div#kc-company-name "Karaván Centrum"]
+      [:div#kc-company-slogan "Lakóautók és kempingcikkek"]]]])
 
 (defn navbar-item [{:keys [scroll-target] :as config} label]
-  [:a.link.effect--underline (merge {:style {"--underline-color" "black"}
-                                     :on-mouse-up #(.blur (.-target %))
-                                     :on-click    #(r/dispatch [:utils/scroll-into scroll-target])}
-                                    (dissoc config :scroll-target))
+  [:a.kc-link.kc-effect--underline (merge {:style {"--underline-color" "black"}
+                                           :on-mouse-up #(.blur (.-target %))
+                                           :on-click    #(r/dispatch [:utils/scroll-into scroll-target])}
+                                          (dissoc config :scroll-target))
    label])
 
 (defn navbar []

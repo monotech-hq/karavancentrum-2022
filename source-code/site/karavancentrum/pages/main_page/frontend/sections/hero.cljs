@@ -19,16 +19,16 @@
 
 (defn scroll-down-icon
   []
-  [:div#scroll-icon [:button {:tab-index "-1"
-                              :on-click #(utils/scroll-into "renting")}
-                             [:span]]])
+  [:div#kc-scroll-icon [:button {:tab-index "-1"
+                                 :on-click #(utils/scroll-into "renting")}
+                                [:span]]])
 
 (defn hero
   []
   (lifecycles
     {:component-did-mount (fn [] (detect-vh!))
-     :reagent-render      (fn [] [:div#hero [:div#header]
-                                            [scroll-down-icon]])}))
+     :reagent-render      (fn [] [:div#kc-hero [:div#kc-header]
+                                               [scroll-down-icon]])}))
 
 (defn view
   []

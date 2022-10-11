@@ -10,8 +10,8 @@
 
 (defn contact-information
   []
-  (let [{:content/keys [body]} @(r/subscribe [:db/get-item [:site :contents :contacts-data-information]])]
-       [:div.kc-contact-information (contents/parse-content-body body)]))
+  (let [{:content/keys [id]} @(r/subscribe [:db/get-item [:site :contents :contacts-data-information]])]
+       [:div.kc-contact-information [contents/content-preview {:item-id id :color :default :font-size :inherit}]]))
 
 (defn contact-group
   [{:keys [label phone-numbers email-addresses]}]
@@ -30,8 +30,8 @@
 
 (defn address-information
   []
-  (let [{:content/keys [body]} @(r/subscribe [:db/get-item [:site :contents :address-data-information]])]
-       [:div.kc-address-information (contents/parse-content-body body)]))
+  (let [{:content/keys [id]} @(r/subscribe [:db/get-item [:site :contents :address-data-information]])]
+       [:div.kc-address-information [contents/content-preview {:item-id id :color :default :font-size :inherit}]]))
 
 (defn address-group
   [{:keys [label company-address]}]
@@ -49,14 +49,12 @@
 
 (defn contacts
   []
-  [:<> [:section [:div#contacts [:p.kc-section-title "Kapcsolat"]
-                                [:div#contact-groups [contact-groups]
-                                                     [contact-information]
-                                                     [address-groups]]
-                                [:div#x
-
-                                 [address-information]]]
-                 [:section#contacts--background]]])
+  [:<> [:section [:div#kc-contacts [:p.kc-section-title "Kapcsolat"]
+                                   [:div#kc-contact-groups [contact-groups]
+                                                           [contact-information]
+                                                           [address-groups]]
+                                   [:div                [address-information]]]
+                 [:section#kc-contacts--background]]])
 
 (defn view
   []
