@@ -1,4 +1,3 @@
-
 {:source-paths ["source-code" "monoset/source-code"]
  :builds
  {:site        {:asset-path "/js/core"
@@ -14,7 +13,7 @@
                             :after-load boot-loader.frontend.app/render-app!}
                  :modules {:app {:init-fn boot-loader.frontend.app/start-app!}}
                  :output-dir "resources/public/js/core"
-                 :compiler-options {:infer-externs true}
+                 :compiler-options {:infer-externs :auto}
                  :target :browser}
 
   :site-ready  {:modules {:site {:init-fn boot-loader.frontend.site/start-site!}}
