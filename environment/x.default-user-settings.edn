@@ -1,0 +1,8 @@
+
+; A fájl tartalomváltozásainak érvénybe lépéséhez szükséges újraindítani
+; az applikációt!
+;
+; @edn (map) default-user-settings
+;  {...}
+
+{}

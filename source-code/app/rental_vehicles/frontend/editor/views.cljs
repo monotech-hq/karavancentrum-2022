@@ -255,18 +255,6 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn- menu-bar
-  []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
-       [common/item-editor-menu-bar :rental-vehicles.editor
-                                    {:disabled?  editor-disabled?
-                                     :menu-items [{:label :data      :change-keys [:name :type :construction-year
-                                                                                   :number-of-bunks :number-of-seats]}
-                                                  {:label :thumbnail :change-keys [:thumbnail]}
-                                                  {:label :images    :change-keys [:images]}
-                                                  {:label :content   :change-keys [:description]}
-                                                  {:label :settings  :change-keys [:visibility]}]}]))
-
 (defn- body
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :rental-vehicles.editor])]
@@ -278,6 +266,18 @@
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
+
+(defn- menu-bar
+  []
+  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
+       [common/item-editor-menu-bar :rental-vehicles.editor
+                                    {:disabled?  editor-disabled?
+                                     :menu-items [{:label :data      :change-keys [:name :type :construction-year
+                                                                                   :number-of-bunks :number-of-seats]}
+                                                  {:label :thumbnail :change-keys [:thumbnail]}
+                                                  {:label :images    :change-keys [:images]}
+                                                  {:label :content   :change-keys [:description]}
+                                                  {:label :settings  :change-keys [:visibility]}]}]))
 
 (defn- controls
   []
@@ -304,9 +304,6 @@
                               :label       vehicle-name
                               :placeholder :unnamed-vehicle}]))
 
-;; -----------------------------------------------------------------------------
-;; -----------------------------------------------------------------------------
-
 (defn- header
   []
   [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
@@ -315,6 +312,9 @@
              [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 
 (defn- view-structure
   []

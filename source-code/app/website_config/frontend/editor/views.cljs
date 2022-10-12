@@ -483,18 +483,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- menu-bar
-  []
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [common/file-editor-menu-bar :website-config.editor
-                                    {:menu-items [{:label :basic-data    :change-keys [:company-name :company-slogan :company-logo]}
-                                                  {:label :contacts-data :change-keys [:contact-groups]}
-                                                  {:label :address-data  :change-keys [:address-groups]}
-                                                  {:label :social-media  :change-keys [:facebook-links :instagram-links :youtube-links]}
-                                                  {:label :seo           :change-keys [:meta-name :meta-title :meta-keywords :meta-description]}
-                                                  {:label :share         :change-keys [:share-preview]}]
-                                     :disabled? editor-disabled?}]))
-
 (defn- body
   []
   (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :website-config.editor])]
@@ -508,6 +496,18 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- menu-bar
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
+       [common/file-editor-menu-bar :website-config.editor
+                                    {:menu-items [{:label :basic-data    :change-keys [:company-name :company-slogan :company-logo]}
+                                                  {:label :contacts-data :change-keys [:contact-groups]}
+                                                  {:label :address-data  :change-keys [:address-groups]}
+                                                  {:label :social-media  :change-keys [:facebook-links :instagram-links :youtube-links]}
+                                                  {:label :seo           :change-keys [:meta-name :meta-title :meta-keywords :meta-description]}
+                                                  {:label :share         :change-keys [:share-preview]}]
+                                     :disabled? editor-disabled?}]))
+
 (defn- controls
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
@@ -519,7 +519,7 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
        [common/surface-breadcrumbs :website-config.editor/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
-                                             {:label :website-config.editor}]
+                                             {:label :website-config}]
                                     :disabled? editor-disabled?}]))
 
 (defn- label
@@ -529,9 +529,6 @@
                              {:disabled? editor-disabled?
                               :label     :website-config}]))
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- header
   []
   [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
@@ -540,6 +537,9 @@
              [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   []

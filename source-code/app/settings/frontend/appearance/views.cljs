@@ -1,5 +1,5 @@
 
-(ns app.settings.frontend.appearance-settings.views
+(ns app.settings.frontend.appearance.views
     (:require [x.app-elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------

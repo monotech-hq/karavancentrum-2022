@@ -16,6 +16,14 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- footer
+  []
+  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
+          [common/item-lister-download-info :storage.media-browser {}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- directory-info
   []
   (let [size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
@@ -28,32 +36,6 @@
                         :indent           {:top :m :vertical :s}
                         :font-size        :xxs
                         :horizontal-align :right}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- search-block
-  []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
-       [common/item-browser-search-block :storage.media-browser
-                                         {:disabled?         browser-disabled?
-                                          :field-placeholder :search-in-the-directory}]))
-
-(defn- breadcrumbs
-  []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
-       [common/surface-breadcrumbs :storage.media-browser/view
-                                   {:crumbs [{:label :app-home :route "/@app-home"}
-                                             {:label :storage}]
-                                    :disabled? browser-disabled?}]))
-
-(defn- label-bar
-  []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])
-        directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])]
-       [common/surface-label :storage.media-browser/view
-                             {:disabled? browser-disabled?
-                              :label     directory-alias}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -204,26 +186,53 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- footer
-  []
-  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
-          [common/item-lister-download-info :storage.media-browser {}]))
-
 (defn- body
   []
   [common/item-lister-wrapper :storage.media-browser
                               {:body   #'media-browser-body
                                :header #'media-browser-header}])
 
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- search-block
+  []
+  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+       [common/item-browser-search-block :storage.media-browser
+                                         {:disabled?         browser-disabled?
+                                          :field-placeholder :search-in-the-directory}]))
+
+(defn- breadcrumbs
+  []
+  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+       [common/surface-breadcrumbs :storage.media-browser/view
+                                   {:crumbs [{:label :app-home :route "/@app-home"}
+                                             {:label :storage}]
+                                    :disabled? browser-disabled?}]))
+
+(defn- label
+  []
+  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])
+        directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])]
+       [common/surface-label :storage.media-browser/view
+                             {:disabled? browser-disabled?
+                              :label     directory-alias}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- header
   []
   (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
-          [:<> [label-bar]
+          [:<> [label]
                [breadcrumbs]
                [search-block]
                [directory-info]]
           [:<> [common/item-lister-ghost-header :parts.part-lister {}]
                [elements/horizontal-separator {:size :xxl}]]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   []

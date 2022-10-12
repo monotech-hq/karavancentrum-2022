@@ -7,6 +7,6 @@
 
 (core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :views.terms-of-service/route
-                                       {:client-event   [:views.terms-of-service/render!]
+                                       {:client-event   [:views.terms-of-service/load-page!]
                                         :restricted?    true
                                         :route-template "/@app-home/terms-of-service"}]})

@@ -1,6 +1,7 @@
 
 (ns app.storage.backend.media-browser.resolvers
-    (:require [app.storage.backend.capacity-handler.side-effects :as capacity-handler.side-effects]
+    (:require [app.common.backend.api                            :as common]
+              [app.storage.backend.capacity-handler.side-effects :as capacity-handler.side-effects]
               [com.wsscode.pathom3.connect.operation             :refer [defresolver]]
               [mongo-db.api                                      :as mongo-db]
               [pathom.api                                        :as pathom]
@@ -15,8 +16,9 @@
   ;
   ; @return (namespaced map)
   [env resolver-props]
-  (let [item-id (pathom/env->param env :item-id)]
-       (if-let [media-item (mongo-db/get-document-by-id "storage" item-id)]
+  (let [item-id    (pathom/env->param env :item-id)
+        projection (common/get-document-projection :media)]
+       (if-let [media-item (mongo-db/get-document-by-id "storage" item-id projection)]
                (if-let [capacity-details (capacity-handler.side-effects/get-capacity-details)]
                        (merge media-item capacity-details)))))
 
@@ -34,6 +36,7 @@
 
 (defn get-items-f
   ; @param (map) env
+  ;  {:request (map)}
   ; @param (map) resolver-props
   ;
   ; @return (map)

@@ -2,11 +2,12 @@
 (ns app.rental-vehicles.frontend.lister.effects
     (:require [plugins.item-lister.api]
               [app.rental-vehicles.frontend.lister.views :as lister.views]
-              [x.app-core.api                            :as a]))
+              [re-frame.api                              :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :rental-vehicles.lister/load!
-  [:ui/render-surface! :rental-vehicles.lister/view
-                       {:content #'lister.views/view}])
+(r/reg-event-fx :rental-vehicles.lister/load!
+  {:dispatch-n [[:db/set-item! [:x] [{:label "x"} {:label "y"}]]
+                [:ui/render-surface! :rental-vehicles.lister/view
+                                     {:content #'lister.views/view}]]})

@@ -14,8 +14,10 @@
               ;[settings.remove-stored-cookies.effects]
               ;[settings.remove-stored-cookies.views]
               [app.settings.frontend.appearance.lifecycles]
+              [app.settings.frontend.editor.effects]
+              [app.settings.frontend.editor.events]
+              [app.settings.frontend.handler.effects]
               [app.settings.frontend.notifications.lifecycles]
-              [app.settings.frontend.personal.lifecycles]
-              [app.settings.frontend.privacy.lifecycles]
-              [app.settings.frontend.view-selector.effects]
-              [app.settings.frontend.view-selector.views]))
+              ;[app.settings.frontend.personal.lifecycles]
+              [app.settings.frontend.privacy.lifecycles]))
+             ;[app.settings.frontend.sales.lifecycles]))

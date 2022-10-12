@@ -2,7 +2,7 @@
 ; A fájl tartalomváltozásainak érvénybe lépéséhez szükséges újraindítani
 ; az applikációt!
 ;
-; @param (map) app-config
+; @edn (map) app-config
 ;  {:author (string)
 ;   :app-domain (string)
 ;   :app-home (string)

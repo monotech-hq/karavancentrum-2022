@@ -13,7 +13,7 @@
   ; @param (map) resolver-props
   ;
   ; @return (map)
-  [env resolver-props]
+  [_ _]
   (io/read-edn-file handler.config/WEBSITE-CONFIG-FILEPATH))
 
 (defresolver get-content

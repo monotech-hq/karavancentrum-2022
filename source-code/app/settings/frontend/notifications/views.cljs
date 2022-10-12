@@ -1,5 +1,5 @@
 
-(ns app.settings.frontend.notification-settings.views
+(ns app.settings.frontend.notifications.views
     (:require [x.app-elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------

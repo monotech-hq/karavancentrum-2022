@@ -2,7 +2,7 @@
 (ns app.views.frontend.menu-screen.views
     (:require [layouts.popup-a.api :as popup-a]
               [mid-fruits.css      :as css]
-              [x.app-core.api      :as a :refer [r]]
+              [re-frame.api        :as r]
               [x.app-details       :as details]
               [x.app-elements.api  :as elements]))
 
@@ -17,7 +17,7 @@
 
 (defn- back-button
   []
-  (let [view-id       @(a/subscribe [:gestures/get-current-view-id :views.menu-screen/handler])
+  (let [view-id       @(r/subscribe [:gestures/get-current-view-id :views.menu-screen/handler])
         parent-view-id (view-id->parent-view-id view-id)]
        [elements/button ::back-button
                         {:hover-color :highlight
@@ -30,31 +30,45 @@
 
 (defn- language-button
   [language-key]
-  (let [selected-language @(a/subscribe [:locales/get-selected-language])
+  (let [selected-language @(r/subscribe [:locales/get-selected-language])
         language-selected? (= language-key selected-language)]
        [elements/button {:hover-color :highlight
-                         :icon        :placeholder
+                         :icon        (if language-selected? :radio_button_checked :radio_button_unchecked)
                          :label       language-key
                          :indent      {:vertical :xs}
-                         :on-click    [:user/upload-user-settings-item! :selected-language language-key]
-                         :preset      (if language-selected? :primary :default)}]))
+                         :on-click    [:settings.handler/update-user-settings! {:selected-language language-key}]
+                         :preset      :default}]))
 
 (defn- language-list
   []
   (letfn [(f [language-key] ^{:key (str "x-app-menu--languages--" language-key)}
                              [language-button language-key])]
-         (let [app-languages @(a/subscribe [:locales/get-app-languages])]
+         (let [app-languages @(r/subscribe [:locales/get-app-languages])]
               [:div#x-app-menu--languages (map f app-languages)])))
 
 (defn- language-selector
   []
-  [:<> [elements/horizontal-separator {:size :l}]
+  [:<> ;[elements/horizontal-separator {:size :l}]
+       ; TEMP
+       [elements/button {:disabled?   true
+                         :hover-color :highlight
+                         :icon        :radio_button_unchecked
+                         :indent      {:vertical :xs}
+                         :label       :fr
+                         :preset      :muted}]
+       ; TEMP
+       [elements/button {:disabled?   true
+                         :hover-color :highlight
+                         :icon        :radio_button_unchecked
+                         :indent      {:vertical :xs}
+                         :label       :de
+                         :preset      :muted}]
        [language-list]
        [back-button]])
 
 (defn- language-selector-button
   []
-  (let [app-multilingual? @(a/subscribe [:locales/app-multilingual?])]
+  (let [app-multilingual? @(r/subscribe [:locales/app-multilingual?])]
        [elements/button ::language-selector-button
                         {:hover-color :highlight
                          :indent      {:vertical :xs}
@@ -66,6 +80,14 @@
 
 ;; -- Main view components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- user-profile-button
+  []
+  [elements/button ::user-profile-button
+                   {:hover-color :highlight
+                    :indent      {:vertical :xs}
+                    :on-click    [:router/go-to! "/@app-home/user-profile"]
+                    :preset      :user-profile}])
 
 (defn- settings-button
   []
@@ -94,6 +116,7 @@
 (defn- main
   []
   [:<> [language-selector-button]
+       [user-profile-button]
        [settings-button]
        [more-options-button]
        [logout-button]])
@@ -108,20 +131,22 @@
                    :color            :muted
                    :horizontal-align :left
                    :icon             :grade
+                  ;:icon-family      :material-icons-outlined
                    :indent           {:horizontal :xxs :vertical :s}}])
 
 (defn- app-version-label
   []
   [elements/label ::app-version-label
-                  {:content          details/app-version
+                  {:content          (str "v"details/app-version)
                    :color            :muted
                    :horizontal-align :left
                    :icon             :extension
+                  ;:icon-family      :material-icons-outlined
                    :indent           {:horizontal :xxs :vertical :s}}])
 
 (defn- copyright-information-label
   []
-  (let [server-year    @(a/subscribe [:core/get-server-year])
+  (let [server-year    @(r/subscribe [:core/get-server-year])
         copyright-label (details/copyright-label server-year)]
        [elements/label ::copyright-information-label
                        {:content          copyright-label
@@ -132,7 +157,8 @@
 
 (defn- about-app
   []
-  [:<> [app-description-label]
+  [:<> [elements/horizontal-separator {:size :l}]
+       [app-description-label]
        [app-version-label]
        [copyright-information-label]
        [back-button]])
@@ -154,7 +180,8 @@
   []
   [elements/button ::privacy-policy-button
                    {:hover-color :highlight
-                    :icon        :subject
+                    :icon        :privacy_tip
+                    :icon-family :material-icons-outlined
                     :indent      {:vertical :xs}
                     :label       :privacy-policy
                     :on-click    [:router/go-to! "/@app-home/privacy-policy"]
@@ -172,17 +199,18 @@
 
 (defn- more-options
   []
-  [:<> [terms-of-service-button]
+  [:<> [elements/horizontal-separator {:size :l}]
        [privacy-policy-button]
+       [terms-of-service-button]
        [about-app-button]
        [back-button]])
 
-;; -- Components --------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- app-menu
   []
-  (let [view-id @(a/subscribe [:gestures/get-current-view-id :views.menu-screen/handler])]
+  (let [view-id @(r/subscribe [:gestures/get-current-view-id :views.menu-screen/handler])]
        (case view-id :about-app         [about-app]
                      :language-selector [language-selector]
                      :main              [main]
@@ -190,7 +218,7 @@
 
 (defn- user-profile-picture
   []
-  (let [user-profile-picture @(a/subscribe [:user/get-user-profile-picture])]
+  (let [user-profile-picture @(r/subscribe [:user/get-user-profile-picture])]
        [:div.x-user-profile-picture {:style {:backgroundImage     (css/url user-profile-picture)
                                              :background-color    (css/var "background-color-highlight")
                                              :border-radius       "50%";
@@ -203,9 +231,9 @@
 
 (defn- user-name-label
   []
-  (let [user-first-name @(a/subscribe [:user/get-user-first-name])
-        user-last-name  @(a/subscribe [:user/get-user-last-name])
-        user-full-name  @(a/subscribe [:locales/get-ordered-name user-first-name user-last-name])]
+  (let [user-first-name @(r/subscribe [:user/get-user-first-name])
+        user-last-name  @(r/subscribe [:user/get-user-last-name])
+        user-full-name  @(r/subscribe [:locales/get-ordered-name user-first-name user-last-name])]
        [elements/label ::user-name-label
                        {:content     user-full-name
                         :font-size   :s
@@ -213,7 +241,7 @@
 
 (defn- user-email-address-label
   []
-  (let [user-email-address @(a/subscribe [:user/get-user-email-address])]
+  (let [user-email-address @(r/subscribe [:user/get-user-email-address])]
        [elements/label ::user-email-address-label
                        {:color     :muted
                         :content   user-email-address

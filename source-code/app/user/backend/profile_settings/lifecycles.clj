@@ -1,12 +1,12 @@
 
-(ns app.settings.backend.view-selector.lifecycles
+(ns app.user.backend.profile-settings.lifecycles
     (:require [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (core/reg-lifecycles! ::lifecycles
-  {:on-server-boot [:router/add-route! :settings/route
-                                       {:client-event   [:settings.view-selector/load-selector!]
+  {:on-server-boot [:router/add-route! :user.profile-settings/base-route
+                                       {:client-event   [:user.profile-settings/load-page!]
                                         :restricted?    true
-                                        :route-template "/@app-home/settings"}]})
+                                        :route-template "/@app-home/user-profile"}]})

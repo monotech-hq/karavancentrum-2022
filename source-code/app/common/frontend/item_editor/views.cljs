@@ -85,12 +85,14 @@
   ; @return (map)
   ;  {:active? (boolean)
   ;   :badge-color (keyword)
+  ;   :disabled? (boolean)(opt)
   ;   :label (metamorphic-content)
   ;   :on-click (metamorphic-event)}
-  [editor-id _ {:keys [change-keys label]}]
+  [editor-id _ {:keys [change-keys disabled? label]}]
   (let [current-view @(a/subscribe [:gestures/get-current-view-id editor-id])
         changed? (if change-keys @(a/subscribe [:item-editor/form-changed? editor-id change-keys]))]
        {:active?     (= label current-view)
+        :disabled?   disabled?
         :badge-color (if changed? :primary)
         :label       label
         :on-click    [:gestures/change-view! editor-id label]}))
@@ -104,6 +106,8 @@
   ;  {:disabled? (boolean)(opt)
   ;   :menu-items (maps in vector)
   ;    [{:change-keys (keywords in vector)(opt)
+  ;      :disabled? (boolean)(opt)
+  ;       Default: false
   ;      :label (metamorphic-content)}]}
   ;
   ; @usage

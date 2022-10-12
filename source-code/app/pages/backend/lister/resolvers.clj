@@ -1,6 +1,7 @@
 
 (ns app.pages.backend.lister.resolvers
-    (:require [com.wsscode.pathom3.connect.operation :refer [defresolver]]
+    (:require [app.common.backend.api                :as common]
+              [com.wsscode.pathom3.connect.operation :refer [defresolver]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]
               [plugins.item-lister.api               :as item-lister]))
@@ -15,7 +16,7 @@
   ; @return (map)
   ;  {:document-count (integer)
   ;   :documents (namespaced maps in vector)}
-  [env resolver-props]
+  [env _]
   (let [get-pipeline   (item-lister/env->get-pipeline   env :pages.lister)
         count-pipeline (item-lister/env->count-pipeline env :pages.lister)]
        {:documents      (mongo-db/get-documents-by-pipeline   "pages"   get-pipeline)

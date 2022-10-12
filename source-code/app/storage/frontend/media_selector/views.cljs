@@ -14,6 +14,21 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- footer
+  []
+  (let [selected-media-count           @(a/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
+        all-downloaded-media-selected? @(a/subscribe [:item-browser/all-downloaded-items-selected? :storage.media-selector])
+        any-downloaded-media-selected? @(a/subscribe [:item-browser/any-downloaded-item-selected?  :storage.media-selector])
+        on-discard-selection [:item-browser/discard-selection! :storage.media-selector]]
+       [common/item-selector-footer :storage.media-selector
+                                    {:on-discard-selection          on-discard-selection
+                                     :all-downloaded-item-selected? all-downloaded-media-selected?
+                                     :any-downloaded-item-selected? any-downloaded-media-selected?
+                                     :selected-item-count           selected-media-count}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- directory-item-structure
   [selector-id item-dex {:keys [alias size items modified-at]}]
   (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
@@ -165,21 +180,6 @@
             (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-selector])]
                     [control-bar]
                     [elements/horizontal-separator {:size :xxl}])]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- footer
-  []
-  (let [selected-media-count           @(a/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
-        all-downloaded-media-selected? @(a/subscribe [:item-browser/all-downloaded-items-selected? :storage.media-selector])
-        any-downloaded-media-selected? @(a/subscribe [:item-browser/any-downloaded-item-selected?  :storage.media-selector])
-        on-discard-selection [:item-browser/discard-selection! :storage.media-selector]]
-       [common/item-selector-footer :storage.media-selector
-                                    {:on-discard-selection          on-discard-selection
-                                     :all-downloaded-item-selected? all-downloaded-media-selected?
-                                     :any-downloaded-item-selected? any-downloaded-media-selected?
-                                     :selected-item-count           selected-media-count}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -8,13 +8,13 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn load!
+(defn load-screen!
   [db _]
-  (dissoc-in db [:home :screen/loaded?]))
+  (dissoc-in db [:home :screen/screen-loaded?]))
 
-(defn loaded
+(defn screen-loaded
   [db _]
-  (assoc-in db [:home :screen/loaded?] true))
+  (assoc-in db [:home :screen/screen-loaded?] true))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(r/reg-event-db :home.screen/loaded loaded)
+(r/reg-event-db :home.screen/screen-loaded screen-loaded)
 
 ; @usage
 ;  [:home.screen/add-menu-item! {:label    "My item"

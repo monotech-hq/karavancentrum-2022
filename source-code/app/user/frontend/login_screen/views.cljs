@@ -83,6 +83,7 @@
                          :border-radius    :s
                          ;:disabled?        synchronizing?
                          ; TEMP
+                         :color :muted
                          :disabled? true
                          :hover-color      :highlight
                          :indent           {:bottom :xs :vertical :xs}

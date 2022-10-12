@@ -21,11 +21,11 @@
                                             ; A túl hosszú tartalom ne lógjon ki az elemből!
                                             ; Ez a megoldás ideiglenes!
                                             [:div {:style {:flex-grow 1 :max-width "calc(100% - 304px)" :padding-right "24px"}}
-                                                  [common/list-item-primary-cell   lister-id item-dex {:label name
-                                                                                                       :placeholder :unnamed-content
-                                                                                                       :description content-body}]]
-                                            [common/list-item-detail         lister-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-marker         lister-id item-dex {:icon    :navigate_next}]]}]))
+                                                  [common/list-item-primary-cell lister-id item-dex {:label name
+                                                                                                     :placeholder :unnamed-content
+                                                                                                     :description content-body}]]
+                                            [common/list-item-detail lister-id item-dex {:content timestamp :width "160px"}]
+                                            [common/list-item-marker lister-id item-dex {:icon    :navigate_next}]]}]))
 
 (defn- content-item
   [lister-id item-dex {:keys [id] :as content-item}]

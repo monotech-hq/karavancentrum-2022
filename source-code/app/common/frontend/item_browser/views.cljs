@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.item-browser.views
     (:require [app.common.frontend.item-lister.views :as item-lister.views]
+              [re-frame.api                          :as r]
               [x.app-components.api                  :as components]
-              [x.app-core.api                        :as a]
               [x.app-elements.api                    :as elements]))
 
 ;; -- Search-block components -------------------------------------------------
@@ -17,7 +17,7 @@
   ; @usage
   ;  [common/item-browser-search-field :my-browser {...}]
   [browser-id {:keys [disabled? field-placeholder]}]
-  (let [viewport-small? @(a/subscribe [:environment/viewport-small?])
+  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])
         search-event [:item-browser/search-items! browser-id {:search-keys [:name]}]]
        [elements/search-field ::search-items-field
                               {:autoclear?    true
@@ -36,7 +36,7 @@
   ; @usage
   ;  [common/item-browser-search-description :my-browser {...}]
   [browser-id {:keys [disabled?]}]
-  (let [all-item-count @(a/subscribe [:item-browser/get-all-item-count browser-id])
+  (let [all-item-count @(r/subscribe [:item-browser/get-all-item-count browser-id])
         description      (components/content {:content :search-results-n :replacements [all-item-count]})]
        [elements/label ::search-items-description
                        {:color     :muted

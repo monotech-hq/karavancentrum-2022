@@ -1,8 +1,9 @@
+
 {:source-paths ["source-code" "monoset/source-code"]
  :builds
  {:site        {:asset-path "/js/core"
                 :devtools {:watch-dir "resources"
-                           :after-load   boot-loader.frontend.site/render-site!}
+                           :after-load boot-loader.frontend.site/render-site!}
                 :modules {:site {:init-fn boot-loader.frontend.site/start-site!}}
                 :output-dir "resources/public/js/core"
                 :compiler-options {:infer-externs true}
@@ -13,7 +14,9 @@
                             :after-load boot-loader.frontend.app/render-app!}
                  :modules {:app {:init-fn boot-loader.frontend.app/start-app!}}
                  :output-dir "resources/public/js/core"
-                 :compiler-options {:infer-externs :auto}
+                 ; BUG#0012
+                 ; A CKEditor miatt szükséges az {:output-feature-set :es-next} beállítás!
+                 :compiler-options {:infer-externs :auto :output-feature-set :es-next}
                  :target :browser}
 
   :site-ready  {:modules {:site {:init-fn boot-loader.frontend.site/start-site!}}

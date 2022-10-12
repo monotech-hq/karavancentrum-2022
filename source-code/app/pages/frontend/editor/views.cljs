@@ -12,17 +12,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- menu-bar
-  []
-  [common/item-editor-menu-bar :pages.editor
-                               {:menu-items []}])
-
 (defn- body
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.editor])]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- menu-bar
+  []
+  [common/item-editor-menu-bar :pages.editor
+                               {:menu-items []}])
 
 (defn- controls
   []
@@ -55,9 +55,6 @@
                               :label       page-name
                               :placeholder :unnamed-page}]))
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- header
   []
   [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
@@ -66,6 +63,9 @@
              [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   []

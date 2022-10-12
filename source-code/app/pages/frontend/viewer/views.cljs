@@ -16,13 +16,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- menu-bar
-  []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])]
-       [common/item-viewer-menu-bar :pages.viewer
-                                    {:disabled?  viewer-disabled?
-                                     :menu-items [{:label :overview}]}]))
-
 (defn- body
   []
   (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.viewer])]
@@ -30,6 +23,13 @@
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- menu-bar
+  []
+  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])]
+       [common/item-viewer-menu-bar :pages.viewer
+                                    {:disabled?  viewer-disabled?
+                                     :menu-items [{:label :overview}]}]))
 
 (defn- controls
   []
@@ -59,9 +59,6 @@
                               :label       page-name
                               :placeholder :unnamed-page}]))
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- header
   []
   [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
@@ -70,6 +67,9 @@
              [:div [controls]]]
        [elements/horizontal-separator {:size :xxl}]
        [menu-bar]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   []

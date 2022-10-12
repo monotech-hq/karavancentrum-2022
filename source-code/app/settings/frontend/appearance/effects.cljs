@@ -1,5 +1,5 @@
 
-(ns app.settings.frontend.appearance-settings.effects
+(ns app.settings.frontend.appearance.effects
     (:require [x.app-core.api :as a]))
 
 ;; ----------------------------------------------------------------------------

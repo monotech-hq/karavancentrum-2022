@@ -45,7 +45,7 @@
    ;  a tartalmazó (felmenő) mappák adatait aktualizálni:
    ; - Utolsó módosítás dátuma és a felhasználó azonosítója {:media/modified-at ... :media/modified-by ...}
    ; - Tartalom méretének {:media/size ...} aktualizálása
-   (letfn [(prototype-f [document] (common/updated-document-prototype request :media document))
+   (letfn [(prototype-f [document] (common/updated-document-prototype request document))
            (update-f    [document] (update document :media/size operation size))
            (f [path] (when-let [{:media/keys [id]} (last path)]
                                (if operation (mongo-db/apply-document! "storage" id update-f {:prototype-f prototype-f})

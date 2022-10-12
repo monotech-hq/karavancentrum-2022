@@ -14,7 +14,7 @@
 
 (defn- check-install!
   [_]
-  (let [request {:session user/SYSTEM-ACCOUNT}
+  (let [request {:session user/SYSTEM-USER-ACCOUNT}
         options {:prototype-f #(common/added-document-prototype request %)}
         ; Get sample file filesize
         sample-file-filepath (media/filename->media-storage-filepath core.config/SAMPLE-FILE-FILENAME)

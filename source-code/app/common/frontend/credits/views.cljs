@@ -1,7 +1,7 @@
 
 (ns app.common.frontend.credits.views
     (:require [mid-fruits.css     :as css]
-              [x.app-core.api     :as a]
+              [re-frame.api       :as r]
               [x.app-details      :as details]
               [x.app-elements.api :as elements]))
 
@@ -17,7 +17,7 @@
   ; @usage
   ;  [common/copyright-label]
   [{:keys [theme]}]
-  (let [server-year          @(a/subscribe [:core/get-server-year])
+  (let [server-year          @(r/subscribe [:core/get-server-year])
         copyright-information (details/copyright-information server-year)]
        [elements/label ::copyright-label
                        {:color            (case theme :dark :invert :default)

@@ -116,7 +116,7 @@
              [elements/search-field ::search-items-field
                                     {:autoclear?    true
                                      :disabled?     disabled?
-                                     :indent        {:horizontal :xxs :left :xxs}
+                                     :indent        {:horizontal :xxs :left :xs}
                                      :on-empty      search-event
                                      :on-type-ended search-event
                                      :placeholder   search-field-placeholder}]]))

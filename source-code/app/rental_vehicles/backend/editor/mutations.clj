@@ -17,7 +17,7 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(->> % (common/added-document-prototype request :vehicle)
+  (let [prototype-f #(->> % (common/added-document-prototype request)
                             (editor.prototypes/vehicle-item-prototype))]
        (mongo-db/save-document! "rental-vehicles" item {:prototype-f prototype-f})))
 
@@ -42,7 +42,7 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(->> % (common/updated-document-prototype request :vehicle)
+  (let [prototype-f #(->> % (common/updated-document-prototype request)
                             (editor.prototypes/vehicle-item-prototype))]
        (mongo-db/save-document! "rental-vehicles" item {:prototype-f prototype-f})))
 

@@ -3,6 +3,7 @@
     (:require [app.common.frontend.api :as common]
               [mid-fruits.lorem-ipsum  :as lorem-ipsum]
               [layouts.surface-a.api   :as surface-a]
+              [re-frame.api            :as r]
               [x.app-elements.api      :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -32,11 +33,13 @@
 
 (defn- view-structure
   [surface-id]
-  [:<> [title       surface-id]
-       [breadcrumbs surface-id]
-       [content     surface-id]
-       [content     surface-id]
-       [content     surface-id]])
+  (if-let [page-loaded? @(r/subscribe [:db/get-item [:views :terms-of-service/page-loaded?]])]
+          [:<> [title       surface-id]
+               [breadcrumbs surface-id]
+               [content     surface-id]
+               [content     surface-id]
+               [content     surface-id]]
+          [common/surface-box-layout-ghost-view :views.terms-of-service/view {:breadcrumb-count 1}]))
 
 (defn view
   [surface-id]

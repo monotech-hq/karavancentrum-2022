@@ -57,20 +57,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- breadcrumbs
-  []
-  [common/surface-breadcrumbs :home.screen/view
-                              {:crumbs [{:label :app-home}]}])
-
-(defn- label
-  []
-  (let [app-title @(r/subscribe [:core/get-app-config-item :app-title])]
-       [common/surface-label :home.screen/view
-                             {:label app-title}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- label-group-item-content
   [{:keys [icon icon-color icon-family label]}]
   [:div {:style {:display :flex}}
@@ -121,10 +107,7 @@
                                                                (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
                                                            (reduce f [:<>] (-> horizontal-groups keys sort))))]
                                 :indent {:top :m}
-                                :label  group-name
-
-                                ; TEMP
-                                :disabled? (= group-name :settings)}])))
+                                :label  group-name}])))
 
 (defn- menu-groups
   []
@@ -137,10 +120,24 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- breadcrumbs
+  []
+  [common/surface-breadcrumbs :home.screen/view
+                              {:crumbs [{:label :app-home}]}])
+
+(defn- label
+  []
+  (let [app-title @(r/subscribe [:core/get-app-config-item :app-title])]
+       [common/surface-label :home.screen/view
+                             {:label app-title}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- view-structure
   ; @param (keyword) surface-id
-  [surface-id]
-  (if-let [loaded? @(r/subscribe [:db/get-item [:home :screen/loaded?]])]
+  [_]
+  (if-let [screen-loaded? @(r/subscribe [:db/get-item [:home :screen/screen-loaded?]])]
           [:<> [label]
                [breadcrumbs]
                ;[elements/horizontal-separator {:size :xxl}]

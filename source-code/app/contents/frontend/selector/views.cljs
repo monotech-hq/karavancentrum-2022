@@ -18,8 +18,13 @@
         content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
        [common/list-item-structure selector-id item-dex
                                    {:cells [[common/list-item-thumbnail-icon selector-id item-dex {:icon :article :icon-family :material-icons-outlined}]
-                                            [common/list-item-primary-cell   selector-id item-dex {:label name :timestamp timestamp :stretch? true}]
-                                            [common/selector-item-marker     selector-id item-dex {:item-id id}]]}]))
+                                            ; HACK#4506
+                                            [:div {:style {:flex-grow 1 :max-width "calc(100% - 144px)" :padding-right "24px"}}
+                                                  [common/list-item-primary-cell selector-id item-dex {:label name
+                                                                                                       :placeholder :unnamed-content
+                                                                                                       :description content-body
+                                                                                                       :timestamp timestamp}]]
+                                            [common/selector-item-marker selector-id item-dex {:item-id id}]]}]))
 
 (defn content-item
   [selector-id item-dex {:keys [id] :as content-item}]

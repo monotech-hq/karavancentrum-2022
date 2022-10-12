@@ -9,6 +9,14 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- footer
+  []
+  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
+          [common/item-lister-download-info :pages.lister {}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- page-item-structure
   [lister-id item-dex {:keys [body modified-at name]}]
   (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])]
@@ -50,6 +58,12 @@
                                       [common/item-lister-header-spacer :pages.lister
                                                                         {:width "36px"}]]}])
 
+(defn- body
+  []
+  [common/item-lister-wrapper :pages.lister
+                              {:body   #'page-lister-body
+                               :header #'page-lister-header}])
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -76,36 +90,25 @@
                                              {:label :pages}]
                                     :disabled? lister-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
   (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
        [common/surface-label :pages.lister/view
                              {:disabled? lister-disabled?
                               :label     :pages}]))
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- footer
-  []
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
-          [common/item-lister-download-info :pages.lister {}]))
-
-(defn- body
-  []
-  [common/item-lister-wrapper :pages.lister
-                              {:body   #'page-lister-body
-                               :header #'page-lister-header}])
-
 (defn- header
   []
   (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
           [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
-                     [label-bar]
+                     [label]
                      [create-item-button]]
                [breadcrumbs]
                [search-block]]
           [common/item-lister-ghost-header :pages.lister {}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   []

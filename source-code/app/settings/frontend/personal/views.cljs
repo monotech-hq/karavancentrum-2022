@@ -1,5 +1,5 @@
 
-(ns app.settings.frontend.personal-settings.views
+(ns app.settings.frontend.personal.views
     (:require [mid-fruits.css     :as css]
               [x.app-core.api     :as a]
               [x.app-elements.api :as elements]))

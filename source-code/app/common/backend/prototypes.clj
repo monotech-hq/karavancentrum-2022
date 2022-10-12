@@ -6,6 +6,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+; XXX#0780 (app.common.backend.prototypes)
 ; Az added-document-prototype, updated-document-prototype és duplicated-document-prototype
 ; függvények a modulok (adatbázisba dokumentumot író) mutation függvényeinek prototípusai.
 ;
@@ -14,6 +15,8 @@
 ; függvények, addig ezek a közös függvények lesznek alkalmazva.
 
 (defn added-document-prototype
+  ; @param (map) request
+  ; @param (namespaced map) document
   [request document]
   ; - Utolsó modosítás dátumának és a felhasználó azonosítójának aktualizálása
   ; - Hozzáadás dátumának és a felhasználó azonosítójának aktualizálása
@@ -27,6 +30,8 @@
                 (json/remove-blank-values)))
 
 (defn updated-document-prototype
+  ; @param (map) request
+  ; @param (namespaced map) document
   [request document]
   ; - Utolsó modosítás dátumának és a felhasználó azonosítójának aktualizálása
   ; - A string típusú értékek vágása
@@ -39,6 +44,8 @@
                 (json/remove-blank-values)))
 
 (defn duplicated-document-prototype
+  ; @param (map) request
+  ; @param (namespaced map) document
   [request document]
   ; - Utolsó modosítás dátumának és a felhasználó azonosítójának aktualizálása
   ; - A string típusú értékek vágása
