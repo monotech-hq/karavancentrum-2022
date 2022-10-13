@@ -16,7 +16,7 @@
   [env _]
   (let [item-id    (pathom/env->param env :item-id)
         projection (common/get-document-projection :vehicle)]
-       (mongo-db/get-document-by-id "rental-vehicles" item-id projection)))
+       (mongo-db/get-document-by-id "rental_vehicles" item-id projection)))
 
 (defresolver get-item
              ; @param (map) env

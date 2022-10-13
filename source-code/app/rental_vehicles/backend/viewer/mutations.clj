@@ -15,7 +15,7 @@
   ;
   ; @return (string)
   [_ {:keys [item-id]}]
-  (mongo-db/remove-document! "rental-vehicles" item-id))
+  (mongo-db/remove-document! "rental_vehicles" item-id {:ordered? true}))
 
 (defmutation delete-item!
              ; @param (map) env
@@ -37,7 +37,7 @@
   ;
   ; @return (namespaced map)
   [_ {:keys [item]}]
-  (mongo-db/insert-document! "rental-vehicles" item))
+  (mongo-db/insert-document! "rental_vehicles" item {:ordered? true}))
 
 (defmutation undo-delete-item!
              ; @param (map) env
@@ -61,7 +61,7 @@
   ; @return (string)
   [{:keys [request]} {:keys [item-id]}]
   (let [prototype-f #(common/duplicated-document-prototype request %)]
-       (mongo-db/duplicate-document! "rental-vehicles" item-id {:prototype-f prototype-f})))
+       (mongo-db/duplicate-document! "rental_vehicles" item-id {:ordered? true :prototype-f prototype-f})))
 
 (defmutation duplicate-item!
              ; @param (map) env

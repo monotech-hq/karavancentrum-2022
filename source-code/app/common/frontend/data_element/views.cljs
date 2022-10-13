@@ -14,15 +14,15 @@
   ;   :font-size (keyword)
   ;   :helper (metamorphic-content)(opt)
   ;   :info-text (metamorphic-content)(opt)
-  ;   :label (metamorphic-content)}
+  ;   :label (metamorphic-content)(opt)}
   [_ {:keys [disabled? font-size helper info-text label]}]
-  [elements/label {:content             label
-                   :disabled?           disabled?
-                   :font-size           font-size
-                   :helper              helper
-                   :horizontal-position :left
-                   :info-text           info-text
-                   :selectable?         false}])
+  (if label [elements/label {:content             label
+                             :disabled?           disabled?
+                             :font-size           font-size
+                             :helper              helper
+                             :horizontal-position :left
+                             :info-text           info-text
+                             :selectable?         false}]))
 
 (defn- data-element-value
   ; @param (keyword) element-id
@@ -61,7 +61,7 @@
   ;   :helper (metamorphic-content)(opt)
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
-  ;   :label (metamorphic-content)
+  ;   :label (metamorphic-content)(opt)
   ;   :placeholder (metamorphic-content)(opt)
   ;   :value (metamorphic-content)(opt)}
   ;

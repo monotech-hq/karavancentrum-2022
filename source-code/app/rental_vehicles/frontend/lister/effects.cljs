@@ -8,6 +8,6 @@
 ;; ----------------------------------------------------------------------------
 
 (r/reg-event-fx :rental-vehicles.lister/load!
-  {:dispatch-n [[:db/set-item! [:x] [{:label "x"} {:label "y"}]]
+  {:dispatch-n [[:db/set-item! [:x] [{:id 1 :label "x"} {:id 2 :label "y"}]]
                 [:ui/render-surface! :rental-vehicles.lister/view
                                      {:content #'lister.views/view}]]})

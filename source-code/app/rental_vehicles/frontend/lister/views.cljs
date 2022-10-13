@@ -34,6 +34,9 @@
                     :hover-color :highlight
                     :on-click    [:router/go-to! (str "/@app-home/rental-vehicles/"id)]}])
 
+(defn- z
+  [lister-id item-dex {:keys [id] :as vehicle-item}])
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -44,7 +47,7 @@
                      :items-path       [:rental-vehicles :lister/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-lister-ghost-element
-                     :list-element     #'vehicle-item}])
+                     :list-element     #'z}])
 
 (defn- vehicle-lister-header
   []
@@ -110,26 +113,43 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- img
-  [{:keys [item-props]} {:keys [attributes listeners] :as x}]
-  [:div ;(merge attributes listeners {:data-dbg "x"})
-        (str   item-props)])
+(r/reg-event-fx :x
+  (fn [_ [_ x]]
+      (println (str x))))
+
+(defn drag-btn [{:keys [attributes listeners isDragging] :as sortable-props}]
+  [:div (merge {:class "contents--brand-card-drag-handle"}
+              attributes listeners)
+        [elements/icon {:icon :drag_indicator :style {:cursor :grab}}]])
+
+(defn itemx [{:keys [item-props] :as props} {:keys [attributes listeners] :as sortable-props}]
+    [:div {:style {:border_ "2px solid" :display "flex" :padding_ "8px"}}
+      [drag-btn sortable-props]
+      [vehicle-item :rental-vehicles.lister 0 item-props]])
+
+;;
+(defn- sortable-demo
+  []
+  [:div
+    (let [items @(r/subscribe [:db/get-item [:rental-vehicles :lister/downloaded-items]])]
+;;         ; [:div {:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
+         [app.components.frontend.api/sortable {:items        items
+                                                :item-id-key  :id
+                                                :value-path   [:rental-vehicles :lister/download-items]
+                                                :item-element #'itemx
+                                                :on-order-changed [:x]}])])
 
 (defn- x
   []
-  [:div ;{:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
-        [app.components.frontend.api/sortable {:items      @(r/subscribe [:db/get-item [:x]])
-                                               :value-path [:x]
-                                               :item       #'img}]])
-
+  [:div [sortable-demo]])
 
 (defn- view-structure
   []
   [:<> [header]
        [elements/horizontal-separator {:size :xxl}]
-       [x]])
-       ;[body]
-       ;[footer]])
+       [x]
+       [body]
+       [footer]])
 
 (defn view
   [surface-id]

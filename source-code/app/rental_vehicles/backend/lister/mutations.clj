@@ -15,7 +15,7 @@
   ;
   ; @return (strings in vector)
   [_ {:keys [item-ids]}]
-  (mongo-db/remove-documents! "rental-vehicles" item-ids))
+  (mongo-db/remove-documents! "rental_vehicles" item-ids {:ordered? true}))
 
 (defmutation delete-items!
              ; @param (map) env
@@ -37,7 +37,7 @@
   ;
   ; @return (namespaced maps in vector)
   [{:keys [items]}]
-  (mongo-db/insert-documents! "rental-vehicles" items))
+  (mongo-db/insert-documents! "rental_vehicles" items {:ordered? true}))
 
 (defmutation undo-delete-items!
              ; @param (map) env
@@ -60,7 +60,7 @@
   ; @return (keywords in vector)
   [{:keys [request]} {:keys [item-ids]}]
   (let [prototype-f #(common/duplicated-document-prototype request %)]
-       (mongo-db/duplicate-documents! "rental-vehicles" item-ids {:prototype-f prototype-f})))
+       (mongo-db/duplicate-documents! "rental_vehicles" item-ids {:ordered? true :prototype-f prototype-f})))
 
 (defmutation duplicate-items!
              ; @param (map) env
@@ -75,7 +75,30 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn reorder-items-f
+  ; @param (map) env
+  ; @param (map) mutation-props
+  ;  {:items (namespaced maps in vector)}
+  ;
+  ; @return (namespaced maps in vector)
+  [{:keys [request]} {:keys [items]}])
+  ;(let [prototype-f #(common/duplicated-document-prototype request %)]
+  ;     (mongo-db/duplicate-documents! "rental_vehicles" item-ids {:ordered? true :prototype-f prototype-f})])
+
+(defmutation reorder-items!
+             ; @param (map) env
+             ; @param (map) mutation-props
+             ;  {:items (namespaced maps in vector)}
+             ;
+             ; @return (namespaced maps in vector)
+             [env mutation-props]
+             {::pathom.co/op-name 'rental-vehicles.lister/reorder-items!}
+             (reorder-items-f env mutation-props))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 ; @constant (functions in vector)
-(def HANDLERS [delete-items! undo-delete-items! duplicate-items!])
+(def HANDLERS [delete-items! undo-delete-items! duplicate-items! reorder-items!])
 
 (pathom/reg-handlers! ::handlers HANDLERS)
