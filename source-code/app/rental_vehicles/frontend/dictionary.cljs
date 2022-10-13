@@ -6,7 +6,7 @@
 
 ; @constant (map)
 (def BOOK {:search-in-rental-vehicles
-           {:en "Search in rental-vehicles"
+           {:en "Search in rental vehicles"
             :hu "Keresés a járművek között"}
            :vehicle-name-placeholder
            {:en "Vehicle name"

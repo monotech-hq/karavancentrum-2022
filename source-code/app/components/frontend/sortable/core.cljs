@@ -2,7 +2,13 @@
 (ns app.components.frontend.sortable.core
   (:require [mid-fruits.random :as random]
 
-    [reagent.api :refer [ratom]]
+
+            [reagent.api :as reagent :refer [ratom]]
+
+            [app.components.frontend.sortable.helpers :as helpers]
+            [app.components.frontend.sortable.state :as state]
+
+
 
     [re-frame.api :as r]
     [x.app-elements.api :as elements]
@@ -29,21 +35,21 @@
 ;; -----------------------------------------------------------------------------
 
 (defn drag-start-f
-  [state event]
-  (reset! state (get (js->clj (aget event "active")) "id")))
+  [sortable-id _ event]
+  (swap! state/GRABBED-ITEM assoc sortable-id (get-in (js->clj (aget event "active")) ["data" "current" "sortable" "index"])))
 
 (defn drag-end-f
-  [{:keys [items active-id on-drag-end on-order-changed value-path]} event]
+  [sortable-id {:keys [on-drag-end on-order-changed value-path]} event]
   (let [{:keys [active over]} (to-clj-map event)
-        oldIndex              (index-of @items active)
-        newIndex              (index-of @items over)]
+        oldIndex              (index-of (get @state/SORTABLE-ITEMS sortable-id) active)
+        newIndex              (index-of (get @state/SORTABLE-ITEMS sortable-id) over)]
     ;;check if dragged element is moved if so than reset the items order
     (if (not= oldIndex newIndex)
-        (let [new-items (reorder @items oldIndex newIndex)]
-             (reset! items new-items)
+        (let [new-items (reorder (get @state/SORTABLE-ITEMS sortable-id) oldIndex newIndex)]
+             (swap! state/SORTABLE-ITEMS assoc sortable-id new-items)
              (if value-path       (r/dispatch [:db/set-item! value-path new-items]))
              (if on-order-changed (r/dispatch (r/metamorphic-event<-params on-order-changed new-items)))))
-    (reset! active-id nil)
+    (swap! state/GRABBED-ITEM dissoc sortable-id)
     (if on-drag-end (r/dispatch on-drag-end))))
 
 ;; -----------------------------------------------------------------------------
@@ -58,74 +64,89 @@
 ;; -----------------------------------------------------------------------------
 ;; ---- Components ----
 
+(defn- sortable-debug
+  [sortable-id _]
+  [:div {}
+        [:br] (str "GRABBED-ITEM:   " (get @state/GRABBED-ITEM   sortable-id))
+        [:br] (str "SORTABLE-ITEMS: " (get @state/SORTABLE-ITEMS sortable-id))])
+
 (defn sortable-item
-  [{:keys [index id] :as props} item-element]
+  [sortable-id item-dex {:keys [id] :as props} item-element]
+  ;; pass "attributes" "listeners" to component props to make it dragable
+  ; {:keys [attributes listeners setNodeRef isSorting transform transition isDragging]} sortable]
   (let [sortable (to-clj-map (useSortable (clj->js {:id (str id)})))
-        {:keys [attributes listeners setNodeRef isSorting                       ;; pass "attributes" "listeners" to componentn props to make it dragable
-                transform transition isDragging]} sortable]
-    [:div {:key (str index) :data-grabbing isDragging}
-     [:div (merge {:id    (str id)
-                   :ref   (js->clj setNodeRef)
-                   :style {:transform  (.toString (.-Transform CSS) (clj->js transform))
-                           :transition transition}})
-       [item-element props sortable]]]))
+        {:keys [setNodeRef transform transition]} sortable]
+    [:div {:ref   (js->clj setNodeRef) ;:id (str id)
+           :key   (str item-dex)
+           :style {:transition transition :transform (.toString (.-Transform CSS) (clj->js transform))}}
+          [item-element sortable-id item-dex props sortable]]))
 
 (defn render-items
-  [{:keys [item-id-key item-element value-path items]}]
-  [:<> (map-indexed (fn [index props]
-                     (let [id (get props item-id-key props)]
-                       ;; :f> needed cause useSortable hook
-                       [:f> sortable-item
-                          {:key id :id id
-                           :index index
-                           :value-path value-path
-                           :item-props props}
-                          item-element]))
-           @items)])
+  [sortable-id {:keys [item-id-key item-element]}]
+  (letfn [(f [%1 %2 %3] ;; :f> needed cause useSortable hook
+             (let [id (get %3 item-id-key %3)]
+                  (conj %1 ^{:key id}
+                            [:f> sortable-item sortable-id %2
+                                               {:id id :item-props %3}
+                                               item-element])))]
+         (reduce-kv f [:<>] (get @state/SORTABLE-ITEMS sortable-id))))
 
 (defn dnd-context
-  [{:keys [items active-id item-element item-id-key] :as config}]
-  (let [sensors (useSensors
-                  (useSensor PointerSensor)
-                  (useSensor TouchSensor))]
-    (if (not (empty? @items))
-      [DndContext {:sensors            sensors
-                   :collisionDetection closestCenter
-                   :onDragStart        #(drag-start-f active-id %)
-                   :onDragEnd          #(drag-end-f config %)}
-        [SortableContext {:items @items
-                          :strategy rectSortingStrategy}
-          [render-items config]]
-        [DragOverlay {:z-index 1} (if @active-id [:div {:style {;:cursor "crosshair"
-                                                                ;:background :red
-                                                                :cursor :grabbing
-                                                                :width "100%"
-                                                                :height "100%"}}])]])))
+  [sortable-id sortable-props]
+  (let [sensors (useSensors (useSensor PointerSensor)
+                            (useSensor TouchSensor))]
+    (if (-> @state/SORTABLE-ITEMS sortable-id empty? not)
+        [DndContext {:sensors            sensors
+                     :collisionDetection closestCenter
+                     :onDragStart        #(drag-start-f sortable-id sortable-props %)
+                     :onDragEnd          #(drag-end-f   sortable-id sortable-props %)}
+          [SortableContext {:items    (get @state/SORTABLE-ITEMS sortable-id)
+                            :strategy rectSortingStrategy}
+                           [render-items sortable-id sortable-props]]
+          [DragOverlay {:z-index 1} (if (get @state/GRABBED-ITEM sortable-id)
+                                        [:div {:style {:cursor :grabbing :width "100%" :height "100%"}}])]])))
 
-(defn sortable
-  [sortable-id {:keys [items] :as sortable-props}]
+(defn sortable-body
+  [sortable-id sortable-props]
   ; {:items (vector of (string|map))
   ;  :item-element [reagent-component]
   ;  :item-id-key (keyword)                                                     ;; Needed if items data is map. rendered item id have to be unique
   ;  :value-path  (vector of keyword)
-  (let [items-data (ratom items)
-        active-id  (ratom nil)]
-       [:f> dnd-context (assoc sortable-props :items items-data :active-id active-id)]))
+  [:<> [:f> dnd-context sortable-id sortable-props]
+       [sortable-debug  sortable-id sortable-props]])
 
-(defn view
+(defn sortable
+  ; @param (keyword) sortable-id
+  ; @param (map) sortable-props
+  [sortable-id sortable-props]
+  (reagent/lifecycles {:reagent-render         (fn [_ _] [sortable-body                   sortable-id sortable-props])
+                       :component-did-mount    (fn [_ _] (helpers/sortable-did-mount-f    sortable-id sortable-props))
+                       :component-will-unmount (fn [_ _] (helpers/sortable-will-unmount-f sortable-id sortable-props))
+                       :component-did-update   (fn [this] (let [[_ sortable-props] (reagent/arguments this)]
+                                                               (helpers/sortable-did-update-f sortable-id sortable-props)))}))
+
+(defn body
   ; @param (keyword)(opt) sortable-id
   ; @param (map) sortable-props
   ;  {:item-element (metamorphic-content)
+  ;   :items (vector)
   ;   :on-drag-end (metamorphic-event)(opt)}
   ;   :on-drag-start (metamorphic-event)(opt)}
   ;   :on-order-changed (metamorphic-event)(opt)
   ;    Az esemény utolsó paraméterként megkapja az ... (?)}
   ;
   ; @usage
-  ;  (defn my-item-element [])
-  ;  []
+  ;  [sortable/body {...}]
+  ;
+  ; @usage
+  ;  [sortable/body :my-sortable {...}]
+  ;
+  ; @usage
+  ;  (defn my-item-element [sortable-id item-dex item])
+  ;  [sortable/body {:item-element #'my-item-element
+  ;                  :items ["My item" "Your item"]}]
   ([sortable-props]
-   [view (random/generate-keyword) sortable-props])
+   [body (random/generate-keyword) sortable-props])
 
   ([sortable-id sortable-props]
    [sortable sortable-id sortable-props]))

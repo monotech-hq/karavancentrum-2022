@@ -5,7 +5,7 @@
               [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]
               [x.app-elements.api      :as elements]
-              [app.components.frontend.api]))
+              [app.components.frontend.sortable.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -41,22 +41,32 @@
 ;; ----------------------------------------------------------------------------
 
 (r/reg-event-fx :x
-  (fn [_ [_ x]]
-      (println (str x))))
+  ; @param (maps in vector) reordered-items
+  ;  [{:id (string)}]
+  ;
+  ; [{:order 5 :id 5} {:order 6 :id 6} {:order 7 :id 7} {:order 8 :id 8}]
+  ; [{:order 5 :id 5} {:order 7 :id 7} {:order 6 :id 6} {:order 8 :id 8}]
+  ; [{:order 6 :id 6} {:order 5 :id 5} {:order 7 :id 7} {:order 8 :id 8}]
+  (fn [_ [_ reordered-items]]
+      (letfn [(f [%1 %2 %3]
+                 (conj %1 (assoc %3 :order %2)))]
+             (reduce-kv f [] reordered-items))))
 
 (defn drag-btn [{:keys [attributes listeners isDragging] :as sortable-props}]
   [:div (merge {:class "contents--brand-card-drag-handle"}
               attributes listeners)
         [elements/icon {:icon :drag_indicator :style {:cursor :grab}}]])
 
-(defn itemx [{:keys [item-props] :as props} {:keys [attributes listeners isDragging] :as sortable-props}]
-    [:div {:style {:border_ "2px solid" :display "flex" :padding_ "8px"
-                   :width "100%"}}
-      [:div {:style {:display :flex :align-items :center :padding-left "12px"}}
-            [drag-btn sortable-props]]
-      [:div {:style {:flex-grow 1 :background (if isDragging "rgba(0,0,0,.02)")
-                     :z-index (if isDragging 9999)}}
-            [vehicle-item :rental-vehicles.lister 0 item-props]]])
+(defn itemx
+  [_ _ {:keys [item-props] :as props} {:keys [attributes listeners isDragging] :as sortable-props}]
+  [:div {:style {:border_ "2px solid" :display "flex" :padding_ "8px"
+                 :width "100%"}}
+    [:div {:style {:display :flex :align-items :center :padding-left "12px"}}
+          [drag-btn sortable-props]]
+    [:div {:style {:flex-grow 1 :background (if isDragging "rgba(0,0,0,.02)")
+                   :z-index (if isDragging 9999)}}
+        ;[:div (str sortable-props)
+          [vehicle-item :rental-vehicles.lister 0 item-props]]])
 
 ;;
 (defn- sortable-demo
@@ -64,8 +74,11 @@
   [:div {:style {:width "100%"}}
     (let [items @(r/subscribe [:db/get-item [:rental-vehicles :lister/downloaded-items]])]
 ;;         ; [:div {:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
-         [app.components.frontend.api/sortable {:items        items
-                                                :item-id-key  :id
+         [app.components.frontend.sortable.core/body :my-sortable
+                                               {;:items        [{:label "x0" :ida "a0"} {:label "x1" :ida "a1"} {:label "x2" :ida "a2"}]
+                                                ;:item-id-key  :ida
+                                                :items items
+                                                :item-id-key :id
                                                 :value-path   [:rental-vehicles :lister/download-items]
                                                 :item-element #'itemx
                                                 :on-order-changed [:x]}])])
