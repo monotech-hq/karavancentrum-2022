@@ -4,7 +4,7 @@
               [app.common.frontend.surface.views        :as surface.views]
               [app.common.frontend.surface-button.views :as surface-button.views]
               [mid-fruits.vector                        :as vector]
-              [x.app-core.api                           :as a]
+              [re-frame.api                             :as r]
               [x.app-elements.api                       :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -19,12 +19,12 @@
   ; @usage
   ;  [common/item-viewer-item-modified :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
-  (let [current-item   @(a/subscribe [:item-viewer/get-current-item viewer-id])
+  (let [current-item   @(r/subscribe [:item-viewer/get-current-item viewer-id])
         added-at        (-> current-item :modified-at)
         user-first-name (-> current-item :modified-by :user-profile/first-name)
         user-last-name  (-> current-item :modified-by :user-profile/last-name)
-        user-full-name @(a/subscribe [:locales/get-ordered-name user-first-name user-last-name])
-        timestamp      @(a/subscribe [:activities/get-actual-timestamp added-at])
+        user-full-name @(r/subscribe [:locales/get-ordered-name user-first-name user-last-name])
+        timestamp      @(r/subscribe [:activities/get-actual-timestamp added-at])
         modified        (str user-full-name ", " timestamp)]
        [elements/label ::item-viewer-item-modified
                        {:color     :highlight
@@ -41,12 +41,12 @@
   ; @usage
   ;  [common/item-viewer-item-created :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
-  (let [current-item   @(a/subscribe [:item-viewer/get-current-item viewer-id])
+  (let [current-item   @(r/subscribe [:item-viewer/get-current-item viewer-id])
         added-at        (-> current-item :added-at)
         user-first-name (-> current-item :added-by :user-profile/first-name)
         user-last-name  (-> current-item :added-by :user-profile/last-name)
-        user-full-name @(a/subscribe [:locales/get-ordered-name user-first-name user-last-name])
-        timestamp      @(a/subscribe [:activities/get-actual-timestamp added-at])
+        user-full-name @(r/subscribe [:locales/get-ordered-name user-first-name user-last-name])
+        timestamp      @(r/subscribe [:activities/get-actual-timestamp added-at])
         created         (str user-full-name ", " timestamp)]
        [elements/label ::item-viewer-item-created
                        {:color     :highlight
@@ -84,7 +84,7 @@
   ; @usage
   ;  [common/item-viewer-color-stamp :my-viewer {...}]
   [_ {:keys [disabled? indent label value-path]}]
-  (let [picked-colors @(a/subscribe [:db/get-item value-path])]
+  (let [picked-colors @(r/subscribe [:db/get-item value-path])]
        [elements/color-stamp {:colors    picked-colors
                               :disabled? disabled?
                               :indent    indent

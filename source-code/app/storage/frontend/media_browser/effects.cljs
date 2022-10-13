@@ -3,25 +3,25 @@
     (:require [app-fruits.window                        :as window]
               [app.storage.frontend.media-browser.views :as media-browser.views]
               [plugins.item-browser.api                 :as item-browser]
-              [x.app-core.api                           :as a :refer [r]]
+              [re-frame.api                             :as r :refer [r]]
               [x.app-media.api                          :as media]
               [x.app-router.api                         :as router]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/load-browser!
+(r/reg-event-fx :storage.media-browser/load-browser!
   [:storage.media-browser/render-browser!])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/create-directory!
+(r/reg-event-fx :storage.media-browser/create-directory!
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-browser)]
            [:storage.directory-creator/load-creator! {:browser-id :storage.media-browser :destination-id destination-id}])))
 
-(a/reg-event-fx :storage.media-browser/upload-files!
+(r/reg-event-fx :storage.media-browser/upload-files!
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-browser)]
            [:storage.file-uploader/load-uploader! {:browser-id :storage.media-browser :destination-id destination-id}])))
@@ -29,7 +29,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/add-new-item!
+(r/reg-event-fx :storage.media-browser/add-new-item!
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-browser)
             load-props     {:browser-id :storage.media-browser :destination-id destination-id}]
@@ -39,34 +39,34 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/delete-item!
+(r/reg-event-fx :storage.media-browser/delete-item!
   (fn [_ [_ {:keys [id]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:item-browser/delete-item! :storage.media-browser id]]}))
 
-(a/reg-event-fx :storage.media-browser/duplicate-item!
+(r/reg-event-fx :storage.media-browser/duplicate-item!
   (fn [_ [_ {:keys [id]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:item-browser/duplicate-item! :storage.media-browser id]]}))
 
-(a/reg-event-fx :storage.media-browser/rename-item!
+(r/reg-event-fx :storage.media-browser/rename-item!
   (fn [_ [_ media-item]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:storage.alias-editor/load-editor! media-item]]}))
 
-(a/reg-event-fx :storage.media-browser/move-item!
+(r/reg-event-fx :storage.media-browser/move-item!
   (fn [{:keys [db]} [_ media-item]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]]}))
 
 ;; -- Directory-item effect events --------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/open-directory!
+(r/reg-event-fx :storage.media-browser/open-directory!
   (fn [_ [_ {:keys [id]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:item-browser/browse-item! :storage.media-browser id]]}))
 
-(a/reg-event-fx :storage.media-browser/copy-directory-link!
+(r/reg-event-fx :storage.media-browser/copy-directory-link!
   (fn [{:keys [db]} [_ {:keys [id]}]]
       (let [directory-uri (r item-browser/get-item-route db :storage.media-browser id)
             directory-uri (r router/use-app-home         db directory-uri)
@@ -77,18 +77,18 @@
 ;; -- File-item effect events -------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/preview-file!
+(r/reg-event-fx :storage.media-browser/preview-file!
   (fn [{:keys [db]} [_ {:keys [filename]}]]
       (let [directory-id (r item-browser/get-current-item-id db :storage.media-browser)]
            {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                          [:storage.media-viewer/load-viewer! {:directory-id directory-id :current-item filename}]]})))
 
-(a/reg-event-fx :storage.media-browser/download-file!
+(r/reg-event-fx :storage.media-browser/download-file!
   (fn [{:keys [db]} [_ {:keys [alias filename]}]]
       {:dispatch-n [[:ui/close-popup! :storage.media-menu/view]
                     [:tools/save-file! {:filename alias :uri (media/filename->media-storage-uri filename)}]]}))
 
-(a/reg-event-fx :storage.media-browser/copy-file-link!
+(r/reg-event-fx :storage.media-browser/copy-file-link!
   (fn [_ [_ {:keys [filename]}]]
       (let [file-uri (media/filename->media-storage-uri filename)
             uri-base (window/get-uri-base)]
@@ -98,6 +98,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/render-browser!
+(r/reg-event-fx :storage.media-browser/render-browser!
   [:ui/render-surface! :storage.media-browser/view
                        {:content #'media-browser.views/view}])

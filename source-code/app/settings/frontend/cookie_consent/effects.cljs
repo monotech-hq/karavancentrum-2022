@@ -4,7 +4,7 @@
               [settings.cookie-consent.config :as cookie-consent.config]
               [settings.cookie-consent.subs   :as cookie-consent.subs]
               [settings.cookie-consent.views  :as cookie-consent.views]
-              [x.app-core.api                 :as a :refer [r]]))
+              [re-frame.api                   :as r :refer [r]]))
 
 ;; -- Descriptions ------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -26,14 +26,14 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :settings.cookie-consent/init-consent!
+(r/reg-event-fx :settings.cookie-consent/init-consent!
   (fn [{:keys [db]} _]
       {:dispatch-if [(r cookie-consent.subs/render-consent? db)
                      {; BUG#2457
                       :dispatch-later [{:ms cookie-consent.config/BOOT-RENDERING-DELAY
                                         :dispatch [:settings.cookie-consent/render-consent!]}]}]}))
 
-(a/reg-event-fx :settings.cookie-consent/render-consent!
+(r/reg-event-fx :settings.cookie-consent/render-consent!
   [:ui/render-popup! :settings.cookie-consent/view
                      {:body             #'cookie-settings.views/body
                       :header           #'cookie-consent.views/header

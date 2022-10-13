@@ -3,8 +3,8 @@
     (:require [app.common.frontend.surface.views        :as surface.views]
               [app.common.frontend.surface-button.views :as surface-button.views]
               [mid-fruits.vector                        :as vector]
+              [re-frame.api                             :as r]
               [x.app-components.api                     :as components]
-              [x.app-core.api                           :as a]
               [x.app-elements.api                       :as elements]))
 
 ;; -- Color-picker component --------------------------------------------------
@@ -47,7 +47,7 @@
   ; @usage
   ;  [common/item-editor-color-picker-value :my-editor {...}]
   [_ {:keys [disabled? value-path]}]
-  (let [picked-colors @(a/subscribe [:db/get-item value-path])]
+  (let [picked-colors @(r/subscribe [:db/get-item value-path])]
        [elements/color-stamp {:colors    picked-colors
                               :disabled? disabled?
                               :size      :xxl}]))
@@ -89,8 +89,8 @@
   ;   :label (metamorphic-content)
   ;   :on-click (metamorphic-event)}
   [editor-id _ {:keys [change-keys disabled? label]}]
-  (let [current-view @(a/subscribe [:gestures/get-current-view-id editor-id])
-        changed? (if change-keys @(a/subscribe [:item-editor/form-changed? editor-id change-keys]))]
+  (let [current-view @(r/subscribe [:gestures/get-current-view-id editor-id])
+        changed? (if change-keys @(r/subscribe [:item-editor/form-changed? editor-id change-keys]))]
        {:active?     (= label current-view)
         :disabled?   disabled?
         :badge-color (if changed? :primary)
@@ -140,7 +140,7 @@
   ; @usage
   ;  [common/revert-item-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
-  (let [item-changed? @(a/subscribe [:item-editor/item-changed? editor-id])]
+  (let [item-changed? @(r/subscribe [:item-editor/item-changed? editor-id])]
        [surface-button.views/element ::revert-item-button
                                      {:disabled?   (or disabled? (not item-changed?))
                                       :hover-color :highlight

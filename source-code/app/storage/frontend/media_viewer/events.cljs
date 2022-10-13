@@ -1,6 +1,6 @@
 
 (ns app.storage.frontend.media-viewer.events
-    (:require [x.app-core.api :as a :refer [r]]))
+    (:require [re-frame.api :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -27,4 +27,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-db :storage.media-viewer/receive-directory-item! receive-directory-item!)
+(r/reg-event-db :storage.media-viewer/receive-directory-item! receive-directory-item!)

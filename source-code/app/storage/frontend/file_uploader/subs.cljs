@@ -6,7 +6,7 @@
               [mid-fruits.candy                           :refer [param return]]
               [mid-fruits.map                             :as map]
               [mid-fruits.vector                          :as vector]
-              [x.app-core.api                             :as a :refer [r]]
+              [re-frame.api                               :as r :refer [r]]
               [x.app-db.api                               :as db]
               [x.app-sync.api                             :as sync]))
 
@@ -80,12 +80,12 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :storage.file-uploader/get-file-prop            get-file-prop)
-(a/reg-sub :storage.file-uploader/get-selected-file-count  get-selected-file-count)
-(a/reg-sub :storage.file-uploader/get-uploading-file-count get-uploading-file-count)
-(a/reg-sub :storage.file-uploader/get-files-size           get-files-size)
-(a/reg-sub :storage.file-uploader/all-files-cancelled?     all-files-cancelled?)
-(a/reg-sub :storage.file-uploader/capacity-limit-exceeded? capacity-limit-exceeded?)
-(a/reg-sub :storage.file-uploader/max-upload-size-reached? max-upload-size-reached?)
-(a/reg-sub :storage.file-uploader/get-uploader-ids         get-uploader-ids)
-(a/reg-sub :storage.file-uploader/get-uploader-progress    get-uploader-progress)
+(r/reg-sub :storage.file-uploader/get-file-prop            get-file-prop)
+(r/reg-sub :storage.file-uploader/get-selected-file-count  get-selected-file-count)
+(r/reg-sub :storage.file-uploader/get-uploading-file-count get-uploading-file-count)
+(r/reg-sub :storage.file-uploader/get-files-size           get-files-size)
+(r/reg-sub :storage.file-uploader/all-files-cancelled?     all-files-cancelled?)
+(r/reg-sub :storage.file-uploader/capacity-limit-exceeded? capacity-limit-exceeded?)
+(r/reg-sub :storage.file-uploader/max-upload-size-reached? max-upload-size-reached?)
+(r/reg-sub :storage.file-uploader/get-uploader-ids         get-uploader-ids)
+(r/reg-sub :storage.file-uploader/get-uploader-progress    get-uploader-progress)

@@ -2,7 +2,7 @@
 (ns app.storage.frontend.media-selector.helpers
     (:require [app.storage.frontend.core.config :as core.config]
               [mid-fruits.io                    :as io]
-              [x.app-core.api                   :as a]
+              [re-frame.api                     :as r]
               [x.app-media.api                  :as media]))
 
 ;; ----------------------------------------------------------------------------
@@ -37,5 +37,5 @@
   ;
   ; @return (string)
   [media-id _]
-  (let [{:keys [filename]} @(a/subscribe [:item-browser/get-item :storage.media-selector media-id])]
+  (let [{:keys [filename]} @(r/subscribe [:item-browser/get-item :storage.media-selector media-id])]
        (if filename (media/filename->media-storage-uri filename))))

@@ -1,7 +1,7 @@
 
 (ns app.settings.frontend.personal.views
     (:require [mid-fruits.css     :as css]
-              [x.app-core.api     :as a]
+              [re-frame.api       :as r]
               [x.app-elements.api :as elements]))
 
 ;; -- Body components ---------------------------------------------------------
@@ -16,7 +16,7 @@
 
 (defn user-profile-picture
   []
-  (let [user-profile-picture @(a/subscribe [:user/get-user-profile-picture])]
+  (let [user-profile-picture @(r/subscribe [:user/get-user-profile-picture])]
        [:div.x-user-profile-picture {:style {:backgroundImage (css/url user-profile-picture)}}]))
 
 (defn user-profile-picture-block

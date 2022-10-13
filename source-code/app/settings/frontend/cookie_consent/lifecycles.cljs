@@ -1,6 +1,6 @@
 
 (ns app.settings.frontend.cookie-consent.lifecycles
-    (:require [x.app-core.api :as a]))
+    (:require [x.app-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

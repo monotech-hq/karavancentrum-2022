@@ -2,18 +2,18 @@
 (ns app.storage.backend.capacity-handler.side-effects
     (:require [app.storage.backend.core.config :as core.config]
               [mongo-db.api                    :as mongo-db]
-              [x.server-core.api               :as a]))
+              [re-frame.api                    :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn get-max-upload-size
   []
-  @(a/subscribe [:core/get-server-config-item :max-upload-size]))
+  @(r/subscribe [:core/get-server-config-item :max-upload-size]))
 
 (defn get-total-capacity
   []
-  @(a/subscribe [:core/get-server-config-item :storage-capacity]))
+  @(r/subscribe [:core/get-server-config-item :storage-capacity]))
 
 (defn get-used-capacity
   []
@@ -23,7 +23,7 @@
 (defn get-free-capacity
   []
   (if-let [used-capacity (get-used-capacity)]
-          (if-let [total-capacity @(a/subscribe [:core/get-server-config-item :storage-capacity])]
+          (if-let [total-capacity @(r/subscribe [:core/get-server-config-item :storage-capacity])]
                   (- total-capacity used-capacity))))
 
 ;; ----------------------------------------------------------------------------

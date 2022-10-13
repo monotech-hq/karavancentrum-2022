@@ -1,7 +1,7 @@
 
 (ns app.rental-vehicles.frontend.viewer.subs
     (:require [mid-fruits.normalize :as normalize]
-              [x.app-core.api       :as a :refer [r]]
+              [re-frame.api         :as r :refer [r]]
               [x.app-router.api     :as router]))
 
 ;; -----------------------------------------------------------------------------
@@ -17,4 +17,4 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(a/reg-sub :rental-vehicles.viewer/get-vehicle-public-link get-vehicle-public-link)
+(r/reg-sub :rental-vehicles.viewer/get-vehicle-public-link get-vehicle-public-link)

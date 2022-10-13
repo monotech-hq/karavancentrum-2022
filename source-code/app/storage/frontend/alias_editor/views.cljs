@@ -2,7 +2,6 @@
 (ns app.storage.frontend.alias-editor.views
     (:require [layouts.popup-a.api :as popup-a]
               [mid-fruits.io       :as io]
-              [x.app-core.api      :as a]
               [x.app-elements.api  :as elements]))
 
 ;; ----------------------------------------------------------------------------

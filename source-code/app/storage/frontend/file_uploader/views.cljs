@@ -9,7 +9,7 @@
               [mid-fruits.math                            :as math]
               [mid-fruits.string                          :as string]
               [plugins.item-browser.api                   :as item-browser]
-              [x.app-core.api                             :as a]
+              [re-frame.api                               :as r]
               [x.app-elements.api                         :as elements]
               [x.app-media.api                            :as media]))
 
@@ -20,7 +20,7 @@
   [uploader-id uploader-props]
   [:input#storage--file-selector {:multiple 1 :type "file"
                                   :accept     (file-uploader.helpers/uploader-props->allowed-extensions-list uploader-props)
-                                  :on-change #(a/dispatch [:storage.file-uploader/files-selected-to-upload uploader-id])}])
+                                  :on-change #(r/dispatch [:storage.file-uploader/files-selected-to-upload uploader-id])}])
 
 ;; -- Dialog components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -28,9 +28,9 @@
 (defn abort-progress-button
   [uploader-id]
   (let [request-id         (file-uploader.helpers/request-id uploader-id)
-        files-uploaded?   @(a/subscribe [:sync/request-successed? request-id])
-        request-aborted?  @(a/subscribe [:sync/request-aborted?   request-id])
-        request-failured? @(a/subscribe [:sync/request-failured?  request-id])]
+        files-uploaded?   @(r/subscribe [:sync/request-successed? request-id])
+        request-aborted?  @(r/subscribe [:sync/request-aborted?   request-id])
+        request-failured? @(r/subscribe [:sync/request-failured?  request-id])]
        (if-not (or files-uploaded? request-aborted? request-failured?)
                [elements/icon-button {:height   :l
                                       :on-click [:sync/abort-request! request-id]
@@ -41,9 +41,9 @@
   ; Az upload-progress-diagram komponens önálló feliratkozással rendelkezik, hogy a feltöltési folyamat
   ; sokszoros változása ne kényszerítse a többi komponenst újra renderelődésre!
   (let [request-id         (file-uploader.helpers/request-id uploader-id)
-        uploader-progress @(a/subscribe [:storage.file-uploader/get-uploader-progress uploader-id])
-        request-aborted?  @(a/subscribe [:sync/request-aborted?   request-id])
-        request-failured? @(a/subscribe [:sync/request-failured?  request-id])
+        uploader-progress @(r/subscribe [:storage.file-uploader/get-uploader-progress uploader-id])
+        request-aborted?  @(r/subscribe [:sync/request-aborted?   request-id])
+        request-failured? @(r/subscribe [:sync/request-failured?  request-id])
         line-color (cond request-aborted? :warning request-failured? :warning :default :primary)]
        [elements/line-diagram {:indent   {:vertical :xs :bottom :xxs}
                                :sections [{:color line-color :value        uploader-progress}
@@ -52,10 +52,10 @@
 (defn progress-label
   [uploader-id]
   (let [request-id         (file-uploader.helpers/request-id uploader-id)
-        files-uploaded?   @(a/subscribe [:sync/request-successed? request-id])
-        request-aborted?  @(a/subscribe [:sync/request-aborted?   request-id])
-        request-failured? @(a/subscribe [:sync/request-failured?  request-id])
-        file-count        @(a/subscribe [:storage.file-uploader/get-uploading-file-count uploader-id])
+        files-uploaded?   @(r/subscribe [:sync/request-successed? request-id])
+        request-aborted?  @(r/subscribe [:sync/request-aborted?   request-id])
+        request-failured? @(r/subscribe [:sync/request-failured?  request-id])
+        file-count        @(r/subscribe [:storage.file-uploader/get-uploading-file-count uploader-id])
         progress-label {:content :uploading-n-files-in-progress... :replacements [file-count]}
         label (cond files-uploaded? :files-uploaded request-aborted? :aborted request-failured? :file-upload-failure :default progress-label)]
        [elements/label {:color     :default
@@ -66,7 +66,7 @@
 (defn progress-state
   [uploader-id]
   (let [request-id     (file-uploader.helpers/request-id uploader-id)
-        request-sent? @(a/subscribe [:sync/request-sent? request-id])]
+        request-sent? @(r/subscribe [:sync/request-sent? request-id])]
        (if request-sent? [:<> [elements/row {:content [:<> [progress-label        uploader-id]
                                                            [abort-progress-button uploader-id]]
                                              :horizontal-align :space-between
@@ -76,7 +76,7 @@
 
 (defn progress-list
   [dialog-id]
-  (let [uploader-ids @(a/subscribe [:storage.file-uploader/get-uploader-ids])]
+  (let [uploader-ids @(r/subscribe [:storage.file-uploader/get-uploader-ids])]
        (reduce #(conj %1 ^{:key %2} [progress-state %2])
                 [:<>] uploader-ids)))
 
@@ -100,9 +100,9 @@
 
 (defn upload-files-button
   [uploader-id]
-  (let [all-files-cancelled?     @(a/subscribe [:storage.file-uploader/all-files-cancelled?     uploader-id])
-        max-upload-size-reached? @(a/subscribe [:storage.file-uploader/max-upload-size-reached? uploader-id])
-        capacity-limit-exceeded? @(a/subscribe [:storage.file-uploader/capacity-limit-exceeded? uploader-id])]
+  (let [all-files-cancelled?     @(r/subscribe [:storage.file-uploader/all-files-cancelled?     uploader-id])
+        max-upload-size-reached? @(r/subscribe [:storage.file-uploader/max-upload-size-reached? uploader-id])
+        capacity-limit-exceeded? @(r/subscribe [:storage.file-uploader/capacity-limit-exceeded? uploader-id])]
        [elements/button ::upload-files-button
                         {:disabled?   (or all-files-cancelled? max-upload-size-reached? capacity-limit-exceeded?)
                          :font-size   :xs
@@ -123,8 +123,8 @@
   ;
   ; - Az {:indent {:vertical :xs}} beállítás használatával kis méretű képernyőkön a szöveg nem
   ;   ér hozzá a képernyő széléhez.
-  (let [capacity-limit-exceeded? @(a/subscribe [:storage.file-uploader/capacity-limit-exceeded? uploader-id])
-        free-capacity            @(a/subscribe [:storage.capacity-handler/get-free-capacity])
+  (let [capacity-limit-exceeded? @(r/subscribe [:storage.file-uploader/capacity-limit-exceeded? uploader-id])
+        free-capacity            @(r/subscribe [:storage.capacity-handler/get-free-capacity])
         free-capacity             (-> free-capacity io/B->MB format/decimals)]
        [elements/text ::available-capacity-label
                       {:color            (if capacity-limit-exceeded? :warning :muted)
@@ -137,9 +137,9 @@
 (defn uploading-size-label
   [uploader-id]
   ; XXX#0506
-  (let [files-size               @(a/subscribe [:storage.file-uploader/get-files-size           uploader-id])
-        max-upload-size-reached? @(a/subscribe [:storage.file-uploader/max-upload-size-reached? uploader-id])
-        max-upload-size          @(a/subscribe [:storage.capacity-handler/get-max-upload-size])
+  (let [files-size               @(r/subscribe [:storage.file-uploader/get-files-size           uploader-id])
+        max-upload-size-reached? @(r/subscribe [:storage.file-uploader/max-upload-size-reached? uploader-id])
+        max-upload-size          @(r/subscribe [:storage.capacity-handler/get-max-upload-size])
         files-size      (-> files-size      io/B->MB format/decimals)
         max-upload-size (-> max-upload-size io/B->MB format/decimals)]
        [elements/text ::uploading-size-label
@@ -173,10 +173,10 @@
 
 (defn file-item-structure
   [uploader-id file-dex]
-  (let [file-cancelled? @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :cancelled?])
-        filename        @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :filename])
-        filesize        @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :filesize])
-        object-url      @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :object-url])
+  (let [file-cancelled? @(r/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :cancelled?])
+        filename        @(r/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :filename])
+        filesize        @(r/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :filesize])
+        object-url      @(r/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :object-url])
         filesize         (-> filesize io/B->MB format/decimals (str " MB"))]
        [:div {:style {:align-items "center" :border-bottom "1px solid #f0f0f0" :display "flex"}}
              (if (io/filename->image? filename)
@@ -191,7 +191,7 @@
 
 (defn file-item
   [uploader-id file-dex]
-  (let [file-cancelled? @(a/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :cancelled?])]
+  (let [file-cancelled? @(r/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :cancelled?])]
        [elements/toggle {:content     [file-item-structure uploader-id file-dex]
                          :hover-color :highlight
                          :on-click    [:storage.file-uploader/toggle-file-upload! uploader-id file-dex]
@@ -199,7 +199,7 @@
 
 (defn body
   [uploader-id]
-  (let [file-count @(a/subscribe [:storage.file-uploader/get-selected-file-count uploader-id])]
+  (let [file-count @(r/subscribe [:storage.file-uploader/get-selected-file-count uploader-id])]
        (letfn [(f [file-list file-dex]
                   (conj file-list ^{:key (str uploader-id file-dex)}
                                    [file-item uploader-id file-dex]))]

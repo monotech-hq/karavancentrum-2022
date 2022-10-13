@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-picker.subs
     (:require [mid-fruits.candy :refer [return]]
-              [x.app-core.api   :as a :refer [r]]))
+              [re-frame.api     :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -45,6 +45,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :storage.media-picker/get-picked-items      get-picked-items)
-(a/reg-sub :storage.media-picker/no-items-picked?      no-items-picked?)
-(a/reg-sub :storage.media-picker/get-picked-item-count get-picked-item-count)
+(r/reg-sub :storage.media-picker/get-picked-items      get-picked-items)
+(r/reg-sub :storage.media-picker/no-items-picked?      no-items-picked?)
+(r/reg-sub :storage.media-picker/get-picked-item-count get-picked-item-count)

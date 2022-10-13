@@ -2,8 +2,8 @@
 (ns app.storage.frontend.file-uploader.side-effects
     (:require [app.storage.frontend.file-uploader.views :as file-uploader.views]
               [dom.api                                  :as dom]
-              [tools.temporary-component.api            :as temporary-component]
-              [x.app-core.api                           :as a]))
+              [re-frame.api                             :as r]
+              [tools.temporary-component.api            :as temporary-component]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -24,4 +24,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-fx :storage.file-uploader/open-file-selector! open-file-selector!)
+(r/reg-fx :storage.file-uploader/open-file-selector! open-file-selector!)

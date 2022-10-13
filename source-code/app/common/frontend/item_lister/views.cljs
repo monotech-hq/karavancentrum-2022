@@ -214,7 +214,7 @@
   ; @param (keyword) lister-id
   ; @param (map) cell-props
   ;  {:label (metamorphic-content)
-  ;   :order-by-key (namespaced keyword)
+  ;   :order-by-key (namespaced keyword)(opt)
   ;   :stretch? (boolean)(opt)
   ;   :width (string)(opt)}
   ;
@@ -225,30 +225,36 @@
         current-order-by-key       (keyword/get-namespace current-order-by)
         current-order-by-direction (keyword/get-name      current-order-by)]
        [:div {:style {:display "flex" :width width :flex-grow (if stretch? 1 0)}}
-             (if (= order-by-key current-order-by-key)
-                 [elements/button {:color            :default
-                                   :icon             (case current-order-by-direction :descending :arrow_drop_down :ascending :arrow_drop_up)
-                                   :on-click         [:item-lister/swap-items! lister-id]
-                                   :label            label
-                                   :font-size        :xs
-                                   :horizontal-align :left
-                                   :icon-position    :right
-                                   :indent           {:horizontal :xxs}}]
-                 [elements/button {:color            :muted
-                                   :icon             :arrow_drop_down
-                                   :on-click         [:item-lister/order-items! lister-id (keyword/add-namespace order-by-key :descending)]
-                                   :label            label
-                                   :font-size        :xs
-                                   :horizontal-align :left
-                                   :icon-position    :right
-                                   :indent           {:horizontal :xxs}}])]))
+             (cond (nil? order-by-key)
+                   [elements/label {:color     :default
+                                    :content   label
+                                    :font-size :xs
+                                    :indent    {:horizontal :xxs}}]
+                   (= order-by-key current-order-by-key)
+                   [elements/button {:color            :default
+                                     :icon             (case current-order-by-direction :descending :arrow_drop_down :ascending :arrow_drop_up)
+                                     :on-click         [:item-lister/swap-items! lister-id]
+                                     :font-size        :xs
+                                     :horizontal-align :left
+                                     :icon-position    :right
+                                     :indent           {:horizontal :xxs}
+                                     :label            label}]
+                   :else
+                   [elements/button {:color            :muted
+                                     :icon             :arrow_drop_down
+                                     :on-click         [:item-lister/order-items! lister-id (keyword/add-namespace order-by-key :descending)]
+                                     :font-size        :xs
+                                     :horizontal-align :left
+                                     :icon-position    :right
+                                     :indent           {:horizontal :xxs}
+                                     :label            label}])]))
 
 (defn item-lister-header
   ; @param (keyword) lister-id
   ; @param (map) header-props
   ;  {:cells (maps in vector)
   ;    [{:label (metamorphic-content)
-  ;      :order-by-key (namespaced keyword)
+  ;      :order-by-key (namespaced keyword)(opt)
   ;      :stretch? (boolean)(opt)
   ;      :width (string)(opt)}]
   ;   :control-bar (metamorphic-content)(opt)}

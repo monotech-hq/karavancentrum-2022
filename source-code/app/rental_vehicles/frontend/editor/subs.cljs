@@ -1,7 +1,7 @@
 
 (ns app.rental-vehicles.frontend.editor.subs
     (:require [app.rental-vehicles.mid.handler.helpers :as handler.helpers]
-              [x.app-core.api                          :as a :refer [r]]
+              [re-frame.api                            :as r :refer [r]]
               [x.app-router.api                        :as router]))
 
 ;; -----------------------------------------------------------------------------
@@ -16,4 +16,4 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(a/reg-sub :rental-vehicles.editor/get-vehicle-public-link get-vehicle-public-link)
+(r/reg-sub :rental-vehicles.editor/get-vehicle-public-link get-vehicle-public-link)

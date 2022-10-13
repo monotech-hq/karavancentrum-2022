@@ -6,8 +6,8 @@
               [mid-fruits.io                    :as io]
               [mid-fruits.format                :as format]
               [plugins.item-browser.api         :as item-browser]
+              [re-frame.api                     :as r]
               [x.app-components.api             :as components]
-              [x.app-core.api                   :as a]
               [x.app-elements.api               :as elements]
               [x.app-media.api                  :as media]))
 
@@ -16,9 +16,9 @@
 
 (defn- footer
   []
-  (let [selected-media-count           @(a/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
-        all-downloaded-media-selected? @(a/subscribe [:item-browser/all-downloaded-items-selected? :storage.media-selector])
-        any-downloaded-media-selected? @(a/subscribe [:item-browser/any-downloaded-item-selected?  :storage.media-selector])
+  (let [selected-media-count           @(r/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
+        all-downloaded-media-selected? @(r/subscribe [:item-browser/all-downloaded-items-selected? :storage.media-selector])
+        any-downloaded-media-selected? @(r/subscribe [:item-browser/any-downloaded-item-selected?  :storage.media-selector])
         on-discard-selection [:item-browser/discard-selection! :storage.media-selector]]
        [common/item-selector-footer :storage.media-selector
                                     {:on-discard-selection          on-discard-selection
@@ -31,7 +31,7 @@
 
 (defn- directory-item-structure
   [selector-id item-dex {:keys [alias size items modified-at]}]
-  (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
+  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
         size       (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
                         (components/content {:content :n-items :replacements [(count items)]}))]
        [common/list-item-structure selector-id item-dex
@@ -48,7 +48,7 @@
 
 (defn- file-item-structure
   [selector-id item-dex {:keys [alias id modified-at filename size]}]
-  (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
+  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
         size       (-> size io/B->MB format/decimals (str " MB"))]
        [common/list-item-structure selector-id item-dex
                                    {:cells [(if (io/filename->image? alias)
@@ -60,7 +60,7 @@
 
 (defn- file-item
   [selector-id item-dex {:keys [id] :as file-item}]
-  (let [file-selectable? @(a/subscribe [:storage.media-selector/file-selectable? file-item])]
+  (let [file-selectable? @(r/subscribe [:storage.media-selector/file-selectable? file-item])]
        [elements/toggle {:content     [file-item-structure selector-id item-dex file-item]
                          :disabled?   (not file-selectable?)
                          :hover-color :highlight
@@ -98,7 +98,7 @@
 
 (defn- order-by-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-selector])
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-selector])
         order-by-options   [:modified-at/ascending :modified-at/descending :alias/ascending :alias/descending]
         on-click           [:item-browser/choose-order-by! :storage.media-selector {:order-by-options order-by-options}]]
        [elements/icon-button ::order-by-icon-button
@@ -109,7 +109,7 @@
 
 (defn- upload-files-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-selector])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-selector])]
        [elements/icon-button ::upload-files-icon-button
                              {:disabled?   browser-disabled?
                               :hover-color :highlight
@@ -118,7 +118,7 @@
 
 (defn- create-folder-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-selector])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-selector])]
        [elements/icon-button ::create-folder-icon-button
                              {:disabled?   browser-disabled?
                               :hover-color :highlight
@@ -127,9 +127,9 @@
 
 (defn- go-home-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-selector])
-        at-home?          @(a/subscribe [:item-browser/at-home?          :storage.media-selector])
-        error-mode?       @(a/subscribe [:item-browser/get-meta-item     :storage.media-selector :error-mode?])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-selector])
+        at-home?          @(r/subscribe [:item-browser/at-home?          :storage.media-selector])
+        error-mode?       @(r/subscribe [:item-browser/get-meta-item     :storage.media-selector :error-mode?])]
        [elements/icon-button ::go-home-icon-button
                              {:disabled?   (or browser-disabled? (and at-home? (not error-mode?)))
                               :hover-color :highlight
@@ -138,8 +138,8 @@
 
 (defn- go-up-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-selector])
-        at-home?          @(a/subscribe [:item-browser/at-home?          :storage.media-selector])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-selector])
+        at-home?          @(r/subscribe [:item-browser/at-home?          :storage.media-selector])]
        [elements/icon-button ::go-up-icon-button
                              {:disabled?   (or browser-disabled? at-home?)
                               :hover-color :highlight
@@ -170,14 +170,14 @@
 
 (defn- header
   [selector-id]
-  (let [header-label @(a/subscribe [:item-browser/get-current-item-label :storage.media-selector])]
+  (let [header-label @(r/subscribe [:item-browser/get-current-item-label :storage.media-selector])]
        [:<> [common/popup-label-bar :storage.media-selector/view
                                     {:primary-button   {:label :save! :on-click [:item-selector/save-selection! :storage.media-selector]}
-                                     :secondary-button (if-let [autosaving? @(a/subscribe [:item-selector/autosaving? :storage.media-selector])]
+                                     :secondary-button (if-let [autosaving? @(r/subscribe [:item-selector/autosaving? :storage.media-selector])]
                                                                {:label :abort!  :on-click [:item-selector/abort-autosave! :storage.media-selector]}
                                                                {:label :cancel! :on-click [:ui/close-popup! :storage.media-selector/view]})
                                      :label header-label}]
-            (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-selector])]
+            (if-let [first-data-received? @(r/subscribe [:item-browser/first-data-received? :storage.media-selector])]
                     [control-bar]
                     [elements/horizontal-separator {:size :xxl}])]))
 

@@ -1,9 +1,8 @@
 
 (ns app.components.frontend.tabs.core
-  (:require
-    [reagent.api          :refer [lifecycles]]
-    [x.app-core.api       :as a]
-    [x.app-elements.api   :as elements]))
+  (:require [re-frame.api       :as r]
+            [reagent.api        :refer [lifecycles]]
+            [x.app-elements.api :as elements]))
 
 
 ;; -----------------------------------------------------------------------------
@@ -45,7 +44,7 @@
 
 (defn- tabs [view-id key-value-pairs]
   (let [tabs-data      (partition 2 key-value-pairs)                            ;; Tabs key value pairs where key (keyword || string) and value ($)
-        current-tab-id @(a/subscribe [:gestures/get-current-view-id view-id])]
+        current-tab-id @(r/subscribe [:gestures/get-current-view-id view-id])]
     [:div
      [menu-bar current-tab-id view-id tabs-data]
      [elements/horizontal-line {:color :highlight}]
@@ -53,7 +52,7 @@
      [tab-controller current-tab-id key-value-pairs]]))
 
 (defn did-mount [{:keys [view-id init-tab]} args]
-  (a/dispatch [:gestures/change-view!
+  (r/dispatch [:gestures/change-view!
                view-id
                (if init-tab init-tab (first args))]))
 

@@ -1,11 +1,11 @@
 
 (ns app.settings.frontend.appearance.effects
-    (:require [x.app-core.api :as a]))
+    (:require [re-frame.api :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :settings.appearance-settings/set-theme!
+(r/reg-event-fx :settings.appearance-settings/set-theme!
   ; @param (map) theme-props
   ;  {:id (keyword)
   ;   :name (metamorphic-content)}

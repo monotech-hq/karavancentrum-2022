@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-viewer.sample
     (:require [app.storage.frontend.api :as storage]
-              [x.app-core.api         :as a]))
+              [re-frame.api             :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -13,5 +13,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :load-my-media-viewer!
+(r/reg-event-fx :load-my-media-viewer!
   [:storage.media-viewer/load-viewer! :my-viewer {:directory-id "my-directory"}])

@@ -4,7 +4,7 @@
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-lister.api :as item-lister]
               [plugins.item-viewer.api :as item-viewer]
-              [x.app-core.api          :as a]
+              [re-frame.api            :as r]
               [x.app-elements.api      :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -18,7 +18,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.viewer])]
+  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :pages.viewer])]
        (case current-view-id :overview [page-overview])))
 
 ;; ----------------------------------------------------------------------------
@@ -26,15 +26,15 @@
 
 (defn- menu-bar
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :pages.viewer])]
        [common/item-viewer-menu-bar :pages.viewer
                                     {:disabled?  viewer-disabled?
                                      :menu-items [{:label :overview}]}]))
 
 (defn- controls
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
-        page-id          @(a/subscribe [:router/get-current-route-path-param :item-id])
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
+        page-id          @(r/subscribe [:router/get-current-route-path-param :item-id])
         edit-item-uri     (str "/@app-home/pages/"page-id"/edit")]
        [common/item-viewer-controls :pages.viewer
                                     {:disabled?     viewer-disabled?
@@ -42,8 +42,8 @@
 
 (defn- breadcrumbs
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
-        page-name        @(a/subscribe [:db/get-item [:pages :viewer/viewed-item :name]])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
+        page-name        @(r/subscribe [:db/get-item [:pages :viewer/viewed-item :name]])]
        [common/surface-breadcrumbs :pages.viewer/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :pages    :route "/@app-home/pages"}
@@ -52,8 +52,8 @@
 
 (defn- label
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
-        page-name        @(a/subscribe [:db/get-item [:pages :viewer/viewed-item :name]])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :pages.viewer])
+        page-name        @(r/subscribe [:db/get-item [:pages :viewer/viewed-item :name]])]
        [common/surface-label :pages.viewer/view
                              {:disabled?   viewer-disabled?
                               :label       page-name

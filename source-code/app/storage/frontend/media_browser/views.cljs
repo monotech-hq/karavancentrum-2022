@@ -8,8 +8,8 @@
               [mid-fruits.keyword                         :as keyword]
               [mid-fruits.io                              :as io]
               [plugins.item-browser.api                   :as item-browser]
+              [re-frame.api                               :as r]
               [x.app-components.api                       :as components]
-              [x.app-core.api                             :as a :refer [r]]
               [x.app-elements.api                         :as elements]
               [x.app-media.api                            :as media]))
 
@@ -18,7 +18,7 @@
 
 (defn- footer
   []
-  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
+  (if-let [first-data-received? @(r/subscribe [:item-browser/first-data-received? :storage.media-browser])]
           [common/item-lister-download-info :storage.media-browser {}]))
 
 ;; ----------------------------------------------------------------------------
@@ -26,8 +26,8 @@
 
 (defn- directory-info
   []
-  (let [size  @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
-        items @(a/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
+  (let [size  @(r/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
+        items @(r/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
         size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
                     (components/content {:content :n-items :replacements [(count items)]}))]
        [elements/label ::directory-info
@@ -42,7 +42,7 @@
 
 (defn directory-item-structure
   [browser-id item-dex {:keys [alias size id items modified-at]}]
-  (let [timestamp  @(a/subscribe [:activities/get-actual-timestamp modified-at])
+  (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
         item-count  (components/content {:content :n-items :replacements [(count items)]})
         size        (-> size io/B->MB format/decimals (str " MB"))
         icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
@@ -62,7 +62,7 @@
 
 (defn file-item-structure
   [browser-id item-dex {:keys [alias id modified-at filename size] :as file-item}]
-  (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])
+  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
         size       (-> size io/B->MB format/decimals (str " MB"))]
        [common/list-item-structure browser-id item-dex
                                    {:cells [(if (io/filename->image? alias)
@@ -109,7 +109,7 @@
 
 (defn upload-files-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
        [elements/button ::upload-files-button
                         {:border-radius :s
                          :disabled?     browser-disabled?
@@ -122,7 +122,7 @@
 
 (defn create-folder-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
        [elements/button ::create-folder-button
                         {:border-radius :s
                          :disabled?     browser-disabled?
@@ -136,9 +136,9 @@
 
 (defn go-home-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])
-        at-home?          @(a/subscribe [:item-browser/at-home?          :storage.media-browser])
-        error-mode?       @(a/subscribe [:item-browser/get-meta-item     :storage.media-browser :error-mode?])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])
+        at-home?          @(r/subscribe [:item-browser/at-home?          :storage.media-browser])
+        error-mode?       @(r/subscribe [:item-browser/get-meta-item     :storage.media-browser :error-mode?])]
        [elements/icon-button ::go-home-icon-button
                              {:disabled?     (or browser-disabled? (and at-home? (not error-mode?)))
                               :border-radius :s
@@ -149,8 +149,8 @@
 
 (defn go-up-icon-button
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])
-        at-home?          @(a/subscribe [:item-browser/at-home?          :storage.media-browser])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])
+        at-home?          @(r/subscribe [:item-browser/at-home?          :storage.media-browser])]
        [elements/icon-button ::go-up-icon-button
                              {:disabled?     (or browser-disabled? at-home?)
                               :border-radius :s
@@ -197,14 +197,14 @@
 
 (defn- search-block
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
        [common/item-browser-search-block :storage.media-browser
                                          {:disabled?         browser-disabled?
                                           :field-placeholder :search-in-the-directory}]))
 
 (defn- breadcrumbs
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
        [common/surface-breadcrumbs :storage.media-browser/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :storage}]
@@ -212,8 +212,8 @@
 
 (defn- label
   []
-  (let [browser-disabled? @(a/subscribe [:item-browser/browser-disabled? :storage.media-browser])
-        directory-alias @(a/subscribe [:item-browser/get-current-item-label :storage.media-browser])]
+  (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])
+        directory-alias @(r/subscribe [:item-browser/get-current-item-label :storage.media-browser])]
        [common/surface-label :storage.media-browser/view
                              {:disabled? browser-disabled?
                               :label     directory-alias}]))
@@ -223,7 +223,7 @@
 
 (defn- header
   []
-  (if-let [first-data-received? @(a/subscribe [:item-browser/first-data-received? :storage.media-browser])]
+  (if-let [first-data-received? @(r/subscribe [:item-browser/first-data-received? :storage.media-browser])]
           [:<> [label]
                [breadcrumbs]
                [search-block]

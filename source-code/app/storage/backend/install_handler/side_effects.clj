@@ -5,7 +5,7 @@
               [app.storage.backend.install-handler.config :as install-handler.config]
               [mongo-db.api                               :as mongo-db]
               [server-fruits.io                           :as io]
-              [x.server-core.api                          :as a :refer [r]]
+              [x.server-core.api                          :as r :refer [r]]
               [x.server-media.api                         :as media]
               [x.server-user.api                          :as user]))
 
@@ -30,4 +30,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-fx :storage/check-install! check-install!)
+(r/reg-fx :storage/check-install! check-install!)

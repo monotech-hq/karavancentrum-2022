@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.capacity-handler.subs
     (:require [plugins.item-browser.api :as item-browser]
-              [x.app-core.api           :as a :refer [r]]))
+              [re-frame.api             :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -34,5 +34,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :storage.capacity-handler/get-max-upload-size get-max-upload-size)
-(a/reg-sub :storage.capacity-handler/get-free-capacity   get-free-capacity)
+(r/reg-sub :storage.capacity-handler/get-max-upload-size get-max-upload-size)
+(r/reg-sub :storage.capacity-handler/get-free-capacity   get-free-capacity)

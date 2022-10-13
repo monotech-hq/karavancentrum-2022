@@ -1,6 +1,6 @@
 
 (ns app.user.frontend.login-screen.views
-    (:require [x.app-core.api     :as a]
+    (:require [re-frame.api       :as r]
               [x.app-elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -8,8 +8,8 @@
 
 (defn- app-title-label
   []
-  (let [synchronizing? @(a/subscribe [:sync/listening-to-request? :user/authenticate!])
-        app-title      @(a/subscribe [:core/get-app-config-item :app-title])]
+  (let [synchronizing? @(r/subscribe [:sync/listening-to-request? :user/authenticate!])
+        app-title      @(r/subscribe [:core/get-app-config-item :app-title])]
        [elements/label ::app-title-label
                        {:content          app-title
                         :disabled?        synchronizing?
@@ -30,7 +30,7 @@
 
 (defn- email-address-field
   []
-  (let [synchronizing? @(a/subscribe [:sync/listening-to-request? :user/authenticate!])]
+  (let [synchronizing? @(r/subscribe [:sync/listening-to-request? :user/authenticate!])]
        [elements/text-field ::email-address-field
                             {:autofill-name :email-address
                              :disabled?     synchronizing?
@@ -41,7 +41,7 @@
 
 (defn- password-field
   []
-  (let [synchronizing? @(a/subscribe [:sync/listening-to-request? :user/authenticate!])]
+  (let [synchronizing? @(r/subscribe [:sync/listening-to-request? :user/authenticate!])]
        [elements/password-field ::password-field
                                 {:autofill-name :password
                                  :disabled?     synchronizing?
@@ -51,7 +51,7 @@
 
 (defn- forgot-password-button
   []
-  (let [synchronizing? @(a/subscribe [:sync/listening-to-request? :user/authenticate!])]
+  (let [synchronizing? @(r/subscribe [:sync/listening-to-request? :user/authenticate!])]
        [:div {:style {:display :flex :justify-content :flex-end}}
              [elements/button ::forgot-password-button
                               {:color     :highlight
@@ -65,7 +65,7 @@
 
 (defn- login-button
   []
-  (let [disabled? @(a/subscribe [:user.login-screen/login-button-disabled?])]
+  (let [disabled? @(r/subscribe [:user.login-screen/login-button-disabled?])]
        [elements/button ::login-button
                         {:background-color :primary
                          :hover-color      :primary
@@ -77,7 +77,7 @@
 
 (defn- signup-button
   []
-  (let [synchronizing? @(a/subscribe [:sync/listening-to-request? :user/authenticate!])]
+  (let [synchronizing? @(r/subscribe [:sync/listening-to-request? :user/authenticate!])]
        [elements/button ::signup-button
                         {:background-color :highlight
                          :border-radius    :s
@@ -92,7 +92,7 @@
 
 (defn- login-form
   []
-  (let [login-attempted? @(a/subscribe [:user/login-attempted?])]
+  (let [login-attempted? @(r/subscribe [:user/login-attempted?])]
        [:<> [app-title-label]
             (if login-attempted? [login-error-message])
             [email-address-field]
@@ -114,7 +114,7 @@
 
 (defn- continue-as-button
   []
-  (let [user-name @(a/subscribe [:user/get-user-name])]
+  (let [user-name @(r/subscribe [:user/get-user-name])]
        [elements/button ::continue-as-button
                         {:color       :primary
                          :keypress    {:key-code 13}
@@ -125,9 +125,9 @@
 
 (defn- user-name-label
   []
-  (let [user-first-name @(a/subscribe [:user/get-user-first-name])
-        user-last-name  @(a/subscribe [:user/get-user-first-name])
-        user-full-name  @(a/subscribe [:locales/get-ordered-name user-first-name user-last-name])]
+  (let [user-first-name @(r/subscribe [:user/get-user-first-name])
+        user-last-name  @(r/subscribe [:user/get-user-first-name])
+        user-full-name  @(r/subscribe [:locales/get-ordered-name user-first-name user-last-name])]
        [elements/label ::user-name-label
                        {:content          {:content :signed-in-as :suffix user-full-name}
                         :horizontal-align :center
@@ -135,7 +135,7 @@
 
 (defn- user-email-address-label
   []
-  (let [user-email-address @(a/subscribe [:user/get-user-email-address])]
+  (let [user-email-address @(r/subscribe [:user/get-user-email-address])]
        [elements/label ::user-email-address-label
                        {:color            :muted
                         :content          user-email-address
@@ -156,14 +156,14 @@
 
 (defn- body
   []
-  (let [viewport-small? @(a/subscribe [:environment/viewport-small?])]
+  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])]
        [:div#login-screen--body {:style (if viewport-small? {:width         "320px"}
                                                             {:border-color  "var( --border-color-highlight )"
                                                              :border-radius "var( --border-radius-m )"
                                                              :border-style  "solid"
                                                              :border-width  "1px"
                                                              :width         "320px"})}
-                                (if-let [user-identified? @(a/subscribe [:user/user-identified?])]
+                                (if-let [user-identified? @(r/subscribe [:user/user-identified?])]
                                         [logged-in-form]
                                         [login-form])]))
 

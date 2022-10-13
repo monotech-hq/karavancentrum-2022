@@ -1,6 +1,5 @@
 
-(ns app.storage.frontend.directory-creator.queries
-    (:require [x.app-core.api :as a :refer [r]]))
+(ns app.storage.frontend.directory-creator.queries)
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

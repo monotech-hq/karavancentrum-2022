@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-browser.target-selector
     (:require [mid-fruits.candy   :refer [param return]]
-              [x.app-core.api     :as a]
+              [re-frame.api       :as r]
               [x.app-elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -15,13 +15,13 @@
 
 (defn header-label
   [_]
-  (let [header-label @(a/subscribe [:item-browser/get-item-label :storage.media-browser])]
+  (let [header-label @(r/subscribe [:item-browser/get-item-label :storage.media-browser])]
        [elements/label ::header-label
                        {:content header-label}]))
 
 (defn header-select-button
   [_]
-  (let [no-items-selected? @(a/subscribe [:storage.media-picker/no-items-selected?])]
+  (let [no-items-selected? @(r/subscribe [:storage.media-picker/no-items-selected?])]
        [elements/button :header-select-button
                         {:disabled? no-items-selected?
                          ;:preset :select-button :indent _ :keypress {:key-code 13}
@@ -48,7 +48,7 @@
 ;; -- Lifecycle events --------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.media-browser/render-target-selector!
+(r/reg-event-fx :storage.media-browser/render-target-selector!
   [:ui/render-popup! :storage.media-browser/target-selector
                      {:body   #'body
                       :header #'header}])

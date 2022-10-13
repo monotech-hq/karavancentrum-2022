@@ -4,7 +4,7 @@
               [shadow.cljs.devtools.server :as server]
               [shadow.cljs.devtools.api    :as shadow]
               [server-fruits.io            :as io]
-              [x.server-core.api           :as a])
+              [x.server-core.api           :as core])
     (:gen-class))
 
 ;; ----------------------------------------------------------------------------
@@ -34,4 +34,4 @@
          (println "Compiling:" js-build)
          (shadow/release js-build))
   (hf/jar java-config)
-  (a/->app-built))
+  (core/->app-built))

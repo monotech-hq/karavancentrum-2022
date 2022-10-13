@@ -3,7 +3,7 @@
     (:require [app.storage.frontend.media-selector.subs :as media-selector.subs]
               [mid-fruits.map                           :refer [dissoc-in]]
               [mid-fruits.vector                        :as vector]
-              [x.app-core.api                           :as a :refer [r]]
+              [re-frame.api                             :as r :refer [r]]
               [x.app-media.api                          :as media]))
 
 ;; ----------------------------------------------------------------------------
@@ -48,4 +48,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-db :storage.media-selector/store-selected-items! store-selected-items!)
+(r/reg-event-db :storage.media-selector/store-selected-items! store-selected-items!)

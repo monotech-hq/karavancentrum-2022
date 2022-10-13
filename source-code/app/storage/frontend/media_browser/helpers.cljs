@@ -4,7 +4,6 @@
               [mid-fruits.io        :as io]
               [mid-fruits.vector    :as vector]
               [x.app-components.api :as components]
-              [x.app-core.api       :as a]
               [x.app-media.api      :as media]))
 
 ;; ----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-viewer.queries
     (:require [app.storage.frontend.media-viewer.subs :as media-viewer.subs]
-              [x.app-core.api                         :as a :refer [r]]))
+              [re-frame.api                           :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

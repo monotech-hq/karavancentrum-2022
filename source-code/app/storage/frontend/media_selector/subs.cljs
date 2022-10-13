@@ -4,7 +4,7 @@
               [mid-fruits.io            :as io]
               [mid-fruits.vector        :as vector]
               [plugins.item-browser.api :as item-browser]
-              [x.app-core.api           :as a :refer [r]]
+              [re-frame.api             :as r :refer [r]]
               [x.app-media.api          :as media]))
 
 ;; ----------------------------------------------------------------------------
@@ -46,6 +46,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :storage.media-selector/get-selected-item-count get-selected-item-count)
-(a/reg-sub :storage.media-selector/file-selected?          file-selected?)
-(a/reg-sub :storage.media-selector/file-selectable?        file-selectable?)
+(r/reg-sub :storage.media-selector/get-selected-item-count get-selected-item-count)
+(r/reg-sub :storage.media-selector/file-selected?          file-selected?)
+(r/reg-sub :storage.media-selector/file-selectable?        file-selectable?)

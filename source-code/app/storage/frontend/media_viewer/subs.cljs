@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-viewer.subs
     (:require [mid-fruits.candy :refer [param return]]
-              [x.app-core.api   :as a :refer [r]]))
+              [re-frame.api     :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -28,4 +28,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :storage.media-viewer/get-current-item-props get-current-item-props)
+(r/reg-sub :storage.media-viewer/get-current-item-props get-current-item-props)

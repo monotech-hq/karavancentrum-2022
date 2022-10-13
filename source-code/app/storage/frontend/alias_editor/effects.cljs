@@ -1,17 +1,17 @@
 
 (ns app.storage.frontend.alias-editor.effects
     (:require [app.storage.frontend.alias-editor.views :as alias-editor.views]
-              [x.app-core.api                          :as a]))
+              [re-frame.api                            :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :storage.alias-editor/load-editor!
+(r/reg-event-fx :storage.alias-editor/load-editor!
   (fn [{:keys [db]} [_ media-item]]
       [:ui/render-popup! :storage.alias-editor/view
                          {:content [alias-editor.views/view media-item]}]))
 
-(a/reg-event-fx :storage.alias-editor/update-item-alias!
+(r/reg-event-fx :storage.alias-editor/update-item-alias!
   (fn [{:keys [db]} [_ {:keys [alias id] :as media-item}]]
       (let [updated-alias (get-in db [:storage :alias-editor/item-alias])]
            {:dispatch [:ui/close-popup! :storage.alias-editor/view]

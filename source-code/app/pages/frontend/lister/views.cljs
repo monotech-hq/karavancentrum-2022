@@ -3,7 +3,7 @@
     (:require [app.common.frontend.api :as common]
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-lister.api :as item-lister]
-              [x.app-core.api          :as a]
+              [re-frame.api            :as r]
               [x.app-elements.api      :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 
 (defn- footer
   []
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
+  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :pages.lister])]
           [common/item-lister-download-info :pages.lister {}]))
 
 ;; ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@
 
 (defn- page-item-structure
   [lister-id item-dex {:keys [body modified-at name]}]
-  (let [timestamp @(a/subscribe [:activities/get-actual-timestamp modified-at])]
+  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
        [common/list-item-structure lister-id item-dex
                                    {:cells [[common/list-item-thumbnail-icon lister-id item-dex {:icon :article :icon-family :material-icons-outlined}]
                                             [common/list-item-primary-cell   lister-id item-dex {:label name :stretch? true
@@ -69,7 +69,7 @@
 
 (defn create-item-button
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :pages.lister])
         create-page-uri (str "/@app-home/pages/create")]
        [common/item-lister-create-item-button :pages.lister
                                               {:disabled?       lister-disabled?
@@ -77,14 +77,14 @@
 
 (defn- search-block
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :pages.lister])]
        [common/item-lister-search-block :pages.lister
                                         {:disabled?         lister-disabled?
                                          :field-placeholder :search-in-pages}]))
 
 (defn- breadcrumbs
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :pages.lister])]
        [common/surface-breadcrumbs :pages.lister/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :pages}]
@@ -92,14 +92,14 @@
 
 (defn- label
   []
-  (let [lister-disabled? @(a/subscribe [:item-lister/lister-disabled? :pages.lister])]
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :pages.lister])]
        [common/surface-label :pages.lister/view
                              {:disabled? lister-disabled?
                               :label     :pages}]))
 
 (defn- header
   []
-  (if-let [first-data-received? @(a/subscribe [:item-lister/first-data-received? :pages.lister])]
+  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :pages.lister])]
           [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
                      [label]
                      [create-item-button]]

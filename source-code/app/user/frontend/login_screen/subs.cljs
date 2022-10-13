@@ -1,6 +1,6 @@
 
 (ns app.user.frontend.login-screen.subs
-    (:require [x.app-core.api :as a :refer [r]]
+    (:require [re-frame.api   :as r :refer [r]]
               [x.app-sync.api :as sync]))
 
 ;; ----------------------------------------------------------------------------
@@ -30,4 +30,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-sub :user.login-screen/login-button-disabled? login-button-disabled?)
+(r/reg-sub :user.login-screen/login-button-disabled? login-button-disabled?)

@@ -1,6 +1,6 @@
 
 (ns app.settings.frontend.cookie-consent.subs
-    (:require [x.app-core.api        :as a :refer [r]]
+    (:require [re-frame.api          :refer [r]]
               [x.app-environment.api :as environment]
               [x.app-ui.api          :as ui]))
 

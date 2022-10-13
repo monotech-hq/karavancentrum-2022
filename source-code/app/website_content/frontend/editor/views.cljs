@@ -8,7 +8,7 @@
               [mid-fruits.css            :as css]
               [mid-fruits.vector         :as vector]
               [plugins.file-editor.api   :as file-editor]
-              [x.app-core.api            :as a]
+              [re-frame.api              :as r]
               [x.app-elements.api        :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -16,7 +16,7 @@
 
 (defn- about-us-section-picker
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::about-us-section-picker
                                 {:disabled?  editor-disabled?
                                  :indent     {:vertical :s}
@@ -24,7 +24,7 @@
 
 (defn- about-us-section-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::about-us-section-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
@@ -38,7 +38,7 @@
 
 (defn- about-us-page-picker
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::about-us-page-picker
                                 {:disabled?  editor-disabled?
                                  :indent     {:vertical :s}
@@ -46,7 +46,7 @@
 
 (defn- about-us-page-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::about-us-page-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
@@ -69,7 +69,7 @@
 
 (defn- address-data-information-picker
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::address-data-information-picker
                                 {:disabled?  editor-disabled?
                                  :indent     {:vertical :s}
@@ -77,7 +77,7 @@
 
 (defn- address-data-information-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::address-data-information-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
@@ -92,7 +92,7 @@
 
 (defn- contacts-data-information-picker
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::contacts-data-information-picker
                                 {:disabled?  editor-disabled?
                                  :indent     {:vertical :s}
@@ -100,7 +100,7 @@
 
 (defn- contacts-data-information-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::contacts-data-information-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
@@ -122,7 +122,7 @@
 
 (defn- webshop-link-field
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field ::webshop-link-field
                             {:disabled?   editor-disabled?
                              :indent      {:top :m :vertical :s}
@@ -132,7 +132,7 @@
 
 (defn- webshop-settings-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::webshop-settings-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 50})
@@ -154,7 +154,7 @@
 
 (defn- duplicate-brand-button
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/button {:color     :primary
                          :disabled? editor-disabled?
                          :font-size :xs
@@ -165,7 +165,7 @@
 
 (defn- delete-brand-button
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/button {:color     :warning
                          :disabled? editor-disabled?
                          :font-size :xs
@@ -176,7 +176,7 @@
 
 (defn- brand-description-field
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/multiline-field {:disabled?   editor-disabled?
                                   :label       :description
                                   :indent      {:top :m :vertical :s}
@@ -185,7 +185,7 @@
 
 (defn- brand-icon-picker
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [storage/media-picker {:autosave?     true
                               :disabled?     editor-disabled?
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
@@ -198,7 +198,7 @@
 
 (defn- brand-title-field
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field {:disabled?   editor-disabled?
                              :label       :section-title
                              :indent      {:top :m :vertical :s}
@@ -207,7 +207,7 @@
 
 (defn- brand-link-label-field
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field {:disabled?   editor-disabled?
                              :label       :link-label
                              :indent      {:top :m :vertical :s}
@@ -216,7 +216,7 @@
 
 (defn- brand-link-field
   [brand-dex _]
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field {:disabled?   editor-disabled?
                              :label       :link
                              :indent      {:top :m :vertical :s}
@@ -247,7 +247,7 @@
 (defn- brand-list
   []
   (letfn [(f [%1 %2 %3] (conj %1 [brand-box %2 %3]))]
-         (let [brands @(a/subscribe [:db/get-item [:website-content :editor/edited-item :brands]])]
+         (let [brands @(r/subscribe [:db/get-item [:website-content :editor/edited-item :brands]])]
               (reduce-kv f [:<>] brands))))
 
 ;; ----------------------------------------------------------------------------
@@ -255,7 +255,7 @@
 
 (defn- brand-controls-action-bar
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])
         on-click [:db/apply-item! [:website-content :editor/edited-item :brands] vector/cons-item {}]]
        [common/action-bar ::brand-controls-action-bar
                           {:disabled? editor-disabled?
@@ -264,7 +264,7 @@
 
 (defn- selling-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::selling-box
                            {:content [:<> [brand-controls-action-bar]
                                           [elements/horizontal-separator {:size :xs}]]
@@ -284,7 +284,7 @@
 
 (defn- rent-informations-picker
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::rent-informations-picker
                                 {:disabled?  editor-disabled?
                                  :indent     {:vertical :s}
@@ -292,7 +292,7 @@
 
 (defn- rent-informations-box
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-box ::rent-informations-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 33})
@@ -314,7 +314,7 @@
 
 (defn- menu-bar
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/file-editor-menu-bar :website-content.editor
                                     {:menu-items [{:label :renting  :change-keys [:rent-informations]}
                                                   {:label :selling  :change-keys [:brands]}
@@ -325,7 +325,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :website-content.editor])]
+  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :website-content.editor])]
        (case current-view-id :renting  [renting]
                              :selling  [selling]
                              :webshop  [webshop]
@@ -337,13 +337,13 @@
 
 (defn- controls
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/file-editor-controls :website-content.editor
                                     {:disabled? editor-disabled?}]))
 
 (defn- breadcrumbs
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-breadcrumbs :website-content.editor/view
                                    {:crumbs [{:label :app-home :route "/@app-home"}
                                              {:label :website-content}]
@@ -351,7 +351,7 @@
 
 (defn- label
   []
-  (let [editor-disabled? @(a/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/surface-label :website-content.editor/view
                              {:disabled? editor-disabled?
                               :label     :website-content}]))

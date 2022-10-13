@@ -2,7 +2,7 @@
 (ns app.storage.frontend.directory-creator.views
     (:require [layouts.popup-a.api :as popup-a]
               [mid-fruits.io       :as io]
-              [x.app-core.api      :as a]
+              [re-frame.api        :as r]
               [x.app-elements.api  :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 
 (defn create-button
   [creator-id]
-  (let [directory-name @(a/subscribe [:db/get-item [:storage :directory-creator/meta-items :directory-name]])]
+  (let [directory-name @(r/subscribe [:db/get-item [:storage :directory-creator/meta-items :directory-name]])]
        [elements/button ::create-button
                         {:color       :primary
                          :disabled?   (empty? directory-name)
@@ -48,7 +48,7 @@
 
 (defn directory-name-field
   [creator-id]
-  (let [initial-value @(a/subscribe [:dictionary/look-up :new-directory])]
+  (let [initial-value @(r/subscribe [:dictionary/look-up :new-directory])]
        [elements/text-field ::directory-name-field
                             {:autoclear?    true
                              :autofocus?    true

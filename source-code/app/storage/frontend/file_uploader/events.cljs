@@ -2,7 +2,7 @@
 (ns app.storage.frontend.file-uploader.events
     (:require [dom.api        :as dom]
               [mid-fruits.map :refer [dissoc-in]]
-              [x.app-core.api :as a :refer [r]]))
+              [re-frame.api   :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -38,5 +38,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-db :storage.file-uploader/toggle-file-upload! toggle-file-upload!)
-(a/reg-event-db :storage.file-uploader/clean-uploader!     clean-uploader!)
+(r/reg-event-db :storage.file-uploader/toggle-file-upload! toggle-file-upload!)
+(r/reg-event-db :storage.file-uploader/clean-uploader!     clean-uploader!)

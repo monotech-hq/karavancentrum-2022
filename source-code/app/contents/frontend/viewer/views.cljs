@@ -6,7 +6,7 @@
               [layouts.surface-a.api                 :as surface-a]
               [plugins.item-lister.api               :as item-lister]
               [plugins.item-viewer.api               :as item-viewer]
-              [x.app-core.api                        :as a]
+              [re-frame.api                          :as r]
               [x.app-elements.api                    :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -14,8 +14,8 @@
 
 (defn- content-visibility
   []
-  (let [viewer-disabled?   @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
-        content-visibility @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :visibility]])
+  (let [viewer-disabled?   @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-visibility @(r/subscribe [:db/get-item [:contents :viewer/viewed-item :visibility]])
         content-visibility  (case content-visibility :public :public-content :private :private-content)]
        [common/data-element ::content-visibility
                             {:disabled?   viewer-disabled?
@@ -26,7 +26,7 @@
 
 (defn- content-more-data-box
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
        [common/surface-box ::content-more-data-box
                            {:indent  {:top :m}
                             :content [:<> [:div (forms/form-row-attributes)
@@ -41,8 +41,8 @@
 
 (defn- content-body
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
-        content-body     @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :body]])
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-body     @(r/subscribe [:db/get-item [:contents :viewer/viewed-item :body]])
         content-body      (handler.helpers/parse-content-body content-body)]
        [common/data-element ::content-body
                             {:disabled?   viewer-disabled?
@@ -52,7 +52,7 @@
 
 (defn- content-content-box
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
        [common/surface-box ::content-content-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
@@ -74,14 +74,14 @@
 
 (defn- menu-bar
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])]
        [common/item-viewer-menu-bar :contents.viewer
                                     {:disabled?  viewer-disabled?
                                      :menu-items [{:label :overview}]}]))
 
 (defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :contents.viewer])]
+  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :contents.viewer])]
        (case current-view-id :overview [content-overview])))
 
 ;; ----------------------------------------------------------------------------
@@ -89,8 +89,8 @@
 
 (defn- controls
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
-        content-id       @(a/subscribe [:router/get-current-route-path-param :item-id])
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-id       @(r/subscribe [:router/get-current-route-path-param :item-id])
         edit-item-uri     (str "/@app-home/contents/"content-id"/edit")]
        [common/item-viewer-controls :contents.viewer
                                     {:disabled?     viewer-disabled?
@@ -98,8 +98,8 @@
 
 (defn- breadcrumbs
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
-        content-name     @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :name]])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-name     @(r/subscribe [:db/get-item [:contents :viewer/viewed-item :name]])]
        [common/surface-breadcrumbs :contents.viewer/view
                                    {:crumbs [{:label :app-home   :route "/@app-home"}
                                              {:label :contents    :route "/@app-home/contents"}
@@ -108,8 +108,8 @@
 
 (defn- label
   []
-  (let [viewer-disabled? @(a/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
-        content-name     @(a/subscribe [:db/get-item [:contents :viewer/viewed-item :name]])]
+  (let [viewer-disabled? @(r/subscribe [:item-viewer/viewer-disabled? :contents.viewer])
+        content-name     @(r/subscribe [:db/get-item [:contents :viewer/viewed-item :name]])]
        [common/surface-label :contents.viewer/view
                              {:disabled?   viewer-disabled?
                               :label       content-name

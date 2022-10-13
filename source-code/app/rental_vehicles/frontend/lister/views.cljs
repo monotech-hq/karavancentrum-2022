@@ -40,14 +40,50 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(r/reg-event-fx :x
+  (fn [_ [_ x]]
+      (println (str x))))
+
+(defn drag-btn [{:keys [attributes listeners isDragging] :as sortable-props}]
+  [:div (merge {:class "contents--brand-card-drag-handle"}
+              attributes listeners)
+        [elements/icon {:icon :drag_indicator :style {:cursor :grab}}]])
+
+(defn itemx [{:keys [item-props] :as props} {:keys [attributes listeners isDragging] :as sortable-props}]
+    [:div {:style {:border_ "2px solid" :display "flex" :padding_ "8px"
+                   :width "100%"}}
+      [:div {:style {:display :flex :align-items :center :padding-left "12px"}}
+            [drag-btn sortable-props]]
+      [:div {:style {:flex-grow 1 :background (if isDragging "rgba(0,0,0,.02)")
+                     :z-index (if isDragging 9999)}}
+            [vehicle-item :rental-vehicles.lister 0 item-props]]])
+
+;;
+(defn- sortable-demo
+  []
+  [:div {:style {:width "100%"}}
+    (let [items @(r/subscribe [:db/get-item [:rental-vehicles :lister/downloaded-items]])]
+;;         ; [:div {:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
+         [app.components.frontend.api/sortable {:items        items
+                                                :item-id-key  :id
+                                                :value-path   [:rental-vehicles :lister/download-items]
+                                                :item-element #'itemx
+                                                :on-order-changed [:x]}])])
+
+(defn- x
+  []
+  [:div {:style {:width "100%"}}
+        [sortable-demo]])
+
 (defn- vehicle-lister-body
   []
+ [:div [x]
   [item-lister/body :rental-vehicles.lister
-                    {:default-order-by :modified-at/descending
+                    {:default-order-by :order/descending
                      :items-path       [:rental-vehicles :lister/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-lister-ghost-element
-                     :list-element     #'z}])
+                     :list-element     #'z}]])
 
 (defn- vehicle-lister-header
   []
@@ -55,9 +91,9 @@
                              {:cells [[common/item-lister-header-spacer :rental-vehicles.lister
                                                                         {:width "108px"}]
                                       [common/item-lister-header-cell   :rental-vehicles.lister
-                                                                        {:label :name          :order-by-key :name :stretch? true}]
+                                                                        {:label :name :stretch? true}]
                                       [common/item-lister-header-cell   :rental-vehicles.lister
-                                                                        {:label :last-modified :order-by-key :modified-at :width "160px"}]
+                                                                        {:label :last-modified :width "160px"}]
                                       [common/item-lister-header-spacer :rental-vehicles.lister
                                                                         {:width "36px"}]]}])
 
@@ -113,41 +149,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(r/reg-event-fx :x
-  (fn [_ [_ x]]
-      (println (str x))))
-
-(defn drag-btn [{:keys [attributes listeners isDragging] :as sortable-props}]
-  [:div (merge {:class "contents--brand-card-drag-handle"}
-              attributes listeners)
-        [elements/icon {:icon :drag_indicator :style {:cursor :grab}}]])
-
-(defn itemx [{:keys [item-props] :as props} {:keys [attributes listeners] :as sortable-props}]
-    [:div {:style {:border_ "2px solid" :display "flex" :padding_ "8px"}}
-      [drag-btn sortable-props]
-      [vehicle-item :rental-vehicles.lister 0 item-props]])
-
-;;
-(defn- sortable-demo
-  []
-  [:div
-    (let [items @(r/subscribe [:db/get-item [:rental-vehicles :lister/downloaded-items]])]
-;;         ; [:div {:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
-         [app.components.frontend.api/sortable {:items        items
-                                                :item-id-key  :id
-                                                :value-path   [:rental-vehicles :lister/download-items]
-                                                :item-element #'itemx
-                                                :on-order-changed [:x]}])])
-
-(defn- x
-  []
-  [:div [sortable-demo]])
-
 (defn- view-structure
   []
   [:<> [header]
        [elements/horizontal-separator {:size :xxl}]
-       [x]
        [body]
        [footer]])
 

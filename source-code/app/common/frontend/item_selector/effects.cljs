@@ -5,12 +5,12 @@
               [app.common.frontend.item-selector.subs       :as item-selector.subs]
               [mid-fruits.random                            :as random]
               [plugins.item-lister.api                      :as item-lister]
-              [x.app-core.api                               :as a :refer [r]]))
+              [re-frame.api                                 :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :item-selector/load-selector!
+(r/reg-event-fx :item-selector/load-selector!
   ; @param (keyword) selector-id
   ; @param (map) selector-props
   ;  {:autosave? (boolean)(opt)
@@ -37,7 +37,7 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(a/reg-event-fx :item-selector/save-selection!
+(r/reg-event-fx :item-selector/save-selection!
   ; @param (keyword) selector-id
   ; @param (keyword)(opt) autosave-id
   (fn [{:keys [db]} [_ selector-id autosave-id]]
@@ -47,19 +47,19 @@
            :dispatch-n [(r item-selector.subs/get-on-save         db selector-id)
                         (r item-selector.subs/get-on-change       db selector-id)]})))
 
-(a/reg-event-fx :item-selector/abort-autosave!
+(r/reg-event-fx :item-selector/abort-autosave!
   ; @param (keyword) selector-id
   (fn [{:keys [db]} [_ selector-id]]
       {:db (r item-selector.events/abort-autosave! db selector-id)}))
 
-(a/reg-event-fx :item-selector/autosave-selection!
+(r/reg-event-fx :item-selector/autosave-selection!
   ; @param (keyword) selector-id
   (fn [{:keys [db]} [_ selector-id]]
       (let [autosave-id (random/generate-keyword)]
            {:db             (r item-lister/set-meta-item! db selector-id :autosave-id autosave-id)
             :dispatch-later [{:ms 1500 :dispatch [:item-selector/save-selection! selector-id autosave-id]}]})))
 
-(a/reg-event-fx :item-selector/item-clicked
+(r/reg-event-fx :item-selector/item-clicked
   ; @param (keyword) selector-id
   ; @param (string) item-id
   (fn [{:keys [db]} [_ selector-id item-id]]

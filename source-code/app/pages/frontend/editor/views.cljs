@@ -6,7 +6,7 @@
               [layouts.surface-a.api    :as surface-a]
               [plugins.item-editor.api  :as item-editor]
               [plugins.text-editor.api  :as text-editor]
-              [x.app-core.api           :as a]
+              [re-frame.api             :as r]
               [x.app-elements.api       :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -14,7 +14,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(a/subscribe [:gestures/get-current-view-id :pages.editor])]))
+  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :pages.editor])]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -26,15 +26,15 @@
 
 (defn- controls
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :pages.editor])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :pages.editor])]
        [common/item-editor-controls :pages.editor
                                     {:disabled? editor-disabled?}]))
 
 (defn- breadcrumbs
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :pages.editor])
-        page-name        @(a/subscribe [:db/get-item [:pages :editor/edited-item :name]])
-        page-id          @(a/subscribe [:router/get-current-route-path-param :item-id])
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :pages.editor])
+        page-name        @(r/subscribe [:db/get-item [:pages :editor/edited-item :name]])
+        page-id          @(r/subscribe [:router/get-current-route-path-param :item-id])
         page-uri          (str "/@app-home/pages/" page-id)]
        [common/surface-breadcrumbs :pages.editor/view
                                    {:crumbs (if page-id [{:label :app-home :route "/@app-home"}
@@ -48,8 +48,8 @@
 
 (defn- label
   []
-  (let [editor-disabled? @(a/subscribe [:item-editor/editor-disabled? :pages.editor])
-        page-name        @(a/subscribe [:db/get-item [:pages :editor/edited-item :name]])]
+  (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :pages.editor])
+        page-name        @(r/subscribe [:db/get-item [:pages :editor/edited-item :name]])]
        [common/surface-label :pages.editor/view
                              {:disabled?   editor-disabled?
                               :label       page-name
