@@ -8,8 +8,8 @@
 
 (defn index-of [items item]
   (if (map? (first items))
-    (vector/get-first-match-item-dex items #(= (:id item) (:id %)))
-    (.indexOf items (:id item))))
+      (vector/get-first-match-item-dex items #(= (:id item) (:id %)))
+      (.indexOf items (:id item))))
 
 (defn vec-remove
   "Remove elem in coll by index."
@@ -29,7 +29,8 @@
       coll
       (into [] (vec-add (vec-remove coll pos1) pos2 el)))))
 
-(defn reorder [list start-idx end-idx]
+(defn reorder
+  [list start-idx end-idx]
   (let [list   (vec list)
         result (vec-move list start-idx end-idx)]
     result))

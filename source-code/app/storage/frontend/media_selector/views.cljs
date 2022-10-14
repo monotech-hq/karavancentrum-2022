@@ -16,7 +16,7 @@
 
 (defn- footer
   []
-  (let [selected-media-count           @(r/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
+  (let [selected-item-count            @(r/subscribe [:item-browser/get-selected-item-count        :storage.media-selector])
         all-downloaded-media-selected? @(r/subscribe [:item-browser/all-downloaded-items-selected? :storage.media-selector])
         any-downloaded-media-selected? @(r/subscribe [:item-browser/any-downloaded-item-selected?  :storage.media-selector])
         on-discard-selection [:item-browser/discard-selection! :storage.media-selector]]
@@ -24,7 +24,7 @@
                                     {:on-discard-selection          on-discard-selection
                                      :all-downloaded-item-selected? all-downloaded-media-selected?
                                      :any-downloaded-item-selected? any-downloaded-media-selected?
-                                     :selected-item-count           selected-media-count}]))
+                                     :selected-item-count           selected-item-count}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -64,7 +64,7 @@
        [elements/toggle {:content     [file-item-structure selector-id item-dex file-item]
                          :disabled?   (not file-selectable?)
                          :hover-color :highlight
-                         :on-click    [:item-selector/item-clicked :storage.media-selector id]}]))
+                         :on-click    [:storage.media-selector/file-clicked id]}]))
 
 (defn- media-item
   [selector-id item-dex {:keys [mime-type] :as media-item}]

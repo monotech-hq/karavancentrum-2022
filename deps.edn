@@ -8,6 +8,7 @@
          "clj-htmltopdf/src"
 
          ; monoset paths
+         "monoset/deps"
          "monoset/source-code/clj"
          "monoset/source-code/cljc"
          "monoset/source-code/cljs"
@@ -51,6 +52,11 @@
                                                          :sha     "13e6dec387bd5b5c73e64ca82409a7440b4b1199"}
 
         ;Clj-openhtmltopdf
+        ; XXX#0506 (monoset/deps/clj_htmltopdf/README.md)
+        com.openhtmltopdf/openhtmltopdf-core            {:mvn/version "1.0.10"}
+        com.openhtmltopdf/openhtmltopdf-pdfbox          {:mvn/version "1.0.10"}
+        com.openhtmltopdf/openhtmltopdf-rtl-support     {:mvn/version "1.0.10"}
+        com.openhtmltopdf/openhtmltopdf-svg-support     {:mvn/version "1.0.10"}
         org.jsoup/jsoup                                 {:mvn/version "1.14.3"}
         commons-io/commons-io                           {:mvn/version "2.6"}}
  :aliases

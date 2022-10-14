@@ -64,3 +64,11 @@
   (fn [{:keys [db]} [_ selected-option]]
       (let [destination-id (r item-browser/get-current-item-id db :storage.media-selector)]
            [:storage.file-uploader/load-uploader! {:browser-id :storage.media-selector :destination-id destination-id}])))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(r/reg-event-fx :storage.media-selector/file-clicked
+  (fn [{:keys [db]} [_ file-id]]
+      {:db       (r media-selector.events/file-clicked db file-id)
+       :dispatch [:item-selector/item-clicked :storage.media-selector file-id]}))

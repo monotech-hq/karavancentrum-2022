@@ -78,7 +78,7 @@
                     :font-size     :xs
                     :icon          :close
                     :icon-position :right
-                    :indent        {:horizontal :xxs :vertical :s}
+                    :indent        {:horizontal :xxs :vertical :xs}
                     :on-click      on-discard-selection
                     :label {:content :n-items-selected :replacements [selected-item-count]}}])
 
@@ -94,7 +94,7 @@
   [:div {:style {:display "flex" :justify-content "space-between"}}
         [:div]
         [discard-selection-button selector-id footer-props]])
-        ;[handle-selection-button  selector-id footer-props]])
+       ;[handle-selection-button  selector-id footer-props]
 
 ;; -- Control-bar components --------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -115,7 +115,7 @@
              [elements/search-field ::search-items-field
                                     {:autoclear?    true
                                      :disabled?     disabled?
-                                     :indent        {:horizontal :xxs :left :xs}
+                                     :indent        {:horizontal :xxs :left :xxs}
                                      :on-empty      search-event
                                      :on-type-ended search-event
                                      :placeholder   search-field-placeholder}]]))

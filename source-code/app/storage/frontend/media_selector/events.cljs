@@ -3,6 +3,7 @@
     (:require [app.storage.frontend.media-selector.subs :as media-selector.subs]
               [mid-fruits.map                           :refer [dissoc-in]]
               [mid-fruits.vector                        :as vector]
+              [plugins.item-browser.api                 :as item-browser]
               [re-frame.api                             :as r :refer [r]]
               [x.app-media.api                          :as media]))
 
@@ -44,6 +45,16 @@
                     (assoc-in db value-path selected-items))
                (let [selected-item (get-in db [:storage :media-selector/selected-items 0])]
                     (assoc-in db value-path selected-item)))))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn file-clicked
+  [db [_ file-id]]
+  (let [file-selected? (r item-browser/item-selected? db :storage.media-selector file-id)
+        file-item (r item-browser/get-item db :storage.media-selector file-id)]
+       (println (str file-item))
+       db))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

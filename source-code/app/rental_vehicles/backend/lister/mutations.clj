@@ -8,6 +8,28 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn reorder-items-f
+  ; @param (map) env
+  ; @param (map) mutation-props
+  ;  {:items (namespaced maps in vector)}
+  ;
+  ; @return (namespaced maps in vector)
+  [{:keys [request]} {:keys [items]}]
+  (mongo-db/save-documents! "rental_vehicles" items {:ordered? true}))
+
+(defmutation reorder-items!
+             ; @param (map) env
+             ; @param (map) mutation-props
+             ;  {:items (namespaced maps in vector)}
+             ;
+             ; @return (namespaced maps in vector)
+             [env mutation-props]
+             {::pathom.co/op-name 'rental-vehicles.lister/reorder-items!}
+             (reorder-items-f env mutation-props))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn delete-items-f
   ; @param (map) env
   ; @param (map) mutation-props
@@ -71,29 +93,6 @@
              [env mutation-props]
              {::pathom.co/op-name 'rental-vehicles.lister/duplicate-items!}
              (duplicate-items-f env mutation-props))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn reorder-items-f
-  ; @param (map) env
-  ; @param (map) mutation-props
-  ;  {:items (namespaced maps in vector)}
-  ;
-  ; @return (namespaced maps in vector)
-  [{:keys [request]} {:keys [items]}])
-  ;(let [prototype-f #(common/duplicated-document-prototype request %)]
-  ;     (mongo-db/duplicate-documents! "rental_vehicles" item-ids {:ordered? true :prototype-f prototype-f})])
-
-(defmutation reorder-items!
-             ; @param (map) env
-             ; @param (map) mutation-props
-             ;  {:items (namespaced maps in vector)}
-             ;
-             ; @return (namespaced maps in vector)
-             [env mutation-props]
-             {::pathom.co/op-name 'rental-vehicles.lister/reorder-items!}
-             (reorder-items-f env mutation-props))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

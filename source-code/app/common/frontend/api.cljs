@@ -2,21 +2,23 @@
 (ns app.common.frontend.api
     (:require [app.common.frontend.item-selector.effects]
               [app.common.frontend.item-selector.events]
-              [app.common.frontend.action-bar.views        :as action-bar.views]
-              [app.common.frontend.credits.views           :as credits.views]
-              [app.common.frontend.data-element.views      :as data-element.views]
-              [app.common.frontend.data-table.views        :as data-table.views]
-              [app.common.frontend.error-content.views     :as error-content.views]
-              [app.common.frontend.error-element.views     :as error-element.views]
-              [app.common.frontend.file-editor.views       :as file-editor.views]
-              [app.common.frontend.ghost-element.views     :as ghost-element.views]
-              [app.common.frontend.item-browser.views      :as item-browser.views]
+              [app.common.frontend.action-bar.views            :as action-bar.views]
+              [app.common.frontend.credits.views               :as credits.views]
+              [app.common.frontend.data-element.views          :as data-element.views]
+              [app.common.frontend.data-table.views            :as data-table.views]
+              [app.common.frontend.error-content.views         :as error-content.views]
+              [app.common.frontend.error-element.views         :as error-element.views]
+              [app.common.frontend.file-editor.views           :as file-editor.views]
+              [app.common.frontend.ghost-element.views         :as ghost-element.views]
+              [app.common.frontend.item-browser.views          :as item-browser.views]
               [app.common.frontend.item-editor.views           :as item-editor.views]
+              [app.common.frontend.item-list.views             :as item-list.views]
               [app.common.frontend.item-lister.views           :as item-lister.views]
               [app.common.frontend.item-preview.views          :as item-preview.views]
               [app.common.frontend.item-selector.subs          :as item-selector.subs]
               [app.common.frontend.item-selector.views         :as item-selector.views]
               [app.common.frontend.item-viewer.views           :as item-viewer.views]
+              [app.common.frontend.list-item-drag-handle.views :as list-item-drag-handle.views]
               [app.common.frontend.list-item-marker.views      :as list-item-marker.views]
               [app.common.frontend.menu-header.views           :as menu-header.views]
               [app.common.frontend.popup.views                 :as popup.views]
@@ -68,6 +70,9 @@
 (def item-editor-ghost-element item-editor.views/item-editor-ghost-element)
 (def item-editor-controls      item-editor.views/item-editor-controls)
 
+; app.common.frontend.item-list.views
+(def item-list item-list.views/element)
+
 ; app.common.frontend.item-lister.views
 (def list-item-structure            item-lister.views/list-item-structure)
 (def list-item-icon-button          item-lister.views/list-item-icon-button)
@@ -101,6 +106,9 @@
 (def item-viewer-menu-bar      item-viewer.views/item-viewer-menu-bar)
 (def item-viewer-ghost-element item-viewer.views/item-viewer-ghost-element)
 (def item-viewer-controls      item-viewer.views/item-viewer-controls)
+
+; app.common.frontend.list-item-drag-handle.views
+(def list-item-drag-handle list-item-drag-handle.views/element)
 
 ; app.common.frontend.list-item-marker.views
 (def list-item-marker list-item-marker.views/element)

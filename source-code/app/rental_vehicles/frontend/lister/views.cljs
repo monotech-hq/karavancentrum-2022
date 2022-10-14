@@ -5,98 +5,56 @@
               [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]
               [x.app-elements.api      :as elements]
-              [app.components.frontend.sortable.core]))
+              [app.components.frontend.sortable.core :as sortable]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- footer
   []
-  (if-let [first-data-received? @(r/subscribe [:item-browser/first-data-received? :rental-vehicles.lister])]
+  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :rental-vehicles.lister])]
           [common/item-lister-download-info :rental-vehicles.lister {}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- vehicle-item-structure
-  [lister-id item-dex {:keys [modified-at name thumbnail]}]
+  [lister-id item-dex {:keys [modified-at name thumbnail]} dndkit-props]
   (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
        [common/list-item-structure lister-id item-dex
-                                   {:cells [[common/list-item-thumbnail    lister-id item-dex {:thumbnail thumbnail}]
-                                            [common/list-item-primary-cell lister-id item-dex {:label name :stretch? true
-                                                                                               :placeholder :unnamed-vehicle}]
-                                            [common/list-item-detail    lister-id item-dex {:content   timestamp :width "160px"}]
-                                            [common/list-item-marker    lister-id item-dex {:icon      :navigate_next}]]}]))
+                                   {:cells [[common/list-item-drag-handle  lister-id item-dex dndkit-props]
+                                            [common/list-item-thumbnail    lister-id item-dex {:thumbnail thumbnail}]
+                                            [common/list-item-primary-cell lister-id item-dex {:label name :stretch? true :placeholder :unnamed-vehicle}]
+                                            [common/list-item-detail       lister-id item-dex {:content timestamp :width "160px"}]
+                                            [common/list-item-marker       lister-id item-dex {:icon :navigate_next}]]}]))
 
-(defn- vehicle-item
-  [lister-id item-dex {:keys [id] :as vehicle-item}]
-  [elements/toggle {:content     [vehicle-item-structure lister-id item-dex vehicle-item]
-                    :hover-color :highlight
-                    :on-click    [:router/go-to! (str "/@app-home/rental-vehicles/"id)]}])
-
-(defn- z
-  [lister-id item-dex {:keys [id] :as vehicle-item}])
+(defn vehicle-item
+  [lister-id item-dex {:keys [id] :as item} {:keys [attributes listeners isDragging] :as dndkit-props}]
+  [elements/toggle {:background-color (if isDragging :highlight)
+                    :content          [vehicle-item-structure lister-id item-dex item dndkit-props]
+                    :hover-color      :highlight
+                    :on-click         [:router/go-to! (str "/@app-home/rental-vehicles/"id)]}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(r/reg-event-fx :x
-  ; @param (maps in vector) reordered-items
-  ;  [{:id (string)}]
-  ;
-  ; [{:order 5 :id 5} {:order 6 :id 6} {:order 7 :id 7} {:order 8 :id 8}]
-  ; [{:order 5 :id 5} {:order 7 :id 7} {:order 6 :id 6} {:order 8 :id 8}]
-  ; [{:order 6 :id 6} {:order 5 :id 5} {:order 7 :id 7} {:order 8 :id 8}]
-  (fn [_ [_ reordered-items]]
-      (letfn [(f [%1 %2 %3]
-                 (conj %1 (assoc %3 :order %2)))]
-             (reduce-kv f [] reordered-items))))
-
-(defn drag-btn [{:keys [attributes listeners isDragging] :as sortable-props}]
-  [:div (merge {:class "contents--brand-card-drag-handle"}
-              attributes listeners)
-        [elements/icon {:icon :drag_indicator :style {:cursor :grab}}]])
-
-(defn itemx
-  [_ _ {:keys [item-props] :as props} {:keys [attributes listeners isDragging] :as sortable-props}]
-  [:div {:style {:border_ "2px solid" :display "flex" :padding_ "8px"
-                 :width "100%"}}
-    [:div {:style {:display :flex :align-items :center :padding-left "12px"}}
-          [drag-btn sortable-props]]
-    [:div {:style {:flex-grow 1 :background (if isDragging "rgba(0,0,0,.02)")
-                   :z-index (if isDragging 9999)}}
-        ;[:div (str sortable-props)
-          [vehicle-item :rental-vehicles.lister 0 item-props]]])
-
-;;
-(defn- sortable-demo
-  []
-  [:div {:style {:width "100%"}}
-    (let [items @(r/subscribe [:db/get-item [:rental-vehicles :lister/downloaded-items]])]
-;;         ; [:div {:style {:display "grid" :gap "25px" :grid-template-columns "repeat(auto-fill, minmax(200px, 1fr))"}}
-         [app.components.frontend.sortable.core/body :my-sortable
-                                               {;:items        [{:label "x0" :ida "a0"} {:label "x1" :ida "a1"} {:label "x2" :ida "a2"}]
-                                                ;:item-id-key  :ida
-                                                :items items
-                                                :item-id-key :id
-                                                :value-path   [:rental-vehicles :lister/download-items]
-                                                :item-element #'itemx
-                                                :on-order-changed [:x]}])])
-
-(defn- x
-  []
-  [:div {:style {:width "100%"}}
-        [sortable-demo]])
+(defn- vehicle-list
+  [_ items]
+  [sortable/body :rental-vehicles.lister
+                 {:items            items
+                  :item-id-f        :id
+                  :item-element     #'vehicle-item
+                  :on-order-changed [:item-lister/reorder-items! :rental-vehicles.lister]}])
 
 (defn- vehicle-lister-body
   []
- [:div [x]
   [item-lister/body :rental-vehicles.lister
                     {:default-order-by :order/descending
+                     :order-key        :order
                      :items-path       [:rental-vehicles :lister/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-lister-ghost-element
-                     :list-element     #'z}]])
+                     :list-element     #'vehicle-list}])
 
 (defn- vehicle-lister-header
   []

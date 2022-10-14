@@ -112,8 +112,7 @@
 (defn- contact-group-label-field
   [group-dex _]
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [elements/text-field {:autofocus?  true
-                             :disabled?   editor-disabled?
+       [elements/text-field {:disabled?   editor-disabled?
                              :label       :label
                              :indent      {:top :m :vertical :s}
                              :placeholder :contacts-label-placeholder
@@ -219,8 +218,7 @@
 (defn- address-group-label-field
   [group-dex _]
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
-       [elements/text-field {:autofocus?  true
-                             :disabled?   editor-disabled?
+       [elements/text-field {:disabled?   editor-disabled?
                              :label       :label
                              :indent      {:top :m :vertical :s}
                              :placeholder :address-label-placeholder
