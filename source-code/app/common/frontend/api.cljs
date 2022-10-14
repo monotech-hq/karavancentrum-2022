@@ -62,7 +62,8 @@
 (def ghost-element ghost-element.views/element)
 
 ; app.common.frontend.item-browser.views
-(def item-browser-search-block item-browser.views/item-browser-search-block)
+(def item-browser-search-field       item-browser.views/item-browser-search-field)
+(def item-browser-search-description item-browser.views/item-browser-search-description)
 
 ; app.common.frontend.item-editor.views
 (def item-editor-color-picker  item-editor.views/item-editor-color-picker)
@@ -82,7 +83,8 @@
 (def list-item-details              item-lister.views/list-item-details)
 (def list-item-detail               item-lister.views/list-item-detail)
 (def list-item-primary-cell         item-lister.views/list-item-primary-cell)
-(def item-lister-search-block       item-lister.views/item-lister-search-block)
+(def item-lister-search-field       item-lister.views/item-lister-search-field)
+(def item-lister-search-description item-lister.views/item-lister-search-description)
 (def item-lister-header-spacer      item-lister.views/item-lister-header-spacer)
 (def item-lister-header-cell        item-lister.views/item-lister-header-cell)
 (def item-lister-header             item-lister.views/item-lister-header)

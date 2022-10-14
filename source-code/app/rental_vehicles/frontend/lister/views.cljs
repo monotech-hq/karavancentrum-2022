@@ -5,7 +5,7 @@
               [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]
               [x.app-elements.api      :as elements]
-              [app.components.frontend.sortable.core :as sortable]))
+              [plugins.dnd-kit.api :as dnd-kit]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -19,19 +19,19 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- vehicle-item-structure
-  [lister-id item-dex {:keys [modified-at name thumbnail]} dndkit-props]
+  [lister-id item-dex {:keys [modified-at name thumbnail]} dnd-kit-props]
   (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
        [common/list-item-structure lister-id item-dex
-                                   {:cells [[common/list-item-drag-handle  lister-id item-dex dndkit-props]
+                                   {:cells [[common/list-item-drag-handle  lister-id item-dex dnd-kit-props]
                                             [common/list-item-thumbnail    lister-id item-dex {:thumbnail thumbnail}]
                                             [common/list-item-primary-cell lister-id item-dex {:label name :stretch? true :placeholder :unnamed-vehicle}]
                                             [common/list-item-detail       lister-id item-dex {:content timestamp :width "160px"}]
                                             [common/list-item-marker       lister-id item-dex {:icon :navigate_next}]]}]))
 
 (defn vehicle-item
-  [lister-id item-dex {:keys [id] :as item} {:keys [attributes listeners isDragging] :as dndkit-props}]
+  [lister-id item-dex {:keys [id] :as item} {:keys [attributes listeners isDragging] :as dnd-kit-props}]
   [elements/toggle {:background-color (if isDragging :highlight)
-                    :content          [vehicle-item-structure lister-id item-dex item dndkit-props]
+                    :content          [vehicle-item-structure lister-id item-dex item dnd-kit-props]
                     :hover-color      :highlight
                     :on-click         [:router/go-to! (str "/@app-home/rental-vehicles/"id)]}])
 
@@ -40,11 +40,11 @@
 
 (defn- vehicle-list
   [_ items]
-  [sortable/body :rental-vehicles.lister
-                 {:items            items
-                  :item-id-f        :id
-                  :item-element     #'vehicle-item
-                  :on-order-changed [:item-lister/reorder-items! :rental-vehicles.lister]}])
+  [dnd-kit/body :rental-vehicles.lister
+                {:items            items
+                 :item-id-f        :id
+                 :item-element     #'vehicle-item
+                 :on-order-changed [:item-lister/reorder-items! :rental-vehicles.lister]}])
 
 (defn- vehicle-lister-body
   []
@@ -85,12 +85,19 @@
                                               {:disabled?       lister-disabled?
                                                :create-item-uri create-vehicle-uri}]))
 
-(defn- search-block
+(defn- search-field
   []
   (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :rental-vehicles.lister])]
-       [common/item-lister-search-block :rental-vehicles.lister
-                                        {:disabled?         lister-disabled?
-                                         :field-placeholder :search-in-rental-vehicles}]))
+       [common/item-lister-search-field :rental-vehicles.lister
+                                        {:disabled?   lister-disabled?
+                                         :placeholder :search-in-rental-vehicles
+                                         :search-keys [:name]}]))
+
+(defn- search-description
+  []
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :rental-vehicles.lister])]
+       [common/item-lister-search-description :rental-vehicles.lister
+                                              {:disabled? lister-disabled?}]))
 
 (defn- breadcrumbs
   []
@@ -114,7 +121,8 @@
                      [label]
                      [create-item-button]]
                [breadcrumbs]
-               [search-block]]
+               [search-field]
+               [search-description]]
           [common/item-lister-ghost-header :rental-vehicles.lister {}]))
 
 ;; ----------------------------------------------------------------------------
@@ -123,7 +131,6 @@
 (defn- view-structure
   []
   [:<> [header]
-       [elements/horizontal-separator {:size :xxl}]
        [body]
        [footer]])
 

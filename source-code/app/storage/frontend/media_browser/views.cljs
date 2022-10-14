@@ -89,6 +89,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- media-list
+  [lister-id items]
+  [common/item-list lister-id {:item-element #'media-item :items items}])
+
 (defn media-browser-body
   []
   [item-browser/body :storage.media-browser
@@ -101,7 +105,7 @@
                       :items-path       [:storage :media-browser/downloaded-items]
                       :items-key        :items
                       :label-key        :alias
-                      :list-element     #'media-item
+                      :list-element     #'media-list
                       :path-key         :path}])
 
 ;; ----------------------------------------------------------------------------
@@ -195,12 +199,19 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- search-block
+(defn- search-field
   []
   (let [browser-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
-       [common/item-browser-search-block :storage.media-browser
-                                         {:disabled?         browser-disabled?
-                                          :field-placeholder :search-in-the-directory}]))
+       [common/item-browser-search-field :storage.media-browser
+                                         {:disabled?   browser-disabled?
+                                          :placeholder :search-in-the-directory
+                                          :search-keys [:alias]}]))
+
+(defn- search-description
+  []
+  (let [lister-disabled? @(r/subscribe [:item-browser/browser-disabled? :storage.media-browser])]
+       [common/item-browser-search-description :storage.media-browser
+                                               {:disabled? lister-disabled?}]))
 
 (defn- breadcrumbs
   []
@@ -226,10 +237,11 @@
   (if-let [first-data-received? @(r/subscribe [:item-browser/first-data-received? :storage.media-browser])]
           [:<> [label]
                [breadcrumbs]
-               [search-block]
-               [directory-info]]
-          [:<> [common/item-lister-ghost-header :parts.part-lister {}]
-               [elements/horizontal-separator {:size :xxl}]]))
+               [search-field]
+               [:div {:style {:display :flex :justify-content :space-between}}
+                     [search-description]
+                     [directory-info]]]
+          [common/item-lister-ghost-header :parts.part-lister {}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

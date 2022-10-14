@@ -74,6 +74,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- media-list
+  [lister-id items]
+  [common/item-list lister-id {:item-element #'media-item :items items}])
+
 (defn- media-browser
   []
   [item-browser/body :storage.media-selector
@@ -85,7 +89,7 @@
                       :items-key        :items
                       :items-path       [:storage :media-selector/downloaded-items]
                       :label-key        :alias
-                      :list-element     #'media-item
+                      :list-element     #'media-list
                       :path-key         :path}])
 
 (defn- body
@@ -155,7 +159,8 @@
                                :min-width     :s
                                :on-empty      search-event
                                :on-type-ended search-event
-                               :placeholder   :search-in-the-directory}]))
+                               :placeholder   :search-in-the-directory
+                               :search-keys   [:alias]}]))
 
 (defn- control-bar
   []

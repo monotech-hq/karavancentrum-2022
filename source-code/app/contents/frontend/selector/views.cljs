@@ -35,6 +35,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- content-list
+  [lister-id items]
+  [common/item-list lister-id {:item-element #'content-item :items items}])
+
 (defn- content-lister
   []
   [item-lister/body :contents.selector
@@ -42,7 +46,7 @@
                      :items-path       [:contents :selector/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-selector-ghost-element
-                     :list-element     #'content-item}])
+                     :list-element     #'content-list}])
 
 (defn- body
   []

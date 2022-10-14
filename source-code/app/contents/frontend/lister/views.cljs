@@ -36,6 +36,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- content-list
+  [lister-id items]
+  [common/item-list lister-id {:item-element #'content-item :items items}])
+
 (defn- content-lister-body
   []
   [item-lister/body :contents.lister
@@ -43,7 +47,7 @@
                      :items-path       [:contents :lister/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-lister-ghost-element
-                     :list-element     #'content-item}])
+                     :list-element     #'content-list}])
 
 (defn- content-lister-header
   []
@@ -68,12 +72,19 @@
                                               {:disabled?       lister-disabled?
                                                :create-item-uri create-content-uri}]))
 
-(defn- search-block
+(defn- search-field
   []
   (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
-       [common/item-lister-search-block :contents.lister
-                                        {:disabled?         lister-disabled?
-                                         :field-placeholder :search-in-contents}]))
+       [common/item-lister-search-field :contents.lister
+                                        {:disabled?   lister-disabled?
+                                         :placeholder :search-in-contents
+                                         :search-keys [:name]}]))
+
+(defn- search-description
+  []
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
+       [common/item-lister-search-description :contents.lister
+                                              {:disabled? lister-disabled?}]))
 
 (defn- breadcrumbs
   []
@@ -111,13 +122,13 @@
                      [label-bar]
                      [create-item-button]]
                [breadcrumbs]
-               [search-block]]
+               [search-field]
+               [search-description]]
           [common/item-lister-ghost-header :contents.lister {}]))
 
 (defn- view-structure
   []
   [:<> [header]
-       [elements/horizontal-separator {:size :xxl}]
        [body]
        [footer]])
 

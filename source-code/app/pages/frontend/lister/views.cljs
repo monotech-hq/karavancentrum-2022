@@ -37,6 +37,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- page-list
+  [lister-id items]
+  [common/item-list lister-id {:item-element #'page-item :items items}])
+
 (defn- page-lister-body
   []
   [item-lister/body :pages.lister
@@ -44,7 +48,7 @@
                      :items-path       [:pages :lister/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-lister-ghost-element
-                     :list-element     #'page-item}])
+                     :list-element     #'page-list}])
 
 (defn- page-lister-header
   []
@@ -75,12 +79,19 @@
                                               {:disabled?       lister-disabled?
                                                :create-item-uri create-page-uri}]))
 
-(defn- search-block
+(defn- search-field
   []
   (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :pages.lister])]
-       [common/item-lister-search-block :pages.lister
-                                        {:disabled?         lister-disabled?
-                                         :field-placeholder :search-in-pages}]))
+       [common/item-lister-search-field :pages.lister
+                                        {:disabled?   lister-disabled?
+                                         :placeholder :search-in-pages
+                                         :search-keys [:name]}]))
+
+(defn- search-description
+  []
+  (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :pages.lister])]
+       [common/item-lister-search-description :pages.lister
+                                              {:disabled? lister-disabled?}]))
 
 (defn- breadcrumbs
   []
@@ -104,7 +115,8 @@
                      [label]
                      [create-item-button]]
                [breadcrumbs]
-               [search-block]]
+               [search-field]
+               [search-description]]
           [common/item-lister-ghost-header :pages.lister {}]))
 
 ;; ----------------------------------------------------------------------------
@@ -113,7 +125,6 @@
 (defn- view-structure
   []
   [:<> [header]
-       [elements/horizontal-separator {:size :xxl}]
        [body]
        [footer]])
 

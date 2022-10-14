@@ -6,6 +6,7 @@
               [mid-fruits.candy                         :refer [param]]
               [mid-fruits.css                           :as css]
               [mid-fruits.keyword                       :as keyword]
+              [mid-fruits.logical                       :refer [nor]]
               [mid-fruits.math                          :as math]
               [re-frame.api                             :as r]
               [x.app-components.api                     :as components]
@@ -146,56 +147,47 @@
        (reduce conj [:div {:style {:align-items "center" :border-bottom (if-not item-last? "1px solid #f0f0f0") :display "flex"}}]
                     (param cells))))
 
-;; -- Search-block components -------------------------------------------------
+;; -- Search components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn item-lister-search-field
   ; @param (keyword) lister-id
-  ; @param (map) block-props
+  ; @param (map) field-props
   ;  {:disabled? (boolean)(opt)
-  ;   :field-placeholder (metamorphic-content)(opt)}
+  ;   :placeholder (metamorphic-content)(opt)
+  ;   :search-keys (keywords in vector)}
   ;
   ; @usage
   ;  [common/item-lister-search-field :my-lister {...}]
-  [lister-id {:keys [disabled? field-placeholder]}]
+  [lister-id {:keys [disabled? placeholder search-keys]}]
   (let [viewport-small? @(r/subscribe [:environment/viewport-small?])
-        search-event     [:item-lister/search-items! lister-id {:search-keys [:name]}]]
+        search-event     [:item-lister/search-items! lister-id {:search-keys search-keys}]]
        [elements/search-field ::item-lister-search-field
                               {:autoclear?    true
                                :autofocus?    true
                                :disabled?     disabled?
                                :border-radius (if viewport-small? :none :l)
+                               :indent        {:top :xs}
                                :on-empty      search-event
                                :on-type-ended search-event
-                               :placeholder   field-placeholder}]))
+                               :placeholder   placeholder}]))
 
 (defn item-lister-search-description
   ; @param (keyword) lister-id
-  ; @param (map) block-props
+  ; @param (map) description-props
   ;  {:disabled? (boolean)(opt)}
   ;
   ; @usage
   ;  [common/item-lister-search-description :my-lister {...}]
   [lister-id {:keys [disabled?]}]
-  (let [all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
+  (let [search-term    @(r/subscribe [:item-lister/get-meta-item      lister-id :search-term])
+        all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
         description     (components/content {:content :search-results-n :replacements [all-item-count]})]
        [elements/label ::item-lister-search-description
-                       {:color     :muted
-                        :content   (if-not disabled? description)
+                       {:color     :highlight
+                        :content   (if (nor disabled? (empty? search-term)) description)
                         :font-size :xxs
                         :indent    {:top :m :left :xs}}]))
-
-(defn item-lister-search-block
-  ; @param (keyword) lister-id
-  ; @param (map) block-props
-  ;  {:disabled? (boolean)(opt)}
-  ;   :field-placeholder (metamorphic-content)(opt)}
-  ;
-  ; @usage
-  ;  [common/item-lister-search-block :my-lister {...}]
-  [lister-id block-props]
-  [:<> [item-lister-search-description lister-id block-props]
-       [item-lister-search-field       lister-id block-props]])
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -319,7 +311,7 @@
         [:div {:style {:display "flex" :grid-column-gap "12px" :padding-top "6px"}}
               [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]
               [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]]
-        [:div {:style {:width "100%" :padding-top "48px"}}
+        [:div {:style {:width "100%" :padding-top "12px" :padding-bottom "48px"}}
               [elements/ghost {:height :l}]]])
 
 ;; ----------------------------------------------------------------------------
