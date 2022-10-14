@@ -17,19 +17,57 @@
   ; @return (map)
   [db [_ selector-id]]
   ; TODO#5060
-  (let [imported-selection   (r item-selector.subs/import-selection   db selector-id)
-        imported-item-counts (r item-selector.subs/import-item-counts db selector-id)]
+  (let [stored-selection     (r item-selector.subs/get-stored-selection db selector-id)
+        imported-selection   (r item-selector.subs/import-selection     db selector-id)
+        imported-item-counts (r item-selector.subs/import-item-counts   db selector-id)]
        (as-> db % (r item-lister/import-selection! % selector-id imported-selection)
-                  (assoc-in % [:plugins :plugin-handler/meta-items selector-id :item-count] imported-item-counts))))
+                  (assoc-in % [:plugins :plugin-handler/meta-items selector-id :item-counts]        imported-item-counts)
+                  (assoc-in % [:plugins :plugin-handler/meta-items selector-id :exported-selection] stored-selection))))
 
-(defn export-selection!
+(defn store-exported-selection!
   ; @param (keyword) selector-id
   ;
   ; @return (map)
   [db [_ selector-id]]
-  (let [value-path         (r item-lister/get-meta-item           db selector-id :value-path)
-        exported-selection (r item-selector.subs/export-selection db selector-id)]
+  (let [value-path         (r item-lister/get-meta-item db selector-id :value-path)
+        exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
        (assoc-in db value-path exported-selection)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn export-item-selection!
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (map)
+  [db [_ selector-id item-id]]
+  ; Mivel az export-item-f függvény második paraméterként megkapja az elemet,
+  ; ezért szükséges a kiválasztáskor alkalmazni az export-item-f függvényt,
+  ; hogy az elem mindenképp letöltött állapotban legyen!
+  ; Pl.: A storage.media-selector plugin a mappák böngészésekor eltávolítja
+  ;      az előzőleg böngészett mappa elemeit a Re-Frame adatbázisból.
+  ; Pl.: A keresőmező használata eltávolítja a keresnek nem megfelelő elemeket
+  ;      az adatbázisból.
+  (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)
+        item          (r item-lister/get-item      db selector-id item-id)
+        item-count    (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])
+        exported-item (export-item-f item-id item item-count)]
+       (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
+               (update-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection] vector/toggle-item exported-item)
+               (assoc-in  db [:plugins :plugin-handler/meta-items selector-id :exported-selection]                    exported-item))))
+
+(defn toggle-item-selection!
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (map)
+  [db [_ selector-id item-id]]
+  (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
+          (as-> db % (r item-lister/toggle-item-selection!        % selector-id item-id)
+                     (r export-item-selection!                    % selector-id item-id))
+          (as-> db % (r item-lister/toggle-single-item-selection! % selector-id item-id)
+                     (r export-item-selection!                    % selector-id item-id))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -43,11 +81,11 @@
   ; TODO#5060 lecserélni majd a core.subs/set-meta-item! függvényre!
   ;
   ; BUG#8001
-  (if-let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id])]
+  (if-let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
           (if (< item-count 256)
-              (update-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] inc)
+              (update-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] inc)
               (return    db))
-          (assoc-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] 2)))
+          (assoc-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 2)))
 
 (defn decrease-item-count!
   ; @param (keyword) selector-id
@@ -56,9 +94,9 @@
   ; @return (map)
   [db [_ selector-id item-id]]
   ; TODO#5060
-  (let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id])]
+  (let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
        (if (> item-count 1)
-           (update-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] dec)
+           (update-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] dec)
            (return    db))))
 
 ;; ----------------------------------------------------------------------------

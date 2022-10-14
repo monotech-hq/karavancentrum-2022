@@ -49,9 +49,9 @@
        [common/list-item-structure browser-id item-dex
                                    {:cells [[common/list-item-thumbnail-icon browser-id item-dex {:icon :folder :icon-family icon-family}]
                                             [common/list-item-label          browser-id item-dex {:content alias :stretch? true}]
-                                            [common/list-item-details        browser-id item-dex {:contents [size item-count]      :width "160px"}]
+                                            [common/list-item-details        browser-id item-dex {:contents [size item-count] :width "160px"}]
                                             [common/list-item-detail         browser-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-marker         browser-id item-dex {:icon    :navigate_next}]]}]))
+                                            [common/list-item-marker         browser-id item-dex {:icon :navigate_next}]]}]))
 
 (defn directory-item
   [browser-id item-dex {:keys [id] :as directory-item}]

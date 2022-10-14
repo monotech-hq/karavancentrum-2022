@@ -16,11 +16,11 @@
   ;  {:autosave? (boolean)(opt)
   ;    Default: false
   ;   :export-item-f (function)(opt)
-  ;    Default: (fn [item-id item-count] item-id)
+  ;    Default: (fn [item-id item item-count] item-id)
   ;   :import-count-f (function)(opt)
   ;    Default: (fn [_] 1)
   ;   :import-id-f (function)(opt)
-  ;    Default: return
+  ;    Default: (fn [item-id] item-id)
   ;   :multi-select? (boolean)(opt)
   ;   :on-change (metamorphic-event)(opt)
   ;    Az esemény utolsó paraméterként megkapja a kiválasztott elem(ek)et.
@@ -43,9 +43,9 @@
   (fn [{:keys [db]} [_ selector-id autosave-id]]
       (if (or (nil? autosave-id)
               (=    autosave-id (r item-lister/get-meta-item db selector-id :autosave-id)))
-          {:db          (r item-selector.events/export-selection! db selector-id)
-           :dispatch-n [(r item-selector.subs/get-on-save         db selector-id)
-                        (r item-selector.subs/get-on-change       db selector-id)]})))
+          {:db          (r item-selector.events/store-exported-selection! db selector-id)
+           :dispatch-n [(r item-selector.subs/get-on-save                 db selector-id)
+                        (r item-selector.subs/get-on-change               db selector-id)]})))
 
 (r/reg-event-fx :item-selector/abort-autosave!
   ; @param (keyword) selector-id
@@ -63,17 +63,13 @@
   ; @param (keyword) selector-id
   ; @param (string) item-id
   (fn [{:keys [db]} [_ selector-id item-id]]
-      (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
-              ; Ha egyszerre több elemet lehetséges kiválasztani ...
-              {:db (r item-lister/toggle-item-selection! db selector-id item-id)}
-              ; Ha egyszerre csak egy elemet lehetséges kiválasztani ...
-              (let [db (r item-lister/toggle-single-item-selection! db selector-id item-id)]
-                   (if-let [autosave? (r item-lister/get-meta-item db selector-id :autosave?)]
-                           ; Ha az item-selector {:autosave? true} beállítással van használva ...
-                           ; ... az esetlegesen már folyamatban lévő automatikus mentést leállítja.
-                           (if-let [item-selected? (r item-lister/item-selected? db selector-id item-id)]
-                                   {:dispatch [:item-selector/autosave-selection! selector-id]
-                                    :db       (r item-selector.events/abort-autosave! db selector-id)}
-                                   {:db       (r item-selector.events/abort-autosave! db selector-id)})
-                           ; Ha az item-selector {:autosave? false} beállítással van használva ...
-                           {:db db})))))
+      (let [db (r item-selector.events/toggle-item-selection! db selector-id item-id)]
+           (if-let [autosave? (r item-lister/get-meta-item db selector-id :autosave?)]
+                   ; Ha az item-selector {:autosave? true} beállítással van használva ...
+                   ; ... az esetlegesen már folyamatban lévő automatikus mentést leállítja.
+                   (if-let [item-selected? (r item-lister/item-selected? db selector-id item-id)]
+                           {:dispatch [:item-selector/autosave-selection! selector-id]
+                            :db       (r item-selector.events/abort-autosave! db selector-id)}
+                           {:db       (r item-selector.events/abort-autosave! db selector-id)})
+                   ; Ha az item-selector {:autosave? false} beállítással van használva ...
+                   {:db db}))))

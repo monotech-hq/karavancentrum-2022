@@ -1,6 +1,6 @@
 
 (ns app.common.frontend.item-selector.prototypes
-    (:require [mid-fruits.candy :refer [param return]]))
+    (:require [mid-fruits.candy :refer [param]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -13,7 +13,7 @@
   ;   :import-count-f (function)
   ;   :import-id-f (function)}
   [selector-props]
-  (merge {:export-item-f  (fn [item-id item-count] item-id)
-          :import-count-f (fn [_] 1)
-          :import-id-f    return}
+  (merge {:export-item-f  (fn [item-id item item-count] item-id)
+          :import-id-f    (fn [item-id]                 item-id)
+          :import-count-f (fn [_]                             1)}
          (param selector-props)))

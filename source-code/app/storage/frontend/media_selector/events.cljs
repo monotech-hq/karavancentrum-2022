@@ -49,14 +49,4 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn file-clicked
-  [db [_ file-id]]
-  (let [file-selected? (r item-browser/item-selected? db :storage.media-selector file-id)
-        file-item (r item-browser/get-item db :storage.media-selector file-id)]
-       (println (str file-item))
-       db))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (r/reg-event-db :storage.media-selector/store-selected-items! store-selected-items!)

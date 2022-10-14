@@ -22,14 +22,15 @@
 
 (defn export-item-f
   ; @param (string) content-id
+  ; @param (map) content-item
   ; @param (integer) content-count
   ;
   ; @example
-  ;  (selector.helpers/export-item-f "my-content" 3)
+  ;  (selector.helpers/export-item-f "my-content" 1)
   ;  =>
   ;  {:content/id "my-content"}
   ;
   ; @return (map)
   ;  {:content/id (string)}
-  [content-id _]
+  [content-id _ _]
   (if content-id {:content/id content-id}))

@@ -20,7 +20,7 @@
   ; Ha az elem nem volt kiválasztva a kijelölések importálásakor (nem kapta meg a kezdeti darabszámot),
   ; és nem volt még módosítva az elem darabszáma, akkor a függvény az alapértelmezett darabszámmal tér vissza.
   (if-let [item-selected? (r item-lister/item-selected? db selector-id item-id)]
-          (get-in db [:plugins :plugin-handler/meta-items selector-id :item-count item-id] 1)
+          (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 1)
           (return 0)))
 
 ;; ----------------------------------------------------------------------------
@@ -35,9 +35,9 @@
   [db [_ selector-id]]
   (let [value-path       (r item-lister/get-meta-item db selector-id :value-path)
         stored-selection (get-in db value-path)]
-       (if (vector? stored-selection)
-           (return  stored-selection)
-           [stored-selection])))
+       (cond (vector? stored-selection) (return  stored-selection)
+             (some?   stored-selection) [stored-selection]
+             :return [])))
 
 (defn import-selection
   ; @param (keyword) selector-id
@@ -60,20 +60,6 @@
                                            (import-count-f n)))]
               (reduce f {} stored-selection))))
 
-(defn export-selection
-  ; @param (keyword) selector-id
-  ;
-  ; @return (* or * in vector)
-  [db [_ selector-id]]
-  (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)]
-       (letfn [(f [item-id] (let [item-count (r get-item-count db selector-id item-id)]
-                                 (export-item-f item-id item-count)))]
-              (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
-                      (let [selected-items (r item-lister/export-selection db selector-id)]
-                           (vector/->items selected-items f))
-                      (let [item-id (r item-lister/export-single-selection db selector-id)]
-                           (f item-id))))))
-
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -82,8 +68,8 @@
   ;
   ; @return (boolean)
   [db [_ selector-id]]
-  (not= (r get-stored-selection db selector-id)
-        (r export-selection     db selector-id)))
+  (not= (r get-stored-selection      db selector-id)
+        (r item-lister/get-meta-item db selector-id :exported-selection)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -95,7 +81,7 @@
   [db [_ selector-id]]
   (if-let [on-change (r item-lister/get-meta-item db selector-id :on-change)]
           (if-let [selection-changed? (r selection-changed? db selector-id)]
-                  (let [exported-selection (r export-selection db selector-id)]
+                  (let [exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
                        (r/metamorphic-event<-params on-change exported-selection)))))
 
 (defn get-on-save
@@ -104,7 +90,7 @@
   ; @return (metamorphic-event)
   [db [_ selector-id]]
   (if-let [on-save (r item-lister/get-meta-item db selector-id :on-save)]
-          (let [exported-selection (r export-selection db selector-id)]
+          (let [exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
                (r/metamorphic-event<-params on-save exported-selection))))
 
 ;; ----------------------------------------------------------------------------

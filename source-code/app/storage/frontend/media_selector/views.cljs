@@ -64,8 +64,7 @@
        [elements/toggle {:content     [file-item-structure selector-id item-dex file-item]
                          :disabled?   (not file-selectable?)
                          :hover-color :highlight
-                         :on-click    [:storage.media-selector/file-clicked id]}]))
-
+                         :on-click    [:item-selector/item-clicked :storage.media-selector id]}]))
 (defn- media-item
   [selector-id item-dex {:keys [mime-type] :as media-item}]
   (case mime-type "storage/directory" [directory-item selector-id item-dex media-item]

@@ -28,14 +28,15 @@
 
 (defn export-item-f
   ; @param (string) media-id
+  ; @param (map) media-item
+  ;  {:filename (string)}
   ; @param (string) media-count
   ;
   ; @example
-  ;  (media-selector.helpers/export-item-f "my-media")
+  ;  (media-selector.helpers/export-item-f "my-media" {...} 1)
   ;  =>
   ;  "/.../my-media.txt"
   ;
   ; @return (string)
-  [media-id _]
-  (let [{:keys [filename]} @(r/subscribe [:item-browser/get-item :storage.media-selector media-id])]
-       (if filename (media/filename->media-storage-uri filename))))
+  [_ {:keys [filename]} _]
+  (if filename (media/filename->media-storage-uri filename)))
