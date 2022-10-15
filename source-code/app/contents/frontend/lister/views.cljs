@@ -94,7 +94,7 @@
                                              {:label :contents}]
                                     :disabled? lister-disabled?}]))
 
-(defn- label-bar
+(defn- label
   []
   (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
        [common/surface-label :contents.lister/view
@@ -118,10 +118,10 @@
 (defn- header
   []
   (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.lister])]
-          [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
-                     [label-bar]
-                     [create-item-button]]
-               [breadcrumbs]
+          [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "24px"}}
+                     [:div [label]
+                           [breadcrumbs]]
+                     [:div [create-item-button]]]
                [search-field]
                [search-description]]
           [common/item-lister-ghost-header :contents.lister {}]))

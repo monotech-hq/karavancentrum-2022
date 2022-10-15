@@ -111,10 +111,10 @@
 (defn- header
   []
   (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :pages.lister])]
-          [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
-                     [label]
-                     [create-item-button]]
-               [breadcrumbs]
+          [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "24px"}}
+                     [:div [label]
+                           [breadcrumbs]]
+                     [:div [create-item-button]]]
                [search-field]
                [search-description]]
           [common/item-lister-ghost-header :pages.lister {}]))
