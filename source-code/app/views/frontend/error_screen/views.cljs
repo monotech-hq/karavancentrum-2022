@@ -35,13 +35,13 @@
                           :horizontal-align :center}]))
 
 (defn- view-structure
-  [surface-id content-props]
-  [:<> [error-icon   surface-id content-props]
-       [error-title  surface-id content-props]
-       [error-helper surface-id content-props]
+  [surface-id screen-props]
+  [:<> [error-icon            surface-id screen-props]
+       [error-title           surface-id screen-props]
+       [error-helper          surface-id screen-props]
        [common/go-back-button surface-id]])
 
 (defn view
-  [surface-id content-props]
+  [surface-id screen-props]
   [surface-a/layout surface-id
-                    {:content [view-structure surface-id content-props]}])
+                    {:content [view-structure surface-id screen-props]}])

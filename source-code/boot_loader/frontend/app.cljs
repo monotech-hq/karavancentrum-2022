@@ -2,7 +2,7 @@
 (ns boot-loader.frontend.app
     (:require ; Monoset modules
               [pathom.api]
-              [x.app-developer.api :as developer]
+              [developer-tools.api :as developer-tools]
               [x.boot-loader.api   :as boot-loader]
 
               ; App modules
@@ -25,7 +25,7 @@
 (defn- app-structure
   [ui-structure]
   [:<> [ui-structure]
-       [developer/magic-button]])
+       [developer-tools/magic-button]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

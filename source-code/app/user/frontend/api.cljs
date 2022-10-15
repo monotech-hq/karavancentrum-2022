@@ -5,7 +5,4 @@
               [app.user.frontend.login-screen.effects]
               [app.user.frontend.login-screen.events]
               [app.user.frontend.login-screen.subs]
-              [app.user.frontend.profile-settings.effects]
-              [app.user.frontend.profile-settings.events]))
-
- 
+              [app.user.frontend.profile-settings.effects]))

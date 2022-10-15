@@ -11,7 +11,7 @@
   ; @param (keyword) error-id
   ;  :no-connection, :no-permission, :page-not-found, :under-construction, :under-maintenance
   (fn [_ [_ error-id]]
-      (let [content-props (get error-screen.config/ERROR-CONTENT error-id)]
+      (let [screen-props (get error-screen.config/ERROR-CONTENT error-id)]
            {:dispatch-n [[:ui/restore-default-window-title!]
                          [:ui/render-surface! :views.error-screen/view
-                                              {:content [error-screen.views/view :views.error-screen/view content-props]}]]})))
+                                              {:content [error-screen.views/view :views.error-screen/view screen-props]}]]})))

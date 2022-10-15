@@ -144,7 +144,7 @@
                                       [:div (forms/form-row-attributes)
                                            [:div (forms/form-block-attributes {:ratio 50})
                                                  [phone-numbers-field group-dex group-props]]
-                                           [:div (forms/form-block-attributes {:ratio 100})
+                                           [:div (forms/form-block-attributes {:ratio 50})
                                                  [email-addresses-field group-dex group-props]]]]
                                      [:div {:style {:display :flex :justify-content :flex-end}}
                                            [duplicate-contact-group-button group-dex group-props]

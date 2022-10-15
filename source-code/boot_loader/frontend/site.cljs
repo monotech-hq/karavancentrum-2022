@@ -2,7 +2,7 @@
 (ns boot-loader.frontend.site
     (:require ; Monoset modules
               [pathom.api]
-              [x.app-developer.api :as developer]
+              [developer-tools.api :as developer-tools]
               [x.boot-loader.api   :as boot-loader]
 
               ; Site modules
@@ -16,7 +16,7 @@
 (defn- site-structure
   [ui-structure]
   [:<> [site.wrapper/view ui-structure]
-       [developer/magic-button]])
+       [developer-tools/magic-button]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

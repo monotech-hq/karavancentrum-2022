@@ -1,17 +1,14 @@
 
 (ns app.settings.frontend.editor.effects
-    (:require [app.settings.frontend.editor.events :as editor.events]
-              [app.settings.frontend.editor.views  :as editor.views]
-              [re-frame.api                        :as r :refer [r]]))
+    (:require [app.settings.frontend.editor.views :as editor.views]
+              [re-frame.api                       :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (r/reg-event-fx :settings.editor/load-editor!
-  (fn [{:keys [db]} _]
-      {:dispatch-n [[:gestures/init-view-handler! :settings.editor
-                                                  {:default-view-id :sales}]
-                    [:settings.editor/render-editor!]]}))
+  [:views.blank-page/load-page! :settings.editor/view
+                                {:title :settings :helper :there-is-no-available-settings}])
 
 (r/reg-event-fx :settings.editor/render-editor!
   [:ui/render-surface! :settings.editor/view
