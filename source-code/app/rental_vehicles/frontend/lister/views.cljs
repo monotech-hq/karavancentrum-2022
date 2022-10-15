@@ -117,10 +117,10 @@
 (defn- header
   []
   (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :rental-vehicles.lister])]
-          [:<> [:div {:style {:display :flex :justify-content :space-between :flex-wrap :wrap}}
-                     [label]
-                     [create-item-button]]
-               [breadcrumbs]
+          [:<> [:div {:style {:display "flex" :justify-content "space-between" :flex-wrap "wrap" :grid-row-gap "48px"}}
+                     [:div [label]
+                           [breadcrumbs]]
+                     [:div [create-item-button]]]
                [search-field]
                [search-description]]
           [common/item-lister-ghost-header :rental-vehicles.lister {}]))
