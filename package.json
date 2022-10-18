@@ -5,6 +5,7 @@
     "@ckeditor/ckeditor5-dev-utils": "^31.1.1",
     "@ckeditor/ckeditor5-editor-classic": "^35.2.1",
     "@ckeditor/ckeditor5-essentials": "^35.2.1",
+    "@ckeditor/ckeditor5-font": "^35.2.1",
     "@ckeditor/ckeditor5-paragraph": "^35.2.1",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@ckeditor/ckeditor5-theme-lark": "^35.2.1",
