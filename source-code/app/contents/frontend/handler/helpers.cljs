@@ -16,5 +16,8 @@
   ;
   ; @return (vector)
   [body]
+  ; Az app-fruits.html/to-hiccup függvény az átadott html string első html elemét
+  ; konvertálja hiccup típusra, ezért szükséges a tartalmat egy div elembe helyezni,
+  ; hogy az egész tartalom az első elemben legyen!
   (if (string/nonempty? body)
       (html/to-hiccup (str "<div>"body"</div>"))))

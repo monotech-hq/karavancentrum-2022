@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-selector.helpers
     (:require [app.storage.frontend.core.config :as core.config]
-              [mid-fruits.io                    :as io]
+              [io.api                           :as io]
               [re-frame.api                     :as r]
               [x.app-media.api                  :as media]))
 

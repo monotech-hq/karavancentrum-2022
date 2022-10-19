@@ -1,8 +1,8 @@
 
 (ns app.storage.backend.file-uploader.prototypes
     (:require [app.storage.backend.core.helpers :as core.helpers]
-              [mongo-db.api                     :as mongo-db]
-              [server-fruits.io                 :as io]))
+              [io.api                           :as io]
+              [mongo-db.api                     :as mongo-db]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

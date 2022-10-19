@@ -5,10 +5,10 @@
               [app.storage.backend.file-uploader.prototypes      :as file-uploader.prototypes]
               [app.storage.backend.core.side-effects             :as core.side-effects]
               [com.wsscode.pathom3.connect.operation             :as pathom.co :refer [defmutation]]
+              [io.api                                            :as io]
               [mid-fruits.candy                                  :refer [return]]
               [mongo-db.api                                      :as mongo-db]
               [pathom.api                                        :as pathom]
-              [server-fruits.io                                  :as io]
               [x.server-media.api                                :as media]))
 
 ;; ----------------------------------------------------------------------------
@@ -47,7 +47,7 @@
        (if (capacity-handler.side-effects/capacity-limit-exceeded? total-size)
            (return :capacity-limit-exceeded)
            (when-let [destination-item (mongo-db/get-document-by-id "storage" destination-id)]
-                     (let [destination-path (get  destination-item :media/path)
+                     (let [destination-path (get  destination-item :media/path [])
                            item-path        (conj destination-path {:media/id destination-id})]
                           ; A feltöltés véglegesítése előtt lefoglalja a szükséges tárhely-kapacitást,
                           ; így az egyszerre történő feltöltések nem léphetik át a megengedett tárhely-kapacitást ...

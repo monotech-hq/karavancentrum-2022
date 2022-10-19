@@ -2,10 +2,10 @@
 (ns app.contents.frontend.editor.views
     (:require [app.common.frontend.api  :as common]
               [app.storage.frontend.api :as storage]
+              [engines.text-editor.api  :as text-editor]
               [forms.api                :as forms]
               [layouts.surface-a.api    :as surface-a]
               [plugins.item-editor.api  :as item-editor]
-              [plugins.text-editor.api  :as text-editor]
               [re-frame.api             :as r]
               [x.app-elements.api       :as elements]))
 

@@ -2,8 +2,8 @@
 (ns app.storage.frontend.media-selector.views
     (:require [app.common.frontend.api          :as common]
               [app.storage.frontend.core.config :as core.config]
+              [io.api                           :as io]
               [layouts.popup-a.api              :as popup-a]
-              [mid-fruits.io                    :as io]
               [mid-fruits.format                :as format]
               [plugins.item-browser.api         :as item-browser]
               [re-frame.api                     :as r]
@@ -179,7 +179,7 @@
                                     {:primary-button   {:label :save! :on-click [:item-selector/save-selection! :storage.media-selector]}
                                      :secondary-button (if-let [autosaving? @(r/subscribe [:item-selector/autosaving? :storage.media-selector])]
                                                                {:label :abort!  :on-click [:item-selector/abort-autosave! :storage.media-selector]}
-                                                               {:label :cancel! :on-click [:ui/close-popup! :storage.media-selector/view]})
+                                                               {:label :cancel! :on-click [:ui/remove-popup! :storage.media-selector/view]})
                                      :label header-label}]
             (if-let [first-data-received? @(r/subscribe [:item-browser/first-data-received? :storage.media-selector])]
                     [control-bar]

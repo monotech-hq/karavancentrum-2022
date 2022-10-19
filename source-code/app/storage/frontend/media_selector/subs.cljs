@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-selector.subs
-    (:require [mid-fruits.candy         :refer [return]]
-              [mid-fruits.io            :as io]
+    (:require [io.api                   :as io]
+              [mid-fruits.candy         :refer [return]]
               [mid-fruits.vector        :as vector]
               [plugins.item-browser.api :as item-browser]
               [re-frame.api             :as r :refer [r]]

@@ -269,7 +269,7 @@
                         {:border-radius :s
                          :hover-color   :highlight
                          :keypress      {:key-code 27}
-                         :on-click      [:ui/close-popup! :views.menu-screen/view]
+                         :on-click      [:ui/remove-popup! :views.menu-screen/view]
                          :preset        :close}])
 
 (defn- header

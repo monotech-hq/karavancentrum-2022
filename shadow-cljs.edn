@@ -6,7 +6,9 @@
                            :after-load boot-loader.frontend.site/render-site!}
                 :modules {:site {:init-fn boot-loader.frontend.site/start-site!}}
                 :output-dir "resources/public/js/core"
-                :compiler-options {:infer-externs true}
+                ; BUG#0012
+                ; A CKEditor miatt szükséges az {:output-feature-set :es-next} beállítás!
+                :compiler-options {:infer-externs true :output-feature-set :es-next}
                 :target :browser}
 
   :app          {:asset-path "/js/core"
@@ -15,7 +17,6 @@
                  :modules {:app {:init-fn boot-loader.frontend.app/start-app!}}
                  :output-dir "resources/public/js/core"
                  ; BUG#0012
-                 ; A CKEditor miatt szükséges az {:output-feature-set :es-next} beállítás!
                  :compiler-options {:infer-externs :auto :output-feature-set :es-next}
                  :target :browser}
 

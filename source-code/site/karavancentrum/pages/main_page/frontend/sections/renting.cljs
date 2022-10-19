@@ -9,10 +9,10 @@
 ;; -----------------------------------------------------------------------------
 
 (def filter-config {:alcove-rv          {:icon "/site/icons/filter-icons/alcove-rv-light.png"}
-                    :caravan            {:icon "/site/icons/filter-icons/caravan-light.png"}
                     :semi-integrated-rv {:icon "/site/icons/filter-icons/semi-integrated-rv-light.png"}
-                    :trailer            {:icon "/site/icons/filter-icons/trailer-light.png"}
-                    :van-rv             {:icon "/site/icons/filter-icons/van-rv-light.png"}})
+                    :van-rv             {:icon "/site/icons/filter-icons/van-rv-light.png"}
+                    :caravan            {:icon "/site/icons/filter-icons/caravan-light.png"}
+                    :trailer            {:icon "/site/icons/filter-icons/trailer-light.png"}})
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

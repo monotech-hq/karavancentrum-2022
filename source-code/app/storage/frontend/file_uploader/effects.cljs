@@ -44,7 +44,7 @@
 (r/reg-event-fx :storage.file-uploader/cancel-uploader!
   (fn [{:keys [db]} [_ uploader-id]]
       {:db       (r file-uploader.events/clean-uploader! db uploader-id)
-       :dispatch [:ui/close-popup! :storage.file-uploader/view]}))
+       :dispatch [:ui/remove-popup! :storage.file-uploader/view]}))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -71,7 +71,7 @@
 (r/reg-event-fx :storage.file-uploader/progress-started
   (fn [_ [_ uploader-id]]
       {:dispatch-n [[:storage.file-uploader/render-progress-notification! uploader-id]
-                    [:ui/close-popup! :storage.file-uploader/view]]}))
+                    [:ui/remove-popup! :storage.file-uploader/view]]}))
 
 (r/reg-event-fx :storage.file-uploader/progress-successed
   (fn [{:keys [db]} [_ uploader-id]]
@@ -100,7 +100,7 @@
       ;    közötti időben is indítható új feltöltési folyamat!)
       {:dispatch-later [{:ms 500 :dispatch [:storage.file-uploader/clean-uploader! uploader-id]}]
        :dispatch-if [(not (r file-uploader.subs/file-upload-in-progress? db))
-                     [:ui/close-bubble! :storage.file-uploader/progress-notification]]}))
+                     [:ui/remove-bubble! :storage.file-uploader/progress-notification]]}))
 
 (r/reg-event-fx :storage.file-uploader/render-uploader!
   (fn [_ [_ uploader-id]]

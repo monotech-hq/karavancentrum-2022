@@ -3,10 +3,10 @@
     (:require [app.common.frontend.api                    :as common]
               [app.storage.frontend.core.config           :as core.config]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
+              [io.api                                     :as io]
               [layouts.surface-a.api                      :as surface-a]
               [mid-fruits.format                          :as format]
               [mid-fruits.keyword                         :as keyword]
-              [mid-fruits.io                              :as io]
               [plugins.item-browser.api                   :as item-browser]
               [re-frame.api                               :as r]
               [x.app-components.api                       :as components]
@@ -175,16 +175,11 @@
 (defn media-browser-header
   []
   [common/item-lister-header :storage.media-browser
-                             {:cells [[common/item-lister-header-spacer :storage.media-browser
-                                                                        {:width "108px"}]
-                                      [common/item-lister-header-cell   :storage.media-browser
-                                                                        {:label :name          :order-by-key :name :stretch? true}]
-                                      [common/item-lister-header-cell   :storage.media-browser
-                                                                        {:label :size          :order-by-key :size        :width "160px"}]
-                                      [common/item-lister-header-cell   :storage.media-browser
-                                                                        {:label :last-modified :order-by-key :modified-at :width "160px"}]
-                                      [common/item-lister-header-spacer :storage.media-browser
-                                                                        {:width "36px"}]]
+                             {:cells [[common/item-lister-header-spacer :storage.media-browser {:width "108px"}]
+                                      [common/item-lister-header-cell   :storage.media-browser {:label :name          :order-by-key :name :stretch? true}]
+                                      [common/item-lister-header-cell   :storage.media-browser {:label :size          :order-by-key :size        :width "160px"}]
+                                      [common/item-lister-header-cell   :storage.media-browser {:label :last-modified :order-by-key :modified-at :width "160px"}]
+                                      [common/item-lister-header-spacer :storage.media-browser {:width "36px"}]]
                               :control-bar [control-bar]}])
 
 ;; ----------------------------------------------------------------------------

@@ -5,6 +5,8 @@
               [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]
               [x.app-elements.api      :as elements]
+
+              ; TEMP
               [plugins.dnd-kit.api :as dnd-kit]))
 
 ;; ----------------------------------------------------------------------------
@@ -29,7 +31,7 @@
                                             [common/list-item-marker       lister-id item-dex {:icon :navigate_next}]]}]))
 
 (defn vehicle-item
-  [lister-id item-dex {:keys [id] :as item} {:keys [attributes listeners isDragging] :as dnd-kit-props}]
+  [lister-id item-dex {:keys [id] :as item} {:keys [isDragging] :as dnd-kit-props}]
   [elements/toggle {:background-color (if isDragging :highlight)
                     :content          [vehicle-item-structure lister-id item-dex item dnd-kit-props]
                     :hover-color      :highlight
@@ -59,12 +61,9 @@
 (defn- vehicle-lister-header
   []
   [common/item-lister-header :rental-vehicles.lister
-                             {:cells [[common/item-lister-header-spacer :rental-vehicles.lister
-                                                                        {:width "108px"}]
-                                      [common/item-lister-header-cell   :rental-vehicles.lister
-                                                                        {:label :name :stretch? true}]
-                                      [common/item-lister-header-cell   :rental-vehicles.lister
-                                                                        {:label :last-modified :width "160px"}]
+                             {:cells [[common/item-lister-header-spacer :rental-vehicles.lister {:width "144px"}]
+                                      [common/item-lister-header-cell   :rental-vehicles.lister {:label :name :stretch? true}]
+                                      [common/item-lister-header-cell   :rental-vehicles.lister {:label :last-modified :width "160px"}]
                                       [common/item-lister-header-spacer :rental-vehicles.lister
                                                                         {:width "36px"}]]}])
 

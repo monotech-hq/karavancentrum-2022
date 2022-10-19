@@ -19,8 +19,8 @@
   [env _]
   (let [get-pipeline   (item-lister/env->get-pipeline   env :rental-vehicles.lister)
         count-pipeline (item-lister/env->count-pipeline env :rental-vehicles.lister)]
-       {:documents      (mongo-db/get-documents-by-pipeline   "rental_vehicles" get-pipeline)
-        :document-count (mongo-db/count-documents-by-pipeline "rental_vehicles" count-pipeline)}))
+       {:items          (mongo-db/get-documents-by-pipeline   "rental_vehicles" get-pipeline)
+        :all-item-count (mongo-db/count-documents-by-pipeline "rental_vehicles" count-pipeline)}))
 
 (defresolver get-items
              ; @param (map) env

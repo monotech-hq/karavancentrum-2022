@@ -6,12 +6,13 @@
               [app.storage.backend.media-browser.prototypes :as media-browser.prototypes]
               [app.storage.backend.core.side-effects        :as core.side-effects]
               [com.wsscode.pathom3.connect.operation        :as pathom.co :refer [defmutation]]
+              [io.api                                       :as io]
               [mid-fruits.candy                             :refer [return]]
               [mid-fruits.vector                            :as vector]
               [mongo-db.api                                 :as mongo-db]
               [pathom.api                                   :as pathom]
               [plugins.item-browser.api                     :as item-browser]
-              [server-fruits.io                             :as io]
+
               [time.api                                     :as time]))
 
 ;; -- Permanently delete item(s) functions ------------------------------------
@@ -207,8 +208,8 @@
   ;
   ; @return (namespaced map)
   [{:keys [request] :as env} {:keys [destination-id item-id parent-id] :as mutation-props}]
-  (let [prototype-f #(media-browser.prototypes/duplicated-file-prototype env mutation-props %)]
-       (when-let [copy-item (mongo-db/duplicate-document! "storage" item-id {:prototype-f prototype-f})]
+  (let [prepare-f #(media-browser.prototypes/duplicated-file-prototype env mutation-props %)]
+       (when-let [copy-item (mongo-db/duplicate-document! "storage" item-id {:prepare-f prepare-f})]
                  (if (= destination-id parent-id)
                      (core.side-effects/attach-item! env destination-id copy-item))
                  (core.side-effects/update-path-directories! env copy-item +)
@@ -242,8 +243,8 @@
   ;
   ; B) Ha az éppen duplikálódó mappa NEM tartalmaz további elemeket, ...
   ;    ... visszatér a copy-item térképpel.
-  (let [prototype-f #(media-browser.prototypes/duplicated-directory-prototype env mutation-props %)]
-       (when-let [copy-item (mongo-db/duplicate-document! "storage" item-id {:prototype-f prototype-f})]
+  (let [prepare-f #(media-browser.prototypes/duplicated-directory-prototype env mutation-props %)]
+       (when-let [copy-item (mongo-db/duplicate-document! "storage" item-id {:prepare-f prepare-f})]
                  (when (= destination-id parent-id)
                        (core.side-effects/attach-item!             env destination-id copy-item)
                        (core.side-effects/update-path-directories! env                copy-item))
@@ -321,7 +322,7 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (mongo-db/save-document! "storage" item {:prototype-f #(common/updated-document-prototype request %)}))
+  (mongo-db/save-document! "storage" item {:prepare-f #(common/updated-document-prototype request %)}))
 
 (defmutation update-item!
              ; @param (map) env

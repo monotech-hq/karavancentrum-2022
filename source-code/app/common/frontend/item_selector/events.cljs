@@ -29,33 +29,51 @@
   ;
   ; @return (map)
   [db [_ selector-id]]
-  (let [value-path         (r item-lister/get-meta-item db selector-id :value-path)
-        exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
+  (let [value-path         (r item-lister/get-meta-item           db selector-id :value-path)
+        exported-selection (r item-selector.subs/export-selection db selector-id)]
        (assoc-in db value-path exported-selection)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn export-item-selection!
+(defn toggle-exported-selection!
   ; @param (keyword) selector-id
   ; @param (string) item-id
   ;
   ; @return (map)
   [db [_ selector-id item-id]]
+  ; XXX#6781
   ; Mivel az export-item-f függvény második paraméterként megkapja az elemet,
   ; ezért szükséges a kiválasztáskor alkalmazni az export-item-f függvényt,
-  ; hogy az elem mindenképp letöltött állapotban legyen!
+  ; hogy az elem mindenképp letöltött állapotban legyen (a függvény alkalmazásakor)!
   ; Pl.: A storage.media-selector plugin a mappák böngészésekor eltávolítja
   ;      az előzőleg böngészett mappa elemeit a Re-Frame adatbázisból.
-  ; Pl.: A keresőmező használata eltávolítja a keresnek nem megfelelő elemeket
-  ;      az adatbázisból.
+  ; Pl.: A keresőmező használata eltávolítja a keresnek nem megfelelő elemeket az adatbázisból.
+  ;
+  ; BUG#8001 (app.common.frontend.item-selector.subs)
   (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)
         item          (r item-lister/get-item      db selector-id item-id)
-        item-count    (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])
+        item-count    (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 1)
         exported-item (export-item-f item-id item item-count)]
-       (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
-               (update-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection] vector/toggle-item exported-item)
-               (assoc-in  db [:plugins :plugin-handler/meta-items selector-id :exported-selection]                    exported-item))))
+       (update-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection] vector/toggle-item exported-item)))
+
+(defn toggle-exported-single-selection!
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (map)
+  [db [_ selector-id item-id]]
+  ; XXX#6781
+  ;
+  ; BUG#8001 (app.common.frontend.item-selector.subs)
+  (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)
+        item          (r item-lister/get-item      db selector-id item-id)
+        item-count    (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 1)
+        exported-item (export-item-f item-id item item-count)]
+       (let [exported-selection (get-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection])]
+            (if (= exported-selection [exported-item])
+                (dissoc-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection])
+                (assoc-in  db [:plugins :plugin-handler/meta-items selector-id :exported-selection] [exported-item])))))
 
 (defn toggle-item-selection!
   ; @param (keyword) selector-id
@@ -65,9 +83,9 @@
   [db [_ selector-id item-id]]
   (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
           (as-> db % (r item-lister/toggle-item-selection!        % selector-id item-id)
-                     (r export-item-selection!                    % selector-id item-id))
+                     (r toggle-exported-selection!                % selector-id item-id))
           (as-> db % (r item-lister/toggle-single-item-selection! % selector-id item-id)
-                     (r export-item-selection!                    % selector-id item-id))))
+                     (r toggle-exported-single-selection!         % selector-id item-id))))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -80,12 +98,22 @@
   [db [_ selector-id item-id]]
   ; TODO#5060 lecserélni majd a core.subs/set-meta-item! függvényre!
   ;
-  ; BUG#8001
-  (if-let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
-          (if (< item-count 256)
-              (update-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] inc)
-              (return    db))
-          (assoc-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 2)))
+  ; BUG#8001 (app.common.frontend.item-selector.subs)
+  ;
+  ; BUG#6781
+  ; Mivel a kiválasztások exportálása a kiválasztáskor történik meg és a kiválasztások
+  ; mentésekor már csak eltárolásra kerül, ezért az elemszámok módosításakor szükséges
+  ; aktualizálni az adott elem exportált kiválasztását is.
+  ; Mivel az exportált elem nem feltétlenül egyezik meg a megváltozott elemszámú változatával,
+  ; ezért az elemszám változása előtt kitörli az elemet az exportált kiválasztások közül,
+  ; majd a változás után újraexportálja azt.
+  (as-> db % (r toggle-item-selection! % selector-id item-id)
+             (if-let [item-count (get-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
+                     (if (< item-count 256)
+                         (update-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] inc)
+                         (return    %))
+                     (assoc-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 2))
+             (r toggle-item-selection! % selector-id item-id)))
 
 (defn decrease-item-count!
   ; @param (keyword) selector-id
@@ -94,10 +122,14 @@
   ; @return (map)
   [db [_ selector-id item-id]]
   ; TODO#5060
-  (let [item-count (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
-       (if (> item-count 1)
-           (update-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] dec)
-           (return    db))))
+  ;
+  ; BUG#6781
+  (as-> db % (r toggle-item-selection! % selector-id item-id)
+             (let [item-count (get-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
+                  (if (> item-count 1)
+                      (update-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] dec)
+                      (return    %)))
+             (r toggle-item-selection! % selector-id item-id)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

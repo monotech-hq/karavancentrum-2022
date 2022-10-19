@@ -8,14 +8,18 @@
 (defn- pdf-preview
   ; @param (keyword) preview-id
   ; @param (map) preview-props
-  ;  {:src (string)}
-  [_ {:keys [src]}]
-  [:iframe {:src src :title "Preview" :style {:width "100%" :height "600px" :border-radius "var( --border-radius-m )"}}])
+  ;  {:height (string)
+  ;   :src (string)
+  ;   :width (string)}
+  [_ {:keys [height src width]}]
+  [:iframe {:src src :title "Preview" :style {:height height :width width :border-radius "var( --border-radius-m )"}}])
 
 (defn element
   ; @param (keyword)(opt) preview-id
   ; @param (map) preview-props
-  ;  {:src (string)}
+  ;  {:height (string)
+  ;   :src (string)
+  ;   :width (string)}
   ;
   ; @usage
   ;  [common/pdf-preview {...}]

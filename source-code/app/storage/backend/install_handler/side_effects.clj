@@ -3,9 +3,9 @@
     (:require [app.common.backend.api                     :as common]
               [app.storage.backend.core.config            :as core.config]
               [app.storage.backend.install-handler.config :as install-handler.config]
+              [io.api                                     :as io]
               [mongo-db.api                               :as mongo-db]
-              [server-fruits.io                           :as io]
-              [x.server-core.api                          :as r :refer [r]]
+              [re-frame.api                               :as r]
               [x.server-media.api                         :as media]
               [x.server-user.api                          :as user]))
 
@@ -15,7 +15,7 @@
 (defn- check-install!
   [_]
   (let [request {:session user/SYSTEM-USER-ACCOUNT}
-        options {:prototype-f #(common/added-document-prototype request %)}
+        options {:prepare-f #(common/added-document-prototype request %)}
         ; Get sample file filesize
         sample-file-filepath (media/filename->media-storage-filepath core.config/SAMPLE-FILE-FILENAME)
         sample-file-filesize (io/get-filesize sample-file-filepath)]

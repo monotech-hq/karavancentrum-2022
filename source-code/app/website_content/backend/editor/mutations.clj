@@ -2,9 +2,9 @@
 (ns app.website-content.backend.editor.mutations
     (:require [app.website-content.backend.handler.config :as handler.config]
               [com.wsscode.pathom3.connect.operation      :as pathom.co :refer [defmutation]]
+              [io.api                                     :as io]
               [mid-fruits.candy                           :refer [return]]
-              [pathom.api                                 :as pathom]
-              [server-fruits.io                           :as io]))
+              [pathom.api                                 :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

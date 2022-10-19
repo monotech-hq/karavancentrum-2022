@@ -3,9 +3,18 @@
          "source-code"
          "resources"
 
-         ; clj-htmltopdf paths
-         "clj-htmltopdf/resources"
-         "clj-htmltopdf/src"
+         ; Submodule paths
+         "submodules/dom-api/source-code/cljs"
+         "submodules/io-api/source-code/clj"
+         "submodules/io-api/source-code/cljc"
+         "submodules/io-api/source-code/cljs"
+         "submodules/mongo-db-api/source-code/clj"
+         "submodules/pathom-api/source-code/clj"
+         "submodules/pathom-api/source-code/cljs"
+         "submodules/re-frame-api/source-code/cljc"
+         "submodules/time-api/source-code/clj"
+         "submodules/time-api/source-code/cljc"
+         "submodules/time-api/source-code/cljs"
 
          ; monoset paths
          "monoset/deps"

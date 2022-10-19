@@ -45,8 +45,8 @@
   [env _]
   (let [get-pipeline   (item-browser/env->get-pipeline   env :storage.media-browser)
         count-pipeline (item-browser/env->count-pipeline env :storage.media-browser)]
-       {:documents      (mongo-db/get-documents-by-pipeline   "storage"   get-pipeline)
-        :document-count (mongo-db/count-documents-by-pipeline "storage" count-pipeline)}))
+       {:items          (mongo-db/get-documents-by-pipeline   "storage" get-pipeline)
+        :all-item-count (mongo-db/count-documents-by-pipeline "storage" count-pipeline)}))
 
 (defresolver get-items
              ; @param (map) env

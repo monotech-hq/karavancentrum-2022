@@ -2,6 +2,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-basic-styles": "^35.2.1",
     "@ckeditor/ckeditor5-build-classic": "^35.2.0",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^35.2.1",
     "@ckeditor/ckeditor5-dev-utils": "^31.1.1",
     "@ckeditor/ckeditor5-editor-classic": "^35.2.1",
     "@ckeditor/ckeditor5-essentials": "^35.2.1",

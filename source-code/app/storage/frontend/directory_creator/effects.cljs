@@ -38,7 +38,7 @@
             query          (r directory-creator.queries/get-create-directory-query          db creator-id directory-name)
             validator-f   #(r directory-creator.validators/create-directory-response-valid? db creator-id %)]
            {:db       (r ui/fake-process! db 15)
-            :dispatch-n [[:ui/close-popup! :storage.directory-creator/view]
+            :dispatch-n [[:ui/remove-popup! :storage.directory-creator/view]
                          [:pathom/send-query! :storage.directory-creator/create-directory!
                                               {:query query :validator-f validator-f
                                                :on-success [:storage.directory-creator/directory-created         creator-id]

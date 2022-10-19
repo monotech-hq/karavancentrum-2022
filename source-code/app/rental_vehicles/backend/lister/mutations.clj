@@ -81,8 +81,8 @@
   ;
   ; @return (keywords in vector)
   [{:keys [request]} {:keys [item-ids]}]
-  (let [prototype-f #(common/duplicated-document-prototype request %)]
-       (mongo-db/duplicate-documents! "rental_vehicles" item-ids {:ordered? true :prototype-f prototype-f})))
+  (let [prepare-f #(common/duplicated-document-prototype request %)]
+       (mongo-db/duplicate-documents! "rental_vehicles" item-ids {:ordered? true :prepare-f prepare-f})))
 
 (defmutation duplicate-items!
              ; @param (map) env

@@ -52,14 +52,10 @@
 (defn- content-lister-header
   []
   [common/item-lister-header :contents.lister
-                             {:cells [[common/item-lister-header-spacer :contents.lister
-                                                                        {:width "108px"}]
-                                      [common/item-lister-header-cell   :contents.lister
-                                                                        {:label :name          :order-by-key :name :stretch? true}]
-                                      [common/item-lister-header-cell   :contents.lister
-                                                                        {:label :last-modified :order-by-key :modified-at :width "160px"}]
-                                      [common/item-lister-header-spacer :contents.lister
-                                                                        {:width "36px"}]]}])
+                             {:cells [[common/item-lister-header-spacer :contents.lister {:width "108px"}]
+                                      [common/item-lister-header-cell   :contents.lister {:label :name          :order-by-key :name :stretch? true}]
+                                      [common/item-lister-header-cell   :contents.lister {:label :last-modified :order-by-key :modified-at :width "160px"}]
+                                      [common/item-lister-header-spacer :contents.lister {:width "36px"}]]}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

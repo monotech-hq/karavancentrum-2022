@@ -50,7 +50,7 @@
   ; @param (string or strings in vector) exported-items
   (fn [_ [_ on-save exported-items]]
       (let [on-save (r/metamorphic-event<-params on-save exported-items)]
-           {:dispatch-n [on-save [:ui/close-popup! :storage.media-selector/view]]})))
+           {:dispatch-n [on-save [:ui/remove-popup! :storage.media-selector/view]]})))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

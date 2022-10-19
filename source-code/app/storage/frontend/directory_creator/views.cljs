@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.directory-creator.views
-    (:require [layouts.popup-a.api :as popup-a]
-              [mid-fruits.io       :as io]
+    (:require [io.api              :as io]
+              [layouts.popup-a.api :as popup-a]
               [re-frame.api        :as r]
               [x.app-elements.api  :as elements]))
 
@@ -16,7 +16,7 @@
                     :indent      {:horizontal :xxs :vertical :xxs}
                     :keypress    {:key-code 27 :required? true}
                     :label       :cancel!
-                    :on-click    [:ui/close-popup! :storage.directory-creator/view]}])
+                    :on-click    [:ui/remove-popup! :storage.directory-creator/view]}])
 
 (defn header-label
   [creator-id]

@@ -48,4 +48,4 @@
   ; @param (map) exported-item
   (fn [_ [_ on-save exported-item]]
       (let [on-save (r/metamorphic-event<-params on-save exported-item)]
-           {:dispatch-n [on-save [:ui/close-popup! :contents.selector/view]]})))
+           {:dispatch-n [on-save [:ui/remove-popup! :contents.selector/view]]})))

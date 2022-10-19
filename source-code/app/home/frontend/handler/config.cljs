@@ -6,9 +6,8 @@
 
 ; @constant (keywords in vector)
 (def GROUP-ORDER [:business
-                  :products
+                  :products-and-services
                   :vehicles
-                  :parts
                   :content
                   :website
                   :settings

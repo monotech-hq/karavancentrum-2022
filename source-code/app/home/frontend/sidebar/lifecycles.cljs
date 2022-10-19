@@ -1,13 +1,12 @@
 
-(ns app.home.frontend.screen.lifecycles
-    (:require [x.app-core.api :as core]))
+(ns app.home.frontend.sidebar.lifecycles
+    (:require [app.home.frontend.sidebar.views :as sidebar.views]
+              [x.app-core.api                  :as core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (core/reg-lifecycles! ::lifecycles
-  {:on-app-boot [:ui.sidebar/set-content! :home.sidebar/view
-                                          {:core-js        "app.js"
-                                           :route-template "/@app-home"
-                                           :client-event   [:home.screen/load!]
-                                           :restricted?    true}]})
+  {:on-login [:ui.sidebar/render-sidebar! :home.sidebar/view
+                                          {:content #'sidebar.views/view}]
+   :on-logout [:ui.sidebar/remove-sidebar! :home.sidebar/view]})

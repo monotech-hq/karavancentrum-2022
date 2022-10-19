@@ -60,6 +60,16 @@
                                            (import-count-f n)))]
               (reduce f {} stored-selection))))
 
+(defn export-selection
+  ; @param (keyword) selector-id
+  ;
+  ; @return (* or vector)
+  [db [_ selector-id]]
+  (let [exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
+       (if-let [multi-select? (r item-lister/get-meta-item db selector-id :multi-select?)]
+               (return exported-selection)
+               (first  exported-selection))))
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -81,7 +91,7 @@
   [db [_ selector-id]]
   (if-let [on-change (r item-lister/get-meta-item db selector-id :on-change)]
           (if-let [selection-changed? (r selection-changed? db selector-id)]
-                  (let [exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
+                  (let [exported-selection (r export-selection db selector-id)]
                        (r/metamorphic-event<-params on-change exported-selection)))))
 
 (defn get-on-save
@@ -90,7 +100,7 @@
   ; @return (metamorphic-event)
   [db [_ selector-id]]
   (if-let [on-save (r item-lister/get-meta-item db selector-id :on-save)]
-          (let [exported-selection (r item-lister/get-meta-item db selector-id :exported-selection)]
+          (let [exported-selection (r export-selection db selector-id)]
                (r/metamorphic-event<-params on-save exported-selection))))
 
 ;; ----------------------------------------------------------------------------

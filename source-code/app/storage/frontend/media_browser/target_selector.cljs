@@ -11,7 +11,7 @@
   [_]
   [elements/button :header-cancel-button
                    {;:preset :cancel-button :indent _ :keypress {:key-code 27}
-                    :on-click [:ui/close-popup! :storage.media-picker/view]}])
+                    :on-click [:ui/remove-popup! :storage.media-picker/view]}])
 
 (defn header-label
   [_]

@@ -1,7 +1,7 @@
 
 (ns app.website-config.backend.handler.helpers
     (:require [app.website-config.backend.handler.config :as handler.config]
-              [server-fruits.io                          :as io]))
+              [io.api                                    :as io]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

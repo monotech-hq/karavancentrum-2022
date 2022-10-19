@@ -1,6 +1,7 @@
 
 (ns app.storage.frontend.file-uploader.helpers
-    (:require [mid-fruits.keyword :as keyword]
+    (:require [io.api             :as io]
+              [mid-fruits.keyword :as keyword]
               [mid-fruits.string  :as string]
               [x.app-media.api    :as media]))
 
@@ -18,5 +19,5 @@
 
 (defn uploader-props->allowed-extensions-list
   [{:keys [allowed-extensions]}]
-  (let [allowed-extensions (or allowed-extensions (media/allowed-extensions))]
+  (let [allowed-extensions (or allowed-extensions (vals io/EXTENSIONS))]
        (str "." (string/join allowed-extensions ", ."))))

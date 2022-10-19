@@ -1,8 +1,8 @@
 
 (ns app.storage.frontend.media-viewer.views
-    (:require [layouts.popup-b.api :as popup-b]
+    (:require [io.api              :as io]
+              [layouts.popup-b.api :as popup-b]
               [mid-fruits.css      :as css]
-              [mid-fruits.io       :as io]
               [re-frame.api        :as r]
               [x.app-elements.api  :as elements]
               [x.app-media.api     :as media]))
@@ -16,9 +16,8 @@
         [elements/icon-button ::close-icon-button
                               {:color    :invert
                                :keypress {:key-code 27}
-                               :on-click [:ui/close-popup! :storage.media-viewer/view]
+                               :on-click [:ui/remove-popup! :storage.media-viewer/view]
                                :preset   :close}]])
-
 
 ;; -- PDF-item components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -28,8 +27,8 @@
   (let [% @(r/subscribe [:storage.media-viewer/get-current-item-props viewer-id])]
        [:iframe.storage--media-viewer--pdf {:src   (-> % :item-filename media/filename->media-storage-uri)
                                             :style {:border-radius (css/var  "border-radius-m")
-                                                    :max-height    (css/calc "100vh - 96px")
-                                                    :max-width     (css/calc "100vw - 96px")}}]))
+                                                    :height        (css/calc "100vh - 96px")
+                                                    :width         (css/calc "100vw - 96px")}}]))
 
 (defn pdf-item
   [viewer-id]

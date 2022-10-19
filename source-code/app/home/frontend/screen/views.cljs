@@ -58,6 +58,8 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- label-group-item-content
+  ; @param (map) group-item
+  ;  {}
   [{:keys [icon icon-color icon-family label]}]
   [:div {:style {:display :flex}}
         [elements/icon {:color       icon-color
@@ -69,6 +71,8 @@
                          :indent  {}}]])
 
 (defn- label-group-item
+  ; @param (map) group-item
+  ;  {}
   [{:keys [disabled? on-click] :as group-item}]
   [elements/card {:border-radius    :m
                   :content          [label-group-item-content group-item]
@@ -80,41 +84,49 @@
                   :indent           {:vertical :xs}}])
 
 (defn- label-group
+  ; @param (metamorphic-content) label
+  ; @param (?) label-group
   [label label-group]
-  (letfn [(f [group-item-list group-item]
-             (conj group-item-list [label-group-item group-item]))]
+  (letfn [(f [item-list group-item]
+             (conj item-list [label-group-item group-item]))]
          (reduce f [:<>] label-group)))
 
-(defn- horizontal-group
-  [horizontal-weight horizontal-group]
-  ; Az azonos vertical-group csoportokban és azon belül is azonos horizontal-group
-  ; csoportokban felsorolt menü elemek a label tulajdonságuk szerinti kisebb
+(defn- weight-group
+  ; @param (integer) horizontal-weight
+  ; @param (?) weight-group
+  [horizontal-weight weight-group]
+  ; XXX#0091
+  ; Az azonos menu-group csoportban és azon belül is azonos weight-group
+  ; csoportban felsorolt menü elemek a label tulajdonságuk szerinti kisebb
   ; csoportokban vannak felsorolva.
-  (let [label-groups (group-by #(-> % :label components/content) horizontal-group)]
-       (letfn [(f [label-group-list label]
-                  (conj label-group-list [label-group label (get label-groups label)]))]
+  (let [label-groups (group-by #(-> % :label components/content) weight-group)]
+       (letfn [(f [group-list label]
+                  (conj group-list [label-group label (get label-groups label)]))]
               (reduce f [:<>] (-> label-groups keys sort)))))
 
-(defn- vertical-group
+(defn- menu-group
+  ; @param (keyword) group-name
   [group-name]
-  ; Az azonos vertical-group csoportokban felsorolt menü elemek a horizontal-weight
+  ; XXX#0091
+  ; Az azonos menu-group csoportban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
   (let [group-items @(r/subscribe [:home.screen/get-menu-group-items group-name])]
        (if (vector/nonempty? group-items)
            [common/surface-box {:content [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px" :padding "12px 0"}}
-                                               (let [horizontal-groups (group-by :horizontal-weight group-items)]
-                                                    (letfn [(f [horizontal-group-list horizontal-weight]
-                                                               (conj horizontal-group-list [horizontal-group horizontal-weight (get horizontal-groups horizontal-weight)]))]
-                                                           (reduce f [:<>] (-> horizontal-groups keys sort))))]
+                                               (let [weight-groups (group-by :horizontal-weight group-items)]
+                                                    (letfn [(f [group-list horizontal-weight]
+                                                               (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
+                                                           (reduce f [:<>] (-> weight-groups keys sort))))]
                                 :indent {:top :m}
                                 :label  group-name}])))
 
 (defn- menu-groups
   []
+  ; XXX#0091
   ; A menü elemek elsődlegesen a group tulajdonságuk szerint csoportosítva
   ; vannak felsorolva a vertical-group csoportokban.
-  (letfn [(f [vertical-group-list group-name]
-             (conj vertical-group-list [vertical-group group-name]))]
+  (letfn [(f [group-list group-name]
+             (conj group-list [menu-group group-name]))]
          (reduce f [:<>] handler.config/GROUP-ORDER)))
 
 ;; ----------------------------------------------------------------------------

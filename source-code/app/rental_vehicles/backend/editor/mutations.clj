@@ -17,9 +17,9 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(->> % (common/added-document-prototype request)
-                            (editor.prototypes/vehicle-item-prototype))]
-       (mongo-db/save-document! "rental_vehicles" item {:ordered? true :prototype-f prototype-f})))
+  (let [prepare-f #(->> % (common/added-document-prototype request)
+                          (editor.prototypes/vehicle-item-prototype))]
+       (mongo-db/save-document! "rental_vehicles" item {:ordered? true :prepare-f prepare-f})))
 
 (defmutation add-item!
              ; @param (map) env
@@ -42,9 +42,9 @@
   ;
   ; @return (namespaced map)
   [{:keys [request]} {:keys [item]}]
-  (let [prototype-f #(->> % (common/updated-document-prototype request)
-                            (editor.prototypes/vehicle-item-prototype))]
-       (mongo-db/save-document! "rental_vehicles" item {:ordered? true :prototype-f prototype-f})))
+  (let [prepare-f #(->> % (common/updated-document-prototype request)
+                          (editor.prototypes/vehicle-item-prototype))]
+       (mongo-db/save-document! "rental_vehicles" item {:ordered? true :prepare-f prepare-f})))
 
 (defmutation save-item!
              ; @param (map) env

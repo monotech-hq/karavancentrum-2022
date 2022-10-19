@@ -72,7 +72,7 @@
                                {:primary-button   {:label :save! :on-click [:item-selector/save-selection! :contents.selector]}
                                 :secondary-button (if-let [autosaving? @(r/subscribe [:item-selector/autosaving? :contents.selector])]
                                                           {:label :abort!  :on-click [:item-selector/abort-autosave! :contents.selector]}
-                                                          {:label :cancel! :on-click [:ui/close-popup! :contents.selector/view]})
+                                                          {:label :cancel! :on-click [:ui/remove-popup! :contents.selector/view]})
                                 :label            (if multi-select? :select-contents! :select-content!)}]))
 
 (defn- header

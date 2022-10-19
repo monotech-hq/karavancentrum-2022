@@ -14,6 +14,6 @@
 (r/reg-event-fx :storage.alias-editor/update-item-alias!
   (fn [{:keys [db]} [_ {:keys [alias id] :as media-item}]]
       (let [updated-alias (get-in db [:storage :alias-editor/item-alias])]
-           {:dispatch [:ui/close-popup! :storage.alias-editor/view]
+           {:dispatch [:ui/remove-popup! :storage.alias-editor/view]
             :dispatch-if [(not= alias updated-alias)
                           [:item-browser/update-item! :storage.media-browser id {:alias updated-alias}]]})))

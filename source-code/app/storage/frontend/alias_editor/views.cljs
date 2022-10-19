@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.alias-editor.views
-    (:require [layouts.popup-a.api :as popup-a]
-              [mid-fruits.io       :as io]
+    (:require [io.api              :as io]
+              [layouts.popup-a.api :as popup-a]
               [x.app-elements.api  :as elements]))
 
 ;; ----------------------------------------------------------------------------
@@ -14,7 +14,7 @@
                     :hover-color :highlight
                     :indent      {:all :xxs}
                     :keypress    {:key-code 27 :required? true}
-                    :on-click    [:ui/close-popup! :storage.alias-editor/view]
+                    :on-click    [:ui/remove-popup! :storage.alias-editor/view]
                     :preset      :cancel}])
 
 (defn header-label

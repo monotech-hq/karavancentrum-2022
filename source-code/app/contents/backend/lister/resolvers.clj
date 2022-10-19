@@ -19,8 +19,8 @@
   [env _]
   (let [get-pipeline   (item-lister/env->get-pipeline   env :contents.lister)
         count-pipeline (item-lister/env->count-pipeline env :contents.lister)]
-       {:documents      (mongo-db/get-documents-by-pipeline   "contents"   get-pipeline)
-        :document-count (mongo-db/count-documents-by-pipeline "contents" count-pipeline)}))
+       {:items          (mongo-db/get-documents-by-pipeline   "contents" get-pipeline)
+        :all-item-count (mongo-db/count-documents-by-pipeline "contents" count-pipeline)}))
 
 (defresolver get-items
              ; @param (map) env

@@ -45,11 +45,11 @@
    ;  a tartalmazó (felmenő) mappák adatait aktualizálni:
    ; - Utolsó módosítás dátuma és a felhasználó azonosítója {:media/modified-at ... :media/modified-by ...}
    ; - Tartalom méretének {:media/size ...} aktualizálása
-   (letfn [(prototype-f [document] (common/updated-document-prototype request document))
-           (update-f    [document] (update document :media/size operation size))
+   (letfn [(prepare-f [document] (common/updated-document-prototype request document))
+           (update-f  [document] (update document :media/size operation size))
            (f [path] (when-let [{:media/keys [id]} (last path)]
-                               (if operation (mongo-db/apply-document! "storage" id update-f {:prototype-f prototype-f})
-                                             (mongo-db/apply-document! "storage" id return   {:prototype-f prototype-f}))
+                               (if operation (mongo-db/apply-document! "storage" id update-f {:prepare-f prepare-f})
+                                             (mongo-db/apply-document! "storage" id return   {:prepare-f prepare-f}))
                                (-> path vector/pop-last-item f)))]
           (f path))))
 
@@ -62,8 +62,8 @@
 
 (defn insert-item!
   [{:keys [request] :as env} item]
-  (let [prototype-f #(common/added-document-prototype request %)]
-       (mongo-db/insert-document! "storage" item {:prototype-f prototype-f})))
+  (let [prepare-f #(common/added-document-prototype request %)]
+       (mongo-db/insert-document! "storage" item {:prepare-f prepare-f})))
 
 (defn remove-item!
   [_ {:media/keys [id] :as media-item}]

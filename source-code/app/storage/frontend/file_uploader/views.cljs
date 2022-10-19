@@ -2,9 +2,9 @@
 (ns app.storage.frontend.file-uploader.views
     (:require [app.storage.frontend.file-uploader.helpers :as file-uploader.helpers]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
+              [io.api                                     :as io]
               [layouts.popup-a.api                        :as popup-a]
               [mid-fruits.css                             :as css]
-              [mid-fruits.io                              :as io]
               [mid-fruits.format                          :as format]
               [mid-fruits.math                            :as math]
               [mid-fruits.string                          :as string]

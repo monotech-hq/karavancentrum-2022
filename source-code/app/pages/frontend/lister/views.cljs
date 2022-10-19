@@ -22,9 +22,7 @@
   (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
        [common/list-item-structure lister-id item-dex
                                    {:cells [[common/list-item-thumbnail-icon lister-id item-dex {:icon :article :icon-family :material-icons-outlined}]
-                                            [common/list-item-primary-cell   lister-id item-dex {:label name :stretch? true
-                                                                                                 :placeholder :unnamed-page
-                                                                                                 :description body}]
+                                            [common/list-item-primary-cell   lister-id item-dex {:label name :stretch? true :placeholder :unnamed-page :description body}]
                                             [common/list-item-detail         lister-id item-dex {:page timestamp :width "160px"}]
                                             [common/list-item-marker         lister-id item-dex {:icon :navigate_next}]]}]))
 
@@ -53,14 +51,10 @@
 (defn- page-lister-header
   []
   [common/item-lister-header :pages.lister
-                             {:cells [[common/item-lister-header-spacer :pages.lister
-                                                                        {:width "108px"}]
-                                      [common/item-lister-header-cell   :pages.lister
-                                                                        {:label :name          :order-by-key :name :stretch? true}]
-                                      [common/item-lister-header-cell   :pages.lister
-                                                                        {:label :last-modified :order-by-key :modified-at :width "160px"}]
-                                      [common/item-lister-header-spacer :pages.lister
-                                                                        {:width "36px"}]]}])
+                             {:cells [[common/item-lister-header-spacer :pages.lister {:width "108px"}]
+                                      [common/item-lister-header-cell   :pages.lister {:label :name          :order-by-key :name :stretch? true}]
+                                      [common/item-lister-header-cell   :pages.lister {:label :last-modified :order-by-key :modified-at :width "160px"}]
+                                      [common/item-lister-header-spacer :pages.lister {:width "36px"}]]}])
 
 (defn- body
   []

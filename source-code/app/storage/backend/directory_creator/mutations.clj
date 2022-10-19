@@ -18,7 +18,7 @@
   ; @return (namespaced map)
   [env {:keys [alias destination-id]}]
   (if-let [destination-item (mongo-db/get-document-by-id "storage" destination-id)]
-          (let [destination-path (get  destination-item :media/path)
+          (let [destination-path (get  destination-item :media/path [])
                 directory-path   (conj destination-path {:media/id destination-id})
                 directory-item {:media/alias alias :media/size 0 :media/description ""
                                 :media/items []    :media/path directory-path
