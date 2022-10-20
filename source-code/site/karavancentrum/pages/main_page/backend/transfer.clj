@@ -14,7 +14,7 @@
 
 (defn transfer-vehicles-f
   [request]
-  (mongo-db/get-documents-by-pipeline "rental-vehicles" [{"$match" {"vehicle/visibility" "*:public"}}
+  (mongo-db/get-documents-by-pipeline "rental_vehicles" [{"$match" {"vehicle/visibility" "*:public"}}
                                                          {"$project" vehicle-projection}]))
 
 (core/reg-transfer! ::transfer-vehicles!

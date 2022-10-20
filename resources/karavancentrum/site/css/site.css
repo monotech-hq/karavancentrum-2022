@@ -506,7 +506,9 @@ body {
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+  grid-gap: 45px;
   max-width: 90vw;
+  padding-top: 45px;
 }
 
 .kc-vehicle-card {
@@ -742,7 +744,7 @@ body {
 }
 
 #kc-contact-groups {
-  padding-top: 60px;
+  -padding-top: 60px;
 }
 
 .kc-contact-group,

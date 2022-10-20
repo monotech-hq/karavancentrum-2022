@@ -1,15 +1,2 @@
 
-{:about-us-section {:content/id "6351695fe04104e86e435882"} 
- :about-us-page {:content/id "63516d0de04104e86e435885"} 
- :contacts-data-information {:content/id "63516d56e04104e86e435888"} 
- :address-data-information {:content/id "63516d30e04104e86e435886"} 
- :webshop-link "webshop.karavancentrum.hu" 
- :brands 
- [{:title "Lakoauto értékesítés" 
-   :link-label "XGO lakóautók" 
-   :link "xgolakoautok.hu" 
-   :description "sdffdfds" 
-   :icon 
-   {:media/id "635168aae04104e86e43587d" 
-    :media/uri "/media/storage/635168aae04104e86e43587d.jpeg"}}] 
- :rent-informations {:content/id "63516d0de04104e86e435885"}}
+{}

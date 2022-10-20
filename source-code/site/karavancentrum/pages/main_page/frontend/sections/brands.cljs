@@ -9,7 +9,7 @@
 
 (defn brand
   [brand-dex {:keys [link-label link description icon title]}]
-  [:div.kc-brand [:div.kc-brand--icon {:style {:background-image (css/url icon)}}]
+  [:div.kc-brand [:div.kc-brand--icon {:style {:background-image (-> icon :media/uri css/url)}}]
                  [:p.kc-brand--title         title]
                  [:div.kc-brand--description description]
                  [:div {:class :kc-brand--link-box}

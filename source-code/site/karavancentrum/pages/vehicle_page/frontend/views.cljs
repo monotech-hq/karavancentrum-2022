@@ -2,6 +2,7 @@
 (ns site.karavancentrum.pages.vehicle-page.frontend.views
     (:require [app.common.frontend.api                                :as common]
               [app.contents.frontend.api                              :as contents]
+              [mid-fruits.vector                                      :as vector]
               [re-frame.api                                           :as r]
               [site.karavancentrum.components.api                     :as site.components]
               [site.karavancentrum.pages.vehicle-page.frontend.slider :as slider]))
@@ -9,12 +10,13 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn slideshow [{:vehicle/keys [images]}]
+(defn slideshow
+  [{:vehicle/keys [images]}]
   [:div#kc-vehicle-page--slider
    [slider/view (map (fn [src] ^{:key src}
                                 [:div {:style {:align-self "center"}}
                                       [:img {:src src}]])
-                     images)]])
+                     (vector/->items images :media/uri))]])
 
 (defn vehicle-name
   [{:vehicle/keys [name]}]
@@ -22,7 +24,7 @@
 
 (defn vehicle-content
   [{:vehicle/keys [description]}]
-  [:div#kc-vehicle-page--content [contents/content-preview {:item-id (:content/id description)}]])
+  [:div#kc-vehicle-page--content [contents/content-preview {:items [description]}]])
 
 (defn vehicle-view
   [vehicle]
@@ -35,12 +37,11 @@
 
 (defn  vehicle-cards
   [vehicles]
-  [:div#kc-vehicles--container
-   (map (fn [{:vehicle/keys [id thumbnail name]}]
-          ^{:key id}
-           [:button {:on-click #(r/dispatch [:db/set-item! [:selected-vehicle] id])}
-                    [site.components/card {:src thumbnail :name name}]])
-        vehicles)])
+  [:div {:id :kc-vehicles--container}
+        (letfn [(f [card-list {:vehicle/keys [id] :as vehicle}]
+                  (conj card-list [:button {:on-click #(r/dispatch [:db/set-item! [:selected-vehicle] id])}
+                                           [site.components/vehicle-card vehicle]]))]
+               (reduce f [:div {:style {:display "flex" :flex-wrap "wrap" :grid-gap "45px"}}] vehicles))])
 
 (defn vehicles-view
   [vehicles]
@@ -53,7 +54,8 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn view-structure []
+(defn view-structure
+  []
   (let [vehicles @(r/subscribe [:vehicle-page/get-all-by-link])]
        [:<> [:main {:id :kc-vehicle-page--wrapper}
                    (if (= 1 (count vehicles))
@@ -65,5 +67,6 @@
 ;; --------------------------------------------------------------------------
 ;; --------------------------------------------------------------------------
 
-(defn view [_]
+(defn view
+  [_]
   [view-structure])

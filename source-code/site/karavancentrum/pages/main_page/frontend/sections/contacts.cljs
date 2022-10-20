@@ -10,8 +10,8 @@
 
 (defn contact-information
   []
-  (let [{:content/keys [id]} @(r/subscribe [:db/get-item [:site :contents :contacts-data-information]])]
-       [:div.kc-contact-information [contents/content-preview {:item-id id :color :default :font-size :inherit}]]))
+  (let [contacts-data-information @(r/subscribe [:db/get-item [:site :contents :contacts-data-information]])]
+       [:div.kc-contact-information [contents/content-preview {:items [contacts-data-information] :color :default :font-size :inherit}]]))
 
 (defn contact-group
   [{:keys [label phone-numbers email-addresses]}]
@@ -30,8 +30,8 @@
 
 (defn address-information
   []
-  (let [{:content/keys [id]} @(r/subscribe [:db/get-item [:site :contents :address-data-information]])]
-       [:div.kc-address-information [contents/content-preview {:item-id id :color :default :font-size :inherit}]]))
+  (let [address-data-information @(r/subscribe [:db/get-item [:site :contents :address-data-information]])]
+       [:div.kc-address-information [contents/content-preview {:items [address-data-information] :color :default :font-size :inherit}]]))
 
 (defn address-group
   [{:keys [label company-address]}]

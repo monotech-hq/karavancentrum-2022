@@ -2,24 +2,23 @@
 (ns site.karavancentrum.components.link)
 
 ;; -----------------------------------------------------------------------------
-;; -- Prototypes ---------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 
-(defn link-props-prototype [props text]
+(defn link-props-prototype
+  [props text]
   (if-let [prefix (get props :prefix)]
-    (merge (dissoc props prefix)
-           {:href (str prefix text)})
-    props))
-
-;; -- Prototypes ---------------------------------------------------------------
-;; -----------------------------------------------------------------------------
+          (merge (dissoc props prefix)
+                 {:href (str prefix text)})
+          props))
 
 ;; -----------------------------------------------------------------------------
-;; -- Components ---------------------------------------------------------------
+;; -----------------------------------------------------------------------------
 
-(defn link [props text]
+(defn link
+  [props text]
   (let [link-props (link-props-prototype props text)]
-    [:a.kc-link.kc-effect--underline link-props
-     text]))
+       [:a.kc-link.kc-effect--underline link-props text]))
 
-(defn view [{:keys [prefix] :as props} text]
+(defn view
+  [{:keys [prefix] :as props} text]
   [link props text])

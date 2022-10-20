@@ -40,16 +40,15 @@
   [:p.kc-link.kc-effect--underline.name name])
 
 (defn vehicle
-  [{:vehicle/keys [id link-name] :as props}]
-  [:a {:style {:text-decoration "none" :margin "45px"}
+  [{:vehicle/keys [id link-name] :as vehicle}]
+  [:a {:style {:text-decoration "none"}
        :key id :href (str "/berelheto-jarmuveink/" link-name)}
-      [site.components/card props]])
-
+      [site.components/vehicle-card vehicle]])
 
 (defn vehicles
   []
-  (let [data @(r/subscribe [:site/vehicles])]
-       [:div#kc-vehicles--container (map vehicle data)]))
+  (let [vehicles @(r/subscribe [:site/vehicles])]
+       [:div#kc-vehicles--container (map vehicle vehicles)]))
 
 (defn renting
   []

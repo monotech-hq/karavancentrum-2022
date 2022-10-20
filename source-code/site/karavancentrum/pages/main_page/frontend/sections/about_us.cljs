@@ -13,8 +13,8 @@
   (let [page-visible?  (ratom false)
         about-us-page @(r/subscribe [:db/get-item [:site :contents :about-us-page]])]
        (fn [] [:<> [:div {:id :kc-about-us--section :style {:display (if-not @page-visible? "none" "block")}}
-                         [contents/content-preview {:item-id (:content/id about-us-page)
-                                                    :style   {:color "#333"}
+                         [contents/content-preview {:items     [about-us-page]
+                                                    :style     {:color "#333"}
                                                     :font-size :m}]]
                    [:div {:class :kc-content-button :on-click #(swap! page-visible? not)}
                          (if @page-visible? "Kevesebb tartalom" "Tovább olvasom")]])))
@@ -23,9 +23,9 @@
   []
   (let [about-us-section @(r/subscribe [:db/get-item [:site :contents :about-us-section]])]
        [:div {:id :kc-about-us--section}
-             [contents/content-preview {:item-id (:content/id about-us-section)
-                                        :style   {:color "#333"}
-                                        :font-size :m}]]))
+             [contents/content-preview {:font-size :m
+                                        :items     [about-us-section]
+                                        :style     {:color "#333"}}]]))
 
 (defn about-us
   []
