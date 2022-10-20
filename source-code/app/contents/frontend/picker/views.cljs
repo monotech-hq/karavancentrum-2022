@@ -8,25 +8,25 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- content-picker-preview
+(defn- content-picker-previews
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   [picker-id picker-props]
   (let [preview-props (picker.prototypes/preview-props-prototype picker-id picker-props)]
-       [preview.views/element picker-id preview-props]))
+       [preview.views/element ::content-picker-previews preview-props]))
 
 (defn- content-picker-button
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  ;  {:disabled? (boolean)(opt)}
-  [picker-id {:keys [disabled?] :as picker-props}]
-  (let [selector-props (picker.prototypes/selector-props-prototype picker-id picker-props)
-        on-click [:contents.selector/load-selector! :contents.selector selector-props]]
+  ;  {:disabled? (boolean)(opt)
+  ;   :multi-select? (boolean)(opt)}
+  [picker-id {:keys [disabled? multi-select?] :as picker-props}]
+  (let [on-click [:contents.selector/load-selector! :contents.selector picker-props]]
        [:div {:style {:display :flex}}
              [elements/button {:color     :muted
                                :disabled? disabled?
                                :font-size :xs
-                               :label     :select-content!
+                               :label     (if multi-select? :select-contents! :select-content!)
                                :on-click  on-click}]]))
 
 (defn- content-picker-label
@@ -46,9 +46,9 @@
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   [picker-id picker-props]
-  [:<> [content-picker-label   picker-id picker-props]
-       [content-picker-button  picker-id picker-props]
-       [content-picker-preview picker-id picker-props]])
+  [:<> [content-picker-label    picker-id picker-props]
+       [content-picker-button   picker-id picker-props]
+       [content-picker-previews picker-id picker-props]])
 
 (defn- content-picker
   ; @param (keyword) picker-id
@@ -62,11 +62,15 @@
 (defn element
   ; @param (keyword)(opt) picker-id
   ; @param (map) picker-props
-  ;  {:disabled? (boolean)(opt)
+  ;  {:autosave? (boolean)(opt)
+  ;    Default: false
+  ;   :disabled? (boolean)(opt)
   ;    Default: false
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
+  ;   :max-count (integer)(opt)
+  ;    Default: 8
   ;   :max-lines (integer)(opt)
   ;   :placeholder (metamorphic-content)(opt)
   ;   :on-change (metamorphic-event)(opt)

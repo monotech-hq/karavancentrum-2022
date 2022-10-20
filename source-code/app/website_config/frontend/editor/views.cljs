@@ -63,6 +63,7 @@
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
                               :indent        {:vertical :s}
                               :multi-select? false
+                              :placeholder   "-"
                               :toggle-label  :select-image!
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:website-config :editor/edited-item :company-logo]}]))
@@ -457,6 +458,7 @@
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
                               :indent        {:vertical :s}
                               :multi-select? false
+                              :placeholder   "-"
                               :toggle-label  :select-image!
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:website-config :editor/edited-item :share-preview]}]))

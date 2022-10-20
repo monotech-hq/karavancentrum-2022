@@ -13,18 +13,22 @@
   ;
   ; @return (map)
   ;  {}
-  [picker-id {:keys [disabled? placeholder] :as picker-props}]
-  (let [picked-items @(r/subscribe [:storage.media-picker/get-picked-items picker-id picker-props])]
+  [_ {:keys [disabled? multi-select? placeholder sortable? value-path]}]
+  ; XXX#6071 (app.products.frontend.picker.prototypes)
+  (let [picked-media @(r/subscribe [:db/get-item value-path])]
        {:disabled?   disabled?
-        :media       picked-items
         :indent      {:top :m}
-        :placeholder placeholder}))
+        :items       (cond multi-select? picked-media picked-media [picked-media])
+        :placeholder placeholder
+        :sortable?   sortable?
+        :value-path  value-path}))
 
 (defn picker-props-prototype
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;
   ; @return (map)
+  ;  {}
   [picker-id picker-props]
-  (merge {}
+  (merge {:max-count 8}
          (param picker-props)))

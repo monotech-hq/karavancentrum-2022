@@ -11,11 +11,13 @@
 (defn- content
   [_ {:keys [helper]}]
   [elements/text ::content
-                 {:color       :highlight
-                  :content     helper
-                  :font-size   :xs
-                  :font-weight :bold
-                  :indent      {:top :m :vertical :xs}}])
+                 {:color            :highlight
+                  :content          helper
+                  :font-size        :xs
+                  :font-weight      :bold
+                  :horizontal-align :center
+                  :indent           {:top :xxl :vertical :xs}}])
+
 
 (defn- breadcrumbs
   [surface-id {:keys [title]}]

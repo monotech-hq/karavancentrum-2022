@@ -18,6 +18,8 @@
   ; @param (map) selector-props
   ;  {:autosave? (boolean)(opt)
   ;    Default: false
+  ;   :max-count (integer)(opt)
+  ;    Default: 8
   ;   :multi-select? (boolean)(opt)
   ;    Default: false
   ;   :on-change (metamorphic-event)(opt)

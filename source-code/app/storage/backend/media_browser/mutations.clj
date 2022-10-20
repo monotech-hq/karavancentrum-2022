@@ -8,12 +8,47 @@
               [com.wsscode.pathom3.connect.operation        :as pathom.co :refer [defmutation]]
               [io.api                                       :as io]
               [mid-fruits.candy                             :refer [return]]
+              [mid-fruits.map                               :as map]
               [mid-fruits.vector                            :as vector]
               [mongo-db.api                                 :as mongo-db]
               [pathom.api                                   :as pathom]
               [plugins.item-browser.api                     :as item-browser]
+              [time.api                                     :as time]
+              [x.server-media.api                           :as media]))
 
-              [time.api                                     :as time]))
+;; -- Remove media-item links -------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn remove-item-links!
+  ; @param (string) item-id
+  ;
+  ; @return (?)
+  [document item-id]
+  (let [{:media/keys [filename]} (mongo-db/get-document-by-id "storage" item-id)
+        media-storage-uri        (media/filename->media-storage-uri filename)]
+       (letfn [(f [%] (= % media-storage-uri))]
+              (map/->>remove-values-by document f))))
+
+(defn clean-collection!
+  ; @param (string) collection-name
+  ; @param (string) item-id
+  ;
+  ; @return (?)
+  [collection-name item-id]
+  (mongo-db/apply-documents! collection-name #(remove-item-links! % item-id) {}))
+
+(defn clean-collections!
+  ; @param (string) item-id
+  ;
+  ; @return (?)
+  [item-id]
+  ; XXX#6781 (app.common.frontend.item-selector.events)
+  ; A kitörölt media elemek hivatkozásait szükséges eltávolítani az adatbázis más kollekcióiból,
+  ; mivel a media-selector kizárólag olyan elemek kiválasztását tudja megszüntetni, amelyek elérhető
+  ; dokumentummal rendelkeznek!
+  (let [collection-names (mongo-db/get-collection-names)]
+       (letfn [(f [result collection-name] (conj result (clean-collection! collection-name item-id)))]
+              (reduce f [] (vector/remove-item collection-names "storage")))))
 
 ;; -- Permanently delete item(s) functions ------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -75,7 +110,8 @@
                    (time/set-timeout! f media-browser.config/PERMANENT-DELETE-AFTER))
             (core.side-effects/update-path-directories! env           media-item -)
             (core.side-effects/detach-item!             env parent-id media-item)
-            (return item-id)))
+            (clean-collections! item-id)
+            (return             item-id)))
 
 (defn delete-items-temporary-f
   ; @param (map) env

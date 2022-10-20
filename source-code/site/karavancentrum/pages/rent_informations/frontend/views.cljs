@@ -8,10 +8,10 @@
 ;; -----------------------------------------------------------------------------
 
 (defn view-structure []
-  (let [{:content/keys [id]} @(r/subscribe [:db/get-item [:site :contents :rent-informations]])]
+  (let [content-link @(r/subscribe [:db/get-item [:site :contents :rent-informations]])]
        [:<> [:main {:id :kc-rent-informations--wrapper}
                    [:h1.kc-section-title "Bérlési feltételek"]
-                   [:div#kc-rent-informations--content [contents/content-preview {:item-id id}]]]
+                   [:div#kc-rent-informations--content [contents/content-preview {:items [content-link]}]]]
             [:div {:style {:padding "60px 0 15px 0"}}
                   [common/credits {:theme :light}]]]))
 

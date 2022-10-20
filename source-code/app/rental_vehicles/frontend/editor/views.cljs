@@ -65,9 +65,12 @@
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :rental-vehicles.editor])]
        [contents/content-picker ::vehicle-description-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:vertical :s}
-                                 :value-path [:rental-vehicles :editor/edited-item :description]}]))
+                                {:autosave?     true
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:rental-vehicles :editor/edited-item :description]}]))
 
 (defn- vehicle-description-box
   []
@@ -152,6 +155,8 @@
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
                               :indent        {:vertical :s}
                               :multi-select? true
+                              :placeholder   "-"
+                              :sortable?     true
                               :toggle-label  :select-images!
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:rental-vehicles :editor/edited-item :images]}]))
@@ -184,6 +189,7 @@
                               :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
                               :indent        {:vertical :s}
                               :multi-select? false
+                              :placeholder   "-"
                               :toggle-label  :select-image!
                               :thumbnail     {:height :3xl :width :5xl}
                               :value-path    [:rental-vehicles :editor/edited-item :thumbnail]}]))

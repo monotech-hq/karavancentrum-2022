@@ -18,9 +18,12 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::about-us-section-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:vertical :s}
-                                 :value-path [:website-content :editor/edited-item :about-us-section]}]))
+                                {:autosave?     true
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-content :editor/edited-item :about-us-section]}]))
 
 (defn- about-us-section-box
   []
@@ -40,9 +43,12 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::about-us-page-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:vertical :s}
-                                 :value-path [:website-content :editor/edited-item :about-us-page]}]))
+                                {:autosave?     true
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-content :editor/edited-item :about-us-page]}]))
 
 (defn- about-us-page-box
   []
@@ -71,9 +77,12 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::address-data-information-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:vertical :s}
-                                 :value-path [:website-content :editor/edited-item :address-data-information]}]))
+                                {:autosave?     true
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-content :editor/edited-item :address-data-information]}]))
 
 (defn- address-data-information-box
   []
@@ -94,9 +103,12 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::contacts-data-information-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:vertical :s}
-                                 :value-path [:website-content :editor/edited-item :contacts-data-information]}]))
+                                {:autosave?     true
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-content :editor/edited-item :contacts-data-information]}]))
 
 (defn- contacts-data-information-box
   []
@@ -286,9 +298,12 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::rent-informations-picker
-                                {:disabled?  editor-disabled?
-                                 :indent     {:vertical :s}
-                                 :value-path [:website-content :editor/edited-item :rent-informations]}]))
+                                {:autosave?     true
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-content :editor/edited-item :rent-informations]}]))
 
 (defn- rent-informations-box
   []

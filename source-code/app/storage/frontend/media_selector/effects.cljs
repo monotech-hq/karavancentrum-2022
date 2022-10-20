@@ -1,7 +1,6 @@
 
 (ns app.storage.frontend.media-selector.effects
-    (:require [app.storage.frontend.media-selector.events  :as media-selector.events]
-              [app.storage.frontend.media-selector.helpers :as media-selector.helpers]
+    (:require [app.storage.frontend.media-selector.helpers :as media-selector.helpers]
               [app.storage.frontend.media-selector.subs    :as media-selector.subs]
               [app.storage.frontend.media-selector.views   :as media-selector.views]
               [plugins.item-browser.api                    :as item-browser]
@@ -22,6 +21,8 @@
   ;  {:autosave? (boolean)(opt)
   ;    Default: false
   ;   :extensions (strings in vector)(opt)
+  ;   :max-count (integer)(opt)
+  ;    Default: 8
   ;   :multi-select? (boolean)(opt)
   ;    Default: false
   ;   :on-save (metamorphic-event)(opt)

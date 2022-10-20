@@ -9,35 +9,27 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn media-picker-toggle-auto-label
+(defn media-picker-previews
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  ;  {:multi-select? (boolean)(opt)}
-  [picker-id {:keys [multi-select?] :as picker-props}]
-  (if-let [no-items-picked? @(r/subscribe [:storage.media-picker/no-items-picked? picker-id picker-props])]
-          (if multi-select? :no-items-selected :no-item-selected)
-          (let [picked-item-count @(r/subscribe [:storage.media-picker/get-picked-item-count picker-id picker-props])]
-               {:content :n-items-selected :replacements [picked-item-count]})))
-
-(defn media-picker-toggle-label
-  ; @param (keyword) picker-id
-  ; @param (map) picker-props
-  ;  {:toggle-label (metamorphic-content)(opt)}
-  [picker-id {:keys [toggle-label] :as picker-props}]
-  (let [toggle-label (or toggle-label (media-picker-toggle-auto-label picker-id picker-props))]
-       [elements/label {:color     :muted
-                        :content   toggle-label
-                        :font-size :xs}]))
+  [picker-id picker-props]
+  (let [preview-props (media-picker.prototypes/preview-props-prototype picker-id picker-props)]
+       [media-preview.views/element ::media-picker-previews preview-props]))
 
 (defn media-picker-button
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  ;  {:disabled? (boolean)(opt)}
-  [picker-id {:keys [disabled?] :as picker-props}]
-  [:div {:style {:display :flex}}
-        [elements/toggle {:content   [media-picker-toggle-label              picker-id picker-props]
-                          :on-click  [:storage.media-selector/load-selector! picker-id picker-props]
-                          :disabled? disabled?}]])
+  ;  {:disabled? (boolean)(opt)
+  ;   :multi-select? (boolean)(opt)
+  ;   :toggle-label (metamorphic-content)(opt)}
+  [picker-id {:keys [disabled? multi-select? toggle-label] :as picker-props}]
+  (let [on-click [:storage.media-selector/load-selector! picker-id picker-props]]
+       [:div {:style {:display :flex}}
+             [elements/button {:color     :muted
+                               :disabled? disabled?
+                               :font-size :xs
+                               :label     (or toggle-label (if multi-select? :select-items! :select-item!))
+                               :on-click  on-click}]]))
 
 (defn media-picker-label
   ; @param (keyword) picker-id
@@ -52,20 +44,13 @@
                              :info-text info-text
                              :required? required?}]))
 
-(defn media-picker-preview
-  ; @param (keyword) picker-id
-  ; @param (map) picker-props
-  [picker-id picker-props]
-  (let [preview-props (media-picker.prototypes/preview-props-prototype picker-id picker-props)]
-       [media-preview.views/element picker-id preview-props]))
-
 (defn media-picker-body
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   [picker-id picker-props]
-  [:<> [media-picker-label   picker-id picker-props]
-       [media-picker-button  picker-id picker-props]
-       [media-picker-preview picker-id picker-props]])
+  [:<> [media-picker-label    picker-id picker-props]
+       [media-picker-button   picker-id picker-props]
+       [media-picker-previews picker-id picker-props]])
 
 (defn- media-picker
   ; @param (keyword) picker-id
@@ -87,16 +72,19 @@
   ;   :indent (map)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
+  ;   :max-count (integer)(opt)
+  ;    Default: 8
   ;   :multi-select? (boolean)(opt)
   ;    Default: false
   ;   :on-save (metamorphic-event)(opt)
   ;    Az esemény utolsó paraméterként megkapja a kiválasztott elemet.
   ;   :placeholder (metamorphic-content)(opt)
   ;   :required? (boolean)(opt)
+  ;    Default: false
+  ;   :sortable? (boolean)(opt)
+  ;    Default: false
   ;   :thumbnail (map)(opt)
-  ;    {:max-count (integer)(opt)
-  ;      Default: 8
-  ;     :height (keyword)(opt)
+  ;    {:height (keyword)(opt)
   ;      :xxs, :xs, :s, :m, :l, :xl, :xxl, :3xl, :4xl, :5xl
   ;      Default: :5xl
   ;     :width (keyword)(opt)

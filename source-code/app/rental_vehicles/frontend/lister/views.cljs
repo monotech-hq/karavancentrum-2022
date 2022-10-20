@@ -25,7 +25,7 @@
   (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
        [common/list-item-structure lister-id item-dex
                                    {:cells [[common/list-item-drag-handle  lister-id item-dex dnd-kit-props]
-                                            [common/list-item-thumbnail    lister-id item-dex {:thumbnail thumbnail}]
+                                            [common/list-item-thumbnail    lister-id item-dex {:thumbnail (:media/uri thumbnail)}]
                                             [common/list-item-primary-cell lister-id item-dex {:label name :stretch? true :placeholder :unnamed-vehicle}]
                                             [common/list-item-detail       lister-id item-dex {:content timestamp :width "160px"}]
                                             [common/list-item-marker       lister-id item-dex {:icon :navigate_next}]]}]))

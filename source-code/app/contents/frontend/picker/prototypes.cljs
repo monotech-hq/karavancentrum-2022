@@ -6,22 +6,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn selector-props-prototype
-  ; @param (keyword) picker-id
-  ; @param (map) picker-props
-  ;  {:on-change (metamorphic-event)(opt)
-  ;   :on-save (metamorphic-event)(opt)
-  ;   :value-path (vector)}
-  ;
-  ; @return (map)
-  ;  {}
-  [_ {:keys [on-change on-save value-path]}]
-  {:autosave?     true
-   :multi-select? false
-   :on-change     on-change
-   :on-save       on-save
-   :value-path    value-path})
-
 (defn preview-props-prototype
   ; @param (keyword) picker-id
   ; @param (map) picker-props
@@ -29,12 +13,13 @@
   ;
   ; @return (map)
   ;  {}
-  [_ {:keys [disabled? placeholder value-path]}]
-  (let [picked-content @(r/subscribe [:db/get-item value-path])
-        content-id      (:content/id picked-content)]
-       {:disabled?   disabled?
-        :item-id     content-id
+  [_ {:keys [disabled? multi-select? placeholder value-path]}]
+  ; XXX#6071 (app.products.frontend.picker.prototypes)
+  (let [picked-contents @(r/subscribe [:db/get-item value-path])]
+       {:color       :muted
+        :disabled?   disabled?
         :indent      {:top :m}
+        :items       (cond multi-select? picked-contents picked-contents [picked-contents])
         :placeholder placeholder}))
 
 (defn picker-props-prototype

@@ -1,33 +1,15 @@
 
-{:about-us-section {:content/id "633ac0b2e0410454f019cb92"} 
+{:about-us-section {:content/id "6351695fe04104e86e435882"} 
+ :about-us-page {:content/id "63516d0de04104e86e435885"} 
+ :contacts-data-information {:content/id "63516d56e04104e86e435888"} 
+ :address-data-information {:content/id "63516d30e04104e86e435886"} 
  :webshop-link "webshop.karavancentrum.hu" 
- :contacts-data-information {:content/id "633ac074e0410454f019cb91"} 
- :about-us-page {:content/id "633ac0c8e0410454f019cb93"} 
- :address-data-information {:content/id "633ac053e0410454f019cb8f"} 
- :more-brands [] 
- :rent-informations {:content/id "633abf61e0410454f019cb86"} 
  :brands 
- [{:label "Karaván Centrum webáruház" 
-   :link "webshop.karavancentrum.hu" 
-   :logo "/media/storage/633ac26ce0410454f019cb95.png" 
-   :description 
-   "Termékeink között megtalálhatók a lakóautók, lakókocsik, kempingbuszok, furgonok, kisbuszok és utánfutók\nlegfontosabb felszerelési cikkei, valamint a kempingezéshez, túrázáshoz és a szabadidő eltöltéséhez ajánlott termékek." 
-   :title "Webáruház" 
-   :link-label "Karaván Centrum webáruház" 
-   :icon "/media/storage/634465f0e041045eff63d52c.png"} 
-  {:label "XGO lakóautók" 
-   :link "xgolakoautok.hu" 
-   :description 
-   "Kimagaslóan jó ár-érték arányú járművek a több, mint 40 éves lakóautó\ngyártási tapasztalattal rendelkező olasz Rimor cégtől.\n7 alkóvos, 6 részintegrált, 2 kempingbusz modell" 
-   :logo "/media/storage/633c9aa5e0410487dc78df83.png" 
-   :title "Lakóautó értékesítés" 
+ [{:title "Lakoauto értékesítés" 
    :link-label "XGO lakóautók" 
-   :icon "/media/storage/634465eee041045eff63d520.png"} 
-  {:label "Wörmann utánfutók" 
-   :link "woermann.karavancentrum.hu" 
-   :description 
-   "Közel 400 utánfutó modell\n2.000 db azonnal elhozható utánfutó\nForgalomba helyezés, házhoz szállítás" 
-   :logo "/media/storage/633c982de041048511ba5e43.png" 
-   :title "Utánfutó értékesítés" 
-   :link-label "Wörmann utánfutók" 
-   :icon "/media/storage/634465f0e041045eff63d526.png"}]}
+   :link "xgolakoautok.hu" 
+   :description "sdffdfds" 
+   :icon 
+   {:media/id "635168aae04104e86e43587d" 
+    :media/uri "/media/storage/635168aae04104e86e43587d.jpeg"}}] 
+ :rent-informations {:content/id "63516d0de04104e86e435885"}}

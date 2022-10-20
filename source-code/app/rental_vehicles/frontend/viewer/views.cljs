@@ -18,9 +18,11 @@
   (let [viewer-disabled?    @(r/subscribe [:item-viewer/viewer-disabled? :rental-vehicles.viewer])
         vehicle-description @(r/subscribe [:db/get-item [:rental-vehicles :viewer/viewed-item :description]])]
        [contents/content-preview ::vehicle-description
-                                 {:disabled? viewer-disabled?
-                                  :indent    {:top :m :vertical :s}
-                                  :item-id   (:content/id vehicle-description)}]))
+                                 {:color       :muted
+                                  :disabled?   viewer-disabled?
+                                  :indent      {:top :m :vertical :s}
+                                  :items       [vehicle-description]
+                                  :placeholder "-"}]))
 
 (defn- vehicle-description-box
   []
@@ -49,9 +51,9 @@
         vehicle-images   @(r/subscribe [:db/get-item [:rental-vehicles :viewer/viewed-item :images]])]
        [storage/media-preview ::vehicle-image-list
                               {:disabled?   viewer-disabled?
-                               :media       vehicle-images
+                               :items       vehicle-images
                                :indent      {:top :m :vertical :s}
-                               :placeholder :no-images-selected}]))
+                               :placeholder "-"}]))
 
 (defn- vehicle-images-box
   []
@@ -79,8 +81,8 @@
        [storage/media-preview ::vehicle-thumbnail
                               {:disabled?   viewer-disabled?
                                :indent      {:top :m :vertical :s}
-                               :media       vehicle-thumbnail
-                               :placeholder :no-thumbnail-selected}]))
+                               :items       [vehicle-thumbnail]
+                               :placeholder "-"}]))
 
 (defn- vehicle-thumbnail-box
   []
