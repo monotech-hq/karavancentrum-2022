@@ -1,7 +1,6 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.hero
-  (:require [reagent.api :refer [lifecycles]]
-            [utils.api   :as utils]))
+  (:require [reagent.api :refer [lifecycles]]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -19,9 +18,7 @@
 
 (defn scroll-down-icon
   []
-  [:div#kc-scroll-icon [:button {:tab-index "-1"
-                                 :on-click #(utils/scroll-into "renting")}
-                                [:span]]])
+  [:div#kc-scroll-icon [:span]])
 
 (defn hero
   []

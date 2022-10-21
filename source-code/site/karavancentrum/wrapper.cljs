@@ -2,8 +2,7 @@
 (ns site.karavancentrum.wrapper
     (:require [re-frame.api                       :as r]
               [site.karavancentrum.modules.api    :as modules]
-              [site.karavancentrum.components.api :as components]
-              [utils.api                          :as utils]))
+              [site.karavancentrum.components.api :as components]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -17,18 +16,18 @@
 
 (defn navbar-item [{:keys [scroll-target] :as config} label]
   [:a.kc-link.kc-effect--underline (merge {:style {"--underline-color" "black"}
-                                           :on-mouse-up #(.blur (.-target %))
-                                           :on-click    #(r/dispatch [:utils/scroll-into scroll-target])}
-                                          (dissoc config :scroll-target))
+                                           :on-mouse-up #(-> % .-target .blur)}
+                                          config)
    label])
 
-(defn navbar []
-  [modules/navbar {:threshold 800 :align-x :right ;:max-width 1200
-                                                :logo [logo]}
-   [navbar-item {:href "/berbeadas"}                           "Bérbeadás"]
-   [navbar-item {:href "/ertekesites"}                         "Értékesítés"]
-   [navbar-item {:href "/"}                                    "Webáruház"]
-   [navbar-item {:href "/kapcsolat" :scroll-target "contacts"} "Kapcsolat"]])
+(defn navbar
+  []
+  (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])]
+       [modules/navbar {:threshold 800 :align-x :right :logo [logo]}
+                       [navbar-item {:href "/#berbeadas"}                 "Bérbeadás"]
+                       [navbar-item {:href "/#ertekesites"}               "Értékesítés"]
+                       [navbar-item {:href webshop-link :target "_blank"} "Webáruház"]
+                       [navbar-item {:href "/#kapcsolat"}                 "Kapcsolat"]]))
 
 (defn header []
   [navbar])

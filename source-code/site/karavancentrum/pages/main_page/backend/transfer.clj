@@ -24,13 +24,13 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(defn transfer-contents-f
+(defn transfer-content-f
   [request]
   (io/read-edn-file "environment/website-content.edn"))
 
-(core/reg-transfer! ::transfer-contents!
-  {:data-f      transfer-contents-f
-   :target-path [:site :contents]})
+(core/reg-transfer! ::transfer-content!
+  {:data-f      transfer-content-f
+   :target-path [:site :content]})
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

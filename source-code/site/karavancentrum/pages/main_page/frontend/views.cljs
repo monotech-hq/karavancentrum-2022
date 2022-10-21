@@ -29,8 +29,5 @@
 ;; -----------------------------------------------------------------------------
 
 (defn view
-  [scroll-target]
-  (reagent/lifecycles
-    {:component-did-mount (fn [] (r/dispatch [:utils/scroll-into scroll-target]))
-     :reagent-render      (fn [scroll-target]
-                             [main-page scroll-target])}))
+  []
+  [main-page ])

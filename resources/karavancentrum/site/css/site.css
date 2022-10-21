@@ -376,11 +376,7 @@ body {
   transform: translateY(100vh);
 }
 
-#kc-scroll-icon button {
-  position: unset;
-}
-
-#kc-scroll-icon button span {
+#kc-scroll-icon span {
   position: absolute;
   top: 0;
   left: 50%;
@@ -395,13 +391,13 @@ body {
   align-items: center;
 }
 
-#kc-scroll-icon button span::before,
-#kc-scroll-icon button span::after {
+#kc-scroll-icon span::before,
+#kc-scroll-icon span::after {
   position: absolute;
   content: '';
 }
 
-#kc-scroll-icon button span::before {
+#kc-scroll-icon span::before {
   top: 5px;
   width: 5px;
   height: 5px;
@@ -410,7 +406,7 @@ body {
   background-color: #fff;
 }
 
-#kc-scroll-icon button span::after {
+#kc-scroll-icon span::after {
   bottom: -13px;
   width: 10.5px;
   height: 10.5px;

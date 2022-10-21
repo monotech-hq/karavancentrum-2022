@@ -2,15 +2,14 @@
 (ns site.karavancentrum.pages.main-page.frontend.sections.contacts
     (:require [app.contents.frontend.api :as contents]
               [mid-fruits.href           :as href]
-              [re-frame.api              :as r]
-              [utils.api                 :refer [html->hiccup]]))
+              [re-frame.api              :as r]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn contact-information
   []
-  (let [contacts-data-information @(r/subscribe [:db/get-item [:site :contents :contacts-data-information]])]
+  (let [contacts-data-information @(r/subscribe [:db/get-item [:site :content :contacts-data-information]])]
        [:div.kc-contact-information [contents/content-preview {:items [contacts-data-information] :color :default :font-size :inherit}]]))
 
 (defn contact-group
@@ -30,7 +29,7 @@
 
 (defn address-information
   []
-  (let [address-data-information @(r/subscribe [:db/get-item [:site :contents :address-data-information]])]
+  (let [address-data-information @(r/subscribe [:db/get-item [:site :content :address-data-information]])]
        [:div.kc-address-information [contents/content-preview {:items [address-data-information] :color :default :font-size :inherit}]]))
 
 (defn address-group
@@ -49,12 +48,13 @@
 
 (defn contacts
   []
-  [:<> [:section [:div#kc-contacts [:p.kc-section-title "Kapcsolat"]
+  [:<> [:section {:id :kapcsolat}
+                 [:div#kc-contacts [:p.kc-section-title "Kapcsolat"]
                                    [:div#kc-contact-groups [contact-groups]
                                                            [contact-information]
                                                            [address-groups]]
                                    [:div                [address-information]]]
-                 [:section#kc-contacts--background]]])
+                 [:div#kc-contacts--background]]])
 
 (defn view
   []
