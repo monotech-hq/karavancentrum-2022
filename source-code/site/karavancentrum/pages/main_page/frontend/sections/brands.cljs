@@ -29,4 +29,5 @@
 
 (defn view
   []
-  [brands])
+  [:section {:id :ertekesites}
+            [brands]])

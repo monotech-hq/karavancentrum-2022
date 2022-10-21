@@ -54,13 +54,13 @@
   []
   (lifecycles
     {:component-did-mount (fn [] (r/dispatch [:main-page.filters/init!]))
-     :reagent-render      (fn [] [:section {:id :berbeadas}
-                                           [:div#kc-renting [section-title]
-                                                     [:a {:class :kc-content-button :href "/berlesi-feltetelek"}
-                                                         "Bérlési feltételek"]
-                                                     [filters]
-                                                     [vehicles]]])}))
+     :reagent-render      (fn [] [:div#kc-renting [section-title]
+                                                  [:a {:class :kc-content-button :href "/berlesi-feltetelek"}
+                                                      "Bérlési feltételek"]
+                                                  [filters]
+                                                  [vehicles]])}))
 
 (defn view
   []
-  [renting])
+  [:section {:id :berbeadas}
+            [renting]])

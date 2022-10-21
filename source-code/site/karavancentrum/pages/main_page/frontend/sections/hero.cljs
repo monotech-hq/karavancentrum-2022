@@ -29,4 +29,5 @@
 
 (defn view
   []
-  [:section [hero]])
+  [:section {:id :fooldal}
+            [hero]])

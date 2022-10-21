@@ -27,6 +27,9 @@
                   (conj contact-groups [contact-group group-props]))]
               (reduce f [:<>] contact-groups))))
 
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
 (defn address-information
   []
   (let [address-data-information @(r/subscribe [:db/get-item [:site :content :address-data-information]])]
@@ -46,16 +49,53 @@
                   (conj address-groups [address-group group-props]))]
               (reduce f [:<>] address-groups))))
 
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
+(defn social-media-link
+  [link icon-class label]
+  [:a.kc-social-media-link {:href link :title label}
+                           [:i {:class icon-class}]])
+
+
+(defn facebook-links
+  []
+  (let [facebook-links @(r/subscribe [:db/get-item [:site :config :facebook-links]])]
+       (letfn [(f [links link] (conj links [social-media-link link [:fab :fa-facebook] "Tovább a Facebook-ra"]))]
+              (reduce f [:<>] facebook-links))))
+
+(defn instagram-links
+  []
+  (let [instagram-links @(r/subscribe [:db/get-item [:site :config :instagram-links]])]
+       (letfn [(f [links link] (conj links [social-media-link link [:fab :fa-instagram] "Tovább a Instagram-ra"]))]
+              (reduce f [:<>] instagram-links))))
+
+(defn youtube-links
+  []
+  (let [youtube-links @(r/subscribe [:db/get-item [:site :config :youtube-links]])]
+       (letfn [(f [links link] (conj links [social-media-link link [:fab :fa-youtube] "Tovább a Youtube-ra"]))]
+              (reduce f [:<>] youtube-links))))
+
+(defn social-media-links
+  []
+  [:<> [facebook-links]
+       [instagram-links]
+       [youtube-links]])
+
+;; -----------------------------------------------------------------------------
+;; -----------------------------------------------------------------------------
+
 (defn contacts
   []
-  [:<> [:section {:id :kapcsolat}
-                 [:div#kc-contacts [:p.kc-section-title "Kapcsolat"]
-                                   [:div#kc-contact-groups [contact-groups]
-                                                           [contact-information]
-                                                           [address-groups]]
-                                   [:div                [address-information]]]
-                 [:div#kc-contacts--background]]])
+  [:<> [:div#kc-contacts [:p.kc-section-title "Kapcsolat"]
+                         [:div#kc-contact-groups [contact-groups]
+                                                 [contact-information]
+                                                 [address-groups]]
+                         [:div#kc-address-groups [address-information]]
+                         [:div#kc-social-media-links [social-media-links]]]
+       [:div#kc-contacts--background]])
 
 (defn view
   []
-  [contacts])
+  [:section {:id :kapcsolat}
+            [contacts]])

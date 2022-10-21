@@ -781,6 +781,15 @@ body {
 .kc-address-information {
   max-width: 780px }
 
+#kc-social-media-links {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 24px;
+  padding-top: 60px }
+
+.kc-social-media-link i {
+  font-size: 24px }
+
 /***** Contacts *****/
 /******************************************************************************/
 

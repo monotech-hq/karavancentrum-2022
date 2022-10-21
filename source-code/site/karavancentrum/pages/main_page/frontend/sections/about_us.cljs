@@ -29,11 +29,12 @@
 
 (defn about-us
   []
-  [:section [:div {:id :kc-about-us}
-                  [:div {:class :kc-section-title} "Magunkról"]
-                  [about-us-section]
-                  [about-us-page]]])
+  [:div {:id :kc-about-us}
+        [:div {:class :kc-section-title} "Magunkról"]
+        [about-us-section]
+        [about-us-page]])
 
 (defn view
   []
-  [about-us])
+  [:section {:id :magunkrol}
+            [about-us]])
