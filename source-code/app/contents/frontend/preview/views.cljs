@@ -46,13 +46,15 @@
   ;  {}
   [preview-id preview-props {:content/keys [id] :as content-link}]
   ; BUG#9980 (app.products.frontend.preview.views)
-  [item-preview/body (keyword id)
-                     {:ghost-element   #'common/item-preview-ghost-element
-                      :error-element   [common/error-element {:error :the-content-has-been-broken}]
-                      :preview-element [content-preview-element preview-id preview-props content-link]
-                      :item-id         id
-                      :item-path       [:contents :preview/downloaded-items id]
-                      :transfer-id     :contents.preview}])
+  ;
+  ; BUG#8871 (app.products.frontend.preview.views)
+  (if id [item-preview/body (keyword id)
+                            {:ghost-element   #'common/item-preview-ghost-element
+                             :error-element   [common/error-element {:error :the-content-has-been-broken}]
+                             :preview-element [content-preview-element preview-id preview-props content-link]
+                             :item-id         id
+                             :item-path       [:contents :preview/downloaded-items id]
+                             :transfer-id     :contents.preview}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
