@@ -19,3 +19,6 @@
 [submodule "submodules/io-api"]
 	path = submodules/io-api
 	url = git@github.com:bithandshake/io-api.git
+[submodule "submodules/ajax-api"]
+	path = submodules/ajax-api
+	url = git@github.com:bithandshake/ajax-api.git
