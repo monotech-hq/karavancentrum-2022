@@ -21,14 +21,16 @@
                  :target :browser}
 
   :site-ready  {:modules {:site {:init-fn boot-loader.frontend.site/start-site!}}
-                :compiler-options {:infer-externs true}
+                ; BUG#0012
+                :compiler-options {:infer-externs true :output-feature-set :es-next}
                 :optimizations :advanced
                 :asset-path "/js/core"
                 :output-dir "resources/public/js/core"
                 :target :browser}
 
   :app-ready    {:modules {:app {:init-fn boot-loader.frontend.app/start-app!}}
-                 :compiler-options {:infer-externs true}
+                 ; BUG#0012
+                 :compiler-options {:infer-externs true :output-feature-set :es-next}
                  :optimizations :advanced
                  :asset-path "/js/core"
                  :output-dir "resources/public/js/core"
