@@ -108,7 +108,7 @@
   ; @param (map) preview-props
   ;  {:color (keyword)(opt)
   ;    :default, :highlight, :muted
-  ;    Default: :muted
+  ;    Default: :default
   ;   :disabled? (boolean)(opt)
   ;    Default: false
   ;   :font-size (keyword)(opt)

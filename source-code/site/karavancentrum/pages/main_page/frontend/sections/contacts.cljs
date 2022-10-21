@@ -2,6 +2,7 @@
 (ns site.karavancentrum.pages.main-page.frontend.sections.contacts
     (:require [app.contents.frontend.api :as contents]
               [mid-fruits.href           :as href]
+              [mid-fruits.uri           :as uri]
               [re-frame.api              :as r]))
 
 ;; -----------------------------------------------------------------------------
@@ -54,7 +55,7 @@
 
 (defn social-media-link
   [link icon-class label]
-  [:a.kc-social-media-link {:href link :title label}
+  [:a.kc-social-media-link {:href (uri/valid-uri link) :title label}
                            [:i {:class icon-class}]])
 
 

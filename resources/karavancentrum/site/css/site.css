@@ -321,7 +321,7 @@ body {
 #kc-hero {
     height: calc(var(--vh) * 100);
     background-position: 55% 60%;
-    background-image: url(/site/images/hero.jpg);
+    background-image: url(/site/images/hero-1920.jpg);
     background-size: cover;
     width: 100%;
     display: flex;
@@ -720,7 +720,7 @@ body {
   -padding: 150px 0 0 0 }
 
 #kc-contacts--background {
-  background-image: url(/site/images/footer.jpg);
+  background-image: url(/site/images/footer-1920.jpg);
   background-position: bottom;
   background-size: cover;
   height: 800px;

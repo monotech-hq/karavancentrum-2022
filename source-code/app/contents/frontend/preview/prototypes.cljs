@@ -10,11 +10,9 @@
   ; @param (map) preview-props
   ;
   ; @return (map)
-  ;  {:color (keyword)
-  ;   :font-size (keyword)
+  ;  {:font-size (keyword)
   ;   :font-weight (keyword)}
   [_ preview-props]
-  (merge {:color       :muted
-          :font-size   :s
+  (merge {:font-size   :s
           :font-weight :normal}
          (param preview-props)))

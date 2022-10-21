@@ -41,7 +41,7 @@
         (letfn [(f [card-list {:vehicle/keys [id] :as vehicle}]
                   (conj card-list [:button {:on-click #(r/dispatch [:db/set-item! [:selected-vehicle] id])}
                                            [site.components/vehicle-card vehicle]]))]
-               (reduce f [:div {:style {:display "flex" :flex-wrap "wrap" :grid-gap "45px"}}] vehicles))])
+               (reduce f [:div {:style {:display "flex" :flex-wrap "wrap" :grid-gap "45px" :justify-content "center"}}] vehicles))])
 
 (defn vehicles-view
   [vehicles]
