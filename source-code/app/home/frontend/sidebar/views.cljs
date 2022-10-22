@@ -10,35 +10,35 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- label-group-item-content
+(defn- label-group-item-icon
   ; @param (map) group-item
   ;  {}
-  [{:keys [icon icon-color icon-family label]}]
-  [:div {:style {:display :flex}}
-        [elements/icon {:color       icon-color
-                        :icon        icon
-                        :icon-family icon-family
-                        ;:indent      {:horizontal :xs}
-                        :size        :s
+  [{:keys [icon icon-color icon-family]}]
+  [elements/icon {:color       icon-color
+                  :icon        icon
+                  :icon-family icon-family
+                  :size        :s
+                  :indent      {:horizontal :xs :left :s :right :xxs}}])
 
-                        :indent  {:horizontal :xs :left :s :right :xxs}}]
-        [elements/label {:content label
-                         :indent {:right :l}
-                         :font-size :xs}]])
-
-
+(defn- label-group-item-label
+  ; @param (map) group-item
+  ;  {}
+  [{:keys [label]}]
+  [elements/label {:color     :invert
+                   :content   label
+                   :indent    {:right :xl}
+                   :font-size :xs}])
 
 (defn- label-group-item
   ; @param (map) group-item
   ;  {}
   [{:keys [icon icon-color icon-family disabled? label on-click] :as group-item}]
-  [elements/toggle {:content [label-group-item-content group-item]
+  [elements/toggle {:content       [:div {:style {:display :flex}}
+                                         [label-group-item-icon  group-item]
+                                         [label-group-item-label group-item]]
                     :disabled?     disabled?
                     :on-click      on-click
-                    :hover-color   :highlight}])
-                    ;:horizontal-align :left}])
-                    ;:min-width     :s}])
-                    ;:indent        {:vertical :xs}}])
+                    :hover-color   :invert}])
 
 (defn- label-group
   ; @param (metamorphic-content) label
@@ -58,16 +58,26 @@
                   (conj group-list [label-group label (get label-groups label)]))]
               (reduce f [:<>] (-> label-groups keys sort)))))
 
+(defn- menu-group-label
+  ; @param (metamorphic-content) group-name
+  [group-name]
+  [elements/label {:color     :invert
+                   :content   group-name
+                   :font-size :xs
+                   :indent    {:left :s :top :xs :right :l}
+                   :style     {:opacity ".5"}}])
+
 (defn- menu-group
-  ; @param (keyword) group-name
+  ; @param (metamorphic-content) group-name
   [group-name]
   ; XXX#0091 (app.home.frontend.screen.views)
   (let [group-items @(r/subscribe [:home.sidebar/get-menu-group-items group-name])]
        (if (vector/nonempty? group-items)
-           (let [weight-groups (group-by :horizontal-weight group-items)]
-                (letfn [(f [group-list horizontal-weight]
-                           (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
-                       (reduce f [:div {:style {:padding "12px 0"}}] (-> weight-groups keys sort)))))))
+           [:<> [menu-group-label group-name]
+                (let [weight-groups (group-by :horizontal-weight group-items)]
+                     (letfn [(f [group-list horizontal-weight]
+                                (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
+                            (reduce f [:div {:style {:padding-bottom "12px"}}] (-> weight-groups keys sort))))])))
 
 (defn- menu-groups
   []
@@ -82,8 +92,8 @@
 (defn- view-structure
   ; @param (keyword) sidebar-id
   [_]
-  [:<> [elements/horizontal-separator {:size :m}]
-       [menu-groups]])
+  (if-let [viewport-large @(r/subscribe [:environment/viewport-large?])]
+          [menu-groups]))
 
 (defn view
   ; @param (keyword) sidebar-id

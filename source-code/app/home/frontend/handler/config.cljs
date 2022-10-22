@@ -6,6 +6,7 @@
 
 ; @constant (keywords in vector)
 (def GROUP-ORDER [:business
+                  :crypto-currencies
                   :products-and-services
                   :vehicles
                   :content

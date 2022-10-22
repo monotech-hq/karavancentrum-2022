@@ -41,7 +41,7 @@
           [:<> [title       surface-id page-props]
                [breadcrumbs surface-id page-props]
                [content     surface-id page-props]]
-          [common/surface-box-layout-ghost-view :views.blank-page/view {:breadcrumb-count 1}]))
+          [common/surface-box-layout-ghost-view :views.blank-page/view {:breadcrumb-count 2}]))
 
 (defn view
   [surface-id page-props]
