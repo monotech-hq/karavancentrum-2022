@@ -9,5 +9,5 @@
 
 (defn render-consent?
   [db _]
-  (and      (r ui/application-interface?              db)
+  (and      ;(r ui/application-interface?              db)
        (not (r environment/necessary-cookies-enabled? db))))

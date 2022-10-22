@@ -7,6 +7,6 @@
 
 (core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :rent-informations/route
-                    {:core-js        "site.js"
+                    {:js-build       :site
                      :route-template "/berlesi-feltetelek"
                      :client-event   [:rent-informations/load!]}]})

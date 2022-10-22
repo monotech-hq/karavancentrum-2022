@@ -7,7 +7,6 @@
 
 (core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :home.screen/route
-                                       {:core-js        "app.js"
-                                        :route-template "/@app-home"
-                                        :client-event   [:home.screen/load-screen!]
-                                        :restricted?    true}]})
+                                       {:client-event   [:home.screen/load-screen!]
+                                        :restricted?    true
+                                        :route-template "/@app-home"}]})

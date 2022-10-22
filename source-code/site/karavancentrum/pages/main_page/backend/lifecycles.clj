@@ -7,15 +7,15 @@
 
 (core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-routes!
-                    {:main-page/view     {:core-js        "site.js"
+                    {:main-page/view     {:js-build       :site
                                           :route-template "/"
                                           :client-event   [:main-page/load!]}
-                     :main-page/contacts {:core-js        "site.js"
+                     :main-page/contacts {:js-build        :site
                                           :route-template "/kapcsolat"
                                           :client-event   [:main-page/load! "contacts"]}
-                     :main-page/renting  {:core-js        "site.js"
+                     :main-page/renting  {:js-build        :site
                                           :route-template "/berbeadas"
                                           :client-event   [:main-page/load! "renting"]}
-                     :main-page/brands   {:core-js        "site.js"
+                     :main-page/brands   {:js-build        :site
                                           :route-template "/ertekesites"
                                           :client-event   [:main-page/load! "brands--container"]}}]})

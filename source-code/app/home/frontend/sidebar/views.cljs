@@ -98,5 +98,11 @@
 (defn view
   ; @param (keyword) sidebar-id
   [sidebar-id]
-  [sidebar-a/layout sidebar-id
-                    {:content #'view-structure}])
+
+  ; TEMP
+  ; BUG
+  (let [js-build @(r/subscribe [:router/get-current-js-build])]
+       (if (= js-build :app)
+
+           [sidebar-a/layout sidebar-id
+                             {:content #'view-structure}])))

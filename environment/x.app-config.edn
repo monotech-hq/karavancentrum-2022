@@ -13,16 +13,16 @@
 ;      :id (keyword)}]
 ;   :app-title (string)
 ;   :css-paths (maps in vector)
-;    [{:core-js (string)(opt)
-;       A fájl kiszolgálása hozzárendelhető egy megadott kliensfájlhoz.
+;    [{:js-build (string)(opt)
+;       A fájl kiszolgálása hozzárendelhető egy megadott JS build-hez.
 ;      :uri (string)}]
 ;   :favicon-paths (maps in vector)
-;    [{:core-js (string)(opt)
-;       A fájl kiszolgálása hozzárendelhető egy megadott kliensfájlhoz.
+;    [{:js-build (string)(opt)
+;       A fájl kiszolgálása hozzárendelhető egy megadott JS build-hez.
 ;      :uri (string)}]
 ;   :plugin-js-paths (maps in vector)
-;    [{:core-js (string)(opt)
-;       A fájl kiszolgálása hozzárendelhető egy megadott kliensfájlhoz.
+;    [{:js-build (string)(opt)
+;       A fájl kiszolgálása hozzárendelhető egy megadott JS build-hez.
 ;      :uri (string)}]
 ;   :theme-color (string)
 ;    Theme color must be hex!
@@ -52,9 +52,9 @@
 
  ; CSS paths
  :css-paths
- [{:uri "/site/css/site.css"               :core-js "site.js"}
-  {:uri "/plugins/slider/carousel.css"     :core-js "site.js"}
-  {:uri "/plugins/slider/carousel.min.css" :core-js "site.js"}]
+ [{:uri "/site/css/site.css"               :js-build :site}
+  {:uri "/plugins/slider/carousel.css"     :js-build :site}
+  {:uri "/plugins/slider/carousel.min.css" :js-build :site}]
 
  ; Favicon paths
  :favicon-paths

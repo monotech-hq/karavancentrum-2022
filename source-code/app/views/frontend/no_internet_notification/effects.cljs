@@ -10,8 +10,10 @@
 
 (r/reg-event-fx :views.no-internet-notification/blow-no-internet-bubble?!
   (fn [{:keys [db]} _]
-      (if (and (r environment/browser-offline? db)
-               (r ui/application-interface?    db))
+      (if (and (r environment/browser-offline? db))
+              ; A UI interface tulajdonsága megszűnt! Vizsgáld a bejelentkezést
+              ; vagy a js-build-et!
+              ;(r ui/application-interface?    db))
           [:ui/render-bubble! :views.no-internet-notification/notification
                               {:body        #'no-internet-notification.views/body
                                :autoclose?  false

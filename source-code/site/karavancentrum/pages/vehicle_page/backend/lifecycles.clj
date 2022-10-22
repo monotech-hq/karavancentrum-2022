@@ -7,6 +7,6 @@
 
 (core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :vehicle-page/route
-                    {:core-js        "site.js"
+                    {:js-build       :site
                      :route-template "/berelheto-jarmuveink/:name"
                      :client-event   [:vehicle-page/load!]}]})
