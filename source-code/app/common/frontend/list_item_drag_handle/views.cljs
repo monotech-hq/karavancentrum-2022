@@ -12,8 +12,12 @@
   ;  {:attributes (map)
   ;   :listeners (map)}
   [_ _ {:keys [attributes listeners] :as dnd-kit-props}]
-  [:div (merge attributes listeners {:style {:margin-left "12px"}})
-        [elements/icon {:icon :drag_indicator :style {:cursor :grab}}]])
+  [:div (merge attributes listeners {:style {:align-items "center"
+                                             :cursor      "grab"
+                                             :display     "flex"
+                                             :height      "48px"
+                                             :margin-left "12px"}})
+        [elements/icon {:icon :drag_indicator}]])
 
 (defn element
   ; @param (keyword) lister-id
