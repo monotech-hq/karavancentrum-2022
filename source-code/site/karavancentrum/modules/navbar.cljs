@@ -85,19 +85,18 @@
      [menu items]]]])
 
 (defn navbar [config items {:keys [layout] :as view-props}]
-  [:<>
-   [:div#kc-navbar-sensor {:style {:height "1px" :position "absolute" :top 0}}]
-   (if (= "mobile" layout)
-     [navbar-mobile config items view-props]
-     [navbar-desktop config items view-props])])
+  [:<> [:div#kc-scroll-sensor {:style {:height "1px" :position "absolute" :top "0"}}]
+       (if (= "mobile" layout)
+         [navbar-mobile config items view-props]
+         [navbar-desktop config items view-props])])
 
 (defn view [config & items]
   (lifecycles
     {:component-did-mount #(dom/setup-intersection-observer!
-                             (dom/get-element-by-id "kc-navbar-sensor")
+                             (dom/get-element-by-id "kc-scroll-sensor")
                              (fn [intersecting?]
-                               (environment/set-element-attribute! "kc-navbar"      "data-top"  intersecting?)
-                               (environment/set-element-attribute! "kc-scroll-icon" "data-show" intersecting?)))
+                                 (environment/set-element-attribute! "kc-navbar"      "data-top"  intersecting?)
+                                 (environment/set-element-attribute! "kc-scroll-icon" "data-show" intersecting?)))
      :reagent-render
      (fn [config & items]
        (let [view-props @(r/subscribe [::get-view-props config])]

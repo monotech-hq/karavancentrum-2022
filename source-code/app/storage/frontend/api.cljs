@@ -22,7 +22,7 @@
               [app.storage.frontend.media-picker.views  :as media-picker.views]
               [app.storage.frontend.media-preview.views :as media-preview.views]))
 
-;; -- Redirects ---------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; app.storage.frontend.media-picker.views

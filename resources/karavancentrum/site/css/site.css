@@ -319,7 +319,7 @@ body {
 /***** Hero *****/
 
 #kc-hero {
-    height: calc(var(--vh) * 100);
+    height: 95vh;
     background-position: 55% 60%;
     background-image: url(/site/images/hero-1920.jpg);
     background-size: cover;
@@ -337,14 +337,14 @@ body {
   position: absolute;
   width: 100% }
 
-#kc-company-name-and-slogan {
+#kc-navbar--company-name-and-slogan {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#kc-company-name {
+#kc-navbar--company-name {
   text-transform: uppercase;
   letter-spacing: 3.5px;
   font-weight: 300;
@@ -353,7 +353,7 @@ body {
   color: #007cff;
 }
 
-#kc-company-slogan {
+#kc-navbar--company-slogan {
   font-family: 'Dancing script';
   letter-spacing: 2px;
   font-size: 18px;
@@ -454,12 +454,11 @@ body {
 /*** Filters ***/
 
 #kc-filters--container {
-  padding: 60px 0 0px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 90vw;
-  gap: 60px;
+  gap: 20px 60px;
 }
 
 .kc-filters--icon-input {
@@ -503,19 +502,25 @@ body {
   justify-content: center;
   flex-wrap: wrap;
   grid-gap: 45px;
-  max-width: 90vw;
+  max-width: 1440px;
+  padding-bottom: 45px;
   padding-top: 45px;
+  width: 100% }
+
+.kc-vehicle-card-wrapper {
+  max-width: 420px;
+  width: 100%;
 }
 
 .kc-vehicle-card {
   border-radius: 10px;
-  width: 320px;
-  height: 400px;
+  width: 100%;
+  height: 320px;
   border: 1px solid #ddd;
   overflow: hidden;
 }
 
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: 420px) {
 .kc-vehicle-card {
   border-radius: 0 }}
 
@@ -593,27 +598,26 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   padding-bottom: 120px;
 }
 
 #kc-brands--brand-list {
-  align-items: center;
   display: flex;
-  flex-direction: column;
-  grid-row-gap: 120px;
+  flex-wrap: wrap;
+  grid-gap: 45px;
+  justify-content: center;
+  max-width: 1440px;
   width: 100%;
 }
 
 .kc-brand {
   align-items: left;
-  background-color: #7a8682;
+  background-color: #50697a;
   border-radius: 10px;
-  max-width: 1200px;
-  padding: 35px 120px 35px 380px;
+  max-width: 420px;
+  padding: 35px 35px 250px 35px;
 }
-
-@media only screen and (max-width: 1000px) {
-.kc-brand { padding: 35px }}
 
 .kc-brand--title {
   color: white;
@@ -628,13 +632,10 @@ body {
   bottom: 35px;
   height: 260px;
   left: 35px;
-  opacity: .3;
+  opacity: .1;
   position: absolute;
   width: 260px;
 }
-
-@media only screen and (max-width: 1000px) {
-.kc-brand--icon { opacity: .05 }}
 
 .kc-brand--label {
   color: white;
@@ -643,9 +644,9 @@ body {
 }
 
 .kc-brand--link-box {
-  align-items: flex-end;
+  align-items: flex-start;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   grid-column-gap: 24px;
   justify-content: space-between;
 }

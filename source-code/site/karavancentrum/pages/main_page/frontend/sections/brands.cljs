@@ -1,8 +1,9 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.brands
-    (:require [mid-fruits.css :as css]
-              [mid-fruits.uri :as uri]
-              [re-frame.api   :as r]))
+    (:require [mid-fruits.css           :as css]
+              [mid-fruits.uri           :as uri]
+              [re-frame.api             :as r]
+              [site.common.frontend.api :as common]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -29,5 +30,5 @@
 
 (defn view
   []
-  [:section {:id :ertekesites}
+  [:section [common/fragment-sensor :ertekesites]
             [brands]])

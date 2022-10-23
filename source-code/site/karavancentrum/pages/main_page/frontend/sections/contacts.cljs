@@ -2,8 +2,9 @@
 (ns site.karavancentrum.pages.main-page.frontend.sections.contacts
     (:require [app.contents.frontend.api :as contents]
               [mid-fruits.href           :as href]
-              [mid-fruits.uri           :as uri]
-              [re-frame.api              :as r]))
+              [mid-fruits.uri            :as uri]
+              [re-frame.api              :as r]
+              [site.common.frontend.api  :as common]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -98,5 +99,5 @@
 
 (defn view
   []
-  [:section {:id :kapcsolat}
+  [:section [common/fragment-sensor :kapcsolat]
             [contacts]])

@@ -28,7 +28,7 @@
               [app.common.frontend.surface.views               :as surface.views]
               [app.common.frontend.surface-box.views           :as surface-box.views]))
 
-;; -- Redirects ---------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; app.common.frontend.action-bar.views

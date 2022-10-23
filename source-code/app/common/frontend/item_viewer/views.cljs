@@ -156,7 +156,7 @@
                                  :hover-color :highlight
                                  :icon        :file_copy
                                  :icon-family :material-icons-outlined
-                                 :label       :copy!
+                                 :label       :duplicate!
                                  :on-click    [:item-viewer/duplicate-item! viewer-id]}])
 
 (defn edit-item-button

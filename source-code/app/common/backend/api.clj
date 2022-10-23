@@ -6,7 +6,7 @@
               [app.common.backend.projections :as projections]
               [app.common.backend.prototypes  :as prototypes]))
 
-;; -- Redirects ---------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 ; app.common.backend.projections

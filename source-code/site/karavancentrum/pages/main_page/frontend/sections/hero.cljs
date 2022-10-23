@@ -1,18 +1,8 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.hero
-  (:require [reagent.api :refer [lifecycles]]))
-
-;; -----------------------------------------------------------------------------
-;; -----------------------------------------------------------------------------
-
-(defn detect-vh!
-  []
-  (let [viewport-height (.-innerHeight js/window)
-        vh              (* viewport-height 0.01)]
-       (.setProperty (-> js/document .-documentElement .-style)
-                     (str  "--vh")
-                     (str vh "px"))));
-
+    (:require [re-frame.api             :as r]
+              [site.common.frontend.api :as common]))
+ 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
@@ -22,12 +12,9 @@
 
 (defn hero
   []
-  (lifecycles
-    {:component-did-mount (fn [] (detect-vh!))
-     :reagent-render      (fn [] [:div#kc-hero [:div#kc-header]
-                                               [scroll-down-icon]])}))
+  [:div#kc-hero [scroll-down-icon]])
 
 (defn view
   []
-  [:section {:id :fooldal}
+  [:section [common/fragment-sensor :fooldal]
             [hero]])

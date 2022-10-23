@@ -3,6 +3,7 @@
 (ns site.karavancentrum.pages.main-page.frontend.sections.renting
     (:require [re-frame.api                       :as r]
               [reagent.api                        :refer [lifecycles]]
+              [site.common.frontend.api           :as common]
               [site.karavancentrum.components.api :as site.components]))
 
 ;; -----------------------------------------------------------------------------
@@ -41,8 +42,9 @@
 
 (defn vehicle
   [{:vehicle/keys [id link-name] :as vehicle}]
-  [:a {:style {:text-decoration "none"}
-       :key id :href (str "/berelheto-jarmuveink/" link-name)}
+  [:a {:class :kc-vehicle-card-wrapper :key id
+       :href  (str "/berelheto-jarmuveink/" link-name)
+       :style {:text-decoration "none"}}
       [site.components/vehicle-card vehicle]])
 
 (defn vehicles
@@ -55,12 +57,11 @@
   (lifecycles
     {:component-did-mount (fn [] (r/dispatch [:main-page.filters/init!]))
      :reagent-render      (fn [] [:div#kc-renting [section-title]
-                                                  [:a {:class :kc-content-button :href "/berlesi-feltetelek"}
-                                                      "Bérlési feltételek"]
                                                   [filters]
-                                                  [vehicles]])}))
+                                                  [vehicles]
+                                                  [:a {:class :kc-content-button :href "/berlesi-feltetelek"} "Bérlési feltételek"]])}))
 
 (defn view
   []
-  [:section {:id :berbeadas}
+  [:section [common/fragment-sensor :berbeadas]
             [renting]])
