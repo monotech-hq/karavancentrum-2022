@@ -7,7 +7,9 @@
               [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
               [x.app-components.api             :as components]
-              [x.app-elements.api               :as elements]))
+              [x.app-elements.api               :as elements]
+
+              [mid-fruits.string :as string]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

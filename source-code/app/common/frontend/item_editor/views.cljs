@@ -17,7 +17,7 @@
   ;   :label (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/item-editor-color-picker-label :my-editor {...}]
+  ;  [item-editor-color-picker-label :my-editor {...}]
   [_ {:keys [disabled? label]}]
   (if label [elements/label {:content   :color
                              :disabled? disabled?}]))
@@ -29,7 +29,7 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  [common/item-editor-color-picker-button :my-editor {...}]
+  ;  [item-editor-color-picker-button :my-editor {...}]
   [editor-id {:keys [disabled? value-path]}]
   [elements/button {:color            :muted
                     :disabled?        disabled?
@@ -45,7 +45,7 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  [common/item-editor-color-picker-value :my-editor {...}]
+  ;  [item-editor-color-picker-value :my-editor {...}]
   [_ {:keys [disabled? value-path]}]
   (let [picked-colors @(r/subscribe [:db/get-item value-path])]
        [elements/color-stamp {:colors    picked-colors
@@ -61,7 +61,7 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  [common/item-editor-color-picker :my-editor {...}]
+  ;  [item-editor-color-picker :my-editor {...}]
   [editor-id {:keys [indent] :as picker-props}]
   [elements/blank {:indent indent
                    :content [:<> [item-editor-color-picker-label editor-id picker-props]
@@ -80,7 +80,7 @@
   ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/item-editor-menu-item-props :my-editor {...} {...}]
+  ;  [item-editor-menu-item-props :my-editor {...} {...}]
   ;
   ; @return (map)
   ;  {:active? (boolean)
@@ -111,7 +111,7 @@
   ;      :label (metamorphic-content)}]}
   ;
   ; @usage
-  ;  [common/item-editor-menu-bar :my-editor {...}]
+  ;  [item-editor-menu-bar :my-editor {...}]
   [editor-id {:keys [disabled? menu-items] :as bar-props}]
   (letfn [(f [menu-items menu-item] (conj menu-items (item-editor-menu-item-props editor-id bar-props menu-item)))]
          [:<> [elements/menu-bar ::item-editor-menu-bar {:disabled?  disabled?
@@ -126,7 +126,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-editor-ghost-element :my-editor {...}]
+  ;  [item-editor-ghost-element :my-editor {...}]
   [editor-id _]
   [surface.views/surface-box-layout-ghost-view editor-id {:breadcrumb-count 4}])
 
@@ -138,7 +138,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/revert-item-button :my-editor {...}]
+  ;  [revert-item-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
   (let [item-changed? @(r/subscribe [:item-editor/item-changed? editor-id])]
        [surface-button.views/element ::revert-item-button
@@ -153,7 +153,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/save-item-button :my-editor {...}]
+  ;  [save-item-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
   [surface-button.views/element ::save-item-button
                                 {:background-color "#5a4aff"
@@ -168,7 +168,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-editor-controls :my-editor {...}]
+  ;  [item-editor-controls :my-editor {...}]
   [editor-id element-props]
   [:div {:style {:display "flex" :grid-column-gap "12px"}}
         [:<> [revert-item-button editor-id element-props]

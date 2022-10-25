@@ -44,10 +44,10 @@
   ;   :value (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/action-bar {...}]
+  ;  [action-bar {...}]
   ;
   ; @usage
-  ;  [common/action-bar :my-bar {...}]
+  ;  [action-bar :my-bar {...}]
   ([bar-props]
    [element (random/generate-keyword) bar-props])
 

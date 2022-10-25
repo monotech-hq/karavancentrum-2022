@@ -93,16 +93,16 @@
   ;   :value (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/data-table {...}]
+  ;  [data-table {...}]
   ;
   ; @usage
-  ;  [common/data-table :my-table {...}]
+  ;  [data-table :my-table {...}]
   ;
   ; @usage
-  ;  [common/data-table {:rows [[{:content "Row #1"   :font-weight :extra-bold}
-  ;                              {:content "Value #1" :color :muted}
-  ;                              {:content "Value #2" :color :muted}]
-  ;                             [...]]}]
+  ;  [data-table {:rows [[{:content "Row #1"   :font-weight :extra-bold}
+  ;                       {:content "Value #1" :color :muted}
+  ;                       {:content "Value #2" :color :muted}]
+  ;                      [...]]}]
   ([table-props]
    [element (random/generate-keyword) table-props])
 

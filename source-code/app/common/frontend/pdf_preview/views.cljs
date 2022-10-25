@@ -22,10 +22,10 @@
   ;   :width (string)}
   ;
   ; @usage
-  ;  [common/pdf-preview {...}]
+  ;  [pdf-preview {...}]
   ;
   ; @usage
-  ;  [common/pdf-preview :my-preview {...}]
+  ;  [pdf-preview :my-preview {...}]
   ([preview-props]
    [element (random/generate-keyword) preview-props])
 

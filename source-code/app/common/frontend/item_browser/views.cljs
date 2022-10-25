@@ -16,7 +16,7 @@
   ;   :search-keys (keywords in vector)}
   ;
   ; @usage
-  ;  [common/item-browser-search-field :my-browser {...}]
+  ;  [item-browser-search-field :my-browser {...}]
   [browser-id field-props]
   [item-lister.views/item-lister-search-field browser-id field-props])
 
@@ -26,6 +26,6 @@
   ;  {:disabled? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/item-browser-search-description :my-browser {...}]
+  ;  [item-browser-search-description :my-browser {...}]
   [browser-id description-props]
   [item-lister.views/item-lister-search-description browser-id description-props])

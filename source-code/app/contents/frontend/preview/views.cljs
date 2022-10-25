@@ -131,10 +131,10 @@
   ;   :style (map)(opt)}
   ;
   ; @usage
-  ;  [contents/content-preview {...}]
+  ;  [content-preview {...}]
   ;
   ; @usage
-  ;  [contents/content-preview :my-preview {...}]
+  ;  [content-preview :my-preview {...}]
   ([preview-props]
    [element (random/generate-keyword) preview-props])
 

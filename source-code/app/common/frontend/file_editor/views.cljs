@@ -17,7 +17,7 @@
   ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/file-editor-menu-item-props :my-editor {...} {...}]
+  ;  [file-editor-menu-item-props :my-editor {...} {...}]
   ;
   ; @return (map)
   ;  {:active? (boolean)
@@ -44,7 +44,7 @@
   ;      :label (metamorphic-content)}]}
   ;
   ; @usage
-  ;  [common/file-editor-menu-bar :my-editor {...}]
+  ;  [file-editor-menu-bar :my-editor {...}]
   [editor-id {:keys [disabled? menu-items] :as bar-props}]
   (letfn [(f [menu-items menu-item] (conj menu-items (file-editor-menu-item-props editor-id bar-props menu-item)))]
          [:<> [elements/menu-bar ::file-editor-menu-bar {:disabled?  disabled?
@@ -59,7 +59,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/file-editor-ghost-element :my-editor {...}]
+  ;  [file-editor-ghost-element :my-editor {...}]
   [editor-id _]
   [surface.views/surface-box-layout-ghost-view editor-id {:breadcrumb-count 2}])
 
@@ -71,7 +71,7 @@
   ; @param (map) bar-props
   ;
   ; @usage
-  ;  [common/revert-content-button :my-editor {...}]
+  ;  [revert-content-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
   (let [content-changed? @(r/subscribe [:file-editor/content-changed? editor-id])]
        [surface-button.views/element ::revert-content-button
@@ -86,7 +86,7 @@
   ; @param (map) bar-props
   ;
   ; @usage
-  ;  [common/save-content-button :my-editor {...}]
+  ;  [save-content-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
   [surface-button.views/element ::save-content-button
                                 {:background-color "#5a4aff"
@@ -101,7 +101,7 @@
   ; @param (map) bar-props
   ;
   ; @usage
-  ;  [common/file-editor-controls :my-editor {...}]
+  ;  [file-editor-controls :my-editor {...}]
   [editor-id bar-props]
   [:div {:style {:display "flex" :grid-column-gap "12px"}}
         [:<> [revert-content-button editor-id bar-props]

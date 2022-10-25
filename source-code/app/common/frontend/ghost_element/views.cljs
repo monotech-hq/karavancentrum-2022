@@ -30,10 +30,10 @@
   ;    :surface-box}
   ;
   ; @usage
-  ;  [common/ghost-element {...}]
+  ;  [ghost-element {...}]
   ;
   ; @usage
-  ;  [common/ghost-element :my-element {...}]
+  ;  [ghost-element :my-element {...}]
   ([element-props]
    [element (random/generate-keyword) element-props])
 

@@ -2,9 +2,9 @@
 (ns app.pages.backend.lister.resolvers
     (:require [app.common.backend.api                :as common]
               [com.wsscode.pathom3.connect.operation :refer [defresolver]]
+              [engines.item-lister.api               :as item-lister]
               [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]
-              [plugins.item-lister.api               :as item-lister]))
+              [pathom.api                            :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

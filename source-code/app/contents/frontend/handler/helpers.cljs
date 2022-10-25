@@ -10,7 +10,7 @@
   ; @param (string) body
   ;
   ; @example
-  ;  (contents/parse-content-body "<p>Paragraph #1</p><p>Paragraph #2</p>")
+  ;  (parse-content-body "<p>Paragraph #1</p><p>Paragraph #2</p>")
   ;  =>
   ;  [:div [:p "Paragraph #1"] [:p "Paragraph #2"]]
   ;

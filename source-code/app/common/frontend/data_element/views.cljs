@@ -66,10 +66,10 @@
   ;   :value (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/data-element {...}]
+  ;  [data-element {...}]
   ;
   ; @usage
-  ;  [common/data-element :my-element {...}]
+  ;  [data-element :my-element {...}]
   ([element-props]
    [element (random/generate-keyword) element-props])
 

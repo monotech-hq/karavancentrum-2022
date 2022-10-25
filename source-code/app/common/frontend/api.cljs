@@ -26,7 +26,8 @@
               [app.common.frontend.selector-item-counter.views :as selector-item-counter.views]
               [app.common.frontend.selector-item-marker.views  :as selector-item-marker.views]
               [app.common.frontend.surface.views               :as surface.views]
-              [app.common.frontend.surface-box.views           :as surface-box.views]))
+              [app.common.frontend.surface-box.views           :as surface-box.views]
+              [app.common.frontend.surface-button.views        :as surface-button.views]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -140,3 +141,6 @@
 
 ; app.common.frontend.surface-box.views
 (def surface-box surface-box.views/element)
+
+; app.common.frontend.surface-button.views
+(def surface-button surface-button.views/element)

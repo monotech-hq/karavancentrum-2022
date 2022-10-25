@@ -1,6 +1,6 @@
 
 (ns app.storage.backend.media-selector.lifecycles
-    (:require [plugins.item-browser.api]
+    (:require [engines.item-browser.api]
               [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------

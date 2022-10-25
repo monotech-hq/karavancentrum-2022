@@ -27,6 +27,6 @@
   ;   :listeners (map)}
   ;
   ; @usage
-  ;  [common/list-item-drag-handle :my-lister 0 {...}]
+  ;  [list-item-drag-handle :my-lister 0 {...}]
   [lister-id item-dex dnd-kit-props]
   [list-item-drag-handle lister-id item-dex dnd-kit-props])

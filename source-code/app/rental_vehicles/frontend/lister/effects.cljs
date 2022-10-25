@@ -1,6 +1,6 @@
 
 (ns app.rental-vehicles.frontend.lister.effects
-    (:require [plugins.item-lister.api]
+    (:require [engines.item-lister.api]
               [app.rental-vehicles.frontend.lister.views :as lister.views]
               [re-frame.api                              :as r]))
 

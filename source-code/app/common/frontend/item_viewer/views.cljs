@@ -17,7 +17,7 @@
   ;    Default: false}
   ;
   ; @usage
-  ;  [common/item-viewer-item-modified :my-viewer {...}]
+  ;  [item-viewer-item-modified :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
   (let [current-item   @(r/subscribe [:item-viewer/get-current-item viewer-id])
         added-at        (-> current-item :modified-at)
@@ -39,7 +39,7 @@
   ;    Default: false}
   ;
   ; @usage
-  ;  [common/item-viewer-item-created :my-viewer {...}]
+  ;  [item-viewer-item-created :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
   (let [current-item   @(r/subscribe [:item-viewer/get-current-item viewer-id])
         added-at        (-> current-item :added-at)
@@ -62,7 +62,7 @@
   ;   :indent (map)}
   ;
   ; @usage
-  ;  [common/item-viewer-item-info :my-viewer {...}]
+  ;  [item-viewer-item-info :my-viewer {...}]
   [viewer-id {:keys [indent] :as info-props}]
   [elements/blank ::item-viewer-item-info
                   {:content [:div {:style {:display :flex :flex-direction :column :align-items :center :justify-content :center}}
@@ -82,7 +82,7 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  [common/item-viewer-color-stamp :my-viewer {...}]
+  ;  [item-viewer-color-stamp :my-viewer {...}]
   [_ {:keys [disabled? indent label value-path]}]
   (let [picked-colors @(r/subscribe [:db/get-item value-path])]
        [elements/color-stamp {:colors    picked-colors
@@ -105,7 +105,7 @@
   ;    [{:label (metamorphic-content)}]}
   ;
   ; @usage
-  ;  [common/item-viewer-menu-bar :my-viewer {...}]
+  ;  [item-viewer-menu-bar :my-viewer {...}]
   [viewer-id {:keys [disabled? menu-items] :as bar-props}]
   (letfn [(f [menu-items menu-item] (conj menu-items (item-editor.views/item-editor-menu-item-props viewer-id bar-props menu-item)))]
          [:<> [elements/menu-bar ::item-viewer-menu-bar {:disabled?  disabled?
@@ -120,7 +120,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-viewer-ghost-element :my-viewer {...}]
+  ;  [item-viewer-ghost-element :my-viewer {...}]
   [viewer-id _]
   [surface.views/surface-box-layout-ghost-view viewer-id {:breadcrumb-count 3}])
 
@@ -133,7 +133,7 @@
   ;  {:disabled? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/delete-item-button :my-viewer {...}]
+  ;  [delete-item-button :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
   [surface-button.views/element ::delete-item-button
                                 {:color       :warning
@@ -149,7 +149,7 @@
   ;  {:disabled? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/duplicate-item-button :my-viewer {...}]
+  ;  [duplicate-item-button :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
   [surface-button.views/element ::duplicate-item-button
                                 {:disabled?   disabled?
@@ -166,7 +166,7 @@
   ;   :edit-item-uri (string)}
   ;
   ; @usage
-  ;  [common/edit-item-button :my-viewer {...}]
+  ;  [edit-item-button :my-viewer {...}]
   [viewer-id {:keys [disabled? edit-item-uri]}]
   [surface-button.views/element ::edit-item-button
                                 {:background-color "#5a4aff"
@@ -183,7 +183,7 @@
   ;   :edit-item-uri (string)}
   ;
   ; @usage
-  ;  [common/item-viewer-controls :my-viewer {...}]
+  ;  [item-viewer-controls :my-viewer {...}]
   [viewer-id bar-props]
   [:div {:style {:display "flex" :grid-column-gap "12px"}}
         [:<> [delete-item-button    viewer-id bar-props]

@@ -1,6 +1,6 @@
 
 (ns app.rental-vehicles.backend.editor.lifecycles
-    (:require [plugins.item-editor.api]
+    (:require [engines.item-editor.api]
               [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------

@@ -143,7 +143,7 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  (r common/store-selector-props! db :my-selector {...})
+  ;  (r store-selector-props! db :my-selector {...})
   ;
   ; @return (map)
   [db [_ selector-id selector-props]]

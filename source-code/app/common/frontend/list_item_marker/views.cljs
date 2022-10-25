@@ -46,6 +46,6 @@
   ;   :style (map)(opt)}
   ;
   ; @usage
-  ;  [common/list-item-marker :my-lister 0 {...}]
+  ;  [list-item-marker :my-lister 0 {...}]
   [lister-id item-dex marker-props]
   [list-item-marker lister-id item-dex marker-props])

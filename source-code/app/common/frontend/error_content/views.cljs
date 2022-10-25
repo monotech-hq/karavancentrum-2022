@@ -39,10 +39,10 @@
   ;  {:error (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/error-content {...}]
+  ;  [error-content {...}]
   ;
   ; @usage
-  ;  [common/error-content :my-element {...}]
+  ;  [error-content :my-element {...}]
   ([content-props]
    [element (random/generate-keyword) content-props])
 

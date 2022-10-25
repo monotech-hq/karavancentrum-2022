@@ -86,10 +86,10 @@
   ;    Default: :visible}
   ;
   ; @usage
-  ;  [common/surface-box {...}]
+  ;  [surface-box {...}]
   ;
   ; @usage
-  ;  [common/surface-box :my-element {...}]
+  ;  [surface-box :my-element {...}]
   ([box-props]
    [element (random/generate-keyword) box-props])
 

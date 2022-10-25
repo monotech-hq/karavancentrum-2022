@@ -82,10 +82,10 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  [contents/content-picker {...}]
+  ;  [content-picker {...}]
   ;
   ; @usage
-  ;  [contents/content-picker :my-picker {...}]
+  ;  [content-picker :my-picker {...}]
   ([picker-props]
    [element (random/generate-keyword) picker-props])
 

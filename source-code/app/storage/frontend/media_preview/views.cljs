@@ -153,10 +153,10 @@
   ;     W/ {:sortable? true}}
   ;
   ; @usage
-  ;  [storage/media-preview {...}]
+  ;  [media-preview {...}]
   ;
   ; @usage
-  ;  [storage/media-preview :my-preview {...}]
+  ;  [media-preview :my-preview {...}]
   ([preview-props]
    [element (random/generate-keyword) preview-props])
 

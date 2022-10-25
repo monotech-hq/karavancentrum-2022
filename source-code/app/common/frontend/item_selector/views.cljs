@@ -12,7 +12,7 @@
   ;  {}
   ;
   ; @usage
-  ;  [common/all-item-selected-button :my-selector {...}]
+  ;  [all-item-selected-button :my-selector {...}]
   [_ {:keys []}]
   [elements/toggle ::all-item-selected-button
                    {:disabled? false
@@ -27,7 +27,7 @@
   ;  {}
   ;
   ; @usage
-  ;  [common/no-item-selected-button :my-selector {...}]
+  ;  [no-item-selected-button :my-selector {...}]
   [_ {:keys []}]
   [elements/toggle ::no-item-selected-button
                    {:disabled? false
@@ -42,7 +42,7 @@
   ;  {}
   ;
   ; @usage
-  ;  [common/some-item-selected-button :my-selector {...}]
+  ;  [some-item-selected-button :my-selector {...}]
   [_ {:keys [on-s]}]
   [elements/toggle ::some-item-selected-button
                    {:disabled? false
@@ -57,7 +57,7 @@
   ;  {}
   ;
   ; @usage
-  ;  [common/handle-selection-button :my-selector {...}]
+  ;  [handle-selection-button :my-selector {...}]
   [selector-id {:keys [all-downloaded-item-selected? any-downloaded-item-selected?] :as footer-props}]
   (cond all-downloaded-item-selected? [all-item-selected-button  selector-id footer-props]
         any-downloaded-item-selected? [some-item-selected-button selector-id footer-props]
@@ -71,7 +71,7 @@
   ;   :selected-item-count (integer)}
   ;
   ; @usage
-  ;  [common/discard-selection-button :my-selector {...}]
+  ;  [discard-selection-button :my-selector {...}]
   [_ {:keys [on-discard-selection selected-item-count]}]
   [elements/button ::discard-selection-button
                    {:disabled?     (< selected-item-count 1)
@@ -89,7 +89,7 @@
   ;   :selected-item-count (integer)}
   ;
   ; @usage
-  ;  [common/item-selector-footer :my-selector {...}]
+  ;  [item-selector-footer :my-selector {...}]
   [selector-id footer-props]
   [:div {:style {:display "flex" :justify-content "space-between"}}
         [:div]
@@ -108,7 +108,7 @@
   ;   :search-keys (keywords in vector)}
   ;
   ; @usage
-  ;  [common/search-items-field :my-selector {...}]
+  ;  [search-items-field :my-selector {...}]
   [selector-id {:keys [disabled? search-field-placeholder search-keys]}]
   (let [search-event [:item-lister/search-items! selector-id {:search-keys search-keys}]]
        [:div {:style {:flex-grow 1}}
@@ -128,7 +128,7 @@
   ;   :order-by-options (namespaced keywords in vector)}
   ;
   ; @usage
-  ;  [common/order-by-icon-button :my-selector {...}]
+  ;  [order-by-icon-button :my-selector {...}]
   [selector-id {:keys [disabled? order-by-options]}]
   [elements/icon-button ::order-by-icon-button
                         {:border-radius :s
@@ -147,7 +147,7 @@
   ;   :search-keys (keywords in vector)}
   ;
   ; @usage
-  ;  [common/item-selector-control-bar :my-selector {...}]
+  ;  [item-selector-control-bar :my-selector {...}]
   [selector-id bar-props]
   [elements/row ::item-selector-control-bar
                 {:content [:<> [search-items-field   selector-id bar-props]
@@ -161,6 +161,6 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-selector-ghost-element :my-selector {...}]
+  ;  [item-selector-ghost-element :my-selector {...}]
   [selector-id view-props]
   [item-lister.views/item-lister-ghost-element selector-id view-props])

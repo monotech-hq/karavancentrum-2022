@@ -49,9 +49,9 @@
          (reduce f [:<>] label-group)))
 
 (defn- weight-group
-  ; @param (integer) horizontal-weight
+  ; @param (integer) vertical-weight
   ; @param (?) weight-group
-  [horizontal-weight weight-group]
+  [vertical-weight weight-group]
   ; XXX#0091 (app.home.frontend.screen.views)
   (let [label-groups (group-by #(-> % :label components/content) weight-group)]
        (letfn [(f [group-list label]
@@ -74,9 +74,9 @@
   (let [group-items @(r/subscribe [:home.sidebar/get-menu-group-items group-name])]
        (if (vector/nonempty? group-items)
            [:<> [menu-group-label group-name]
-                (let [weight-groups (group-by :horizontal-weight group-items)]
-                     (letfn [(f [group-list horizontal-weight]
-                                (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
+                (let [weight-groups (group-by :vertical-weight group-items)]
+                     (letfn [(f [group-list vertical-weight]
+                                (conj group-list [weight-group vertical-weight (get weight-groups vertical-weight)]))]
                             (reduce f [:div {:style {:padding-bottom "12px"}}] (-> weight-groups keys sort))))])))
 
 (defn- menu-groups
@@ -89,11 +89,23 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- label
+  []
+  [elements/label ::label
+                  {:color   :invert
+                   :content "Monotech.hu"
+                   :font-size :xs
+                   :indent  {:left :s :right :l :top :xs}}])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- view-structure
   ; @param (keyword) sidebar-id
   [_]
   (if-let [viewport-large @(r/subscribe [:environment/viewport-large?])]
-          [menu-groups]))
+          [:<> ;[label]
+               [menu-groups]]))
 
 (defn view
   ; @param (keyword) sidebar-id

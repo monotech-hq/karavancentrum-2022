@@ -1,6 +1,6 @@
 
 (ns app.contents.backend.lister.lifecycles
-    (:require [plugins.item-lister.api]
+    (:require [engines.item-lister.api]
               [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------

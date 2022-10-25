@@ -27,10 +27,10 @@
   ;  {:error (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/error-element {...}]
+  ;  [error-element {...}]
   ;
   ; @usage
-  ;  [common/error-element :my-element {...}]
+  ;  [error-element :my-element {...}]
   ([element-props]
    [element (random/generate-keyword) element-props])
 

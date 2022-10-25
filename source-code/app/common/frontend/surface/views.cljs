@@ -28,7 +28,7 @@
   ;   :disabled? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/surface-breadcrumbs :my-surface {...}]
+  ;  [surface-breadcrumbs :my-surface {...}]
   [surface-id {:keys [crumbs disabled?]}]
   [elements/breadcrumbs ::surface-breadcrumbs
                         {:crumbs    crumbs
@@ -46,7 +46,7 @@
   ;   :placeholder (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/surface-label :my-surface {...}]
+  ;  [surface-label :my-surface {...}]
   [surface-id {:keys [disabled? label placeholder]}]
   ; Ha nem egy közös elemben (pl. div) volt a sensor és a label, akkor bizonoyos
   ; esetekben (pl. horizontal-polarity elemben) nem megfelelő helyen érzékelt a sensor
@@ -67,7 +67,7 @@
   ;   :disabled? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/surface-description :my-surface {...}]
+  ;  [surface-description :my-surface {...}]
   [surface-id {:keys [description disabled?]}]
   [elements/label ::surface-description
                   {:color     :muted
@@ -85,7 +85,7 @@
   ;  {:breadcrumb-count (integer)}
   ;
   ; @usage
-  ;  [common/surface-box-layout-ghost-view :my-editor {...}]
+  ;  [surface-box-layout-ghost-view :my-editor {...}]
   [editor-id {:keys [breadcrumb-count]}]
   [:div {:style {:padding "0 12px" :width "100%"}}
         [:div {:style {:padding-bottom "6px" :width "240px"}}

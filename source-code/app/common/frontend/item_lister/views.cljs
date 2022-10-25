@@ -25,7 +25,7 @@
   ;   :on-click (metamorphic-event)}
   ;
   ; @usage
-  ;  [common/list-item-icon-button :my-lister 0 {...}]
+  ;  [list-item-icon-button :my-lister 0 {...}]
   [_ _ {:keys [disabled? icon icon-family on-click]}]
   [:button {:on-click #(do (dom/stop-propagation! %)
                            (if-not disabled? (r/dispatch on-click)))
@@ -40,7 +40,7 @@
   ;  {:thumbnail (string)}
   ;
   ; @usage
-  ;  [common/list-item-thumbnail :my-lister 0 {...}]
+  ;  [list-item-thumbnail :my-lister 0 {...}]
   [_ _ {:keys [thumbnail]}]
   [elements/thumbnail {:border-radius :s :height :s :indent {:horizontal :xxs :vertical :xs}
                        :uri thumbnail :width :l}])
@@ -53,7 +53,7 @@
   ;   :icon-family (keyword)(opt)}
   ;
   ; @usage
-  ;  [common/list-item-thumbnail-icon :my-lister 0 {...}]
+  ;  [list-item-thumbnail-icon :my-lister 0 {...}]
   [_ _ {:keys [icon icon-family]}]
   (if icon-family [elements/icon {:icon icon :icon-family icon-family :indent {:horizontal :m :vertical :xl}}]
                   [elements/icon {:icon icon                          :indent {:horizontal :m :vertical :xl}}]))
@@ -67,7 +67,7 @@
   ;   :stretch? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/list-item-label :my-lister 0 {...}]
+  ;  [list-item-label :my-lister 0 {...}]
   [_ _ {:keys [content placeholder stretch?]}]
   [:div (if stretch? {:style {:flex-grow 1}})
         [elements/label {:color       "#333"
@@ -84,7 +84,7 @@
   ;   :width (string)(opt)}
   ;
   ; @usage
-  ;  [common/list-item-detail :my-lister 0 {...}]
+  ;  [list-item-detail :my-lister 0 {...}]
   [_ _ {:keys [content placeholder width]}]
   [:div {:style {:width width}}
         [elements/label {:color       "#777"
@@ -101,7 +101,7 @@
   ;   :width (string)(opt)}
   ;
   ; @usage
-  ;  [common/list-item-details :my-lister 0 {...}]
+  ;  [list-item-details :my-lister 0 {...}]
   [lister-id item-dex {:keys [contents width]}]
   [:div {:style {:width width}}
         (letfn [(f [contents content]
@@ -122,7 +122,7 @@
   ;   :timestamp (string)(opt)}
   ;
   ; @usage
-  ;  [common/list-item-primary-cell :my-lister 0 {...}]
+  ;  [list-item-primary-cell :my-lister 0 {...}]
   [_ _ {:keys [description label placeholder stretch? timestamp]}]
   [:div (if stretch? {:style {:flex-grow 1}})
         (if (or label placeholder) [elements/label {:content label :placeholder placeholder :indent {:right :xs} :style {:color "#333" :line-height "21px"}}])
@@ -137,11 +137,11 @@
   ;  {:cells (components in vector)}
   ;
   ; @usage
-  ;  [common/list-item-structure :my-lister 0 {...}]
+  ;  [list-item-structure :my-lister 0 {...}]
   ;
   ; @usage
   ;  (defn my-cell [])
-  ;  [common/list-item-structure :my-lister 0 {:cells [[my-cell]]}]
+  ;  [list-item-structure :my-lister 0 {:cells [[my-cell]]}]
   [lister-id item-dex {:keys [cells]}]
   (let [item-last? @(r/subscribe [:item-lister/item-last? lister-id item-dex])]
        (reduce conj [:div {:style {:align-items "center" :border-bottom (if-not item-last? "1px solid #f0f0f0") :display "flex"}}]
@@ -158,7 +158,7 @@
   ;   :search-keys (keywords in vector)}
   ;
   ; @usage
-  ;  [common/item-lister-search-field :my-lister {...}]
+  ;  [item-lister-search-field :my-lister {...}]
   [lister-id {:keys [disabled? placeholder search-keys]}]
   (let [viewport-small? @(r/subscribe [:environment/viewport-small?])
         search-event     [:item-lister/search-items! lister-id {:search-keys search-keys}]]
@@ -178,7 +178,7 @@
   ;  {:disabled? (boolean)(opt)}
   ;
   ; @usage
-  ;  [common/item-lister-search-description :my-lister {...}]
+  ;  [item-lister-search-description :my-lister {...}]
   [lister-id {:keys [disabled?]}]
   (let [search-term    @(r/subscribe [:item-lister/get-meta-item      lister-id :search-term])
         all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
@@ -198,7 +198,7 @@
   ;  {:width (string)}
   ;
   ; @usage
-  ;  [common/item-lister-header-spacer :my-lister {...}]
+  ;  [item-lister-header-spacer :my-lister {...}]
   [_ {:keys [width]}]
   [:div {:style {:width width}}])
 
@@ -211,7 +211,7 @@
   ;   :width (string)(opt)}
   ;
   ; @usage
-  ;  [common/item-lister-header-cell :my-lister {...}]
+  ;  [item-lister-header-cell :my-lister {...}]
   [lister-id {:keys [label order-by-key stretch? width]}]
   (let [current-order-by @(r/subscribe [:item-lister/get-current-order-by lister-id])
         current-order-by-key       (keyword/get-namespace current-order-by)
@@ -252,7 +252,7 @@
   ;   :control-bar (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/item-lister-header :my-lister {...}]
+  ;  [item-lister-header :my-lister {...}]
   [lister-id {:keys [cells control-bar]}]
   (if-let [data-received? @(r/subscribe [:item-lister/data-received? lister-id])]
           [:div {:style {:background-color "var( --fill-color )" :border-bottom "1px solid var( --border-color-highlight )"
@@ -272,7 +272,7 @@
   ;   :header (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/item-lister-wrapper :my-lister {...}]
+  ;  [item-lister-wrapper :my-lister {...}]
   [lister-id {:keys [body header]}]
   (let [viewport-small? @(r/subscribe [:environment/viewport-small?])]
        [:div {:style {:display "flex" :flex-direction "column-reverse"
@@ -290,7 +290,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-lister-ghost-element :my-lister {...}]
+  ;  [item-lister-ghost-element :my-lister {...}]
   [_ {:keys []}]
   [:div {:style {:padding "12px 12px" :width "100%"}}
         [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px"}}
@@ -303,7 +303,7 @@
   ; @param (map) header-props
   ;
   ; @usage
-  ;  [common/item-lister-ghost-header :my-lister {...}]
+  ;  [item-lister-ghost-header :my-lister {...}]
   [_ {:keys []}]
   [:div {:style {:padding "0 12px" :width "100%"}}
         [:div {:style {:padding-bottom "6px" :width "240px"}}
@@ -324,7 +324,7 @@
   ;   :create-item-uri (string)}
   ;
   ; @usage
-  ;  [common/item-lister-create-item-button :my-lister {...}]
+  ;  [item-lister-create-item-button :my-lister {...}]
   [_ {:keys [disabled? create-item-uri]}]
   [surface-button.views/element ::item-lister-create-item-button
                                 {:background-color "#5a4aff"
@@ -342,7 +342,7 @@
   ; @param (map) info-props
   ;
   ; @usage
-  ;  [common/item-lister-download-info :my-lister {...}]
+  ;  [item-lister-download-info :my-lister {...}]
   [lister-id _]
   (let [all-item-count        @(r/subscribe [:item-lister/get-all-item-count        lister-id])
         downloaded-item-count @(r/subscribe [:item-lister/get-downloaded-item-count lister-id])

@@ -12,7 +12,7 @@
   ;  {:label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/popup-label-bar-label :my-popup {...}]
+  ;  [popup-label-bar-label :my-popup {...}]
   [_ {:keys [label]}]
   [elements/label ::popup-label-bar-label
                   {:content label
@@ -24,7 +24,7 @@
   ;  {:secondary-button (map)}
   ;
   ; @usage
-  ;  [common/popup-secondary-button :my-popup {...}]
+  ;  [popup-secondary-button :my-popup {...}]
   [_ {:keys [secondary-button]}]
   [elements/button ::popup-secondary-button
                    (merge {:font-size   :xs
@@ -40,7 +40,7 @@
   ;  {:primary-button (map)}
   ;
   ; @usage
-  ;  [common/popup-primary-button :my-popup {...}]
+  ;  [popup-primary-button :my-popup {...}]
   [_ {:keys [primary-button]}]
   ; Ha szeretnéd, hogy a popup primary-button gombjának eseménye megtörténjen
   ; az ENTER billentyű lenyomására akkor is, ha egy szövegmező fókuszált
@@ -67,7 +67,7 @@
   ;     :on-click (metamorphic-even)}}
   ;
   ; @usage
-  ;  [common/popup-label-bar :my-popup {...}]
+  ;  [popup-label-bar :my-popup {...}]
   [popup-id bar-props]
   [elements/horizontal-polarity ::popup-label-bar
                                 {:start-content  [popup-secondary-button popup-id bar-props]
@@ -84,7 +84,7 @@
   ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/popup-progress-label :my-popup {...}]
+  ;  [popup-progress-label :my-popup {...}]
   [_ {:keys [color label]}]
   [elements/label ::popup-progress-label
                   {:color   (or color :muted)
@@ -98,7 +98,7 @@
   ;   :label (metamorphic-content)}
   ;
   ; @usage
-  ;  [common/popup-progress-indicator :my-popup {...}]
+  ;  [popup-progress-indicator :my-popup {...}]
   [popup-id {:keys [indent] :as indicator-props}]
   [elements/column ::popup-progress-indicator
                    {:content             [popup-progress-label popup-id indicator-props]

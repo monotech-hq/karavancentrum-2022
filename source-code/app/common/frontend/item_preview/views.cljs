@@ -10,7 +10,7 @@
   ; @param (map) element-props
   ;
   ; @usage
-  ;  [common/item-editor-ghost-element :my-editor {...}]
+  ;  [item-editor-ghost-element :my-editor {...}]
   [preview-id _]
   [elements/label {:color     :muted
                    :content   :downloading...
@@ -25,7 +25,7 @@
   ;  {:error (metamorphic-content)(opt)}
   ;
   ; @usage
-  ;  [common/item-preview-error-content :my-preview {...}]
+  ;  [item-preview-error-content :my-preview {...}]
   [preview-id element-props]
   (let [element-props (merge {:error :the-item-has-been-broken} element-props)]
        [elements/label {:color     :warning

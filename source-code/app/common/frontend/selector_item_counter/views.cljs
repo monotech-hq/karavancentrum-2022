@@ -47,6 +47,6 @@
   ; @param (map) counter-props
   ;
   ; @usage
-  ;  [common/selector-item-counter :my-selector 42 {...}]
+  ;  [selector-item-counter :my-selector 42 {...}]
   [selector-id item-dex counter-props]
   [selector-item-counter selector-id item-dex counter-props])

@@ -26,6 +26,6 @@
   ;  {:item-id (string)}
   ;
   ; @usage
-  ;  [common/selector-item-marker :my-selector 42 {...}]
+  ;  [selector-item-marker :my-selector 42 {...}]
   [selector-id item-dex marker-props]
   [selector-item-marker selector-id item-dex marker-props])

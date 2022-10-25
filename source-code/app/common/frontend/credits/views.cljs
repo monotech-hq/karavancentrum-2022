@@ -15,7 +15,7 @@
   ;    Default: :light}
   ;
   ; @usage
-  ;  [common/copyright-label]
+  ;  [copyright-label]
   [{:keys [theme]}]
   (let [server-year          @(r/subscribe [:core/get-server-year])
         copyright-information (details/copyright-information server-year)]
@@ -37,7 +37,7 @@
   ;    Default: :light}
   ;
   ; @usage
-  ;  [common/mt-logo]
+  ;  [mt-logo]
   [{:keys [theme]}]
   [:div {:style {:background-image (case theme :dark (css/url "/app/logo/mt-logo-dark.png")
                                                      (css/url "/app/logo/mt-logo-light.png"))
@@ -52,7 +52,7 @@
   ;    Default: :light}
   ;
   ; @usage
-  ;  [common/created-by-label]
+  ;  [created-by-label]
   [{:keys [theme]}]
   [elements/label ::created-by-label
                   {:color     (case theme :dark :invert :default)
@@ -67,7 +67,7 @@
   ;    Default: :light}
   ;
   ; @usage
-  ;  [common/created-by]
+  ;  [created-by]
   [element-props]
   [elements/toggle ::created-by
                    {:on-click {:fx [:environment/open-new-browser-tab! "https://www.monotech.hu"]}
@@ -86,7 +86,7 @@
   ;    Default: :light}
   ;
   ; @usage
-  ;  [common/credits]
+  ;  [credits]
   [element-props]
   [:div {:style {}}
         [:div {:style {:display "flex" :justify-content "center"}}

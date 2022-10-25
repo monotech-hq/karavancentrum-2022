@@ -94,10 +94,10 @@
   ;   :value-path (vector)}
   ;
   ; @usage
-  ;  [storage/media-picker {...}]
+  ;  [media-picker {...}]
   ;
   ; @usage
-  ;  [storage/media-picker :my-picker {...}]
+  ;  [media-picker :my-picker {...}]
   ([picker-props]
    [element (random/generate-keyword) picker-props])
 

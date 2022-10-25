@@ -1,6 +1,6 @@
 
 (ns app.contents.backend.preview.lifecycles
-    (:require [plugins.item-preview.api]
+    (:require [engines.item-preview.api]
               [x.server-core.api :as core]))
 
 ;; ----------------------------------------------------------------------------

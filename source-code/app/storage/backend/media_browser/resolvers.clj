@@ -3,9 +3,9 @@
     (:require [app.common.backend.api                            :as common]
               [app.storage.backend.capacity-handler.side-effects :as capacity-handler.side-effects]
               [com.wsscode.pathom3.connect.operation             :refer [defresolver]]
+              [engines.item-browser.api                          :as item-browser]
               [mongo-db.api                                      :as mongo-db]
-              [pathom.api                                        :as pathom]
-              [plugins.item-browser.api                          :as item-browser]))
+              [pathom.api                                        :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

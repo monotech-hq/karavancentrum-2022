@@ -23,15 +23,15 @@
   ;   :items (vector)}
   ;
   ; @usage
-  ;  [common/item-list {...}]
+  ;  [item-list {...}]
   ;
   ; @usage
-  ;  [common/item-list :my-list {...}]
+  ;  [item-list :my-list {...}]
   ;
   ; @usage
   ;  (defn my-item-element [list-id item-dex item])
-  ;  [common/item-list :my-list {:item-element #'my-item-element
-  ;                              :items        ["a" "b" "c"]}]
+  ;  [item-list :my-list {:item-element #'my-item-element
+  ;                       :items        ["a" "b" "c"]}]
   ([list-props]
    [element (random/generate-keyword) list-props])
 

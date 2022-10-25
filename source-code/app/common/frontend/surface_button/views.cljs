@@ -13,10 +13,10 @@
   ;  {}
   ;
   ; @usage
-  ;  [common/surface-button {...}]
+  ;  [surface-button {...}]
   ;
   ; @usage
-  ;  [common/surface-button :my-element {...}]
+  ;  [surface-button :my-element {...}]
   ([button-props]
    [element (random/generate-keyword) button-props])
 
