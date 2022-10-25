@@ -1,5 +1,5 @@
 [submodule "monoset"]
-	path = monoset
+	path = submodules/monoset
 	url = git@github.com:monotech-hq/monoset.git
 [submodule "submodules/mongo-db-api"]
 	path = submodules/mongo-db-api

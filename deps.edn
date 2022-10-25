@@ -10,19 +10,17 @@
          "submodules/io-api/source-code/cljc"
          "submodules/io-api/source-code/cljs"
          "submodules/mongo-db-api/source-code/clj"
+         "submodules/monoset/deps"
+         "submodules/monoset/source-code/clj"
+         "submodules/monoset/source-code/cljc"
+         "submodules/monoset/source-code/cljs"
+         "submodules/monoset/resources"
          "submodules/pathom-api/source-code/clj"
          "submodules/pathom-api/source-code/cljs"
          "submodules/re-frame-api/source-code/cljc"
          "submodules/time-api/source-code/clj"
          "submodules/time-api/source-code/cljc"
-         "submodules/time-api/source-code/cljs"
-
-         ; monoset paths
-         "monoset/deps"
-         "monoset/source-code/clj"
-         "monoset/source-code/cljc"
-         "monoset/source-code/cljs"
-         "monoset/resources"]
+         "submodules/time-api/source-code/cljs"]
 
  ; Dependecies
  :deps {buddy/buddy-auth                                {:mvn/version "2.1.0"}
