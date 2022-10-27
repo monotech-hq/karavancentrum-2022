@@ -46,7 +46,6 @@
   ;  {}
   [preview-id preview-props {:content/keys [id] :as content-link}]
   ; BUG#9980 (app.products.frontend.preview.views)
-  ;
   ; BUG#8871 (app.products.frontend.preview.views)
   (if id [item-preview/body (keyword id)
                             {:ghost-element   #'common/item-preview-ghost-element

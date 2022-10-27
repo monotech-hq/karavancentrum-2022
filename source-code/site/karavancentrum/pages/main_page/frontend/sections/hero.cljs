@@ -1,8 +1,7 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.hero
-    (:require [re-frame.api             :as r]
-              [site.common.frontend.api :as common]))
- 
+    (:require [re-frame.api :as r]))
+
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
@@ -16,5 +15,5 @@
 
 (defn view
   []
-  [:section [common/fragment-sensor :fooldal]
+  [:section {:id :hero}
             [hero]])

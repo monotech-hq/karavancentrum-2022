@@ -8,14 +8,14 @@
               ; Site modules
               [site.karavancentrum.pages.frontend]
               [site.karavancentrum.modules.api]
-              [site.karavancentrum.wrapper :as site.wrapper]))
+              [site.karavancentrum.wrapper.views :as site.wrapper.views]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- site-structure
   [ui-structure]
-  [:<> [site.wrapper/view ui-structure]
+  [:<> [site.wrapper.views/view ui-structure]
        [developer-tools/magic-button]])
 
 ;; ----------------------------------------------------------------------------

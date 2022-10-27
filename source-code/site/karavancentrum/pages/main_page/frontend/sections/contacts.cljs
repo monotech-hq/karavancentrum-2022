@@ -3,8 +3,7 @@
     (:require [app.contents.frontend.api :as contents]
               [mid-fruits.href           :as href]
               [mid-fruits.uri            :as uri]
-              [re-frame.api              :as r]
-              [site.common.frontend.api  :as common]))
+              [re-frame.api              :as r]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -56,9 +55,9 @@
 
 (defn social-media-link
   [link icon-class label]
-  [:a.kc-social-media-link {:href (uri/valid-uri link) :title label}
-                           [:i {:class icon-class}]])
-
+  [:a.kc-social-media-link {:href (uri/valid-uri link) :target "_blank" :title label}
+                           [:i {:class icon-class}]
+                           [:span (uri/uri->trimmed-uri (str "https://www." link))]])
 
 (defn facebook-links
   []
@@ -99,5 +98,5 @@
 
 (defn view
   []
-  [:section [common/fragment-sensor :kapcsolat]
+  [:section {:id :contacts}
             [contacts]])

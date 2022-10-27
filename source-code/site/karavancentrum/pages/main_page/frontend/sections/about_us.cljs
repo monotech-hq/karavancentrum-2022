@@ -3,8 +3,7 @@
     (:require [app.contents.frontend.api :as contents]
               [mid-fruits.css            :as css]
               [re-frame.api              :as r]
-              [reagent.api               :refer [ratom]]
-              [site.common.frontend.api  :as common]))
+              [reagent.api               :refer [ratom]]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -37,5 +36,5 @@
 
 (defn view
   []
-  [:section [common/fragment-sensor :magunkrol]
+  [:section {:id :about-us}
             [about-us]])

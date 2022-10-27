@@ -1,6 +1,7 @@
 
 
-(ns site.karavancentrum.components.grid)
+(ns site.karavancentrum.components.grid
+    (:require [site.karavancentrum.components.link :as link]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -11,6 +12,6 @@
       [:div.kc-grid (first args) args]
       [:div.kc-grid args]))
 
-(defn view 
+(defn view
   [args]
   [grid args])

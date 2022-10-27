@@ -8,8 +8,8 @@
 
 (r/reg-event-fx :vehicle-page/render!
   [:ui/render-surface! :vehicle-page/view
-                       {:on-surface-closed [:vehicle-page/clear-selected-vehicle!]
-                        :content #'views/view}])
+                       {:on-unmount [:vehicle-page/clear-selected-vehicle!]
+                        :content    #'views/view}])
 
 (r/reg-event-fx :vehicle-page/load!
   {:dispatch-n [[:vehicle-page/render!]]})

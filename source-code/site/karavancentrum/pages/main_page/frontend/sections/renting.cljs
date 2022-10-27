@@ -3,7 +3,6 @@
 (ns site.karavancentrum.pages.main-page.frontend.sections.renting
     (:require [re-frame.api                       :as r]
               [reagent.api                        :refer [lifecycles]]
-              [site.common.frontend.api           :as common]
               [site.karavancentrum.components.api :as site.components]))
 
 ;; -----------------------------------------------------------------------------
@@ -26,15 +25,16 @@
   [id {:keys [icon]}]
   (let [checked   @(r/subscribe [:main-page.filters/contains? [:main-page.filters] id])
         disabled? @(r/subscribe [:main-page.filters/disabled? id])]
-       [:div.kc-filters--icon [:input {:type "checkbox" :id id :name id :checked checked :disabled disabled? :class :kc-filters--icon-input
+       [:div.kc-filters--icon {:data-disabled (boolean disabled?)}
+                              [:input {:type "checkbox" :id id :name id :checked checked :disabled disabled? :class :kc-filters--icon-input
                                        :on-change #(r/dispatch [:main-page.filters/select [:main-page.filters] id])}]
                               [:label {:for id :class :kc-filters--icon-img}
                                       [:img {:src icon}]]]))
 
 (defn filters
   []
-  [:div#kc-filters--container (letfn [(f [[id conf]] ^{:key id}[vehicle-type-button id conf])]
-                                  (map f filter-config))])
+  [:div#kc-filters--container (letfn [(f [[id conf]] ^{:key id} [vehicle-type-button id conf])]
+                                     (map f filter-config))])
 
 (defn vehicle-name
   [name]
@@ -63,5 +63,5 @@
 
 (defn view
   []
-  [:section [common/fragment-sensor :berbeadas]
+  [:section {:id :renting}
             [renting]])

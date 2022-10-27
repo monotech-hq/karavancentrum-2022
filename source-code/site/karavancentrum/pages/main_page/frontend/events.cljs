@@ -35,7 +35,7 @@
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(r/reg-event-db :main-page.filters/init! init-filters)
+(r/reg-event-db :main-page.filters/init!  init-filters)
 (r/reg-event-db :main-page.filters/select select)
-(r/reg-event-db :main-page.filters/conj this-conj)
-(r/reg-event-db :main-page.filters/disj this-disj)
+(r/reg-event-db :main-page.filters/conj   this-conj)
+(r/reg-event-db :main-page.filters/disj   this-disj)

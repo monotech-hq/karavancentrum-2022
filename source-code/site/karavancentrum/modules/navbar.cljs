@@ -78,17 +78,16 @@
 (defn navbar-mobile [config items {:keys [layout] :as view-props}]
   [:<>
    [:nav#kc-navbar {:data-layout layout}
-    [:div#kc-navbar--container
-     [nav-logo (:logo config)]
-     [open-button layout]]
+    [:div#kc-navbar--container [nav-logo (:logo config)]
+                               [open-button layout]]
     [sidebar/view {:id :kc-nav-menu}
-     [menu items]]]])
+                  [menu items]]]])
 
 (defn navbar [config items {:keys [layout] :as view-props}]
   [:<> [:div#kc-scroll-sensor {:style {:height "1px" :position "absolute" :top "0"}}]
        (if (= "mobile" layout)
-         [navbar-mobile config items view-props]
-         [navbar-desktop config items view-props])])
+           [navbar-mobile config items view-props]
+           [navbar-desktop config items view-props])])
 
 (defn view [config & items]
   (lifecycles

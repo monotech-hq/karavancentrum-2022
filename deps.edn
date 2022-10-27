@@ -5,6 +5,7 @@
 
          ; Submodule paths
          "submodules/ajax-api/source-code/cljs"
+         "submodules/docs-api/source-code/clj"
          "submodules/dom-api/source-code/cljs"
          "submodules/io-api/source-code/clj"
          "submodules/io-api/source-code/cljc"
