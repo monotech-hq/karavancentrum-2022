@@ -18,10 +18,11 @@
                                                     [:div#kc-navbar--company-slogan company-slogan]]]))
 
 (defn navbar-item
-  [{:keys [href] :as config} label]
+  [{:keys [href target]} label]
   [:a.kc-link.kc-effect--underline {:on-mouse-up #(-> % .-target .blur)
                                     :style {"--underline-color" "black"}
-                                    :href href}
+                                    :href   href
+                                    :target (or target "_self")}
                                    label])
 
 (defn navbar
@@ -29,10 +30,10 @@
   (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [modules/navbar {:threshold 800 :align-x :right :logo [company-name-and-slogan]}
-                       [navbar-item {:href "/berbeadas"}                 "Bérbeadás"]
-                       [navbar-item {:href "/ertekesites"}               "Értékesítés"]
+                       [navbar-item {:href "/berbeadas"}                  "Bérbeadás"]
+                       [navbar-item {:href "/ertekesites"}                "Értékesítés"]
                        [navbar-item {:href webshop-link :target "_blank"} "Webáruház"]
-                       [navbar-item {:href "/kapcsolat"}                 "Kapcsolat"]]))
+                       [navbar-item {:href "/kapcsolat"}                  "Kapcsolat"]]))
 
 (defn header
   []
