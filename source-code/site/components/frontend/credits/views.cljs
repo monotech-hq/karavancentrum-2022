@@ -1,5 +1,5 @@
 
-(ns app.common.frontend.credits.views
+(ns site.components.frontend.credits.views
     (:require [elements.api   :as elements]
               [mid-fruits.css :as css]
               [re-frame.api   :as r]
@@ -9,7 +9,7 @@
 ;; ----------------------------------------------------------------------------
 
 (defn copyright-label
-  ; @param (map) element-props
+  ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
@@ -31,7 +31,7 @@
 ;; ----------------------------------------------------------------------------
 
 (defn mt-logo
-  ; @param (map) element-props
+  ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
@@ -46,7 +46,7 @@
                  :width            "72px"}}])
 
 (defn created-by-label
-  ; @param (map) element-props
+  ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
@@ -61,34 +61,39 @@
                    :indent    {:top :xxs}}])
 
 (defn created-by
-  ; @param (map) element-props
+  ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
   ;
   ; @usage
   ;  [created-by]
-  [element-props]
+  [component-props]
   [elements/toggle ::created-by
                    {:on-click {:fx [:environment/open-new-browser-tab! "https://www.monotech.hu"]}
                     :content  [:div {:style {:align-items "center" :display "flex" :flex-direction "column"}}
-                                    [mt-logo          element-props]
-                                    [created-by-label element-props]]
+                                    [mt-logo          component-props]
+                                    [created-by-label component-props]]
                     :indent   {:bottom :xxs}}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn credits
-  ; @param (map) element-props
+(defn- credits
+  ; @param (map) component-props
+  [component-props]
+  [:div {:style {}}
+        [:div {:style {:display "flex" :justify-content "center"}}
+              [created-by component-props]]
+        [copyright-label component-props]])
+
+(defn component
+  ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
   ;
   ; @usage
-  ;  [credits]
-  [element-props]
-  [:div {:style {}}
-        [:div {:style {:display "flex" :justify-content "center"}}
-              [created-by element-props]]
-        [copyright-label element-props]])
+  ;  [credits {...}]
+  [component-props]
+  [credits component-props])

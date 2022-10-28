@@ -3,7 +3,6 @@
     (:require [app.common.frontend.item-selector.effects]
               [app.common.frontend.item-selector.events]
               [app.common.frontend.action-bar.views            :as action-bar.views]
-              [app.common.frontend.credits.views               :as credits.views]
               [app.common.frontend.data-element.views          :as data-element.views]
               [app.common.frontend.data-table.views            :as data-table.views]
               [app.common.frontend.error-content.views         :as error-content.views]
@@ -34,13 +33,6 @@
 
 ; app.common.frontend.action-bar.views
 (def action-bar action-bar.views/element)
-
-; app.common.frontend.credits.views
-(def copyright-label  credits.views/copyright-label)
-(def mt-logo          credits.views/mt-logo)
-(def created-by-label credits.views/created-by-label)
-(def created-by       credits.views/created-by)
-(def credits          credits.views/credits)
 
 ; app.common.frontend.data-element.views
 (def data-element data-element.views/element)

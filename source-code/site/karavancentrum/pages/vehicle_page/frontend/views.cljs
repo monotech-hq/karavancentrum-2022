@@ -1,9 +1,9 @@
 
 (ns site.karavancentrum.pages.vehicle-page.frontend.views
-    (:require [app.common.frontend.api                                :as common]
-              [app.contents.frontend.api                              :as contents]
+    (:require [app.contents.frontend.api                              :as contents]
               [mid-fruits.vector                                      :as vector]
               [re-frame.api                                           :as r]
+              [site.components.frontend.api                           :as components]
               [site.karavancentrum.components.api                     :as site.components]
               [site.karavancentrum.pages.vehicle-page.frontend.slider :as slider]))
 
@@ -62,7 +62,7 @@
                        [vehicle-view (first vehicles)]
                        [vehicles-view vehicles])]
             [:div {:style {:padding "60px 0 15px 0"}}
-                  [common/credits {:theme :light}]]]))
+                  [components/credits {:theme :light}]]]))
 
 ;; --------------------------------------------------------------------------
 ;; --------------------------------------------------------------------------
