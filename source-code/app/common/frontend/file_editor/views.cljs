@@ -3,8 +3,8 @@
     (:require [app.common.frontend.item-editor.views    :as item-editor.views]
               [app.common.frontend.surface.views        :as surface.views]
               [app.common.frontend.surface-button.views :as surface-button.views]
-              [re-frame.api                             :as r]
-              [x.app-elements.api                       :as elements]))
+              [elements.api                             :as elements]
+              [re-frame.api                             :as r]))
 
 ;; -- Menu-bar components -----------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -1,12 +1,12 @@
 
 (ns app.settings.frontend.editor.views
     (:require [app.common.frontend.api :as common]
+              [elements.api            :as elements]
               [forms.api               :as forms]
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-editor.api :as item-editor]
               [re-frame.api            :as r]
-              [x.app-elements.api      :as elements]
-              [x.app-locales.api       :as locales]))
+              [x.app-locales.api       :as x.locales]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@
                         {:disabled?  editor-disabled?
                          :indent     {:top :m :vertical :s}
                          :label      :primary-currency
-                         :options    locales/CURRENCY-SYMBOLS
+                         :options    x.locales/CURRENCY-SYMBOLS
                          :required?  true
                          :value-path [:settings :editor/edited-item :primary-currency]}]))
 
@@ -31,7 +31,7 @@
                         {:disabled?  editor-disabled?
                          :indent     {:top :m :vertical :s}
                          :label      :secondary-currency
-                         :options    locales/CURRENCY-SYMBOLS
+                         :options    x.locales/CURRENCY-SYMBOLS
                          :required?  true
                          :value-path [:settings :editor/edited-item :secondary-currency]}]))
 
@@ -151,6 +151,7 @@
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
                      :ghost-element    #'common/item-editor-ghost-element
                      :item-path        [:settings :editor/edited-item]
+                     :on-saved         [:settings.editor/user-settings-saved]
                      :suggestion-keys  []
                      :suggestions-path [:settings :editor/suggestions]}])
 

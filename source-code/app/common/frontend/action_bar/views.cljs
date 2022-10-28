@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.action-bar.views
     (:require [app.common.frontend.action-bar.prototypes :as action-bar.prototypes]
-              [mid-fruits.random                         :as random]
-              [x.app-elements.api                        :as elements]))
+              [elements.api                              :as elements]
+              [mid-fruits.random                         :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

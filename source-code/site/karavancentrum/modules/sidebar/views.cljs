@@ -1,8 +1,9 @@
 
 (ns site.karavancentrum.modules.sidebar.views
-    (:require [re-frame.api         :as r :refer [dispatch]]
-              [x.app-components.api :as components]
-              [x.app-elements.api   :as elements]))
+    (:require [elements.api         :as elements]
+              [re-frame.api         :as r :refer [dispatch]]
+              [x.app-components.api :as x.components]))
+
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -44,7 +45,7 @@
      comp]]])
 
 (defn view [id comp]
-  [components/stated
+  [x.components/stated
    id
    {:component  [sidebar id comp]
     :subscriber [::get-view-props id]}])

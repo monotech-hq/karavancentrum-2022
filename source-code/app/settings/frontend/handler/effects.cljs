@@ -15,7 +15,7 @@
 (ns app.settings.frontend.handler.effects
     (:require [app.settings.frontend.handler.queries :as handler.queries]
               [re-frame.api                          :as r :refer [r]]
-              [x.app-user.api                        :as user]))
+              [x.app-user.api                        :as x.user]))
 
 
 
@@ -29,6 +29,6 @@
   ;  [:settings.handler/update-user-settings! {:my-settings-item "My value"}]
   (fn [{:keys [db]} [_ user-settings]]
       (let [query (r handler.queries/get-update-user-settings-query db user-settings)]
-           {:db       (r user/set-user-settings! db user-settings)
+           {:db       (r x.user/set-user-settings! db user-settings)
             :dispatch [:pathom/send-query! :settings.handler/update-user-settings!
                                            {:query query}]})))

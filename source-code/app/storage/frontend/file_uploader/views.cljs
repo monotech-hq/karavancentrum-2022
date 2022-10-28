@@ -2,6 +2,7 @@
 (ns app.storage.frontend.file-uploader.views
     (:require [app.storage.frontend.file-uploader.helpers :as file-uploader.helpers]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
+              [elements.api                               :as elements]
               [io.api                                     :as io]
               [layouts.popup-a.api                        :as popup-a]
               [mid-fruits.css                             :as css]
@@ -9,9 +10,7 @@
               [mid-fruits.math                            :as math]
               [mid-fruits.string                          :as string]
               [plugins.item-browser.api                   :as item-browser]
-              [re-frame.api                               :as r]
-              [x.app-elements.api                         :as elements]
-              [x.app-media.api                            :as media]))
+              [re-frame.api                               :as r]))
 
 ;; -- Temporary components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 
 (ns app.settings.frontend.cookie-settings.views
-    (:require [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]))
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -9,14 +9,14 @@
   []
   [elements/button ::cancel-button
                    {:preset   :cancel-button
-                    :on-click [:ui/close-popup! :settings.cookie-settings/view]}])
+                    :on-click [:ui/remove-popup! :settings.cookie-settings/view]}])
 
 (defn save-button
   []
   [elements/button ::save-button
                    {:preset   :save-button
                     :variant  :transparent
-                    :on-click {:dispatch-n [[:ui/close-popup! :settings.cookie-settings/view]
+                    :on-click {:dispatch-n [[:ui/remove-popup! :settings.cookie-settings/view]
                                             [:environment/cookie-settings-changed]]}}])
 
 (defn header-label

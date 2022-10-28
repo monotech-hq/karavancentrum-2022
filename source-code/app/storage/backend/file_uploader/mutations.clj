@@ -9,7 +9,7 @@
               [mid-fruits.candy                                  :refer [return]]
               [mongo-db.api                                      :as mongo-db]
               [pathom.api                                        :as pathom]
-              [x.server-media.api                                :as media]))
+              [x.server-media.api                                :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -25,14 +25,14 @@
   [env {:keys [destination-id]} {:keys [tempfile] :as file-data}]
   (let [file-item (file-uploader.prototypes/file-item-prototype file-data)
         filename  (get file-item :media/filename)
-        filepath  (media/filename->media-storage-filepath filename)]
+        filepath  (x.media/filename->media-storage-filepath filename)]
        (if (core.side-effects/attach-item! env destination-id file-item)
            (when-let [file-item (core.side-effects/insert-item! env file-item)]
                      ; Copy the temporary file to storage, and delete the temporary file
-                     (io/copy-file!             tempfile filepath)
-                     (io/delete-file!           tempfile)
-                     (media/generate-thumbnail! filename)
-                     (return                    file-item)))))
+                     (io/copy-file!               tempfile filepath)
+                     (io/delete-file!             tempfile)
+                     (x.media/generate-thumbnail! filename)
+                     (return                      file-item)))))
 
 (defn- upload-files-f
   ; @param (map) env

@@ -1,10 +1,10 @@
 
 (ns app.common.frontend.surface-box.views
     (:require [app.common.frontend.surface-box.prototypes :as surface-box.prototypes]
+              [elements.api                               :as elements]
               [mid-fruits.random                          :as random]
               [re-frame.api                               :as r]
-              [x.app-components.api                       :as components]
-              [x.app-elements.api                         :as elements]))
+              [x.app-components.api                       :as components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

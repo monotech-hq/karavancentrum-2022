@@ -1,6 +1,6 @@
 
 (ns app.common.frontend.menu-header.views
-    (:require [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

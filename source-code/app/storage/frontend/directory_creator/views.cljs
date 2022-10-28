@@ -1,9 +1,9 @@
 
 (ns app.storage.frontend.directory-creator.views
-    (:require [io.api              :as io]
+    (:require [elements.api        :as elements]
+              [io.api              :as io]
               [layouts.popup-a.api :as popup-a]
-              [re-frame.api        :as r]
-              [x.app-elements.api  :as elements]))
+              [re-frame.api        :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

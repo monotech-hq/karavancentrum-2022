@@ -3,8 +3,8 @@
     (:require [io.api               :as io]
               [mid-fruits.format    :as format]
               [mid-fruits.vector    :as vector]
-              [x.app-components.api :as components]
-              [x.app-media.api      :as media]))
+              [x.app-components.api :as x.components]
+              [x.app-media.api      :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@
 (defn directory-item->size
   [{:keys [size items]}]
   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
-       (components/content {:content :n-items :replacements [(count items)]})))
+       (x.components/content {:content :n-items :replacements [(count items)]})))
 
 (defn file-item->size
   [{:keys [size]}]
@@ -37,4 +37,4 @@
   [{:keys [alias filename]}]
   {:icon :insert_drive_file
    :thumbnail (if (io/filename->image? alias)
-                  (media/filename->media-thumbnail-uri filename))})
+                  (x.media/filename->media-thumbnail-uri filename))})

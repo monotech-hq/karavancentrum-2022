@@ -1,9 +1,9 @@
 
 (ns app.common.frontend.credits.views
-    (:require [mid-fruits.css     :as css]
-              [re-frame.api       :as r]
-              [x.app-details      :as details]
-              [x.app-elements.api :as elements]))
+    (:require [elements.api   :as elements]
+              [mid-fruits.css :as css]
+              [re-frame.api   :as r]
+              [x.app-details  :as x.details]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -18,7 +18,7 @@
   ;  [copyright-label]
   [{:keys [theme]}]
   (let [server-year          @(r/subscribe [:core/get-server-year])
-        copyright-information (details/copyright-information server-year)]
+        copyright-information (x.details/copyright-information server-year)]
        [elements/label ::copyright-label
                        {:color            (case theme :dark :invert :default)
                         :content          copyright-information

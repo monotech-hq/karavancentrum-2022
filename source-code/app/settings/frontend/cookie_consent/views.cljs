@@ -1,6 +1,6 @@
 
 (ns app.settings.frontend.cookie-consent.views
-    (:require [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]))
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -11,7 +11,7 @@
                    {:label    :got-it!
                     :preset   :close-button
                     :variant  :transparent
-                    :on-click {:dispatch-n [[:ui/close-popup! :settings.cookie-consent/view]
+                    :on-click {:dispatch-n [[:ui/remove-popup! :settings.cookie-consent/view]
                                             [:environment/cookie-settings-changed]]}}])
 
 (defn header

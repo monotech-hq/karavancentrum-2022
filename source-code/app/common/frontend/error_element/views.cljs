@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.error-element.views
     (:require [app.common.frontend.error-element.prototypes :as error-element.prototypes]
-              [mid-fruits.random                            :as random]
-              [x.app-elements.api                           :as elements]))
+              [elements.api                                 :as elements]
+              [mid-fruits.random                            :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

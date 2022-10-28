@@ -1,12 +1,12 @@
 
 (ns app.pages.frontend.lister.lifecycles
     (:require [app.home.frontend.api]
-              [x.app-core.api :as core]))
+              [x.app-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:disabled?   true
                                                             :group       :content
                                                             :icon        :description

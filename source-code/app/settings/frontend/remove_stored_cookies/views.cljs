@@ -1,6 +1,6 @@
 
 (ns app.settings.frontend.remove-stored-cookies.views
-    (:require [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]))
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -12,7 +12,7 @@
                     :label    :cancel!
                     :preset   :close-button
                     :variant  :transparent
-                    :on-click [:ui/close-popup! :settings.remove-stored-cookies/view]}])
+                    :on-click [:ui/remove-popup! :settings.remove-stored-cookies/view]}])
 
 (defn remove-button
   []
@@ -21,7 +21,7 @@
                     :label    :remove!
                     :preset   :close-button
                     :variant  :transparent
-                    :on-click {:dispatch-n [[:ui/close-popup! :settings.remove-stored-cookies/view]
+                    :on-click {:dispatch-n [[:ui/remove-popup! :settings.remove-stored-cookies/view]
                                             [:settings/remove-stored-cookies!]]}}])
 
 (defn header

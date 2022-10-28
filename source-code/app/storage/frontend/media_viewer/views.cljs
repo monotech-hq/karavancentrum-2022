@@ -1,11 +1,11 @@
 
 (ns app.storage.frontend.media-viewer.views
-    (:require [io.api              :as io]
+    (:require [elements.api        :as elements]
+              [io.api              :as io]
               [layouts.popup-b.api :as popup-b]
               [mid-fruits.css      :as css]
               [re-frame.api        :as r]
-              [x.app-elements.api  :as elements]
-              [x.app-media.api     :as media]))
+              [x.app-media.api     :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 (defn pdf-item-pdf
   [viewer-id]
   (let [% @(r/subscribe [:storage.media-viewer/get-current-item-props viewer-id])]
-       [:iframe.storage--media-viewer--pdf {:src   (-> % :item-filename media/filename->media-storage-uri)
+       [:iframe.storage--media-viewer--pdf {:src   (-> % :item-filename x.media/filename->media-storage-uri)
                                             :style {:border-radius (css/var  "border-radius-m")
                                                     :height        (css/calc "100vh - 96px")
                                                     :width         (css/calc "100vw - 96px")}}]))
@@ -46,7 +46,7 @@
 (defn image-item-image
   [viewer-id]
   (let [% @(r/subscribe [:storage.media-viewer/get-current-item-props viewer-id])]
-       [:img.storage--media-viewer--image {:src   (-> % :item-filename media/filename->media-storage-uri)
+       [:img.storage--media-viewer--image {:src   (-> % :item-filename x.media/filename->media-storage-uri)
                                            :style {:border-radius (css/var  "border-radius-m")
                                                    :max-height    (css/calc "100vh - 96px")
                                                    :max-width     (css/calc "100vw - 96px")}}]))

@@ -3,7 +3,7 @@
     (:require [app.storage.frontend.core.config :as core.config]
               [io.api                           :as io]
               [re-frame.api                     :as r]
-              [x.app-media.api                  :as media]))
+              [x.app-media.api                  :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -42,4 +42,4 @@
   ;   :media/uri (string)}
   [_ {:keys [filename id]} _]
   (if id {:media/id  id
-          :media/uri (media/filename->media-storage-uri filename)}))
+          :media/uri (x.media/filename->media-storage-uri filename)}))

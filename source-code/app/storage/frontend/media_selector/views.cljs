@@ -2,14 +2,14 @@
 (ns app.storage.frontend.media-selector.views
     (:require [app.common.frontend.api          :as common]
               [app.storage.frontend.core.config :as core.config]
+              [elements.api                     :as elements]
               [io.api                           :as io]
               [layouts.popup-a.api              :as popup-a]
               [mid-fruits.format                :as format]
               [plugins.item-browser.api         :as item-browser]
               [re-frame.api                     :as r]
-              [x.app-components.api             :as components]
-              [x.app-elements.api               :as elements]
-              [x.app-media.api                  :as media]))
+              [x.app-components.api             :as x.components]
+              [x.app-media.api                  :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -33,7 +33,7 @@
   [selector-id item-dex {:keys [alias size items modified-at]}]
   (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
         size       (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
-                        (components/content {:content :n-items :replacements [(count items)]}))]
+                        (x.components/content {:content :n-items :replacements [(count items)]}))]
        [common/list-item-structure selector-id item-dex
                                    {:cells [(let [icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
                                                  [common/list-item-thumbnail-icon selector-id item-dex {:icon :folder :icon-family icon-family}])
@@ -52,7 +52,7 @@
         size       (-> size io/B->MB format/decimals (str " MB"))]
        [common/list-item-structure selector-id item-dex
                                    {:cells [(if (io/filename->image? alias)
-                                                (let [thumbnail (media/filename->media-thumbnail-uri filename)]
+                                                (let [thumbnail (x.media/filename->media-thumbnail-uri filename)]
                                                      [common/list-item-thumbnail selector-id item-dex {:thumbnail thumbnail}])
                                                 [common/list-item-thumbnail-icon selector-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
                                             [common/list-item-primary-cell selector-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]

@@ -1,11 +1,11 @@
 
 (ns app.rental-vehicles.frontend.lister.lifecycles
-    (:require [x.app-core.api :as core]))
+    (:require [x.app-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:group       :vehicles
                                                             :icon        :airport_shuttle
                                                             :icon-color  "#6a7e8e"

@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.surface-button.views
     (:require [app.common.frontend.surface-button.prototypes :as surface-button.prototypes]
-              [mid-fruits.random                             :as random]
-              [x.app-elements.api                            :as elements]))
+              [elements.api                                  :as elements]
+              [mid-fruits.random                             :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

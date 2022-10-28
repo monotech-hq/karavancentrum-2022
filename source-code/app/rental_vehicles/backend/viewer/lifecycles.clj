@@ -1,12 +1,12 @@
 
 (ns app.rental-vehicles.backend.viewer.lifecycles
     (:require [engines.item-viewer.api]
-              [x.server-core.api :as core]))
+              [x.server-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-viewer/init-viewer! :rental-vehicles.viewer
                                               {:base-route      "/@app-home/rental-vehicles"
                                                :collection-name "rental_vehicles"

@@ -1,8 +1,8 @@
 
 (ns app.views.frontend.error-screen.views
     (:require [app.common.frontend.api :as common]
-              [layouts.surface-a.api   :as surface-a]
-              [x.app-elements.api      :as elements]))
+              [elements.api            :as elements]
+              [layouts.surface-a.api   :as surface-a]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -6,7 +6,7 @@
               [app.storage.frontend.directory-creator.views      :as directory-creator.views]
               [plugins.item-browser.api                          :as item-browser]
               [re-frame.api                                      :as r :refer [r]]
-              [x.app-ui.api                                      :as ui]))
+              [x.app-ui.api                                      :as x.ui]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -37,7 +37,7 @@
       (let [directory-name (get-in db [:storage :directory-creator/meta-items :directory-name])
             query          (r directory-creator.queries/get-create-directory-query          db creator-id directory-name)
             validator-f   #(r directory-creator.validators/create-directory-response-valid? db creator-id %)]
-           {:db       (r ui/fake-process! db 15)
+           {:db       (r x.ui/fake-process! db 15)
             :dispatch-n [[:ui/remove-popup! :storage.directory-creator/view]
                          [:pathom/send-query! :storage.directory-creator/create-directory!
                                               {:query query :validator-f validator-f

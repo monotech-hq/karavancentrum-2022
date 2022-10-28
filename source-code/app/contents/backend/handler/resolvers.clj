@@ -5,7 +5,7 @@
               [mid-fruits.candy                      :refer [return]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]))
+              [x.server-user.api                     :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -20,7 +20,7 @@
   (let [content-id (pathom/env->param env :content-id)
         projection (common/get-document-projection :content)]
        (if-let [{:content/keys [body visibility]} (mongo-db/get-document-by-id "contents" content-id projection)]
-               (case visibility :private (if (user/request->authenticated? request)
+               (case visibility :private (if (x.user/request->authenticated? request)
                                              (return body))
                                 :public      (return body)))))
 

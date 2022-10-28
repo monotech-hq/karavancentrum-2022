@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.data-table.views
     (:require [app.common.frontend.data-table.prototypes :as data-table.prototypes]
-              [mid-fruits.random                         :as random]
-              [x.app-elements.api                        :as elements]))
+              [elements.api                              :as elements]
+              [mid-fruits.random                         :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

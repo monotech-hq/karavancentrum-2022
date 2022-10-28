@@ -1,11 +1,11 @@
 
 (ns app.pages.frontend.viewer.views
     (:require [app.common.frontend.api :as common]
+              [elements.api            :as elements]
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-lister.api :as item-lister]
               [plugins.item-viewer.api :as item-viewer]
-              [re-frame.api            :as r]
-              [x.app-elements.api      :as elements]))
+              [re-frame.api            :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

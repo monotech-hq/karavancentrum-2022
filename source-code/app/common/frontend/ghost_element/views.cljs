@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.ghost-element.views
     (:require [app.common.frontend.ghost-element.prototypes :as ghost-element.prototypes]
-              [mid-fruits.random                            :as random]
-              [x.app-elements.api                           :as elements]))
+              [elements.api                                 :as elements]
+              [mid-fruits.random                            :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

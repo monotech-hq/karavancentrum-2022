@@ -1,7 +1,7 @@
 
 (ns app.user.frontend.forgot-password.views
-    (:require [re-frame.api       :as r]
-              [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]
+              [re-frame.api :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

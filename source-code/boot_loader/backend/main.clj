@@ -8,7 +8,7 @@
               [project.router.backend.api]
               [boot-loader.backend.app]
               [boot-loader.backend.site]
-              [x.boot-loader.api :as boot-loader])
+              [x.boot-loader.api :as x.boot-loader])
     (:gen-class))
 
 ;; ----------------------------------------------------------------------------
@@ -18,7 +18,7 @@
   [{:keys [port] :as server-props}]
   (println)
   (println "project-emulator - Starting server on port:" (or port "@default"))
-  (boot-loader/start-server! server-props))
+  (x.boot-loader/start-server! server-props))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

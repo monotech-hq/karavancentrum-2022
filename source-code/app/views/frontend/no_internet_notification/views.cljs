@@ -1,6 +1,6 @@
 
 (ns app.views.frontend.no-internet-notification.views
-    (:require [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -24,4 +24,3 @@
   [elements/horizontal-polarity ::body
                                 {:end-content   [refresh-app-button]
                                  :start-content [no-internet-connection-label]}])
- 

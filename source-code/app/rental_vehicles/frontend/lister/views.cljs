@@ -1,10 +1,10 @@
 
 (ns app.rental-vehicles.frontend.lister.views
     (:require [app.common.frontend.api :as common]
+              [elements.api            :as elements]
               [layouts.surface-a.api   :as surface-a]
               [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]
-              [x.app-elements.api      :as elements]
 
               ; TEMP
               [plugins.dnd-kit.api :as dnd-kit]))

@@ -1,11 +1,11 @@
 
 (ns app.storage.frontend.media-preview.views
     (:require [app.storage.frontend.media-preview.prototypes :as media-preview.prototypes]
+              [elements.api                                  :as elements]
               [io.api                                        :as io]
               [mid-fruits.candy                              :refer [return]]
               [mid-fruits.random                             :as random]
               [mid-fruits.vector                             :as vector]
-              [x.app-elements.api                            :as elements]
 
               ; TEMP
               [plugins.dnd-kit.api :as dnd-kit]))

@@ -1,11 +1,11 @@
 
 (ns app.website-config.frontend.editor.lifecycles
-    (:require [x.app-core.api :as core]))
+    (:require [x.app-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:group      :website
                                                             :icon       :tune
                                                             :icon-color "#8655b1"

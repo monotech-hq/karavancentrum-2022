@@ -1,12 +1,12 @@
 
 (ns app.contents.backend.viewer.lifecycles
     (:require [engines.item-viewer.api]
-              [x.server-core.api :as core]))
+              [x.server-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-viewer/init-viewer! :contents.viewer
                                               {:base-route      "/@app-home/contents"
                                                :collection-name "contents"

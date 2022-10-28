@@ -2,7 +2,7 @@
 (ns site.karavancentrum.pages.main-page.backend.transfer
     (:require [io.api            :as io]
               [mongo-db.api      :as mongo-db]
-              [x.server-core.api :as core]))
+              [x.server-core.api :as x.core]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -17,7 +17,7 @@
   (mongo-db/get-documents-by-pipeline "rental_vehicles" [{"$match" {"vehicle/visibility" "*:public"}}
                                                          {"$project" vehicle-projection}]))
 
-(core/reg-transfer! ::transfer-vehicles!
+(x.core/reg-transfer! ::transfer-vehicles!
   {:data-f      transfer-vehicles-f
    :target-path [:site :vehicles]})
 
@@ -28,7 +28,7 @@
   [request]
   (io/read-edn-file "environment/website-content.edn"))
 
-(core/reg-transfer! ::transfer-content!
+(x.core/reg-transfer! ::transfer-content!
   {:data-f      transfer-content-f
    :target-path [:site :content]})
 
@@ -39,6 +39,6 @@
   [request]
   (io/read-edn-file "environment/website-config.edn"))
 
-(core/reg-transfer! ::transfer-config!
+(x.core/reg-transfer! ::transfer-config!
   {:data-f      transfer-config-f
    :target-path [:site :config]})

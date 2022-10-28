@@ -3,14 +3,14 @@
     (:require [app.common.frontend.item-editor.views    :as item-editor.views]
               [app.common.frontend.surface-button.views :as surface-button.views]
               [dom.api                                  :as dom]
+              [elements.api                             :as elements]
               [mid-fruits.candy                         :refer [param]]
               [mid-fruits.css                           :as css]
               [mid-fruits.keyword                       :as keyword]
               [mid-fruits.logical                       :refer [nor]]
               [mid-fruits.math                          :as math]
               [re-frame.api                             :as r]
-              [x.app-components.api                     :as components]
-              [x.app-elements.api                       :as elements]))
+              [x.app-components.api                     :as x.components]))
 
 ;; -- List-item components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -182,7 +182,7 @@
   [lister-id {:keys [disabled?]}]
   (let [search-term    @(r/subscribe [:item-lister/get-meta-item      lister-id :search-term])
         all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
-        description     (components/content {:content :search-results-n :replacements [all-item-count]})]
+        description     (x.components/content {:content :search-results-n :replacements [all-item-count]})]
        [elements/label ::item-lister-search-description
                        {:color     :highlight
                         :content   (if (nor disabled? (empty? search-term)) description)
@@ -258,7 +258,7 @@
           [:div {:style {:background-color "var( --fill-color )" :border-bottom "1px solid var( --border-color-highlight )"
                          :display "flex" :opacity ".98" :flex-direction "column"  :position "sticky" :top "48px"
                          :border-radius "var( --border-radius-m ) var( --border-radius-m ) 0 0"}}
-                (if control-bar [components/content control-bar])
+                (if control-bar [x.components/content control-bar])
                 (letfn [(f [wrapper cell] (conj wrapper cell))]
                        (reduce f [:div {:style {:display "flex" :width "100%"}}] cells))]))
 
@@ -279,8 +279,8 @@
                       :background-color "var( --fill-color )" :border "1px solid var( --border-color-highlight )"
                       :border-radius (if viewport-small? "0" "var( --border-radius-m )")}}
              [:div {:style {:width "100%" :overflow "hidden" :border-radius "0 0 var( --border-radius-m ) var( --border-radius-m )"}}
-                   [components/content body]]
-             [components/content header]]))
+                   [x.components/content body]]
+             [x.components/content header]]))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

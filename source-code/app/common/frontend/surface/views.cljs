@@ -1,9 +1,9 @@
 
 (ns app.common.frontend.surface.views
-    (:require [layouts.surface-a.api :as surface-a]
+    (:require [elements.api          :as elements]
+              [layouts.surface-a.api :as surface-a]
               [re-frame.api          :as r]
-              [x.app-components.api  :as components]
-              [x.app-elements.api    :as elements]))
+              [x.app-components.api  :as components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

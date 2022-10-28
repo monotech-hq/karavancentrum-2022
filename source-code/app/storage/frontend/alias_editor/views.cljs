@@ -1,8 +1,8 @@
 
 (ns app.storage.frontend.alias-editor.views
-    (:require [io.api              :as io]
-              [layouts.popup-a.api :as popup-a]
-              [x.app-elements.api  :as elements]))
+    (:require [elements.api        :as elements]
+              [io.api              :as io]
+              [layouts.popup-a.api :as popup-a]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

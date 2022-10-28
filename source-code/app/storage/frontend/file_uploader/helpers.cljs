@@ -2,8 +2,7 @@
 (ns app.storage.frontend.file-uploader.helpers
     (:require [io.api             :as io]
               [mid-fruits.keyword :as keyword]
-              [mid-fruits.string  :as string]
-              [x.app-media.api    :as media]))
+              [mid-fruits.string  :as string]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -1,12 +1,12 @@
 
 (ns app.storage.frontend.media-browser.lifecycles
     (:require [app.home.frontend.api]
-              [x.app-core.api :as core]))
+              [x.app-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:group       :website
                                                             :icon        :folder
                                                             :icon-color  "#8655b1"

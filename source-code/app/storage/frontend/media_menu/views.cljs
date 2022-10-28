@@ -1,10 +1,10 @@
 
 (ns app.storage.frontend.media-menu.views
     (:require [app.common.frontend.api :as common]
+              [elements.api            :as elements]
               [io.api                  :as io]
               [layouts.popup-a.api     :as popup-a]
-              [re-frame.api            :as r]
-              [x.app-elements.api      :as elements]))
+              [re-frame.api            :as r]))
 
 ;; -- Item-menu components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------

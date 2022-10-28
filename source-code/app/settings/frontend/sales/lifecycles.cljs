@@ -1,12 +1,12 @@
 
 (ns app.settings.frontend.sales.lifecycles
     (:require [app.home.frontend.api]
-              [x.app-core.api :as core]))
+              [x.app-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot [:home.screen/add-menu-item! {:group       :settings
                                               :icon        :payments
                                               :icon-color  "#5f8e75"

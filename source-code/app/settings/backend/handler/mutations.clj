@@ -4,7 +4,7 @@
               [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]))
+              [x.server-user.api                     :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -18,9 +18,9 @@
   ; @return (namespaced map)
   [{:keys [request]} {:keys [user-settings]}]
   ; XXX#9100 (app.settings.backend.editor.mutations)
-  (let [prototype-f    #(common/updated-document-prototype request %)
-        user-account-id (user/request->user-account-id     request)]
-       (mongo-db/apply-document! "user_settings" user-account-id #(merge % user-settings) {:prototype-f prototype-f})))
+  (let [postpare-f     #(common/updated-document-prototype request %)
+        user-account-id (x.user/request->user-account-id   request)]
+       (mongo-db/apply-document! "user_settings" user-account-id #(merge % user-settings) {:postpare-f postpare-f})))
 
 (defmutation update-user-settings!
              ; @param (map) env

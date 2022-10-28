@@ -6,22 +6,22 @@
               [io.api                                     :as io]
               [mongo-db.api                               :as mongo-db]
               [re-frame.api                               :as r]
-              [x.server-media.api                         :as media]
-              [x.server-user.api                          :as user]))
+              [x.server-media.api                         :as x.media]
+              [x.server-user.api                          :as x.user]))
 
 ;; -- Side-effect events ------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- check-install!
   [_]
-  (let [request {:session user/SYSTEM-USER-ACCOUNT}
+  (let [request {:session x.user/SYSTEM-USER-ACCOUNT}
         options {:prepare-f #(common/added-document-prototype request %)}
         ; Get sample file filesize
-        sample-file-filepath (media/filename->media-storage-filepath core.config/SAMPLE-FILE-FILENAME)
+        sample-file-filepath (x.media/filename->media-storage-filepath core.config/SAMPLE-FILE-FILENAME)
         sample-file-filesize (io/get-filesize sample-file-filepath)]
        (if-not (mongo-db/get-document-by-id "storage" core.config/SAMPLE-FILE-ID)
                (let [sample-file-document (assoc install-handler.config/SAMPLE-FILE-DOCUMENT :media/size sample-file-filesize)]
-                    (media/generate-thumbnail! core.config/SAMPLE-FILE-FILENAME)
+                    (x.media/generate-thumbnail! core.config/SAMPLE-FILE-FILENAME)
                     (mongo-db/insert-document! "storage" sample-file-document options)))
        (if-not (mongo-db/get-document-by-id "storage" core.config/ROOT-DIRECTORY-ID)
                (let [root-directory-document (assoc install-handler.config/ROOT-DIRECTORY-DOCUMENT :media/size sample-file-filesize)]

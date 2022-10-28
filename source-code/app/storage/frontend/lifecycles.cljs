@@ -1,10 +1,10 @@
 
 (ns app.storage.frontend.lifecycles
     (:require [app.storage.frontend.dictionary :as dictionary]
-              [x.app-core.api                  :as core]))
+              [x.app-core.api                  :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot [:dictionary/add-terms! dictionary/BOOK]})

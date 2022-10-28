@@ -4,8 +4,8 @@
               [app.storage.frontend.media-browser.views :as media-browser.views]
               [plugins.item-browser.api                 :as item-browser]
               [re-frame.api                             :as r :refer [r]]
-              [x.app-media.api                          :as media]
-              [x.app-router.api                         :as router]))
+              [x.app-media.api                          :as x.media]
+              [x.app-router.api                         :as x.router]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -69,8 +69,8 @@
 (r/reg-event-fx :storage.media-browser/copy-directory-link!
   (fn [{:keys [db]} [_ {:keys [id]}]]
       (let [directory-uri  (r item-browser/get-item-route db :storage.media-browser id)
-            directory-uri  (r router/use-app-home         db directory-uri)
-            directory-link (r router/use-app-domain       db directory-uri)]
+            directory-uri  (r x.router/use-app-home       db directory-uri)
+            directory-link (r x.router/use-app-domain     db directory-uri)]
            {:dispatch-n [[:ui/remove-popup! :storage.media-menu/view]
                          [:clipboard/copy-text! directory-link]]})))
 
@@ -86,12 +86,12 @@
 (r/reg-event-fx :storage.media-browser/download-file!
   (fn [{:keys [db]} [_ {:keys [alias filename]}]]
       {:dispatch-n [[:ui/remove-popup! :storage.media-menu/view]
-                    [:tools/save-file! {:filename alias :uri (media/filename->media-storage-uri filename)}]]}))
+                    [:tools/save-file! {:filename alias :uri (x.media/filename->media-storage-uri filename)}]]}))
 
 (r/reg-event-fx :storage.media-browser/copy-file-link!
   (fn [{:keys [db]} [_ {:keys [filename]}]]
-      (let [file-uri  (media/filename->media-storage-uri filename)
-            file-link (r router/use-app-domain db file-uri)]
+      (let [file-uri  (x.media/filename->media-storage-uri filename)
+            file-link (r x.router/use-app-domain db file-uri)]
            {:dispatch-n [[:ui/remove-popup! :storage.media-menu/view]
                          [:clipboard/copy-text! file-link]]})))
 

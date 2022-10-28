@@ -1,15 +1,15 @@
 
 (ns app.settings.frontend.remove-stored-cookies.effects
-    (:require [settings.remove-stored-cookies.views :as remove-stored-cookies.views]
-              [re-frame.api                         :as r :refer [r]]
-              [x.app-dictionary.api                 :as dictionary]))
+    (:require [re-frame.api                         :as r :refer [r]]
+              [settings.remove-stored-cookies.views :as remove-stored-cookies.views]
+              [x.app-dictionary.api                 :as x.dictionary]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (r/reg-event-fx :settings/remove-stored-cookies!
   (fn [{:keys [db]} _]
-      (let [message (r dictionary/look-up db :just-a-moment...)]
+      (let [message (r x.dictionary/look-up db :just-a-moment...)]
            {:dispatch-later [{:ms   0 :dispatch [:ui/set-shield! {:content message}]}
                              {:ms  50 :dispatch [:environment/remove-cookies!]}
                              {:ms 500 :dispatch [:boot-loader/refresh-app!]}]})))

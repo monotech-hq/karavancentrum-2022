@@ -1,7 +1,7 @@
 
 (ns app.common.frontend.item-selector.views
     (:require [app.common.frontend.item-lister.views :as item-lister.views]
-              [x.app-elements.api                    :as elements]))
+              [elements.api                          :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

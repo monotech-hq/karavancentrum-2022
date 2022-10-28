@@ -1,7 +1,7 @@
 
 (ns app.user.frontend.login-screen.views
-    (:require [re-frame.api       :as r]
-              [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]
+              [re-frame.api :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -157,12 +157,14 @@
 (defn- body
   []
   (let [viewport-small? @(r/subscribe [:environment/viewport-small?])]
-       [:div#login-screen--body {:style (if viewport-small? {:width         "320px"}
-                                                            {:border-color  "var( --border-color-highlight )"
-                                                             :border-radius "var( --border-radius-m )"
-                                                             :border-style  "solid"
-                                                             :border-width  "1px"
-                                                             :width         "320px"})}
+       [:div#login-screen--body {:style (if viewport-small? {:background-color "var( --fill-color )"
+                                                             :width            "320px"}
+                                                            {:background-color "var( --fill-color )"
+                                                             :border-color     "var( --border-color-highlight )"
+                                                             :border-radius    "var( --border-radius-m )"
+                                                             :border-style     "solid"
+                                                             :border-width     "1px"
+                                                             :width            "320px"})}
                                 (if-let [user-identified? @(r/subscribe [:user/user-identified?])]
                                         [logged-in-form]
                                         [login-form])]))

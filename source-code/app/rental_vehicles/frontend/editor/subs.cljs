@@ -2,7 +2,7 @@
 (ns app.rental-vehicles.frontend.editor.subs
     (:require [app.rental-vehicles.mid.handler.helpers :as handler.helpers]
               [re-frame.api                            :as r :refer [r]]
-              [x.app-router.api                        :as router]))
+              [x.app-router.api                        :as x.router]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -11,7 +11,7 @@
   [db _]
   (let [vehicle-name (get-in db [:rental-vehicles :editor/edited-item :name])
         public-link  (handler.helpers/vehicle-public-link vehicle-name)]
-       (r router/use-app-domain db public-link)))
+       (r x.router/use-app-domain db public-link)))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

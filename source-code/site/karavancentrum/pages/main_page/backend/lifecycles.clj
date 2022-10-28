@@ -1,11 +1,11 @@
 
 (ns site.karavancentrum.pages.main-page.backend.lifecycles
-    (:require [x.server-core.api :as core]))
+    (:require [x.server-core.api :as x.core]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-routes! {:main-page/hero     {:js-build       :site
                                                               :route-template "/"
                                                               :client-event   [:main-page/load! :hero]}

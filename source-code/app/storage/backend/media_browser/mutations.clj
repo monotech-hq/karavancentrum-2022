@@ -14,7 +14,7 @@
               [mongo-db.api                                 :as mongo-db]
               [pathom.api                                   :as pathom]
               [time.api                                     :as time]
-              [x.server-media.api                           :as media]))
+              [x.server-media.api                           :as x.media]))
 
 ;; -- Remove media-item links -------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
   ; @return (?)
   [document item-id]
   (let [{:media/keys [filename]} (mongo-db/get-document-by-id "storage" item-id)
-        media-storage-uri        (media/filename->media-storage-uri filename)]
+        media-storage-uri        (x.media/filename->media-storage-uri filename)]
        (letfn [(f [%] (= % media-storage-uri))]
               (map/->>remove-values-by document f))))
 

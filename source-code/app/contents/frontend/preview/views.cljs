@@ -3,11 +3,11 @@
     (:require [app.common.frontend.api                  :as common]
               [app.contents.frontend.handler.helpers    :as handler.helpers]
               [app.contents.frontend.preview.prototypes :as preview.prototypes]
+              [elements.api                             :as elements]
               [mid-fruits.random                        :as random]
               [mid-fruits.vector                        :as vector]
               [plugins.item-preview.api                 :as item-preview]
-              [re-frame.api                             :as r]
-              [x.app-elements.api                       :as elements]))
+              [re-frame.api                             :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

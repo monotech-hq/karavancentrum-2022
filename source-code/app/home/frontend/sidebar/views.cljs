@@ -1,11 +1,11 @@
 
 (ns app.home.frontend.sidebar.views
     (:require [app.home.frontend.handler.config :as handler.config]
+              [elements.api                     :as elements]
               [layouts.sidebar-a.api            :as sidebar-a]
               [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
-              [x.app-components.api             :as components]
-              [x.app-elements.api               :as elements]))
+              [x.app-components.api             :as x.components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -53,7 +53,7 @@
   ; @param (?) weight-group
   [vertical-weight weight-group]
   ; XXX#0091 (app.home.frontend.screen.views)
-  (let [label-groups (group-by #(-> % :label components/content) weight-group)]
+  (let [label-groups (group-by #(-> % :label x.components/content) weight-group)]
        (letfn [(f [group-list label]
                   (conj group-list [label-group label (get label-groups label)]))]
               (reduce f [:<>] (-> label-groups keys sort)))))

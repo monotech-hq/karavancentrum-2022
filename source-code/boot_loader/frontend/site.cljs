@@ -3,7 +3,7 @@
     (:require ; Monoset modules
               [pathom.api]
               [developer-tools.api :as developer-tools]
-              [x.boot-loader.api   :as boot-loader]
+              [x.boot-loader.api   :as x.boot-loader]
 
               ; Site modules
               [site.karavancentrum.pages.frontend]
@@ -21,5 +21,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn start-site!  [] (boot-loader/start-app!  #'site-structure))
-(defn render-site! [] (boot-loader/render-app! #'site-structure))
+(defn start-site!  [] (x.boot-loader/start-app!  #'site-structure))
+(defn render-site! [] (x.boot-loader/render-app! #'site-structure))

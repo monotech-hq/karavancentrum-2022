@@ -1,9 +1,8 @@
 
 (ns app.common.frontend.item-browser.views
     (:require [app.common.frontend.item-lister.views :as item-lister.views]
-              [re-frame.api                          :as r]
-              [x.app-components.api                  :as components]
-              [x.app-elements.api                    :as elements]))
+              [elements.api                          :as elements]
+              [re-frame.api                          :as r]))
 
 ;; -- Search components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------

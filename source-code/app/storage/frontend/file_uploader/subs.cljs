@@ -7,8 +7,8 @@
               [mid-fruits.map                             :as map]
               [mid-fruits.vector                          :as vector]
               [re-frame.api                               :as r :refer [r]]
-              [x.app-db.api                               :as db]
-              [x.app-sync.api                             :as sync]))
+              [x.app-db.api                               :as x.db]
+              [x.app-sync.api                             :as x.sync]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@
 
 (defn get-selected-file-count
   [db [_ uploader-id]]
-  (r db/get-item-count db [:storage :file-uploader/selected-files uploader-id]))
+  (r x.db/get-item-count db [:storage :file-uploader/selected-files uploader-id]))
 
 (defn get-uploading-file-count
   [db [_ uploader-id]]
@@ -64,7 +64,7 @@
   [db _]
   (letfn [(f [[uploader-id _]]
              (let [request-id (file-uploader.helpers/request-id uploader-id)]
-                  (r sync/request-active? db request-id)))]
+                  (r x.sync/request-active? db request-id)))]
          (some f (get-in db [:storage :file-uploader/meta-items]))))
 
 (defn get-uploader-ids
@@ -75,7 +75,7 @@
 (defn get-uploader-progress
   [db [_ uploader-id]]
   (let [request-id (file-uploader.helpers/request-id uploader-id)]
-       (r sync/get-request-progress db request-id)))
+       (r x.sync/get-request-progress db request-id)))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

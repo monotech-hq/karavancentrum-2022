@@ -3,8 +3,6 @@
     (:require [settings.cookie-settings.views :as cookie-settings.views]
               [re-frame.api                   :as r]))
 
-
-
 ;; -- Descriptions ------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 

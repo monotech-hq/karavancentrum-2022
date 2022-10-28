@@ -4,7 +4,7 @@
               [com.wsscode.pathom3.connect.operation :as pathom.co :refer [defmutation]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]
-              [x.server-user.api                     :as user]))
+              [x.server-user.api                     :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -21,9 +21,9 @@
   ; A felhasználói beállítások mentésekor a felhasználó azonosítójának forrása,
   ; NEM a paraméterként a szerver számára küldött beállításokat tartalmazó dokumentum,
   ; HANEM a request térkép session értékéből kiolvasott azonosító!
-  (let [prototype-f    #(common/updated-document-prototype request %)
-        user-account-id (user/request->user-account-id     request)]
-       (mongo-db/apply-document! "user_settings" user-account-id #(merge % item) {:prototype-f prototype-f})))
+  (let [postpare-f     #(common/updated-document-prototype request %)
+        user-account-id (x.user/request->user-account-id   request)]
+       (mongo-db/apply-document! "user_settings" user-account-id #(merge % item) {:postpare-f postpare-f})))
 
 (defmutation save-item!
              ; @param (map) env

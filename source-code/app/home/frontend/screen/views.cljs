@@ -2,14 +2,13 @@
 (ns app.home.frontend.screen.views
     (:require [app.common.frontend.api          :as common]
               [app.home.frontend.handler.config :as handler.config]
+              [elements.api                     :as elements]
               [layouts.surface-a.api            :as surface-a]
               [mid-fruits.css                   :as css]
               [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
-              [x.app-components.api             :as components]
-              [x.app-elements.api               :as elements]
-
-              [mid-fruits.string :as string]))
+              [x.app-components.api             :as x.components]
+              [mid-fruits.string                :as string]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -101,7 +100,7 @@
   ; Az azonos menu-group csoportban és azon belül is azonos weight-group
   ; csoportban felsorolt menü elemek a label tulajdonságuk szerinti kisebb
   ; csoportokban vannak felsorolva.
-  (let [label-groups (group-by #(-> % :label components/content) weight-group)]
+  (let [label-groups (group-by #(-> % :label x.components/content) weight-group)]
        (letfn [(f [group-list label]
                   (conj group-list [label-group label (get label-groups label)]))]
               (reduce f [:<>] (-> label-groups keys sort)))))

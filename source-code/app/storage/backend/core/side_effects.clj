@@ -5,7 +5,7 @@
               [mid-fruits.candy                :refer [return]]
               [mid-fruits.vector               :as vector]
               [mongo-db.api                    :as mongo-db]
-              [x.server-media.api              :as media]))
+              [x.server-media.api              :as x.media]))
 
 ;; -- Attach/detach item functions --------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -75,10 +75,10 @@
 (defn delete-file!
   [filename]
   (if-not (= filename core.config/SAMPLE-FILE-FILENAME)
-          (media/delete-storage-file! filename))
-  (media/delete-storage-thumbnail! filename))
+          (x.media/delete-storage-file! filename))
+  (x.media/delete-storage-thumbnail! filename))
 
 (defn duplicate-file!
   [source-filename copy-filename]
-  (media/duplicate-storage-file!      source-filename copy-filename)
-  (media/duplicate-storage-thumbnail! source-filename copy-filename))
+  (x.media/duplicate-storage-file!      source-filename copy-filename)
+  (x.media/duplicate-storage-thumbnail! source-filename copy-filename))

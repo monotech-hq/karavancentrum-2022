@@ -1,11 +1,11 @@
 
 (ns app.settings.backend.editor.lifecycles
-    (:require [x.server-core.api :as core]))
+    (:require [x.server-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-server-boot {:dispatch-n [[:item-editor/init-editor! :settings.editor
                                                             {:collection-name "user_settings"
                                                              :handler-key     :settings.editor

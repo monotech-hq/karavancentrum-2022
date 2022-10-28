@@ -1,12 +1,12 @@
 
 (ns app.storage.backend.media-browser.lifecycles
     (:require [engines.item-browser.api]
-              [x.server-core.api :as core]))
+              [x.server-core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(core/reg-lifecycles! ::lifecycles
+(x.core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:item-browser/init-browser! :storage.media-browser
                                                 {:base-route      "/@app-home/storage"
                                                  :collection-name "storage"

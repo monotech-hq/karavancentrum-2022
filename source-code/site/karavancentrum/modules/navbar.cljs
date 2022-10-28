@@ -1,18 +1,17 @@
 
 (ns site.karavancentrum.modules.navbar
     (:require [dom.api                                   :as dom]
+              [elements.api                              :as elements]
               [reagent.api                               :as reagent :refer [lifecycles]]
               [re-frame.api                              :as r :refer [r]]
               [site.karavancentrum.modules.sidebar.views :as sidebar]
-              [x.app-elements.api                        :as elements]
-              [x.app-components.api                      :as components]
-              [x.app-environment.api                     :as environment]))
+              [x.app-environment.api                     :as x.environment]))
 
 ;; -----------------------------------------------------------------------------
 ;; ---- Utils ----
 
 (defn get-layout! [db threshold]
-  (let [viewport-width (r environment/get-viewport-width db)
+  (let [viewport-width (r x.environment/get-viewport-width db)
         change?        (> threshold viewport-width)]
     (if change?
       "mobile"
@@ -94,8 +93,8 @@
     {:component-did-mount #(dom/setup-intersection-observer!
                              (dom/get-element-by-id "kc-scroll-sensor")
                              (fn [intersecting?]
-                                 (environment/set-element-attribute! "kc-navbar"      "data-top"  intersecting?)
-                                 (environment/set-element-attribute! "kc-scroll-icon" "data-show" intersecting?)))
+                                 (x.environment/set-element-attribute! "kc-navbar"      "data-top"  intersecting?)
+                                 (x.environment/set-element-attribute! "kc-scroll-icon" "data-show" intersecting?)))
      :reagent-render
      (fn [config & items]
        (let [view-props @(r/subscribe [::get-view-props config])]

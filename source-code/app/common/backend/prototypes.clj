@@ -1,7 +1,7 @@
 
 (ns app.common.backend.prototypes
     (:require [mid-fruits.json   :as json]
-              [x.server-user.api :as user]))
+              [x.server-user.api :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -24,7 +24,7 @@
   ; - A kliens-oldali mezők által string típusként tárolt egész számok
   ;   integer típusra alakítása
   ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
-  (->> document (user/added-document-prototype request)
+  (->> document (x.user/added-document-prototype request)
                 (json/trim-values)
                 (json/parseint-values)
                 (json/remove-blank-values)))
@@ -38,7 +38,7 @@
   ; - A kliens-oldali mezők által string típusként tárolt egész számok
   ;   integer típusra alakítása
   ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
-  (->> document (user/updated-document-prototype request)
+  (->> document (x.user/updated-document-prototype request)
                 (json/trim-values)
                 (json/parseint-values)
                 (json/remove-blank-values)))
@@ -52,7 +52,7 @@
   ; - A kliens-oldali mezők által string típusként tárolt egész számok
   ;   integer típusra alakítása
   ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
-  (->> document (user/duplicated-document-prototype request)
+  (->> document (x.user/duplicated-document-prototype request)
                 (json/trim-values)
                 (json/parseint-values)
                 (json/remove-blank-values)))

@@ -3,7 +3,7 @@
     (:require ; Monoset modules
               [pathom.api]
               [developer-tools.api :as developer-tools]
-              [x.boot-loader.api   :as boot-loader]
+              [x.boot-loader.api   :as x.boot-loader]
 
               ; App modules
              ;[app.calendar.frontend.api]
@@ -30,5 +30,5 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn start-app!  [] (boot-loader/start-app!  #'app-structure))
-(defn render-app! [] (boot-loader/render-app! #'app-structure))
+(defn start-app!  [] (x.boot-loader/start-app!  #'app-structure))
+(defn render-app! [] (x.boot-loader/render-app! #'app-structure))

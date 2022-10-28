@@ -2,10 +2,9 @@
 (ns app.common.frontend.item-editor.views
     (:require [app.common.frontend.surface.views        :as surface.views]
               [app.common.frontend.surface-button.views :as surface-button.views]
+              [elements.api                             :as elements]
               [mid-fruits.vector                        :as vector]
-              [re-frame.api                             :as r]
-              [x.app-components.api                     :as components]
-              [x.app-elements.api                       :as elements]))
+              [re-frame.api                             :as r]))
 
 ;; -- Color-picker component --------------------------------------------------
 ;; ----------------------------------------------------------------------------

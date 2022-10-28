@@ -2,8 +2,8 @@
 (ns app.contents.frontend.picker.views
     (:require [app.contents.frontend.picker.prototypes :as picker.prototypes]
               [app.contents.frontend.preview.views     :as preview.views]
-              [mid-fruits.random                       :as random]
-              [x.app-elements.api                      :as elements]))
+              [elements.api                            :as elements]
+              [mid-fruits.random                       :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

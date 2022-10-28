@@ -3,7 +3,7 @@
     (:require [mid-fruits.candy  :refer [param]]
               [mid-fruits.css    :as css]
               [re-frame.api      :as r]
-              [x.server-user.api :as user]))
+              [x.server-user.api :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -37,7 +37,7 @@
 
 (defn- app-logo
   [request]
-  (let [selected-theme (user/request->user-settings-item request :selected-theme)]
+  (let [selected-theme (x.user/request->user-settings-item request :selected-theme)]
        [:div {:style (css/unparse {:background-image (case selected-theme :light (css/url "/app/logo/logo-light.png")
                                                                           :dark  (css/url "/app/logo/logo-dark.png"))
                                    :background-position "bottom"

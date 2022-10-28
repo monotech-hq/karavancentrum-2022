@@ -3,15 +3,15 @@
     (:require [app.common.frontend.api                    :as common]
               [app.storage.frontend.core.config           :as core.config]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
+              [elements.api                               :as elements]
               [io.api                                     :as io]
               [layouts.surface-a.api                      :as surface-a]
               [mid-fruits.format                          :as format]
               [mid-fruits.keyword                         :as keyword]
               [plugins.item-browser.api                   :as item-browser]
               [re-frame.api                               :as r]
-              [x.app-components.api                       :as components]
-              [x.app-elements.api                         :as elements]
-              [x.app-media.api                            :as media]))
+              [x.app-components.api                       :as x.components]
+              [x.app-media.api                            :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -29,7 +29,7 @@
   (let [size  @(r/subscribe [:db/get-item [:storage :media-browser/browsed-item :size]])
         items @(r/subscribe [:db/get-item [:storage :media-browser/browsed-item :items]])
         size   (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
-                    (components/content {:content :n-items :replacements [(count items)]}))]
+                    (x.components/content {:content :n-items :replacements [(count items)]}))]
        [elements/label ::directory-info
                        {:color            :highlight
                         :content          size
@@ -43,7 +43,7 @@
 (defn directory-item-structure
   [browser-id item-dex {:keys [alias size id items modified-at]}]
   (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
-        item-count  (components/content {:content :n-items :replacements [(count items)]})
+        item-count  (x.components/content {:content :n-items :replacements [(count items)]})
         size        (-> size io/B->MB format/decimals (str " MB"))
         icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
        [common/list-item-structure browser-id item-dex
@@ -66,7 +66,7 @@
         size       (-> size io/B->MB format/decimals (str " MB"))]
        [common/list-item-structure browser-id item-dex
                                    {:cells [(if (io/filename->image? alias)
-                                                (let [thumbnail (media/filename->media-thumbnail-uri filename)]
+                                                (let [thumbnail (x.media/filename->media-thumbnail-uri filename)]
                                                      [common/list-item-thumbnail browser-id item-dex {:thumbnail thumbnail}])
                                                 [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
                                             [common/list-item-label     browser-id item-dex {:content alias     :stretch? true}]

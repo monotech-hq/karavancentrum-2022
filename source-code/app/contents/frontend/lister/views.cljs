@@ -2,11 +2,11 @@
 (ns app.contents.frontend.lister.views
     (:require [app.common.frontend.api               :as common]
               [app.contents.frontend.handler.helpers :as handler.helpers]
+              [elements.api                          :as elements]
               [layouts.surface-a.api                 :as surface-a]
               [mid-fruits.hiccup                     :as hiccup]
               [plugins.item-lister.api               :as item-lister]
-              [re-frame.api                          :as r]
-              [x.app-elements.api                    :as elements]))
+              [re-frame.api                          :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

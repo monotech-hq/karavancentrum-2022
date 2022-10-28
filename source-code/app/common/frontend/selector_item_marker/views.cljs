@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.selector-item-marker.views
     (:require [app.common.frontend.list-item-marker.views :as list-item-marker.views]
-              [re-frame.api                               :as r]
-              [x.app-elements.api                         :as elements]))
+              [elements.api                               :as elements]
+              [re-frame.api                               :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

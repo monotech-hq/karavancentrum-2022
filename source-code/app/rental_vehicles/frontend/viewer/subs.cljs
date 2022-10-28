@@ -2,7 +2,7 @@
 (ns app.rental-vehicles.frontend.viewer.subs
     (:require [mid-fruits.normalize :as normalize]
               [re-frame.api         :as r :refer [r]]
-              [x.app-router.api     :as router]))
+              [x.app-router.api     :as x.router]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -12,7 +12,7 @@
   (let [vehicle-name    (get-in db [:rental-vehicles :viewer/viewed-item :name])
         normalized-name (normalize/clean-text vehicle-name)
         public-link     (str "/"normalized-name)]
-       (r router/use-app-domain db public-link)))
+       (r x.router/use-app-domain db public-link)))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

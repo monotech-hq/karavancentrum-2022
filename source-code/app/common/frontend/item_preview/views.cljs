@@ -1,6 +1,6 @@
 
 (ns app.common.frontend.item-preview.views
-    (:require [x.app-elements.api :as elements]))
+    (:require [elements.api :as elements]))
 
 ;; -- Ghost-view components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------

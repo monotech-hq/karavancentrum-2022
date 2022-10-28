@@ -1,7 +1,7 @@
 
 (ns app.settings.frontend.privacy.views
-    (:require [settings.cookie-settings.views :rename {body cookie-settings}]
-              [x.app-elements.api             :as elements]))
+    (:require [elements.api                   :as elements]
+              [settings.cookie-settings.views :rename {body cookie-settings}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

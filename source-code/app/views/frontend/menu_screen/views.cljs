@@ -1,10 +1,10 @@
 
 (ns app.views.frontend.menu-screen.views
-    (:require [layouts.popup-a.api :as popup-a]
+    (:require [elements.api        :as elements]
+              [layouts.popup-a.api :as popup-a]
               [mid-fruits.css      :as css]
               [re-frame.api        :as r]
-              [x.app-details       :as details]
-              [x.app-elements.api  :as elements]))
+              [x.app-details       :as x.details]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -127,7 +127,7 @@
 (defn- app-description-label
   []
   [elements/label ::app-description-label
-                  {:content          (str details/app-codename " | " details/app-description)
+                  {:content          (str x.details/app-codename " | " x.details/app-description)
                    :color            :muted
                    :horizontal-align :left
                    :icon             :grade
@@ -137,7 +137,7 @@
 (defn- app-version-label
   []
   [elements/label ::app-version-label
-                  {:content          (str "v"details/app-version)
+                  {:content          (str "v"x.details/app-version)
                    :color            :muted
                    :horizontal-align :left
                    :icon             :extension
@@ -147,7 +147,7 @@
 (defn- copyright-information-label
   []
   (let [server-year    @(r/subscribe [:core/get-server-year])
-        copyright-label (details/copyright-label server-year)]
+        copyright-label (x.details/copyright-label server-year)]
        [elements/label ::copyright-information-label
                        {:content          copyright-label
                         :color            :muted
