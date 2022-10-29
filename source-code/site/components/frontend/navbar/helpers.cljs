@@ -8,4 +8,4 @@
 (defn scroll-f
   ; @param (boolean) intersecting?
   [intersecting?]
-  (x.environment/set-element-attribute! "sc-navbar" "data-scrolled" (not intersecting?)))
+  (x.environment/set-element-attribute! "si-navbar" "data-scrolled" (not intersecting?)))

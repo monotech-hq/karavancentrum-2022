@@ -38,7 +38,7 @@
 
 (defn vehicle-name
   [name]
-  [:p.kc-link.kc-effect--underline.name name])
+  [:p.kc-link.si-effect--underline.name name])
 
 (defn vehicle
   [{:vehicle/keys [id link-name] :as vehicle}]

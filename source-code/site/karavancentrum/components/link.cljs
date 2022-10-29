@@ -17,7 +17,7 @@
 (defn link
   [props text]
   (let [link-props (link-props-prototype props text)]
-       [:a.kc-link.kc-effect--underline link-props text]))
+       [:a.kc-link.si-effect--underline link-props text]))
 
 (defn view
   [{:keys [prefix] :as props} text]

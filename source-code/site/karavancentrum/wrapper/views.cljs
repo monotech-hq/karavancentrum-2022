@@ -12,13 +12,13 @@
   (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [:div#kc-sidebar--menu-items
-         [:a.kc-sidebar--menu-item.kc-effect--underline {:href "/berbeadas"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
+         [:a.kc-sidebar--menu-item.si-effect--underline {:href "/berbeadas"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
                                                         "Bérbeadás"]
-         [:a.kc-sidebar--menu-item.kc-effect--underline {:href "/ertekesites" :on-click #(r/dispatch [:site.components/hide-sidebar!])}
+         [:a.kc-sidebar--menu-item.si-effect--underline {:href "/ertekesites" :on-click #(r/dispatch [:site.components/hide-sidebar!])}
                                                         "Értékesítés"]
-         [:a.kc-sidebar--menu-item.kc-effect--underline {:href webshop-link   :on-click #(r/dispatch [:site.components/hide-sidebar!] :target "_blank")}
+         [:a.kc-sidebar--menu-item.si-effect--underline {:href webshop-link   :on-click #(r/dispatch [:site.components/hide-sidebar!] :target "_blank")}
                                                         "Webáruház"]
-         [:a.kc-sidebar--menu-item.kc-effect--underline {:href "/kapcsolat"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
+         [:a.kc-sidebar--menu-item.si-effect--underline {:href "/kapcsolat"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
                                                         "Kapcsolat"]]))
 
 (defn sidebar
@@ -38,14 +38,14 @@
   (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [components/navbar {:logo #'company-name-and-slogan
-                           :menu-items [{:href "/berbeadas"   :label "Bérbeadás"   :class :kc-effect--underline}
-                                        {:href "/ertekesites" :label "Értékesítés" :class :kc-effect--underline}
-                                        {:href webshop-link   :label "Webáruház"   :class :kc-effect--underline :target "_blank"}
-                                        {:href "/kapcsolat"   :label "Kapcsolat"   :class :kc-effect--underline}]
+                           :menu-items [{:href "/berbeadas"   :label "Bérbeadás"   :class :si-effect--underline}
+                                        {:href "/ertekesites" :label "Értékesítés" :class :si-effect--underline}
+                                        {:href webshop-link   :label "Webáruház"   :class :si-effect--underline :target "_blank"}
+                                        {:href "/kapcsolat"   :label "Kapcsolat"   :class :si-effect--underline}]
                            :on-menu [:site.components/show-sidebar!]
                            :threshold 800}]))
 
-(defn site-wrapper
+(defn wrapper
   [ui-structure]
   [:div#kc [ui-structure]
            [header]
@@ -53,4 +53,4 @@
 
 (defn view
   [ui-structure]
-  [site-wrapper ui-structure])
+  [wrapper ui-structure])

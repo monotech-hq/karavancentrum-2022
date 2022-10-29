@@ -8,4 +8,4 @@
 (defn scroll-f
   ; @param (boolean) intersecting?
   [intersecting?]
-  (x.environment/set-element-attribute! "sc-scroll-icon" "data-visible" intersecting?))
+  (x.environment/set-element-attribute! "si-scroll-icon" "data-visible" intersecting?))

@@ -10,17 +10,20 @@
 (defn- scroll-icon
   ; @param (keyword) component-id
   ; @param (map) component-props
-  ;  {:style (map)}
-  [_ {:keys [style]}]
+  ;  {:color (string)(opt)
+  ;   :style (map)}
+  [_ {:keys [color style]}]
   [:<> [:div {:style {:left 0 :position :absolute :top 0}}
              [scroll-sensor.views/component ::scroll-sensor scroll-icon.helpers/scroll-f]]
-       [:div {:id :sc-scroll-icon :style style}
-             [:div {:id :sc-scroll-icon--body}]]])
+       [:div {:id :si-scroll-icon :style style}
+             [:div {:id :si-scroll-icon--body :style {"--icon-color" (or color "white")}}]]])
 
 (defn component
   ; @param (keyword)(opt) component-id
   ; @param (map) component-props
-  ;  {:style (map)(opt)}
+  ;  {:color (string)(opt)
+  ;    Default: "white"
+  ;   :style (map)(opt)}
   ;
   ; @usage
   ;  [scroll-icon {...}]

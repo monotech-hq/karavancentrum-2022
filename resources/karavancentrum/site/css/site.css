@@ -5,39 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;1,100;1,200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 
-body {
+#kc {
   background-color: #f4f7f6;
 }
 
 /***** Website *****/
-/******************************************************************************/
-
-
-
-/******************************************************************************/
-/***** Effects *****/
-
-.kc-effect--underline {
-  text-decoration: none;
-  --underline-color: white }
-
-.kc-effect--underline:hover::before,
-.kc-effect--underline:focus::before {
-  transform: scale( 1 ) }
-
-.kc-effect--underline::before {
-  background-color: var(--underline-color);
-  bottom: -5px;
-  content: '';
-  left: 0;
-  position: absolute;
-  height: 1px;
-  width: 100%;
-  transition: transform 300ms;
-  transform: scale(0);
-  transform-origin: center }
-
-/***** Effects *****/
 /******************************************************************************/
 
 
@@ -69,21 +41,21 @@ body {
 /******************************************************************************/
 /***** Navbar *****/
 
-#sc-navbar {
+#si-navbar {
   height: 75px;
   padding: 0 24px;
   transition: background-color .2s }
 
-#sc-navbar[data-scrolled="false"] {
+#si-navbar[data-scrolled="false"] {
   background-color: hsl(0deg 0% 100% / 0%)}
 
-#sc-navbar[data-scrolled="true"] {
+#si-navbar[data-scrolled="true"] {
   background-color: hsl(0deg 0% 100% / 80%)}
 
-#sc-navbar--menu-items {
+#si-navbar--menu-items {
   gap: 50px }
 
-.sc-navbar--menu-item {
+.si-navbar--menu-item {
   color: #333;
   font-family: 'Poppins';
   font-size: 12px;
@@ -91,7 +63,7 @@ body {
   letter-spacing: 1.5px;
   text-transform: uppercase }
 
-#sc-navbar .kc-effect--underline::before {
+#si-navbar .si-effect--underline::before {
   bottom: 0px;
   --underline-color: #333 }
 
@@ -103,7 +75,7 @@ body {
 /******************************************************************************/
 /***** Sidebar *****/
 
-#sc-sidebar--content {
+#si-sidebar--content {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -121,10 +93,11 @@ body {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.5px;
+  text-align: center;
   text-decoration: none;
   text-transform: uppercase }
 
-#sc-sidebar .kc-effect--underline::before {
+#si-sidebar .si-effect--underline::before {
   bottom: 0px;
   --underline-color: #333 }
 
@@ -462,7 +435,7 @@ body {
   opacity: .8;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 420px) {
 .kc-brand {
   border-radius: 0 }}
 
@@ -542,7 +515,8 @@ body {
 .kc-address-group--label {
   padding: 0 6px;
   font-size: 15px;
-  line-height: 35px;
+  font-weight: 500;
+  line-height: 25px;
   letter-spacing: 2px }
 
 .kc-contact-group--value,

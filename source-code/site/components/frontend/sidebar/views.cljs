@@ -14,7 +14,7 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [_ _]
-  [:div {:style {:position :absolute :right 0 :top 0}}
+  [:div {:style {:position "absolute" :right "12px" :top "12px"}}
         [elements/icon-button ::sidebar-close-button
                               {:icon :close
                                :on-click [:site.components/hide-sidebar!]}]])
@@ -27,10 +27,10 @@
   ;   :style (map)(opt)}
   [component-id {:keys [class content style] :as component-props}]
   (let [sidebar-visible? @(r/subscribe [:site.components/sidebar-visible?])]
-       [:div {:id :sc-sidebar :class class :style style
+       [:div {:id :si-sidebar :class class :style style
               :data-visible (boolean sidebar-visible?)}
-             [:div {:id :sc-sidebar--cover}]
-             [:div {:id :sc-sidebar--content}
+             [:div {:id :si-sidebar--cover}]
+             [:div {:id :si-sidebar--content}
                    [x.components/content component-id content]
                    [sidebar-close-button component-id component-props]]]))
 
