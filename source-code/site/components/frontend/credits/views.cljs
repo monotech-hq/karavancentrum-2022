@@ -1,51 +1,17 @@
 
 (ns site.components.frontend.credits.views
-    (:require [elements.api   :as elements]
-              [mid-fruits.css :as css]
-              [re-frame.api   :as r]
-              [x.app-details  :as x.details]))
+    (:require [elements.api                                   :as elements]
+              [mid-fruits.random                              :as random]
+              [re-frame.api                                   :as r]
+              [site.components.frontend.copyright-label.views :as copyright-label.views]
+              [site.components.frontend.mt-logo.views         :as mt-logo.views]
+              [x.app-details                                  :as x.details]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
-
-(defn copyright-label
-  ; @param (map) component-props
-  ;  {:theme (keyword)(opt)
-  ;    :light, :dark
-  ;    Default: :light}
-  ;
-  ; @usage
-  ;  [copyright-label]
-  [{:keys [theme]}]
-  (let [server-year          @(r/subscribe [:core/get-server-year])
-        copyright-information (x.details/copyright-information server-year)]
-       [elements/label ::copyright-label
-                       {:color            (case theme :dark :invert :default)
-                        :content          copyright-information
-                        :font-size        :xs
-                        :horizontal-align :center
-                        :indent           {:bottom :xs :vertical :s}
-                        :style            {:opacity ".6"}}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn mt-logo
-  ; @param (map) component-props
-  ;  {:theme (keyword)(opt)
-  ;    :light, :dark
-  ;    Default: :light}
-  ;
-  ; @usage
-  ;  [mt-logo]
-  [{:keys [theme]}]
-  [:div {:style {:background-image (case theme :dark (css/url "/app/logo/mt-logo-dark.png")
-                                                     (css/url "/app/logo/mt-logo-light.png"))
-                 :background-size  "cover"
-                 :height           "72px"
-                 :width            "72px"}}])
 
 (defn created-by-label
+  ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
@@ -53,7 +19,7 @@
   ;
   ; @usage
   ;  [created-by-label]
-  [{:keys [theme]}]
+  [_ {:keys [theme]}]
   [elements/label ::created-by-label
                   {:color     (case theme :dark :invert :default)
                    :content   "Created by"
@@ -61,6 +27,7 @@
                    :indent    {:top :xxs}}])
 
 (defn created-by
+  ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
@@ -68,26 +35,25 @@
   ;
   ; @usage
   ;  [created-by]
-  [component-props]
+  [component-id component-props]
   [elements/toggle ::created-by
                    {:on-click {:fx [:environment/open-new-browser-tab! "https://www.monotech.hu"]}
                     :content  [:div {:style {:align-items "center" :display "flex" :flex-direction "column"}}
-                                    [mt-logo          component-props]
-                                    [created-by-label component-props]]
+                                    [mt-logo.views/component component-id component-props]
+                                    [created-by-label        component-id component-props]]
                     :indent   {:bottom :xxs}}])
 
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- credits
+  ; @param (keyword) component-id
   ; @param (map) component-props
-  [component-props]
+  [component-id component-props]
   [:div {:style {}}
         [:div {:style {:display "flex" :justify-content "center"}}
-              [created-by component-props]]
-        [copyright-label component-props]])
+              [created-by component-id component-props]]
+        [copyright-label.views/component component-id component-props]])
 
 (defn component
+  ; @param (keyword)(opt) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
@@ -95,5 +61,11 @@
   ;
   ; @usage
   ;  [credits {...}]
-  [component-props]
-  [credits component-props])
+  ;
+  ; @usage
+  ;  [credits :my-credits {...}]
+  ([component-props]
+   [component (random/generate-keyword) component-props])
+
+  ([component-id component-props]
+   [credits component-id component-props]))

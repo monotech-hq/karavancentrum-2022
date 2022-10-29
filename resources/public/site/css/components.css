@@ -1,0 +1,145 @@
+
+/***** Navbar *****/
+
+#sc-navbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100% }
+
+#sc-navbar--menu-items {
+  display: flex }
+
+.sc-navbar--menu-item {
+  display: block }
+
+.sc-navbar--menu-item:hover {
+  text-decoration: none }
+
+#sc-navbar--menu-button {
+  height: 20px }
+
+#sc-navbar--menu-button span {
+  background-color: #000;
+  display: block;
+  height: 2px;
+  width: 32px }
+
+#sc-navbar--menu-button span::before,
+#sc-navbar--menu-button span::after {
+  background-color: inherit;
+  content: '';
+  height: 2px;
+  left: 0;
+  position: absolute;
+  width: 100% }
+
+#sc-navbar--menu-button span::before {
+  top: -8px }
+
+#sc-navbar--menu-button span::after {
+  bottom: -8px }
+
+/***** Navbar *****/
+
+
+
+/***** Sidebar *****/
+
+#sc-sidebar {
+  width: 100% }
+
+#sc-sidebar--content {
+  background-color: #fff;
+  height: 100vh;
+  left: 0;
+  max-width: 500px;
+  position: fixed;
+  top: 0;
+  transform: translateX(-110%);
+  transition-duration: .15s;
+  transition-property: transform;
+  transition-timing-function: ease;
+  width: 85% }
+
+#sc-sidebar[data-visible="true"] #sc-sidebar--content {
+  transform: translateX(0%) }
+
+#sc-sidebar--cover {
+  backdrop-filter: blur(2px);
+ -webkit-backdrop-filter: blur(2px);
+  /* background-color: var( --black-semi-transparent ); */
+  height: 100vh;
+  right: 0;
+  position: fixed;
+  top: 0;
+  transform: translateX(-110%);
+  transition-delay: .15s;
+  transition-duration: .15s;
+  transition-property: transform;
+  width: 100% }
+
+#sc-sidebar[data-visible="true"] #sc-sidebar--cover {
+  transform: translateX(0%) }
+
+/***** Sidebar *****/
+
+
+
+/***** Scroll-icon *****/
+
+#sc-scroll-icon {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 35px;
+  transition: transform 0.5s;
+  width: 100% }
+
+#sc-scroll-icon[data-visible="false"] {
+  transform: translateY(100vh) }
+
+#sc-scroll-icon--body {
+  border-color: #fff;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 2px;
+  height: 35px;
+  width: 20px }
+
+#sc-scroll-icon--body::before {
+  animation-name: sc-scroll-icon;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  background-color: #fff;
+  border-radius: 50%;
+  content: '';
+  left: 5px;
+  height: 5px;
+  position: absolute;
+  top: 5px;
+  width: 5px }
+
+#sc-scroll-icon--body::after {
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+  bottom: -15px;
+  content: '';
+  height: 10px;
+  left: 2.5px;
+  position: absolute;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  width: 10px }
+
+@keyframes sc-scroll-icon {
+  0%   { opacity: 0;
+         transform: translate(0, 0) }
+  40%  { opacity: 1 }
+  80%  { opacity: 0;
+         transform: translate(0, 20px) }
+  100% { opacity: 0 }}
+
+/***** Scroll-icon *****/

@@ -7,7 +7,6 @@
 
               ; Site modules
               [site.karavancentrum.pages.frontend]
-              [site.karavancentrum.modules.api]
               [site.karavancentrum.wrapper.views :as site.wrapper.views]))
 
 ;; ----------------------------------------------------------------------------

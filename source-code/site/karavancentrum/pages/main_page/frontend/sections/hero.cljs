@@ -1,17 +1,14 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.hero
-    (:require [re-frame.api :as r]))
+    (:require [re-frame.api                 :as r]
+              [site.components.frontend.api :as components]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
-
-(defn scroll-down-icon
-  []
-  [:div#kc-scroll-icon [:span]])
 
 (defn hero
   []
-  [:div#kc-hero [scroll-down-icon]])
+  [:div#kc-hero [components/scroll-icon {:style {:position :absolute :bottom 0 :left 0}}]])
 
 (defn view
   []

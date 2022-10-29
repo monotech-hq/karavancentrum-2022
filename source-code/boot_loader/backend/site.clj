@@ -5,4 +5,5 @@
               [pathom.api]
 
               ; Site modules
+              [site.karavancentrum.backend.api]
               [site.karavancentrum.pages.backend]))

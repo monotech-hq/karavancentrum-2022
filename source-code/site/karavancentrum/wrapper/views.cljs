@@ -1,13 +1,29 @@
 
 (ns site.karavancentrum.wrapper.views
-    (:require [mid-fruits.uri                     :as uri]
-              [re-frame.api                       :as r]
-              [reagent.api                        :as reagent]
-              [site.karavancentrum.modules.api    :as modules]
-              [site.karavancentrum.components.api :as components]))
+    (:require [mid-fruits.uri               :as uri]
+              [re-frame.api                 :as r]
+              [site.components.frontend.api :as components]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
+
+(defn sidebar-menu
+  []
+  (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
+        webshop-link  (uri/valid-uri webshop-link)]
+       [:div#kc-sidebar--menu-items
+         [:a.kc-sidebar--menu-item.kc-effect--underline {:href "/berbeadas"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
+                                                        "Bérbeadás"]
+         [:a.kc-sidebar--menu-item.kc-effect--underline {:href "/ertekesites" :on-click #(r/dispatch [:site.components/hide-sidebar!])}
+                                                        "Értékesítés"]
+         [:a.kc-sidebar--menu-item.kc-effect--underline {:href webshop-link   :on-click #(r/dispatch [:site.components/hide-sidebar!] :target "_blank")}
+                                                        "Webáruház"]
+         [:a.kc-sidebar--menu-item.kc-effect--underline {:href "/kapcsolat"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
+                                                        "Kapcsolat"]]))
+
+(defn sidebar
+  []
+  [components/sidebar {:content #'sidebar-menu}])
 
 (defn company-name-and-slogan
   []
@@ -17,32 +33,23 @@
            [:div#kc-navbar--company-name-and-slogan [:div#kc-navbar--company-name   company-name]
                                                     [:div#kc-navbar--company-slogan company-slogan]]]))
 
-(defn navbar-item
-  [{:keys [href target]} label]
-  [:a.kc-link.kc-effect--underline {:on-mouse-up #(-> % .-target .blur)
-                                    :style {"--underline-color" "black"}
-                                    :href   href
-                                    :target (or target "_self")}
-                                   label])
-
-(defn navbar
+(defn header
   []
   (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
-       [modules/navbar {:threshold 800 :align-x :right :logo [company-name-and-slogan]}
-                       [navbar-item {:href "/berbeadas"}                  "Bérbeadás"]
-                       [navbar-item {:href "/ertekesites"}                "Értékesítés"]
-                       [navbar-item {:href webshop-link :target "_blank"} "Webáruház"]
-                       [navbar-item {:href "/kapcsolat"}                  "Kapcsolat"]]))
-
-(defn header
-  []
-  [navbar])
+       [components/navbar {:logo #'company-name-and-slogan
+                           :menu-items [{:href "/berbeadas"   :label "Bérbeadás"   :class :kc-effect--underline}
+                                        {:href "/ertekesites" :label "Értékesítés" :class :kc-effect--underline}
+                                        {:href webshop-link   :label "Webáruház"   :class :kc-effect--underline :target "_blank"}
+                                        {:href "/kapcsolat"   :label "Kapcsolat"   :class :kc-effect--underline}]
+                           :on-menu [:site.components/show-sidebar!]
+                           :threshold 800}]))
 
 (defn site-wrapper
   [ui-structure]
-  [:div#kc [header]
-           [ui-structure]])
+  [:div#kc [ui-structure]
+           [header]
+           [sidebar]])
 
 (defn view
   [ui-structure]
