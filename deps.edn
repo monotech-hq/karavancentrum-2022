@@ -21,7 +21,8 @@
          "submodules/re-frame-api/source-code/cljc"
          "submodules/time-api/source-code/clj"
          "submodules/time-api/source-code/cljc"
-         "submodules/time-api/source-code/cljs"]
+         "submodules/time-api/source-code/cljs"
+         "submodules/window-api/source-code/cljs"]
 
  ; Dependecies
  :deps {buddy/buddy-auth                                {:mvn/version "2.1.0"}
