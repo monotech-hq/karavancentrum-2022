@@ -7,14 +7,14 @@
 ;; ----------------------------------------------------------------------------
 
 (defn get-menu-group-items
-  ; @param (keyword) group-name
+  ; @param (metamorphic-content) group-name
   ;
   ; @return (maps in vector)
   [db [_ group-name]]
   ; XXX#0092
   (let [menu-items (get-in db [:home :screen/menu-items] [])]
-       (letfn [(f [group-items {:keys [group] :as menu-item}]
-                  (if (=      group-name  group)
+       (letfn [(f [group-items menu-item]
+                  (if (=      group-name (:group-name menu-item))
                       (conj   group-items menu-item)
                       (return group-items)))]
               (reduce f [] menu-items))))

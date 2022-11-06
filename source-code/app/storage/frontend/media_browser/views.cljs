@@ -4,11 +4,11 @@
               [app.storage.frontend.core.config           :as core.config]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
               [elements.api                               :as elements]
+              [engines.item-browser.api                   :as item-browser]
               [io.api                                     :as io]
               [layouts.surface-a.api                      :as surface-a]
               [mid-fruits.format                          :as format]
               [mid-fruits.keyword                         :as keyword]
-              [plugins.item-browser.api                   :as item-browser]
               [re-frame.api                               :as r]
               [x.app-components.api                       :as x.components]
               [x.app-media.api                            :as x.media]))
@@ -35,7 +35,8 @@
                         :content          size
                         :indent           {:top :m :vertical :s}
                         :font-size        :xxs
-                        :horizontal-align :right}]))
+                        :horizontal-align :right
+                        :line-height      :block}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -43,15 +44,16 @@
 (defn directory-item-structure
   [browser-id item-dex {:keys [alias size id items modified-at]}]
   (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last? @(r/subscribe [:item-browser/item-last? browser-id item-dex])
         item-count  (x.components/content {:content :n-items :replacements [(count items)]})
         size        (-> size io/B->MB format/decimals (str " MB"))
         icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
-       [common/list-item-structure browser-id item-dex
-                                   {:cells [[common/list-item-thumbnail-icon browser-id item-dex {:icon :folder :icon-family icon-family}]
-                                            [common/list-item-label          browser-id item-dex {:content alias :stretch? true}]
-                                            [common/list-item-details        browser-id item-dex {:contents [size item-count] :width "160px"}]
-                                            [common/list-item-detail         browser-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-marker         browser-id item-dex {:icon :navigate_next}]]}]))
+       [common/list-item-structure {:cells [[common/list-item-thumbnail {:icon :folder :icon-family icon-family}]
+                                            [common/list-item-label     {:content alias :stretch? true}]
+                                            [common/list-item-details   {:contents [size item-count] :width "160px"}]
+                                            [common/list-item-detail    {:content timestamp :width "160px"}]
+                                            [common/list-item-marker    {:icon :navigate_next}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn directory-item
   [browser-id item-dex {:keys [id] :as directory-item}]
@@ -62,17 +64,17 @@
 
 (defn file-item-structure
   [browser-id item-dex {:keys [alias id modified-at filename size] :as file-item}]
-  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
-        size       (-> size io/B->MB format/decimals (str " MB"))]
-       [common/list-item-structure browser-id item-dex
-                                   {:cells [(if (io/filename->image? alias)
-                                                (let [thumbnail (x.media/filename->media-thumbnail-uri filename)]
-                                                     [common/list-item-thumbnail browser-id item-dex {:thumbnail thumbnail}])
-                                                [common/list-item-thumbnail-icon browser-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
-                                            [common/list-item-label     browser-id item-dex {:content alias     :stretch? true}]
-                                            [common/list-item-detail    browser-id item-dex {:content size      :width "160px"}]
-                                            [common/list-item-detail    browser-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-marker    browser-id item-dex {:icon    :more_vert}]]}]))
+  (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last? @(r/subscribe [:item-browser/item-last? browser-id item-dex])
+        size        (-> size io/B->MB format/decimals (str " MB"))]
+       [common/list-item-structure {:cells [[common/list-item-thumbnail (if (io/filename->image? alias)
+                                                                            {:thumbnail (x.media/filename->media-thumbnail-uri filename)}
+                                                                            {:icon :insert_drive_file :icon-family :material-icons-outlined})]
+                                            [common/list-item-label  {:content alias     :stretch? true}]
+                                            [common/list-item-detail {:content size      :width "160px"}]
+                                            [common/list-item-detail {:content timestamp :width "160px"}]
+                                            [common/list-item-marker {:icon :more_vert}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn file-item
   [browser-id item-dex file-item]

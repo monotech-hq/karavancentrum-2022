@@ -16,7 +16,7 @@
   ;  [surface-button {...}]
   ;
   ; @usage
-  ;  [surface-button :my-element {...}]
+  ;  [surface-button :my-button {...}]
   ([button-props]
    [element (random/generate-keyword) button-props])
 

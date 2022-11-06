@@ -15,7 +15,8 @@
                         :disabled?        synchronizing?
                         :font-weight      :extra-bold
                         :horizontal-align :center
-                        :indent           {:horizontal :xs}}]))
+                        :indent           {:horizontal :xs}
+                        :line-height      :block}]))
 
 ;; -- Login form components ---------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -26,7 +27,8 @@
                   {:content          :incorrect-email-address-or-password
                    :color            :warning
                    :horizontal-align :center
-                   :indent           {:horizontal :xs}}])
+                   :indent           {:horizontal :xs}
+                   :line-height      :block}])
 
 (defn- email-address-field
   []
@@ -131,7 +133,8 @@
        [elements/label ::user-name-label
                        {:content          {:content :signed-in-as :suffix user-full-name}
                         :horizontal-align :center
-                        :indent           {:top :s :vertical :xs}}]))
+                        :indent           {:top :s :vertical :xs}
+                        :line-height      :block}]))
 
 (defn- user-email-address-label
   []
@@ -141,7 +144,8 @@
                         :content          user-email-address
                         :font-size        :xs
                         :horizontal-align :center
-                        :indent           {:bottom :m :vertical :xs}}]))
+                        :indent           {:bottom :m :vertical :xs}
+                        :line-height      :block}]))
 
 (defn- logged-in-form
   []

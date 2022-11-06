@@ -18,8 +18,9 @@
   ; @usage
   ;  [item-editor-color-picker-label :my-editor {...}]
   [_ {:keys [disabled? label]}]
-  (if label [elements/label {:content   :color
-                             :disabled? disabled?}]))
+  (if label [elements/label {:content     :color
+                             :disabled?   disabled?
+                             :line-height :block}]))
 
 (defn item-editor-color-picker-button
   ; @param (keyword) editor-id

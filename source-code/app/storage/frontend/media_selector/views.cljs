@@ -3,10 +3,10 @@
     (:require [app.common.frontend.api          :as common]
               [app.storage.frontend.core.config :as core.config]
               [elements.api                     :as elements]
+              [engines.item-browser.api         :as item-browser]
               [io.api                           :as io]
               [layouts.popup-a.api              :as popup-a]
               [mid-fruits.format                :as format]
-              [plugins.item-browser.api         :as item-browser]
               [re-frame.api                     :as r]
               [x.app-components.api             :as x.components]
               [x.app-media.api                  :as x.media]))
@@ -31,14 +31,15 @@
 
 (defn- directory-item-structure
   [selector-id item-dex {:keys [alias size items modified-at]}]
-  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
-        size       (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
-                        (x.components/content {:content :n-items :replacements [(count items)]}))]
-       [common/list-item-structure selector-id item-dex
-                                   {:cells [(let [icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
-                                                 [common/list-item-thumbnail-icon selector-id item-dex {:icon :folder :icon-family icon-family}])
-                                            [common/list-item-primary-cell selector-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
-                                            [common/list-item-marker       selector-id item-dex {:icon :navigate_next}]]}]))
+  (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last? @(r/subscribe [:item-lister/item-last? selector-id item-dex])
+        size        (str (-> size io/B->MB format/decimals (str " MB\u00A0\u00A0\u00A0|\u00A0\u00A0\u00A0"))
+                         (x.components/content {:content :n-items :replacements [(count items)]}))
+        icon-family (if (empty? items) :material-icons-outlined :material-icons-filled)]
+       [common/list-item-structure {:cells [[common/list-item-thumbnail    {:icon :folder :icon-family icon-family}]
+                                            [common/list-item-primary-cell {:label alias :description size :timestamp timestamp :stretch? true}]
+                                            [common/list-item-marker       {:icon :navigate_next}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn- directory-item
   [selector-id item-dex {:keys [id] :as directory-item}]
@@ -48,15 +49,15 @@
 
 (defn- file-item-structure
   [selector-id item-dex {:keys [alias id modified-at filename size]}]
-  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])
-        size       (-> size io/B->MB format/decimals (str " MB"))]
-       [common/list-item-structure selector-id item-dex
-                                   {:cells [(if (io/filename->image? alias)
-                                                (let [thumbnail (x.media/filename->media-thumbnail-uri filename)]
-                                                     [common/list-item-thumbnail selector-id item-dex {:thumbnail thumbnail}])
-                                                [common/list-item-thumbnail-icon selector-id item-dex {:icon :insert_drive_file :icon-family :material-icons-outlined}])
-                                            [common/list-item-primary-cell selector-id item-dex {:label alias :description size :timestamp timestamp :stretch? true}]
-                                            [common/selector-item-marker   selector-id item-dex {:item-id id}]]}]))
+  (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last? @(r/subscribe [:item-lister/item-last? selector-id item-dex])
+        size        (-> size io/B->MB format/decimals (str " MB"))]
+       [common/list-item-structure {:cells [[common/list-item-thumbnail (if (io/filename->image? alias)
+                                                                            {:thumbnail (x.media/filename->media-thumbnail-uri filename)}
+                                                                            {:icon :insert_drive_file :icon-family :material-icons-outlined})]
+                                            [common/list-item-primary-cell {:label alias :description size :timestamp timestamp :stretch? true}]
+                                            [common/selector-item-marker   selector-id item-dex {:item-id id}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn- file-item
   [selector-id item-dex {:keys [id] :as file-item}]
@@ -154,8 +155,7 @@
   (let [search-event [:item-browser/search-items! :storage.media-selector {:search-keys [:alias]}]]
        [elements/search-field ::search-items-field
                               {:autoclear?    true
-                               :indent        {:vertical :xxs}
-                               :min-width     :s
+                               :indent        {:left :s :right :xxs :top :xxs}
                                :on-empty      search-event
                                :on-type-ended search-event
                                :placeholder   :search-in-the-directory
@@ -163,14 +163,16 @@
 
 (defn- control-bar
   []
-  [elements/horizontal-polarity ::control-bar
-                                {:start-content [:<> [go-up-icon-button]
-                                                     [go-home-icon-button]
-                                                     [order-by-icon-button]
-                                                     [elements/button-separator {:indent {:vertical :xxs}}]
-                                                     [create-folder-icon-button]
-                                                     [upload-files-icon-button]]
-                                 :end-content   [:<> [search-items-field]]}])
+  [:div {:style {:display "flex"}}
+        [:div {:style {:display "flex"}}
+              [go-up-icon-button]
+              [go-home-icon-button]
+              [order-by-icon-button]
+              [elements/button-separator {:indent {:vertical :xxs}}]
+              [create-folder-icon-button]
+              [upload-files-icon-button]]
+        [:div {:style {:flex-grow "1"}}
+              [search-items-field]]])
 
 (defn- header
   [selector-id]

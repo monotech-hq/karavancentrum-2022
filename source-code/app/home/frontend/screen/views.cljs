@@ -7,8 +7,7 @@
               [mid-fruits.css                   :as css]
               [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
-              [x.app-components.api             :as x.components]
-              [mid-fruits.string                :as string]))
+              [x.app-components.api             :as x.components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -34,17 +33,17 @@
                         :font-size   :s
                         :font-weight :extra-bold
                         :indent      {:left :xs}
-                        :style       {:line-height "18px"}}]))
+                        :line-height :block}]))
 
 (defn- user-email-address-label
   []
   (let [user-email-address (r/subscribe [:user/get-user-email-address])]
        [elements/label ::user-email-address-label
-                       {:color     :muted
-                        :content   user-email-address
-                        :font-size :xs
-                        :indent    {:left :xs}
-                        :style     {:line-height "18px"}}]))
+                       {:color       :muted
+                        :content     user-email-address
+                        :font-size   :xs
+                        :indent      {:left :xs}
+                        :line-height :block}]))
 
 (defn- user-card
   []
@@ -68,8 +67,9 @@
                         :icon-family icon-family
                         :indent      {:horizontal :xs}
                         :size        :l}]
-        [elements/label {:content label
-                         :indent  {}}]])
+        [elements/label {:content     label
+                         :indent      {}
+                         :line-height :block}]])
 
 (defn- label-group-item
   ; @param (map) group-item
@@ -81,7 +81,7 @@
                   :on-click         on-click
                   :horizontal-align :left
                   :hover-color      :highlight
-                  :min-width        :s
+                  ;:min-width        :s
                   :indent           {:vertical :xs}}])
 
 (defn- label-group
@@ -106,28 +106,31 @@
               (reduce f [:<>] (-> label-groups keys sort)))))
 
 (defn- menu-group
-  ; @param (keyword) group-name
-  [group-name]
+  ; @param (map) group-props
+  ;  {:color (string)
+  ;   :name (metamorphic-content)}
+  [{:keys [name] :as group-props}]
   ; XXX#0091
   ; Az azonos menu-group csoportban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
-  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items group-name])]
+  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items name])]
        (if (vector/nonempty? group-items)
-           [common/surface-box {:content [:div {:style {:display "flex" :flex-wrap "wrap" :grid-row-gap "12px" :padding "12px 0"}}
+           [common/surface-box {:content [:div {:style {:display "grid" :grid-row-gap "12px" :padding "12px 0"
+                                                        :grid-template-columns "repeat(auto-fill, minmax(240px, 1fr))"}}
                                                (let [weight-groups (group-by :horizontal-weight group-items)]
                                                     (letfn [(f [group-list horizontal-weight]
                                                                (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
                                                            (reduce f [:<>] (-> weight-groups keys sort))))]
                                 :indent {:top :m}
-                                :label  group-name}])))
+                                :label  name}])))
 
 (defn- menu-groups
   []
   ; XXX#0091
   ; A menü elemek elsődlegesen a group tulajdonságuk szerint csoportosítva
   ; vannak felsorolva a vertical-group csoportokban.
-  (letfn [(f [group-list group-name]
-             (conj group-list [menu-group group-name]))]
+  (letfn [(f [group-list group-props]
+             (conj group-list [menu-group group-props]))]
          (reduce f [:<>] handler.config/GROUP-ORDER)))
 
 ;; ----------------------------------------------------------------------------

@@ -17,7 +17,8 @@
   [_]
   (let [header-label @(r/subscribe [:item-browser/get-item-label :storage.media-browser])]
        [elements/label ::header-label
-                       {:content header-label}]))
+                       {:content     header-label
+                        :line-height :block}]))
 
 (defn header-select-button
   [_]

@@ -16,7 +16,8 @@
                   :font-size        :xs
                   :font-weight      :bold
                   :horizontal-align :center
-                  :indent           {:top :xxl :vertical :xs}}])
+                  :indent           {:top :xxl :vertical :xs}
+                  :line-height      :block}])
 
 
 (defn- breadcrumbs

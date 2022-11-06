@@ -22,6 +22,7 @@
 (defn header-label
   [])
   ;[elements/label {:content :privacy-settings :indent _}])
+                    ;:line-height :block])
 
 (defn header
   [_]

@@ -17,12 +17,17 @@
 (defn vehicles [db _]
   (let [filters (get db :main-page.filters)]
        (filter #(contains? filters (:vehicle/type %))
-               (get-in db [:site :vehicles]))))
+                (get-in db [:site :vehicles]))))
+
+(defn no-filter-enabled?
+  [db _]
+  (-> db :main-page.filters empty?))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(r/reg-sub :site/get                    site-get)
-(r/reg-sub :site/vehicles               vehicles)
-(r/reg-sub :main-page.filters/contains? filter-contains?)
-(r/reg-sub :main-page.filters/disabled? filter-disabled?)
+(r/reg-sub :site/get                             site-get)
+(r/reg-sub :site/vehicles                        vehicles)
+(r/reg-sub :main-page.filters/contains?          filter-contains?)
+(r/reg-sub :main-page.filters/disabled?          filter-disabled?)
+(r/reg-sub :main-page.filters/no-filter-enabled? no-filter-enabled?)

@@ -22,6 +22,7 @@
                              :helper              helper
                              :horizontal-position :left
                              :info-text           info-text
+                             :line-height         :block
                              :selectable?         false}]))
 
 (defn- data-element-value
@@ -37,7 +38,7 @@
                   :disabled?           disabled?
                   :font-size           font-size
                   :horizontal-position :left
-                  :min-width           :xxs
+                  :line-height         :block
                   :placeholder         placeholder
                   :selectable?         true}])
 
@@ -69,7 +70,7 @@
   ;  [data-element {...}]
   ;
   ; @usage
-  ;  [data-element :my-element {...}]
+  ;  [data-element :my-data-element {...}]
   ([element-props]
    [element (random/generate-keyword) element-props])
 

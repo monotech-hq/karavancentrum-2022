@@ -4,7 +4,7 @@
               [app.storage.frontend.directory-creator.queries    :as directory-creator.queries]
               [app.storage.frontend.directory-creator.validators :as directory-creator.validators]
               [app.storage.frontend.directory-creator.views      :as directory-creator.views]
-              [plugins.item-browser.api                          :as item-browser]
+              [engines.item-browser.api                          :as item-browser]
               [re-frame.api                                      :as r :refer [r]]
               [x.app-ui.api                                      :as x.ui]))
 

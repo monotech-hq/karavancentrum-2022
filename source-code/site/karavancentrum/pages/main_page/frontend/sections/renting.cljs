@@ -1,18 +1,24 @@
 
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.renting
-    (:require [re-frame.api                       :as r]
+    (:require [elements.api                       :as elements]
+              [re-frame.api                       :as r]
               [reagent.api                        :refer [lifecycles]]
               [site.karavancentrum.components.api :as site.components]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
-(def filter-config {:alcove-rv          {:icon "/site/icons/filter-icons/alcove-rv-light.png"}
-                    :semi-integrated-rv {:icon "/site/icons/filter-icons/semi-integrated-rv-light.png"}
-                    :van-rv             {:icon "/site/icons/filter-icons/van-rv-light.png"}
-                    :caravan            {:icon "/site/icons/filter-icons/caravan-light.png"}
-                    :trailer            {:icon "/site/icons/filter-icons/trailer-light.png"}})
+(def filter-config {:alcove-rv          {:icon "/site/icons/filter-icons/alcove-rv-light.png"
+                                         :tooltip "Alkóvos lakóautók"}
+                    :semi-integrated-rv {:icon "/site/icons/filter-icons/semi-integrated-rv-light.png"
+                                         :tooltip "Részintegrált lakóautók"}
+                    :van-rv             {:icon "/site/icons/filter-icons/van-rv-light.png"
+                                         :tooltip "Kempingbuszok"}
+                    :caravan            {:icon "/site/icons/filter-icons/caravan-light.png"
+                                         :tooltip "Lakókocsik"}
+                    :trailer            {:icon "/site/icons/filter-icons/trailer-light.png"
+                                         :tooltip "Utánfutók"}})
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -22,19 +28,22 @@
   [:p.kc-section-title "Bérelhető járműveink"])
 
 (defn vehicle-type-button
-  [id {:keys [icon]}]
+  [id {:keys [icon tooltip]}]
   (let [checked   @(r/subscribe [:main-page.filters/contains? [:main-page.filters] id])
         disabled? @(r/subscribe [:main-page.filters/disabled? id])]
        [:div.kc-filters--icon {:data-disabled (boolean disabled?)}
                               [:input {:type "checkbox" :id id :name id :checked checked :disabled disabled? :class :kc-filters--icon-input
                                        :on-change #(r/dispatch [:main-page.filters/select [:main-page.filters] id])}]
-                              [:label {:for id :class :kc-filters--icon-img}
+                              [:label {:for id :class :kc-filters--icon-img
+                                       :title tooltip}
                                       [:img {:src icon}]]]))
 
 (defn filters
   []
-  [:div#kc-filters--container (letfn [(f [[id conf]] ^{:key id} [vehicle-type-button id conf])]
-                                     (map f filter-config))])
+  [:div#kc-filters--container [:div "Bérelhető járműtípusok"]
+                              [:div#kc-filters
+                               (letfn [(f [[id conf]] ^{:key id} [vehicle-type-button id conf])]
+                                      (map f filter-config))]])
 
 (defn vehicle-name
   [name]
@@ -49,8 +58,13 @@
 
 (defn vehicles
   []
-  (let [vehicles @(r/subscribe [:site/vehicles])]
-       [:div#kc-vehicles--container (map vehicle vehicles)]))
+  (if @(r/subscribe [:main-page.filters/no-filter-enabled?])
+       [elements/label {:color   :muted
+                        :content "Bérelhető járműveink megtekintéséhez válasszon járműkategóriát!"
+                        :indent  {:horizontal :xxl :vertical :s}}]
+
+       (let [vehicles @(r/subscribe [:site/vehicles])]
+            [:div#kc-vehicles--container (map vehicle vehicles)])))
 
 (defn renting
   []

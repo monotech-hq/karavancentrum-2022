@@ -7,7 +7,7 @@
 ;; ----------------------------------------------------------------------------
 
 (x.core/reg-lifecycles! ::lifecycles
-  {:on-app-boot [:home.screen/add-menu-item! {:group       :settings
+  {:on-app-boot [:home.screen/add-menu-item! {:group-name  :settings
                                               :icon        :payments
                                               :icon-color  "#5f8e75"
                                               :icon-family :material-icons-outlined

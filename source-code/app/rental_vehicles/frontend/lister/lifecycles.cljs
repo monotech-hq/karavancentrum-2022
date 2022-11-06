@@ -6,16 +6,16 @@
 ;; ----------------------------------------------------------------------------
 
 (x.core/reg-lifecycles! ::lifecycles
-  {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:group       :vehicles
+  {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:group-name  :vehicles
                                                             :icon        :airport_shuttle
-                                                            :icon-color  "#6a7e8e"
+                                                            :icon-color  "#4a8bbf"
                                                             :icon-family :material-icons-outlined
                                                             :label       :rental-vehicles
                                                             :on-click    [:router/go-to! "/@app-home/rental-vehicles"]
                                                             :horizontal-weight 0}]
-                              [:home.sidebar/add-menu-item! {:group       :vehicles
+                              [:home.sidebar/add-menu-item! {:group-name  :vehicles
                                                              :icon        :airport_shuttle
-                                                             :icon-color  "#6a7e8e"
+                                                             :icon-color  "#4a79bf"
                                                              :icon-family :material-icons-outlined
                                                              :label       :rental-vehicles
                                                              :on-click    [:router/go-to! "/@app-home/rental-vehicles"]

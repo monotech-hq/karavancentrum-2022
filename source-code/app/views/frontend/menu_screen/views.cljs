@@ -132,7 +132,8 @@
                    :horizontal-align :left
                    :icon             :grade
                   ;:icon-family      :material-icons-outlined
-                   :indent           {:horizontal :xxs :vertical :s}}])
+                   :indent           {:horizontal :xxs :vertical :s}
+                   :line-height      :block}])
 
 (defn- app-version-label
   []
@@ -142,7 +143,8 @@
                    :horizontal-align :left
                    :icon             :extension
                   ;:icon-family      :material-icons-outlined
-                   :indent           {:horizontal :xxs :vertical :s}}])
+                   :indent           {:horizontal :xxs :vertical :s}
+                   :line-height      :block}])
 
 (defn- copyright-information-label
   []
@@ -153,7 +155,8 @@
                         :color            :muted
                         :horizontal-align :left
                         :icon             :copyright
-                        :indent           {:horizontal :xxs :vertical :s}}]))
+                        :indent           {:horizontal :xxs :vertical :s}
+                        :line-height      :block}]))
 
 (defn- about-app
   []
@@ -237,15 +240,17 @@
        [elements/label ::user-name-label
                        {:content     user-full-name
                         :font-size   :s
-                        :font-weight :extra-bold}]))
+                        :font-weight :extra-bold
+                        :line-height :block}]))
 
 (defn- user-email-address-label
   []
   (let [user-email-address @(r/subscribe [:user/get-user-email-address])]
        [elements/label ::user-email-address-label
-                       {:color     :muted
-                        :content   user-email-address
-                        :font-size :xs}]))
+                       {:color       :muted
+                        :content     user-email-address
+                        :font-size   :xs
+                        :line-height :block}]))
 
 (defn- user-card
   []
@@ -263,6 +268,9 @@
        [app-menu]
        [elements/horizontal-separator {:size :s}]])
 
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- close-icon-button
   []
   [elements/icon-button ::close-icon-button
@@ -276,6 +284,9 @@
   []
   [elements/horizontal-polarity ::header
                                 {:end-content [close-icon-button]}])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn view
   [popup-id]

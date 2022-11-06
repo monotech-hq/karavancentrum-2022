@@ -33,7 +33,8 @@
 
 (defn- create-account
   []
-  [elements/label {:content "Create account"}])
+  [elements/label {:content "Create account"
+                   :line-height :block}])
 
 (defn view
   [surface-id]

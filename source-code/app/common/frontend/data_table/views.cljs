@@ -80,7 +80,7 @@
 (defn element
   ; @param (keyword)(opt) table-id
   ; @param (map) table-props
-  ;  {:columns (maps in vectors in vector)(opt)
+  ;  {:columns (label-props maps in vectors in vector)(opt)
   ;   :disabled? (boolean)(opt)}
   ;    Default: false
   ;   :font-size (keyword)(opt)
@@ -89,8 +89,7 @@
   ;   :indent (map)(opt)
   ;   :label (metamorphic-content)
   ;   :placeholder (metamorphic-content)(opt)
-  ;   :rows (maps in vectors in vector)(opt)
-  ;   :value (metamorphic-content)(opt)}
+  ;   :rows (label-props maps in vectors in vector)(opt)}
   ;
   ; @usage
   ;  [data-table {...}]

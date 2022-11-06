@@ -1,8 +1,8 @@
 
 (ns app.common.frontend.item-selector.subs
-    (:require [mid-fruits.candy        :refer [return]]
+    (:require [engines.item-lister.api :as item-lister]
+              [mid-fruits.candy        :refer [return]]
               [mid-fruits.vector       :as vector]
-              [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
@@ -20,7 +20,7 @@
   ; Ha az elem nem volt kiválasztva a kijelölések importálásakor (nem kapta meg a kezdeti darabszámot),
   ; és nem volt még módosítva az elem darabszáma, akkor a függvény az alapértelmezett darabszámmal tér vissza.
   (if-let [item-selected? (r item-lister/item-selected? db selector-id item-id)]
-          (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 1)
+          (get-in db [:engines :engine-handler/meta-items selector-id :item-counts item-id] 1)
           (return 0)))
 
 ;; ----------------------------------------------------------------------------

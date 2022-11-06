@@ -4,9 +4,9 @@
               [app.contents.frontend.api :as contents]
               [app.storage.frontend.api  :as storage]
               [elements.api              :as elements]
+              [engines.item-editor.api   :as item-editor]
               [forms.api                 :as forms]
               [layouts.surface-a.api     :as surface-a]
-              [plugins.item-editor.api   :as item-editor]
               [re-frame.api              :as r]
               [time.api                  :as time]))
 

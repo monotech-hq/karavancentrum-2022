@@ -20,7 +20,8 @@
 (defn header-label
   [_]
   [elements/label ::header-label
-                  {:content :rename!}])
+                  {:content     :rename!
+                   :line-height :block}])
 
 (defn rename-button
   [media-item]

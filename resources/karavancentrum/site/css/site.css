@@ -210,10 +210,18 @@
 /*** Filters ***/
 
 #kc-filters--container {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 50px;
+  max-width: 90vw;
+  text-align: center;
+}
+
+#kc-filters {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 90vw;
   gap: 20px 60px;
 }
 
@@ -264,19 +272,19 @@
   width: 100% }
 
 .kc-vehicle-card-wrapper {
-  max-width: 420px;
+  max-width: 620px;
   width: 100%;
 }
 
 .kc-vehicle-card {
   border-radius: 10px;
   width: 100%;
-  height: 320px;
+  height: 360px;
   border: 1px solid #ddd;
   overflow: hidden;
 }
 
-@media only screen and (max-width: 420px) {
+@media only screen and (max-width: 620px) {
 .kc-vehicle-card {
   border-radius: 0 }}
 
@@ -504,10 +512,10 @@
 .kc-address-group {
   display: flex;
   flex-direction: column;
-  padding-bottom: 60px }
+  padding-bottom: 30px }
 
 .kc-contact-information {
-  margin-bottom: 60px }
+  margin-bottom: 30px }
 
 .kc-contact-information,
 .kc-address-information,

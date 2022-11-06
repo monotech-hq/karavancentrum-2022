@@ -26,7 +26,7 @@
   ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
   (->> document (x.user/added-document-prototype request)
                 (json/trim-values)
-                (json/parseint-values)
+                (json/parse-number-values)
                 (json/remove-blank-values)))
 
 (defn updated-document-prototype
@@ -40,7 +40,7 @@
   ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
   (->> document (x.user/updated-document-prototype request)
                 (json/trim-values)
-                (json/parseint-values)
+                (json/parse-number-values)
                 (json/remove-blank-values)))
 
 (defn duplicated-document-prototype
@@ -54,5 +54,5 @@
   ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
   (->> document (x.user/duplicated-document-prototype request)
                 (json/trim-values)
-                (json/parseint-values)
+                (json/parse-number-values)
                 (json/remove-blank-values)))

@@ -1,10 +1,10 @@
 
 (ns app.common.frontend.item-selector.events
     (:require [app.common.frontend.item-selector.subs :as item-selector.subs]
+              [engines.item-lister.api                :as item-lister]
               [mid-fruits.candy                       :refer [return]]
               [mid-fruits.map                         :refer [dissoc-in]]
               [mid-fruits.vector                      :as vector]
-              [plugins.item-lister.api                :as item-lister]
               [re-frame.api                           :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
@@ -21,8 +21,8 @@
         imported-selection   (r item-selector.subs/import-selection     db selector-id)
         imported-item-counts (r item-selector.subs/import-item-counts   db selector-id)]
        (as-> db % (r item-lister/import-selection! % selector-id imported-selection)
-                  (assoc-in % [:plugins :plugin-handler/meta-items selector-id :item-counts]        imported-item-counts)
-                  (assoc-in % [:plugins :plugin-handler/meta-items selector-id :exported-selection] stored-selection))))
+                  (assoc-in % [:engines :engine-handler/meta-items selector-id :item-counts]        imported-item-counts)
+                  (assoc-in % [:engines :engine-handler/meta-items selector-id :exported-selection] stored-selection))))
 
 (defn store-exported-selection!
   ; @param (keyword) selector-id
@@ -53,9 +53,9 @@
   ; BUG#8001 (app.common.frontend.item-selector.subs)
   (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)
         item          (r item-lister/get-item      db selector-id item-id)
-        item-count    (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 1)
+        item-count    (get-in db [:engines :engine-handler/meta-items selector-id :item-counts item-id] 1)
         exported-item (export-item-f item-id item item-count)]
-       (update-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection] vector/toggle-item exported-item)))
+       (update-in db [:engines :engine-handler/meta-items selector-id :exported-selection] vector/toggle-item exported-item)))
 
 (defn toggle-exported-single-selection!
   ; @param (keyword) selector-id
@@ -68,12 +68,12 @@
   ; BUG#8001 (app.common.frontend.item-selector.subs)
   (let [export-item-f (r item-lister/get-meta-item db selector-id :export-item-f)
         item          (r item-lister/get-item      db selector-id item-id)
-        item-count    (get-in db [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 1)
+        item-count    (get-in db [:engines :engine-handler/meta-items selector-id :item-counts item-id] 1)
         exported-item (export-item-f item-id item item-count)]
-       (let [exported-selection (get-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection])]
+       (let [exported-selection (get-in db [:engines :engine-handler/meta-items selector-id :exported-selection])]
             (if (= exported-selection [exported-item])
-                (dissoc-in db [:plugins :plugin-handler/meta-items selector-id :exported-selection])
-                (assoc-in  db [:plugins :plugin-handler/meta-items selector-id :exported-selection] [exported-item])))))
+                (dissoc-in db [:engines :engine-handler/meta-items selector-id :exported-selection])
+                (assoc-in  db [:engines :engine-handler/meta-items selector-id :exported-selection] [exported-item])))))
 
 (defn toggle-item-selection!
   ; @param (keyword) selector-id
@@ -108,11 +108,11 @@
   ; ezért az elemszám változása előtt kitörli az elemet az exportált kiválasztások közül,
   ; majd a változás után újraexportálja azt.
   (as-> db % (r toggle-item-selection! % selector-id item-id)
-             (if-let [item-count (get-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
+             (if-let [item-count (get-in % [:engines :engine-handler/meta-items selector-id :item-counts item-id])]
                      (if (< item-count 256)
-                         (update-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] inc)
+                         (update-in % [:engines :engine-handler/meta-items selector-id :item-counts item-id] inc)
                          (return    %))
-                     (assoc-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] 2))
+                     (assoc-in % [:engines :engine-handler/meta-items selector-id :item-counts item-id] 2))
              (r toggle-item-selection! % selector-id item-id)))
 
 (defn decrease-item-count!
@@ -125,9 +125,9 @@
   ;
   ; BUG#6781
   (as-> db % (r toggle-item-selection! % selector-id item-id)
-             (let [item-count (get-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id])]
+             (let [item-count (get-in % [:engines :engine-handler/meta-items selector-id :item-counts item-id])]
                   (if (> item-count 1)
-                      (update-in % [:plugins :plugin-handler/meta-items selector-id :item-counts item-id] dec)
+                      (update-in % [:engines :engine-handler/meta-items selector-id :item-counts item-id] dec)
                       (return    %)))
              (r toggle-item-selection! % selector-id item-id)))
 

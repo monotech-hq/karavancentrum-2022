@@ -2,8 +2,8 @@
 (ns app.rental-vehicles.frontend.lister.views
     (:require [app.common.frontend.api :as common]
               [elements.api            :as elements]
+              [engines.item-lister.api :as item-lister]
               [layouts.surface-a.api   :as surface-a]
-              [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]
 
               ; TEMP
@@ -22,13 +22,14 @@
 
 (defn- vehicle-item-structure
   [lister-id item-dex {:keys [modified-at name thumbnail]} dnd-kit-props]
-  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
-       [common/list-item-structure lister-id item-dex
-                                   {:cells [[common/list-item-drag-handle  lister-id item-dex dnd-kit-props]
-                                            [common/list-item-thumbnail    lister-id item-dex {:thumbnail (:media/uri thumbnail)}]
-                                            [common/list-item-primary-cell lister-id item-dex {:label name :stretch? true :placeholder :unnamed-vehicle}]
-                                            [common/list-item-detail       lister-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-marker       lister-id item-dex {:icon :navigate_next}]]}]))
+  (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last? @(r/subscribe [:item-lister/item-last? lister-id item-dex])]
+       [common/list-item-structure {:cells [[common/list-item-drag-handle {:indent {:left :xs}} dnd-kit-props]
+                                            [common/list-item-thumbnail    {:thumbnail (:media/uri thumbnail)}]
+                                            [common/list-item-primary-cell {:label name :stretch? true :placeholder :unnamed-vehicle}]
+                                            [common/list-item-detail       {:content timestamp :width "160px"}]
+                                            [common/list-item-marker       {:icon :navigate_next}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn vehicle-item
   [lister-id item-dex {:keys [id] :as item} {:keys [isDragging] :as dnd-kit-props}]

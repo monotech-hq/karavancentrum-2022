@@ -3,8 +3,8 @@
     (:require [app.common.frontend.item-selector.events     :as item-selector.events]
               [app.common.frontend.item-selector.prototypes :as item-selector.prototypes]
               [app.common.frontend.item-selector.subs       :as item-selector.subs]
+              [engines.item-lister.api                      :as item-lister]
               [mid-fruits.random                            :as random]
-              [plugins.item-lister.api                      :as item-lister]
               [re-frame.api                                 :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------

@@ -21,20 +21,19 @@
 (defn header-label
   [creator-id]
   [elements/label ::header-label
-                  {:content :create-directory!}])
+                  {:content     :create-directory!
+                   :line-height :block}])
 
 (defn create-button
   [creator-id]
-  (let [directory-name @(r/subscribe [:db/get-item [:storage :directory-creator/meta-items :directory-name]])]
-       [elements/button ::create-button
-                        {:color       :primary
-                         :disabled?   (empty? directory-name)
-                         :font-size   :xs
-                         :hover-color :highlight
-                         :indent      {:horizontal :xxs :vertical :xxs}
-                         :keypress    {:key-code 13 :required? true}
-                         :label       :create!
-                         :on-click    [:storage.directory-creator/create-directory! creator-id]}]))
+  [elements/button ::create-button
+                   {:color       :primary
+                    :font-size   :xs
+                    :hover-color :highlight
+                    :indent      {:horizontal :xxs :vertical :xxs}
+                    :keypress    {:key-code 13 :required? true}
+                    :label       :create!
+                    :on-click    [:storage.directory-creator/create-directory! creator-id]}])
 
 (defn header
   [creator-id]
@@ -48,17 +47,15 @@
 
 (defn directory-name-field
   [creator-id]
-  (let [initial-value @(r/subscribe [:dictionary/look-up :new-directory])]
-       [elements/text-field ::directory-name-field
-                            {:autoclear?    true
-                             :autofocus?    true
-                             :indent        {:bottom :xs :top :m :vertical :xs}
-                             :initial-value initial-value
-                             :placeholder   :directory-name
-                             :validator     {:f               io/directory-name-valid?
-                                             :invalid-message :invalid-name
-                                             :pre-validate?   true}
-                             :value-path    [:storage :directory-creator/meta-items :directory-name]}]))
+  [elements/text-field ::directory-name-field
+                       {:autoclear?  true
+                        :autofocus?  true
+                        :indent      {:bottom :xs :top :m :vertical :xs}
+                        :placeholder :directory-name
+                        :validator   {:f               io/directory-name-valid?
+                                      :invalid-message :invalid-name
+                                      :pre-validate?   true}
+                        :value-path  [:storage :directory-creator/meta-items :directory-name]}])
 
 (defn body
   [creator-id]

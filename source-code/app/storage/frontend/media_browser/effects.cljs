@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-browser.effects
     (:require [app.storage.frontend.media-browser.views :as media-browser.views]
-              [plugins.item-browser.api                 :as item-browser]
+              [engines.item-browser.api                 :as item-browser]
               [re-frame.api                             :as r :refer [r]]
               [window.api                               :as window]
               [x.app-media.api                          :as x.media]

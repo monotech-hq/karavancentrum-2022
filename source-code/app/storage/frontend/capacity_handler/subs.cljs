@@ -1,8 +1,8 @@
 
 (ns app.storage.frontend.capacity-handler.subs
-    (:require [plugins.item-browser.api :as item-browser]
+    (:require [engines.item-browser.api :as item-browser]
               [re-frame.api             :as r :refer [r]]))
-
+ 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 

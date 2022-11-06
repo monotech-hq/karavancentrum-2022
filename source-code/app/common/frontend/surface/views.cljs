@@ -2,8 +2,7 @@
 (ns app.common.frontend.surface.views
     (:require [elements.api          :as elements]
               [layouts.surface-a.api :as surface-a]
-              [re-frame.api          :as r]
-              [x.app-components.api  :as components]))
+              [re-frame.api          :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -58,6 +57,7 @@
                               :font-size   (if viewport-large? :xxl :l)
                               :font-weight :extra-bold
                               :indent      {:left :xs}
+                              :line-height :block
                               :placeholder placeholder}])])
 
 (defn surface-description
@@ -70,11 +70,12 @@
   ;  [surface-description :my-surface {...}]
   [surface-id {:keys [description disabled?]}]
   [elements/label ::surface-description
-                  {:color     :muted
-                   :content   description
-                   :disabled? disabled?
-                   :font-size :xxs
-                   :indent    {:left :xs}}])
+                  {:color       :muted
+                   :content     description
+                   :disabled?   disabled?
+                   :font-size   :xxs
+                   :line-height :block
+                   :indent      {:left :xs}}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

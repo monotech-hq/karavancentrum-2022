@@ -3,13 +3,13 @@
     (:require [app.storage.frontend.file-uploader.helpers :as file-uploader.helpers]
               [app.storage.frontend.media-browser.helpers :as media-browser.helpers]
               [elements.api                               :as elements]
+              [engines.item-browser.api                   :as item-browser]
               [io.api                                     :as io]
               [layouts.popup-a.api                        :as popup-a]
               [mid-fruits.css                             :as css]
               [mid-fruits.format                          :as format]
               [mid-fruits.math                            :as math]
               [mid-fruits.string                          :as string]
-              [plugins.item-browser.api                   :as item-browser]
               [re-frame.api                               :as r]))
 
 ;; -- Temporary components ----------------------------------------------------
@@ -57,10 +57,11 @@
         file-count        @(r/subscribe [:storage.file-uploader/get-uploading-file-count uploader-id])
         progress-label {:content :uploading-n-files-in-progress... :replacements [file-count]}
         label (cond files-uploaded? :files-uploaded request-aborted? :aborted request-failured? :file-upload-failure :default progress-label)]
-       [elements/label {:color     :default
-                        :content   label
-                        :font-size :xs
-                        :indent    {:left :xs :horizontal :xxs}}]))
+       [elements/label {:color       :default
+                        :content     label
+                        :font-size   :xs
+                        :indent      {:left :xs :horizontal :xxs}
+                        :line-height :block}]))
 
 (defn progress-state
   [uploader-id]
@@ -183,8 +184,8 @@
                                       :uri object-url :width :l}]
                  [elements/icon {:icon :insert_drive_file :indent {:horizontal :m :vertical :xl}}])
              [:div {:style {:flex-grow 1}}
-                   [elements/label {:content filename                :style {:color "#333" :line-height "18px"} :indent {:right :xs}}]
-                   [elements/label {:content filesize :font-size :xs :style {:color "#888" :line-height "18px"}}]]
+                   [elements/label {:content filename                :style {:color "#333"} :indent {:right :xs}}]
+                   [elements/label {:content filesize :font-size :xs :style {:color "#888"}}]]
              (if file-cancelled? [elements/icon {:icon :radio_button_unchecked :indent {:right :xs} :size :s}]
                                  [elements/icon {:icon :highlight_off          :indent {:right :xs} :size :s}])]))
 

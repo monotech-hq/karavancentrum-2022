@@ -3,11 +3,11 @@
     (:require [app.common.frontend.api  :as common]
               [app.storage.frontend.api :as storage]
               [elements.api             :as elements]
+              [engines.file-editor.api  :as file-editor]
               [forms.api                :as forms]
               [layouts.surface-a.api    :as surface-a]
               [mid-fruits.css           :as css]
               [mid-fruits.vector        :as vector]
-              [plugins.file-editor.api  :as file-editor]
               [re-frame.api             :as r]))
 
 ;; ----------------------------------------------------------------------------
@@ -20,7 +20,6 @@
                             {:disabled?   editor-disabled?
                              :indent      {:top :m :vertical :s}
                              :label       :slogan
-                             :min-width   :xs
                              :placeholder :company-slogan-placeholder
                              :value-path  [:website-config :editor/edited-item :company-slogan]}]))
 
@@ -32,7 +31,6 @@
                              :disabled?   editor-disabled?
                              :indent      {:top :m :vertical :s}
                              :label       :name
-                             :min-width   :xs
                              :placeholder :company-name-placeholder
                              :value-path  [:website-config :editor/edited-item :company-name]}]))
 
@@ -42,10 +40,10 @@
        [common/surface-box ::company-data-box
                            {:content [:<> [:div (forms/form-row-attributes)
                                                 [:div (forms/form-block-attributes {:ratio 100})
-                                                      [company-name-field]]
-                                           [:div (forms/form-row-attributes)
-                                                 [:div (forms/form-block-attributes {:ratio 100})
-                                                       [company-slogan-field]]]]
+                                                      [company-name-field]]]
+                                          [:div (forms/form-row-attributes)
+                                                [:div (forms/form-block-attributes {:ratio 100})
+                                                      [company-slogan-field]]]
                                           [elements/horizontal-separator {:size :s}]]
                             :disabled? editor-disabled?
                             :indent    {:top :m}

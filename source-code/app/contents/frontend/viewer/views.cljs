@@ -3,10 +3,10 @@
     (:require [app.common.frontend.api               :as common]
               [app.contents.frontend.handler.helpers :as handler.helpers]
               [elements.api                          :as elements]
+              [engines.item-lister.api               :as item-lister]
+              [engines.item-viewer.api               :as item-viewer]
               [forms.api                             :as forms]
               [layouts.surface-a.api                 :as surface-a]
-              [plugins.item-lister.api               :as item-lister]
-              [plugins.item-viewer.api               :as item-viewer]
               [re-frame.api                          :as r]))
 
 ;; ----------------------------------------------------------------------------

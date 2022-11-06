@@ -15,7 +15,8 @@
                    :content          :an-error-occured
                    :font-size        :m
                    :horizontal-align :center
-                   :indent           {:top :xxl}}])
+                   :indent           {:top :xxl}
+                   :line-height      :block}])
 
 (defn- error-message-label
   ; @param (keyword) content-id
@@ -24,7 +25,8 @@
   [elements/label {:color            :muted
                    :content          error
                    :horizontal-align :center
-                   :indent           {:bottom :xxl}}])
+                   :indent           {:bottom :xxl}
+                   :line-height      :block}])
 
 (defn- error-content
   ; @param (keyword) content-id
@@ -42,7 +44,7 @@
   ;  [error-content {...}]
   ;
   ; @usage
-  ;  [error-content :my-element {...}]
+  ;  [error-content :my-error-content {...}]
   ([content-props]
    [element (random/generate-keyword) content-props])
 

@@ -4,13 +4,13 @@
               [app.contents.frontend.api :as contents]
               [app.storage.frontend.api  :as storage]
               [elements.api              :as elements]
+              [engines.file-editor.api   :as file-editor]
               [forms.api                 :as forms]
               [layouts.surface-a.api     :as surface-a]
               [mid-fruits.css            :as css]
               [mid-fruits.vector         :as vector]
-              [plugins.file-editor.api   :as file-editor]
               [re-frame.api              :as r]))
-
+  
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 

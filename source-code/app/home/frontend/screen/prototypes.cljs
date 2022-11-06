@@ -9,17 +9,18 @@
 
 (defn item-props-prototype
   ; @param (map) item-props
-  ;  {:group (keyword)(opt)}
+  ;  {:group-name (metamorphic-content)(opt)}
   ;
   ; @return (map)
   ;  {:color (keyword)
-  ;   :group (keyword)
+  ;   :group-name (metamorphic-content)
   ;   :horizontal-weight (integer)
   ;   :icon-family (keyword)}
-  [{:keys [group] :as item-props}]
+  [{:keys [group-name] :as item-props}]
   (merge {:color             :default
           :horizontal-weight 0
           :icon-family       :material-icons-filled}
          (param item-props)
-         (if-not (vector/contains-item? handler.config/GROUP-ORDER group)
-                 {:group :other})))
+         (if-not (letfn [(f [{:keys [name]}] (= group-name name))]
+                        (vector/any-item-match? handler.config/GROUP-ORDER f))
+                 {:group-name :other})))

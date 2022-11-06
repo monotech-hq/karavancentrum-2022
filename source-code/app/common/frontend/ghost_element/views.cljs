@@ -33,7 +33,7 @@
   ;  [ghost-element {...}]
   ;
   ; @usage
-  ;  [ghost-element :my-element {...}]
+  ;  [ghost-element :my-ghost-element {...}]
   ([element-props]
    [element (random/generate-keyword) element-props])
 

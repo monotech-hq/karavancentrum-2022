@@ -8,7 +8,7 @@
 
 (x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot [:home.screen/add-menu-item! {:disabled?   true
-                                              :group       :settings
+                                              :group-name  :settings
                                               :icon        :notifications
                                               :icon-color  "#8eb155"
                                               :icon-family :material-icons-outlined

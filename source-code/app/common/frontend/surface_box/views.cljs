@@ -4,33 +4,63 @@
               [elements.api                               :as elements]
               [mid-fruits.random                          :as random]
               [re-frame.api                               :as r]
-              [x.app-components.api                       :as components]))
+              [x.app-components.api                       :as x.components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- surface-box-content
-  ; @param (keyword) surface-id
-  ; @param (map) label-props
+(defn- surface-box-query-placeholder
+  [_]
+  [elements/label {:color            :muted
+                   :content          :downloading...
+                   :font-size        :xs
+                   :horizontal-align :center
+                   :indent           {:bottom :s}
+                   :line-height      :block}])
+
+(defn- surface-box-query-content
+  ; @param (keyword) box-id
+  ; @param (map) box-props
+  ;  {:content (metamorphic-content)
+  ;   :query (vector)
+  ;   :refresh-interval (ms)(opt)}
+  [box-id {:keys [content query refresh-interval]}]
+  [x.components/querier box-id {:placeholder      #'surface-box-query-placeholder
+                                :content          content
+                                :query            query
+                                :refresh-interval refresh-interval}])
+
+(defn- surface-box-static-content
+  ; @param (keyword) box-id
+  ; @param (map) box-props
   ;  {:content (metamorphic-content)}
   [_ {:keys [content]}]
-  [components/content content])
+  [x.components/content content])
+
+(defn- surface-box-content
+  ; @param (keyword) box-id
+  ; @param (map) box-props
+  ;  {:query (metamorphic-content)}
+  [box-id {:keys [query] :as box-props}]
+  (if query [surface-box-query-content  box-id box-props]
+            [surface-box-static-content box-id box-props]))
 
 (defn- surface-box-label
-  ; @param (keyword) surface-id
-  ; @param (map) label-props
+  ; @param (keyword) box-id
+  ; @param (map) box-props
   ;  {:disabled? (boolean)(opt)
   ;   :helper (metamorphic-content)(opt)
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)}
   [_ {:keys [disabled? helper info-text label]}]
   (if label (let [viewport-large? @(r/subscribe [:environment/viewport-large?])]
-                 [elements/label {:content   label
-                                  :disabled? disabled?
-                                  :helper    helper
-                                  :info-text info-text
-                                  :indent    {:top :xs :vertical :s}
-                                  :font-size (if viewport-large? :l :m)}])))
+                 [elements/label {:content     label
+                                  :disabled?   disabled?
+                                  :helper      helper
+                                  :info-text   info-text
+                                  :indent      {:top :xs :vertical :s}
+                                  :font-size   (if viewport-large? :l :m)
+                                  :line-height :block}])))
 
 (defn- surface-box-icon
   ; @param (keyword) box-id
@@ -62,16 +92,21 @@
 (defn- surface-box
   ; @param (keyword) box-id
   ; @param (map) box-props
-  ;  {:indent (map)(opt)}
-  [box-id {:keys [indent] :as box-props}]
+  ;  {:class (keyword or keywords in vector)(opt)
+  ;   :indent (map)(opt)
+  ;   :style (map)(opt)}
+  [box-id {:keys [class indent style] :as box-props}]
   [elements/blank box-id
-                  {:indent  indent
-                   :content [surface-box-body box-id box-props]}])
+                  {:class   class
+                   :indent  indent
+                   :content [surface-box-body box-id box-props]
+                   :style   style}])
 
 (defn element
   ; @param (keyword)(opt) box-id
   ; @param (map) box-props
-  ;  {:content (metamorphic-content)
+  ;  {:class (keyword or keywords in vector)(opt)
+  ;   :content (metamorphic-content)
   ;   :disabled? (boolean)(opt)
   ;    Default: false
   ;   :helper (metamorphic-content)(opt)
@@ -83,13 +118,17 @@
   ;   :label (metamorphic-content)(opt)
   ;   :overflow (keyword)(opt)
   ;    :hidden, :visible
-  ;    Default: :visible}
+  ;    Default: :visible
+  ;   :query (vector)(opt)
+  ;   :refresh-interval (ms)(opt)
+  ;    W/ {:query ...}
+  ;   :style (map)(opt)}
   ;
   ; @usage
   ;  [surface-box {...}]
   ;
   ; @usage
-  ;  [surface-box :my-element {...}]
+  ;  [surface-box :my-surface-box {...}]
   ([box-props]
    [element (random/generate-keyword) box-props])
 

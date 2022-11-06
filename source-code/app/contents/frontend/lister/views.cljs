@@ -3,9 +3,9 @@
     (:require [app.common.frontend.api               :as common]
               [app.contents.frontend.handler.helpers :as handler.helpers]
               [elements.api                          :as elements]
+              [engines.item-lister.api               :as item-lister]
               [layouts.surface-a.api                 :as surface-a]
               [mid-fruits.hiccup                     :as hiccup]
-              [plugins.item-lister.api               :as item-lister]
               [re-frame.api                          :as r]))
 
 ;; ----------------------------------------------------------------------------
@@ -14,18 +14,17 @@
 (defn- content-item-structure
   [lister-id item-dex {:keys [body modified-at name]}]
   (let [timestamp   @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last?  @(r/subscribe [:item-lister/item-last? lister-id item-dex])
         content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
-       [common/list-item-structure lister-id item-dex
-                                   {:cells [[common/list-item-thumbnail-icon lister-id item-dex {:icon :article :icon-family :material-icons-outlined}]
+       [common/list-item-structure {:cells [[common/list-item-thumbnail {:icon :article :icon-family :material-icons-outlined}]
                                             ; HACK#4506
                                             ; A túl hosszú tartalom ne lógjon ki az elemből!
                                             ; Ez a megoldás ideiglenes!
                                             [:div {:style {:flex-grow 1 :max-width "calc(100% - 304px)" :padding-right "24px"}}
-                                                  [common/list-item-primary-cell lister-id item-dex {:label name
-                                                                                                     :placeholder :unnamed-content
-                                                                                                     :description content-body}]]
-                                            [common/list-item-detail lister-id item-dex {:content timestamp :width "160px"}]
-                                            [common/list-item-marker lister-id item-dex {:icon    :navigate_next}]]}]))
+                                                  [common/list-item-primary-cell {:label name :placeholder :unnamed-content :description content-body}]]
+                                            [common/list-item-detail {:content timestamp :width "160px"}]
+                                            [common/list-item-marker {:icon    :navigate_next}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn- content-item
   [lister-id item-dex {:keys [id] :as content-item}]

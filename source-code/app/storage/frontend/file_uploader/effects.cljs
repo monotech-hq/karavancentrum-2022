@@ -8,7 +8,7 @@
               [app.storage.frontend.file-uploader.subs         :as file-uploader.subs]
               [app.storage.frontend.file-uploader.views        :as file-uploader.views]
               [dom.api                                         :as dom]
-              [plugins.item-browser.api                        :as item-browser]
+              [engines.item-browser.api                        :as item-browser]
               [re-frame.api                                    :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------

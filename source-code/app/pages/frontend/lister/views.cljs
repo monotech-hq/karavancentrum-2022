@@ -2,8 +2,8 @@
 (ns app.pages.frontend.lister.views
     (:require [app.common.frontend.api :as common]
               [elements.api            :as elements]
+              [engines.item-lister.api :as item-lister]
               [layouts.surface-a.api   :as surface-a]
-              [plugins.item-lister.api :as item-lister]
               [re-frame.api            :as r]))
 
 ;; ----------------------------------------------------------------------------
@@ -19,12 +19,13 @@
 
 (defn- page-item-structure
   [lister-id item-dex {:keys [body modified-at name]}]
-  (let [timestamp @(r/subscribe [:activities/get-actual-timestamp modified-at])]
-       [common/list-item-structure lister-id item-dex
-                                   {:cells [[common/list-item-thumbnail-icon lister-id item-dex {:icon :article :icon-family :material-icons-outlined}]
-                                            [common/list-item-primary-cell   lister-id item-dex {:label name :stretch? true :placeholder :unnamed-page :description body}]
-                                            [common/list-item-detail         lister-id item-dex {:page timestamp :width "160px"}]
-                                            [common/list-item-marker         lister-id item-dex {:icon :navigate_next}]]}]))
+  (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
+        item-last? @(r/subscribe [:item-lister/item-last? lister-id item-dex])]
+       [common/list-item-structure {:cells [[common/list-item-thumbnail    {:icon :article :icon-family :material-icons-outlined}]
+                                            [common/list-item-primary-cell {:label name :stretch? true :placeholder :unnamed-page :description body}]
+                                            [common/list-item-detail       {:page timestamp :width "160px"}]
+                                            [common/list-item-marker       {:icon :navigate_next}]]
+                                    :separator (if-not item-last? :bottom)}]))
 
 (defn- page-item
   [lister-id item-dex {:keys [id] :as page-item}]

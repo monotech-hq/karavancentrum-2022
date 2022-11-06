@@ -27,10 +27,11 @@
         timestamp      @(r/subscribe [:activities/get-actual-timestamp added-at])
         modified        (str user-full-name ", " timestamp)]
        [elements/label ::item-viewer-item-modified
-                       {:color     :highlight
-                        :content   {:content :last-modified-n :replacements [modified]}
-                        :disabled? disabled?
-                        :font-size :xxs}]))
+                       {:color       :highlight
+                        :content     {:content :last-modified-n :replacements [modified]}
+                        :disabled?   disabled?
+                        :font-size   :xxs
+                        :line-height :block}]))
 
 (defn item-viewer-item-created
   ; @param (keyword) viewer-id
@@ -49,10 +50,11 @@
         timestamp      @(r/subscribe [:activities/get-actual-timestamp added-at])
         created         (str user-full-name ", " timestamp)]
        [elements/label ::item-viewer-item-created
-                       {:color     :highlight
-                        :content   {:content :created-n :replacements [created]}
-                        :disabled? disabled?
-                        :font-size :xxs}]))
+                       {:color       :highlight
+                        :content     {:content :created-n :replacements [created]}
+                        :disabled?   disabled?
+                        :font-size   :xxs
+                        :line-height :block}]))
 
 (defn item-viewer-item-info
   ; @param (keyword) viewer-id
@@ -187,5 +189,5 @@
   [viewer-id bar-props]
   [:div {:style {:display "flex" :grid-column-gap "12px"}}
         [:<> [delete-item-button    viewer-id bar-props]
-             [duplicate-item-button viewer-id bar-props]
-             [edit-item-button      viewer-id bar-props]]])
+             [duplicate-item-button viewer-id bar-props]]])
+             ;[edit-item-button      viewer-id bar-props]]])

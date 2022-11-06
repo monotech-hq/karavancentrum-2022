@@ -18,7 +18,7 @@
   ; @param (map) preview-props
   ;  {:disabled? (boolean)(opt)
   ;   :thumbnail (map)
-  ; @param (string) media-link
+  ; @param (namespaced map) media-link
   [preview-id {:keys [disabled?] {:keys [height width]} :thumbnail} {:media/keys [uri]}]
   [elements/thumbnail {:border-radius :s
                        :disabled?     disabled?
@@ -29,7 +29,8 @@
 (defn- media-preview-sortable-body
   ; @param (keyword) preview-id
   ; @param (map) preview-props
-  ; @param (string) media-link
+  ; @param (integer) item-dex
+  ; @param (namespaced map) media-link
   ; @param (map) dnd-kit-props
   [preview-id preview-props item-dex media-link {:keys [attributes listeners]}]
   [:div (merge attributes listeners {:style {:cursor :grab}})
@@ -75,9 +76,10 @@
   ;   :info-text (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)}
   [_ {:keys [disabled? info-text label]}]
-  (if label [elements/label {:content   label
-                             :disabled? disabled?
-                             :info-text info-text}]))
+  (if label [elements/label {:content     label
+                             :disabled?   disabled?
+                             :info-text   info-text
+                             :line-height :block}]))
 
 (defn- media-preview-placeholder-thumbnail
   ; @param (keyword) preview-id
@@ -100,7 +102,8 @@
                    :content             placeholder
                    :disabled?           disabled?
                    :font-size           :xs
-                   :horizontal-position :left}])
+                   :horizontal-position :left
+                   :line-height         :block}])
 
 (defn- media-preview-placeholder
   ; @param (keyword) preview-id
@@ -149,8 +152,8 @@
   ;     :width (keyword)(opt)
   ;      :xxs, :xs, :s, :m, :l, :xl, :xxl, :3xl, :4xl, :5xl
   ;      Default: :5xl}
-  ;    :value-path (vector)(opt)
-  ;     W/ {:sortable? true}}
+  ;   :value-path (vector)(opt)
+  ;    W/ {:sortable? true}}
   ;
   ; @usage
   ;  [media-preview {...}]

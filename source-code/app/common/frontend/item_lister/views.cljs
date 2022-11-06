@@ -4,116 +4,87 @@
               [app.common.frontend.surface-button.views :as surface-button.views]
               [dom.api                                  :as dom]
               [elements.api                             :as elements]
-              [mid-fruits.candy                         :refer [param]]
               [mid-fruits.css                           :as css]
               [mid-fruits.keyword                       :as keyword]
               [mid-fruits.logical                       :refer [nor]]
               [mid-fruits.math                          :as math]
+              [mid-fruits.random                        :as random]
               [re-frame.api                             :as r]
               [x.app-components.api                     :as x.components]))
 
 ;; -- List-item components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn list-item-icon-button
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
-  ;  {:disabled? (boolean)(opt)
-  ;   :icon (keyword)
-  ;   :icon-family (keyword)(opt)
-  ;   :on-click (metamorphic-event)}
-  ;
-  ; @usage
-  ;  [list-item-icon-button :my-lister 0 {...}]
-  [_ _ {:keys [disabled? icon icon-family on-click]}]
-  [:button {:on-click #(do (dom/stop-propagation! %)
-                           (if-not disabled? (r/dispatch on-click)))
-            :data-disabled disabled?}
-           (if icon-family [elements/icon {:icon icon :icon-family icon-family}]
-                           [elements/icon {:icon icon :indent {:vertical :xxs}}])])
-
-(defn list-item-thumbnail
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
-  ;  {:thumbnail (string)}
-  ;
-  ; @usage
-  ;  [list-item-thumbnail :my-lister 0 {...}]
-  [_ _ {:keys [thumbnail]}]
-  [elements/thumbnail {:border-radius :s :height :s :indent {:horizontal :xxs :vertical :xs}
-                       :uri thumbnail :width :l}])
-
-(defn list-item-thumbnail-icon
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
-  ;  {:icon (keyword)
-  ;   :icon-family (keyword)(opt)}
-  ;
-  ; @usage
-  ;  [list-item-thumbnail-icon :my-lister 0 {...}]
-  [_ _ {:keys [icon icon-family]}]
-  (if icon-family [elements/icon {:icon icon :icon-family icon-family :indent {:horizontal :m :vertical :xl}}]
-                  [elements/icon {:icon icon                          :indent {:horizontal :m :vertical :xl}}]))
-
 (defn list-item-label
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
+  ; @param (keyword)(opt) label-id
+  ; @param (map) label-props
   ;  {:content (metamorphic-content)(opt)
   ;   :placeholder (metamorphic-content)(opt)
   ;   :stretch? (boolean)(opt)}
   ;
   ; @usage
-  ;  [list-item-label :my-lister 0 {...}]
-  [_ _ {:keys [content placeholder stretch?]}]
-  [:div (if stretch? {:style {:flex-grow 1}})
-        [elements/label {:color       "#333"
-                         :content     content
-                         :indent      {:horizontal :xs :right :xs}
-                         :placeholder placeholder}]])
+  ;  [list-item-label {...}]
+  ;
+  ; @usage
+  ;  [list-item-label :my-label {...}]
+  ([label-props]
+   [list-item-label (random/generate-keyword) label-props])
+
+  ([_ {:keys [content placeholder stretch?]}]
+   [:div (if stretch? {:style {:flex-grow 1}})
+         [elements/label {:color       "#333"
+                          :content     content
+                          :indent      {:horizontal :xs :right :xs}
+                          :placeholder placeholder}]]))
 
 (defn list-item-detail
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
+  ; @param (keyword)(opt) detail-id
+  ; @param (map) detail-props
   ;  {:content (metamorphic-content)(opt)
   ;   :placeholder (metamorphic-content)(opt)
   ;   :width (string)(opt)}
   ;
   ; @usage
-  ;  [list-item-detail :my-lister 0 {...}]
-  [_ _ {:keys [content placeholder width]}]
-  [:div {:style {:width width}}
-        [elements/label {:color       "#777"
-                         :content     content
-                         :font-size   :xs
-                         :indent      {:horizontal :xs :right :xs}
-                         :placeholder placeholder}]])
+  ;  [list-item-detail {...}]
+  ;
+  ; @usage
+  ;  [list-item-detail :my-detail {...}]
+  ([detail-props]
+   [list-item-detail (random/generate-keyword) detail-props])
+
+  ([_ {:keys [content placeholder width]}]
+   [:div {:style {:width width}}
+         [elements/label {:color       "#777"
+                          :content     content
+                          :font-size   :xs
+                          :indent      {:horizontal :xs :right :xs}
+                          :placeholder placeholder}]]))
 
 (defn list-item-details
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
+  ; @param (keyword)(opt) details-id
+  ; @param (map) details-props
   ;  {:contents (metamorphic-contents in vector)
   ;   :width (string)(opt)}
   ;
   ; @usage
-  ;  [list-item-details :my-lister 0 {...}]
-  [lister-id item-dex {:keys [contents width]}]
-  [:div {:style {:width width}}
-        (letfn [(f [contents content]
-                   (conj contents [elements/label {:color     "#777"
-                                                   :content   content
-                                                   :font-size :xs
-                                                   :indent    {:right :xs}}]))]
-               (reduce f [:<>] contents))])
+  ;  [list-item-details {...}]
+  ;
+  ; @usage
+  ;  [list-item-details :my-details {...}]
+  ([details-props]
+   [list-item-details (random/generate-keyword) details-props])
+
+  ([_ {:keys [contents width]}]
+   [:div {:style {:width width}}
+         (letfn [(f [contents content]
+                    (conj contents [elements/label {:color     "#777"
+                                                    :content   content
+                                                    :font-size :xs
+                                                    :indent    {:right :xs}}]))]
+                (reduce f [:<>] contents))]))
 
 (defn list-item-primary-cell
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
+  ; @param (keyword)(opt) cell-id
   ; @param (map) cell-props
   ;  {:description (metamorphic-content)(opt)
   ;   :label (metamorphic-content)(opt)
@@ -122,30 +93,45 @@
   ;   :timestamp (string)(opt)}
   ;
   ; @usage
-  ;  [list-item-primary-cell :my-lister 0 {...}]
-  [_ _ {:keys [description label placeholder stretch? timestamp]}]
-  [:div (if stretch? {:style {:flex-grow 1}})
-        (if (or label placeholder) [elements/label {:content label :placeholder placeholder :indent {:right :xs} :style {:color "#333" :line-height "21px"}}])
-        (if timestamp              [elements/label {:content timestamp   :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])
-        (if description            [elements/label {:content description :font-size :xs     :indent {:right :xs} :style {:color "#888" :line-height "18px"}}])])
-
-
-(defn list-item-structure
-  ; @param (keyword) lister-id
-  ; @param (integer) item-dex
-  ; @param (map) cell-props
-  ;  {:cells (components in vector)}
+  ;  [list-item-primary-cell {...}]
   ;
   ; @usage
-  ;  [list-item-structure :my-lister 0 {...}]
+  ;  [list-item-primary-cell :my-primary-cell {...}]
+  ([cell-props]
+   [list-item-primary-cell (random/generate-keyword) cell-props])
+
+  ([_ {:keys [description label placeholder stretch? timestamp]}]
+   [:div (if stretch? {:style {:flex-grow 1}})
+         (if (or label placeholder) [elements/label {:content label :placeholder placeholder :indent {:right :xs} :style {:color "#333"}}])
+         (if timestamp              [elements/label {:content timestamp   :font-size :xs     :indent {:right :xs} :style {:color "#888"}}])
+         (if description            [elements/label {:content description :font-size :xs     :indent {:right :xs} :style {:color "#888"}}])]))
+
+(defn list-item-structure
+  ; @param (keyword)(opt) structure-id
+  ; @param (map) structure-props
+  ;  {:cells (components in vector)
+  ;   :separator (keyword)(opt)
+  ;    :bottom, :top, :both}
+  ;
+  ; @usage
+  ;  [list-item-structure {...}]
+  ;
+  ; @usage
+  ;  [list-item-structure :my-structure {...}]
   ;
   ; @usage
   ;  (defn my-cell [])
-  ;  [list-item-structure :my-lister 0 {:cells [[my-cell]]}]
-  [lister-id item-dex {:keys [cells]}]
-  (let [item-last? @(r/subscribe [:item-lister/item-last? lister-id item-dex])]
-       (reduce conj [:div {:style {:align-items "center" :border-bottom (if-not item-last? "1px solid #f0f0f0") :display "flex"}}]
-                    (param cells))))
+  ;  [list-item-structure :my-structure {:cells [[my-cell]]}]
+  ([structure-props]
+   [list-item-structure (random/generate-keyword) structure-props])
+
+  ([_ {:keys [cells separator]}]
+   (let [style (case separator :bottom {:align-items "center" :border-bottom "1px solid #f0f0f0" :display "flex"}
+                               :top    {:align-items "center" :border-top    "1px solid #f0f0f0" :display "flex"}
+                               :both   {:align-items "center" :border-bottom "1px solid #f0f0f0"
+                                                              :border-top    "1px solid #f0f0f0" :display "flex"}
+                                       {:align-items "center" :display "flex"})]
+        (reduce conj [:div {:style style}] cells))))
 
 ;; -- Search components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -184,10 +170,11 @@
         all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
         description     (x.components/content {:content :search-results-n :replacements [all-item-count]})]
        [elements/label ::item-lister-search-description
-                       {:color     :highlight
-                        :content   (if (nor disabled? (empty? search-term)) description)
-                        :font-size :xxs
-                        :indent    {:top :m :left :xs}}]))
+                       {:color       :highlight
+                        :content     (if (nor disabled? (empty? search-term)) description)
+                        :font-size   :xxs
+                        :indent      {:top :m :left :xs}
+                        :line-height :block}]))
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -218,15 +205,17 @@
         current-order-by-direction (keyword/get-name      current-order-by)]
        [:div {:style {:display "flex" :width width :flex-grow (if stretch? 1 0)}}
              (cond (nil? order-by-key)
-                   [elements/label {:color     :default
-                                    :content   label
-                                    :font-size :xs
-                                    :indent    {:horizontal :xxs}}]
+                   [elements/label {:color       :default
+                                    :content     label
+                                    :font-size   :xs
+                                    :indent      {:horizontal :xxs}
+                                    :line-height :block}]
                    (= order-by-key current-order-by-key)
                    [elements/button {:color            :default
                                      :icon             (case current-order-by-direction :descending :arrow_drop_down :ascending :arrow_drop_up)
                                      :on-click         [:item-lister/swap-items! lister-id]
                                      :font-size        :xs
+                                     :font-weight      :extra-bold
                                      :horizontal-align :left
                                      :icon-position    :right
                                      :indent           {:horizontal :xxs}
@@ -349,7 +338,8 @@
         content {:content :npn-items-downloaded :replacements [downloaded-item-count all-item-count]}]
        [elements/horizontal-polarity ::item-lister-download-info
                                      {:middle-content [elements/label ::item-lister-download-info-label
-                                                                      {:color     :highlight
-                                                                       :content   content
-                                                                       :font-size :xxs
-                                                                       :indent    {:horizontal :xxs}}]}]))
+                                                                      {:color       :highlight
+                                                                       :content     content
+                                                                       :font-size   :xxs
+                                                                       :indent      {:horizontal :xxs}
+                                                                       :line-height :block}]}]))

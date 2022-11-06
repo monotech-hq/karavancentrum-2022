@@ -1,5 +1,5 @@
 
-(ns app.storage.backend.install-handler.config
+(ns app.storage.backend.installer.config
     (:require [app.storage.backend.core.config :as core.config]))
 
 ;; ----------------------------------------------------------------------------

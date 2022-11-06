@@ -12,8 +12,14 @@
   ;  {}
   ;
   ; @return (map)
-  ;  {}
-  [_ {:keys [disabled? multi-select? placeholder sortable? value-path]}]
+  ;  {:disabled? (boolean)
+  ;   :items (namespaced maps in vector)
+  ;   :indent (map)
+  ;   :placeholder (metamorphic-content)
+  ;   :sortable? (boolean)
+  ;   :thumbnail (map)
+  ;   :value-path (vector)}
+  [_ {:keys [disabled? multi-select? placeholder sortable? thumbnail value-path]}]
   ; XXX#6071 (app.products.frontend.picker.prototypes)
   (let [picked-media @(r/subscribe [:db/get-item value-path])]
        {:disabled?   disabled?
@@ -21,6 +27,7 @@
         :items       (cond multi-select? picked-media picked-media [picked-media])
         :placeholder placeholder
         :sortable?   sortable?
+        :thumbnail   thumbnail
         :value-path  value-path}))
 
 (defn picker-props-prototype

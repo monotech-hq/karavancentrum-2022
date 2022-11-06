@@ -26,6 +26,7 @@
                    :content     label
                    :font-size   :xs
                    :indent      {:horizontal :xs :left :s}
+                   :line-height :block
                    :placeholder placeholder}])
 
 (defn- menu-header
