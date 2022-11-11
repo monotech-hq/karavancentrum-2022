@@ -1,13 +1,13 @@
 
-(ns app.common.frontend.surface-button.views
-    (:require [app.common.frontend.surface-button.prototypes :as surface-button.prototypes]
-              [elements.api                                  :as elements]
-              [mid-fruits.random                             :as random]))
+(ns app.components.frontend.surface-button.views
+    (:require [app.components.frontend.surface-button.prototypes :as surface-button.prototypes]
+              [elements.api                                      :as elements]
+              [mid-fruits.random                                 :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn element
+(defn component
   ; @param (keyword)(opt) button-id
   ; @param (map) button-props
   ;  {}
@@ -16,9 +16,9 @@
   ;  [surface-button {...}]
   ;
   ; @usage
-  ;  [surface-button :my-button {...}]
+  ;  [surface-button :my-surface-button {...}]
   ([button-props]
-   [element (random/generate-keyword) button-props])
+   [component (random/generate-keyword) button-props])
 
   ([button-id button-props]
    (let [button-props (surface-button.prototypes/button-props-prototype button-props)]

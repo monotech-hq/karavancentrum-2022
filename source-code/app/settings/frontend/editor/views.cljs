@@ -40,7 +40,7 @@
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :settings.editor])]
        [elements/text-field ::settings-vat-value-field
                             {:disabled?      editor-disabled?
-                             :end-adornments [{:label "%"}]
+                             :end-adornments [{:label "%" :color :muted}]
                              :indent         {:top :m :vertical :s}
                              :label          :vat-value
                              :required?      true
@@ -53,7 +53,7 @@
         secondary-currency @(r/subscribe [:db/get-item [:settings :editor/edited-item :secondary-currency]])]
        [elements/text-field ::settings-current-price-field
                             {:disabled?      editor-disabled?
-                             :end-adornments [{:label (str primary-currency" / " secondary-currency)}]
+                             :end-adornments [{:label (str primary-currency" / " secondary-currency) :color :muted}]
                              :indent         {:top :m :vertical :s}
                              :label          :current-price
                              :required?      true

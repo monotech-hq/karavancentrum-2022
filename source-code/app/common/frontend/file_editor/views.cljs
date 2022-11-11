@@ -2,7 +2,7 @@
 (ns app.common.frontend.file-editor.views
     (:require [app.common.frontend.item-editor.views    :as item-editor.views]
               [app.common.frontend.surface.views        :as surface.views]
-              [app.common.frontend.surface-button.views :as surface-button.views]
+              [app.components.frontend.surface-button.views :as surface-button.views]
               [elements.api                             :as elements]
               [re-frame.api                             :as r]))
 
@@ -74,12 +74,12 @@
   ;  [revert-content-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
   (let [content-changed? @(r/subscribe [:file-editor/content-changed? editor-id])]
-       [surface-button.views/element ::revert-content-button
-                                     {:disabled?   (or disabled? (not content-changed?))
-                                      :hover-color :highlight
-                                      :icon        :settings_backup_restore
-                                      :label       :revert!
-                                      :on-click    [:file-editor/revert-content! editor-id]}]))
+       [surface-button.views/component ::revert-content-button
+                                       {:disabled?   (or disabled? (not content-changed?))
+                                        :hover-color :highlight
+                                        :icon        :settings_backup_restore
+                                        :label       :revert!
+                                        :on-click    [:file-editor/revert-content! editor-id]}]))
 
 (defn save-content-button
   ; @param (keyword) editor-id
@@ -88,13 +88,13 @@
   ; @usage
   ;  [save-content-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
-  [surface-button.views/element ::save-content-button
-                                {:background-color "#5a4aff"
-                                 :color            "white"
-                                 :disabled?        disabled?
-                                 :icon             :save
-                                 :label            :save!
-                                 :on-click         [:file-editor/save-content! editor-id]}])
+  [surface-button.views/component ::save-content-button
+                                  {:background-color "#5a4aff"
+                                   :color            "white"
+                                   :disabled?        disabled?
+                                   :icon             :save
+                                   :label            :save!
+                                   :on-click         [:file-editor/save-content! editor-id]}])
 
 (defn file-editor-controls
   ; @param (keyword) editor-id

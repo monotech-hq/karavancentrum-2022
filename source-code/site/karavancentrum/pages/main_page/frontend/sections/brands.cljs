@@ -1,6 +1,6 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.brands
-    (:require [mid-fruits.css :as css]
+    (:require [css.api        :as css]
               [mid-fruits.uri :as uri]
               [re-frame.api   :as r]))
 

@@ -65,11 +65,13 @@
   ; @param (integer) item-dex
   ; @param (namespaced map) content-link
   ;  {:content/id (string)}
-  ; @param (map) dnd-kit-props
-  [preview-id preview-props item-dex {:content/keys [id] :as content-link} dnd-kit-props]
-  [:div {:style {:align-items "center" :display "flex" :grid-column-gap "18px"}}
+  ; @param (map) drag-props
+  ;  {:handle-attributes (map)
+  ;   :item-attributes (map)}
+  [preview-id preview-props item-dex {:content/keys [id] :as content-link} {:keys [handle-attributes item-attributes]}]
+  [:div (update item-attributes :style merge {:align-items "center" :display "flex" :grid-column-gap "18px"})
         (if @(r/subscribe [:item-preview/data-received? (keyword id)])
-             [common/list-item-drag-handle dnd-kit-props])
+             [common/list-item-drag-handle {:drag-attributes handle-attributes}])
         [content-preview-static-body preview-id preview-props content-link]])
 
 ;; ----------------------------------------------------------------------------
@@ -95,7 +97,7 @@
                        :items            items
                        :item-id-f        :content/id
                        :item-element     #'content-preview-sortable-body
-                       :on-order-changed [:db/set-item! value-path]}]])
+                       :on-order-changed (fn [_ _ %] (r/dispatch-sync [:db/set-item! value-path %]))}]])
 
 (defn- content-preview-list
   ; @param (keyword) preview-id

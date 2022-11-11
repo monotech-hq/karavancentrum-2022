@@ -46,8 +46,9 @@
 (defn- credits
   ; @param (keyword) component-id
   ; @param (map) component-props
-  [component-id component-props]
-  [:div {:style {}}
+  ;  {:style (map)(opt)}
+  [component-id {:keys [style] :as component-props}]
+  [:div {:style style}
         [:div {:style {:display "flex" :justify-content "center"}}
               [created-by component-id component-props]]
         [copyright-label.views/component component-id component-props]])
@@ -55,7 +56,8 @@
 (defn component
   ; @param (keyword)(opt) component-id
   ; @param (map) component-props
-  ;  {:theme (keyword)(opt)
+  ;  {:style (map)(opt)
+  ;   :theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
   ;

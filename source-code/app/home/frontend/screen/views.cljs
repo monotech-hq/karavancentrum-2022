@@ -2,9 +2,9 @@
 (ns app.home.frontend.screen.views
     (:require [app.common.frontend.api          :as common]
               [app.home.frontend.handler.config :as handler.config]
+              [css.api                          :as css]
               [elements.api                     :as elements]
               [layouts.surface-a.api            :as surface-a]
-              [mid-fruits.css                   :as css]
               [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
               [x.app-components.api             :as x.components]))

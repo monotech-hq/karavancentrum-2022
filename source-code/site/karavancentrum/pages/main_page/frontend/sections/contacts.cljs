@@ -1,7 +1,7 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.contacts
     (:require [app.contents.frontend.api :as contents]
-              [mid-fruits.href           :as href]
+              [href.api                  :as href]
               [mid-fruits.uri            :as uri]
               [re-frame.api              :as r]))
 

@@ -1,7 +1,7 @@
 
 (ns app.common.frontend.item-editor.views
     (:require [app.common.frontend.surface.views        :as surface.views]
-              [app.common.frontend.surface-button.views :as surface-button.views]
+              [app.components.frontend.surface-button.views :as surface-button.views]
               [elements.api                             :as elements]
               [mid-fruits.vector                        :as vector]
               [re-frame.api                             :as r]))
@@ -141,12 +141,12 @@
   ;  [revert-item-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
   (let [item-changed? @(r/subscribe [:item-editor/item-changed? editor-id])]
-       [surface-button.views/element ::revert-item-button
-                                     {:disabled?   (or disabled? (not item-changed?))
-                                      :hover-color :highlight
-                                      :icon        :settings_backup_restore
-                                      :label       :revert!
-                                      :on-click    [:item-editor/revert-item! editor-id]}]))
+       [surface-button.views/component ::revert-item-button
+                                       {:disabled?   (or disabled? (not item-changed?))
+                                        :hover-color :highlight
+                                        :icon        :settings_backup_restore
+                                        :label       :revert!
+                                        :on-click    [:item-editor/revert-item! editor-id]}]))
 
 (defn save-item-button
   ; @param (keyword) editor-id
@@ -155,13 +155,13 @@
   ; @usage
   ;  [save-item-button :my-editor {...}]
   [editor-id {:keys [disabled?]}]
-  [surface-button.views/element ::save-item-button
-                                {:background-color "#5a4aff"
-                                 :color            "white"
-                                 :disabled?        disabled?
-                                 :icon             :save
-                                 :label            :save!
-                                 :on-click         [:item-editor/save-item! editor-id]}])
+  [surface-button.views/component ::save-item-button
+                                  {:background-color "#5a4aff"
+                                   :color            "white"
+                                   :disabled?        disabled?
+                                   :icon             :save
+                                   :label            :save!
+                                   :on-click         [:item-editor/save-item! editor-id]}])
 
 (defn item-editor-controls
   ; @param (keyword) editor-id

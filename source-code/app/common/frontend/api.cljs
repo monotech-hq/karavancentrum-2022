@@ -24,7 +24,6 @@
               [app.common.frontend.selector-item-marker.views  :as selector-item-marker.views]
               [app.common.frontend.surface.views               :as surface.views]
               [app.common.frontend.surface-box.views           :as surface-box.views]
-              [app.common.frontend.surface-button.views        :as surface-button.views]
 
               ; TEMP
               [app.components.frontend.api :as components]))
@@ -126,13 +125,13 @@
 
 ; app.common.frontend.surface.views
 (def go-back-button                surface.views/go-back-button)
-(def surface-label                 surface.views/surface-label)
+(def surface-label                 components/surface-label)
 (def surface-description           surface.views/surface-description)
-(def surface-breadcrumbs           surface.views/surface-breadcrumbs)
+(def surface-breadcrumbs           components/surface-breadcrumbs)
 (def surface-box-layout-ghost-view surface.views/surface-box-layout-ghost-view)
 
 ; app.common.frontend.surface-box.views
 (def surface-box surface-box.views/element)
 
 ; app.common.frontend.surface-button.views
-(def surface-button surface-button.views/element)
+(def surface-button components/surface-button)

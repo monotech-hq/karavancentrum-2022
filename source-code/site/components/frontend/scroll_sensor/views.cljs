@@ -1,9 +1,10 @@
 
 (ns site.components.frontend.scroll-sensor.views
-    (:require [mid-fruits.random                              :as random]
+    (:require [hiccup.api                                     :as hiccup]
+              [mid-fruits.random                              :as random]
               [reagent.api                                    :as reagent]
               [site.components.frontend.scroll-sensor.helpers :as scroll-sensor.helpers]))
-   
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -25,4 +26,4 @@
 
   ([sensor-id callback-f]
    (reagent/lifecycles {:component-did-mount (fn [] (scroll-sensor.helpers/sensor-did-mount-f sensor-id callback-f))
-                        :reagent-render      (fn [] [:div {:id sensor-id}])})))
+                        :reagent-render      (fn [] [:div {:id (hiccup/value sensor-id)}])})))

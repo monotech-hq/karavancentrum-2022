@@ -1,9 +1,9 @@
 
 (ns app.storage.frontend.media-viewer.views
-    (:require [elements.api        :as elements]
+    (:require [css.api             :as css]
+              [elements.api        :as elements]
               [io.api              :as io]
               [layouts.popup-b.api :as popup-b]
-              [mid-fruits.css      :as css]
               [re-frame.api        :as r]
               [x.app-media.api     :as x.media]))
 

@@ -1,8 +1,6 @@
 
 (ns app.common.frontend.surface.views
-    (:require [elements.api          :as elements]
-              [layouts.surface-a.api :as surface-a]
-              [re-frame.api          :as r]))
+    (:require [elements.api :as elements]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -17,48 +15,8 @@
                           :label         :back!
                           :on-click      [:router/go-back!]}]])
 
-;; -- Breadcrumbs components --------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn surface-breadcrumbs
-  ; @param (keyword) surface-id
-  ; @param (map) breadcrumbs-props
-  ;  {:crumbs (maps in vector)
-  ;   :disabled? (boolean)(opt)}
-  ;
-  ; @usage
-  ;  [surface-breadcrumbs :my-surface {...}]
-  [surface-id {:keys [crumbs disabled?]}]
-  [elements/breadcrumbs ::surface-breadcrumbs
-                        {:crumbs    crumbs
-                         :disabled? disabled?
-                         :indent    {:left :xs}}])
-
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
-
-(defn surface-label
-  ; @param (keyword) surface-id
-  ; @param (map) description-props
-  ;  {:disabled? (boolean)(opt)
-  ;   :label (metamorphic-content)
-  ;   :placeholder (metamorphic-content)(opt)}
-  ;
-  ; @usage
-  ;  [surface-label :my-surface {...}]
-  [surface-id {:keys [disabled? label placeholder]}]
-  ; Ha nem egy közös elemben (pl. div) volt a sensor és a label, akkor bizonoyos
-  ; esetekben (pl. horizontal-polarity elemben) nem megfelelő helyen érzékelt a sensor
-  [:div [surface-a/title-sensor {:title label :offset -12}]
-        (let [viewport-large? @(r/subscribe [:environment/viewport-large?])]
-             [elements/label ::surface-label
-                             {:content     label
-                              :disabled?   disabled?
-                              :font-size   (if viewport-large? :xxl :l)
-                              :font-weight :extra-bold
-                              :indent      {:left :xs}
-                              :line-height :block
-                              :placeholder placeholder}])])
 
 (defn surface-description
   ; @param (keyword) surface-id

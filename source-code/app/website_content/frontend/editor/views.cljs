@@ -3,14 +3,14 @@
     (:require [app.common.frontend.api   :as common]
               [app.contents.frontend.api :as contents]
               [app.storage.frontend.api  :as storage]
+              [css.api                   :as css]
               [elements.api              :as elements]
               [engines.file-editor.api   :as file-editor]
               [forms.api                 :as forms]
               [layouts.surface-a.api     :as surface-a]
-              [mid-fruits.css            :as css]
               [mid-fruits.vector         :as vector]
               [re-frame.api              :as r]))
-  
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
@@ -389,7 +389,8 @@
        [body]])
 
 (defn- website-content-editor
-  []
+  ; @param (keyword) surface-id
+  [_]
   [file-editor/body :website-content.editor
                     {:content-path  [:website-content :editor/edited-item]
                      :form-element  #'view-structure
@@ -397,6 +398,7 @@
                      :ghost-element #'common/file-editor-ghost-element}])
 
 (defn view
+  ; @param (keyword) surface-id
   [surface-id]
   [surface-a/layout surface-id
                     {:content #'website-content-editor}])

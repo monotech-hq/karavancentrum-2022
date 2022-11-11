@@ -8,7 +8,8 @@
               [mid-fruits.vector                             :as vector]
 
               ; TEMP
-              [plugins.dnd-kit.api :as dnd-kit]))
+              [plugins.dnd-kit.api :as dnd-kit]
+              [re-frame.api :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -31,9 +32,11 @@
   ; @param (map) preview-props
   ; @param (integer) item-dex
   ; @param (namespaced map) media-link
-  ; @param (map) dnd-kit-props
-  [preview-id preview-props item-dex media-link {:keys [attributes listeners]}]
-  [:div (merge attributes listeners {:style {:cursor :grab}})
+  ; @param (map) drag-props
+  ;  {:handle-attributes (map)}
+  [preview-id preview-props item-dex media-link {:keys [handle-attributes item-attributes]}]
+  [:div (-> handle-attributes (merge item-attributes)
+                              (update :style merge {:cursor :grab}))
         [media-preview-static-body preview-id preview-props media-link]])
 
 ;; ----------------------------------------------------------------------------
@@ -59,7 +62,7 @@
                        :items            items
                        :item-id-f        :media/id
                        :item-element     #'media-preview-sortable-body
-                       :on-order-changed [:db/set-item! value-path]}]])
+                       :on-order-changed (fn [_ _ %] (r/dispatch-sync [:db/set-item! value-path %]))}]])
 
 (defn- media-preview-list
   ; @param (keyword) preview-id

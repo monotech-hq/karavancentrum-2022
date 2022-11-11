@@ -1,6 +1,6 @@
 
 (ns app.website-config.frontend.editor.effects
-  (:require [app.website-config.frontend.editor.views :as views]
+  (:require [app.website-config.frontend.editor.views :as editor.views]
             [re-frame.api                             :as r]))
 
 ;; ----------------------------------------------------------------------------
@@ -10,4 +10,4 @@
   {:dispatch-n [[:gestures/init-view-handler! :website-config.editor
                                               {:default-view-id :basic-data}]
                 [:ui/render-surface! :website-config.editor/view
-                                     {:content #'views/view}]]})
+                                     {:content #'editor.views/view}]]})

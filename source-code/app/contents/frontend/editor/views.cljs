@@ -177,7 +177,8 @@
        [body]])
 
 (defn- content-editor
-  []
+  ; @param (keyword) surface-id
+  [_]
   [item-editor/body :contents.editor
                     {:auto-title?      true
                      :form-element     #'view-structure
@@ -190,6 +191,7 @@
                      :suggestions-path [:contents :editor/suggestions]}])
 
 (defn view
+  ; @param (keyword) surface-id
   [surface-id]
   [surface-a/layout surface-id
                     {:content #'content-editor}])

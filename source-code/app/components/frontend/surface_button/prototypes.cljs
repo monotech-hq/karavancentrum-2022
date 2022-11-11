@@ -1,5 +1,5 @@
 
-(ns app.common.frontend.surface-button.prototypes
+(ns app.components.frontend.surface-button.prototypes
     (:require [mid-fruits.candy :refer [param]]
               [re-frame.api     :as r]))
 
@@ -8,10 +8,12 @@
 
 (defn button-props-prototype
   ; @param (map) button-props
-  ;  {}
   ;
   ; @return (map)
-  ;  {}
+  ;  {:border-radius (keyword)
+  ;   :font-size (keyword)
+  ;   :font-weight (keyword)
+  ;   :style (map)}
   [button-props]
   (let [viewport-large? @(r/subscribe [:environment/viewport-large?])]
        (merge {:border-radius :m

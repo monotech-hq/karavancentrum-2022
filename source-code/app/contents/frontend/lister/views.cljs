@@ -4,8 +4,8 @@
               [app.contents.frontend.handler.helpers :as handler.helpers]
               [elements.api                          :as elements]
               [engines.item-lister.api               :as item-lister]
+              [hiccup.api                            :as hiccup]
               [layouts.surface-a.api                 :as surface-a]
-              [mid-fruits.hiccup                     :as hiccup]
               [re-frame.api                          :as r]))
 
 ;; ----------------------------------------------------------------------------
@@ -122,12 +122,14 @@
           [common/item-lister-ghost-header :contents.lister {}]))
 
 (defn- view-structure
-  []
+  ; @param (keyword) surface-id
+  [_]
   [:<> [header]
        [body]
        [footer]])
 
 (defn view
+  ; @param (keyword) surface-id
   [surface-id]
   [surface-a/layout surface-id
                     {:content #'view-structure}])

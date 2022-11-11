@@ -1,8 +1,8 @@
 
 (ns app.views.frontend.menu-screen.views
-    (:require [elements.api        :as elements]
+    (:require [css.api             :as css]
+              [elements.api        :as elements]
               [layouts.popup-a.api :as popup-a]
-              [mid-fruits.css      :as css]
               [re-frame.api        :as r]
               [x.app-details       :as x.details]))
 

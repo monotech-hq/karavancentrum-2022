@@ -41,21 +41,21 @@
 /******************************************************************************/
 /***** Navbar *****/
 
-#si-navbar {
+#mt-navbar {
   height: 75px;
   padding: 0 24px;
   transition: background-color .2s }
 
-#si-navbar[data-scrolled="false"] {
+#mt-navbar[data-scrolled="false"] {
   background-color: hsl(0deg 0% 100% / 0%)}
 
-#si-navbar[data-scrolled="true"] {
+#mt-navbar[data-scrolled="true"] {
   background-color: hsl(0deg 0% 100% / 80%)}
 
-#si-navbar--menu-items {
+#mt-navbar--menu-items {
   gap: 50px }
 
-.si-navbar--menu-item {
+.mt-navbar--menu-item {
   color: #333;
   font-family: 'Poppins';
   font-size: 12px;
@@ -63,7 +63,7 @@
   letter-spacing: 1.5px;
   text-transform: uppercase }
 
-#si-navbar .si-effect--underline::before {
+#mt-navbar .mt-effect--underline::before {
   bottom: 0px;
   --underline-color: #333 }
 
@@ -75,7 +75,7 @@
 /******************************************************************************/
 /***** Sidebar *****/
 
-#si-sidebar--content {
+#mt-sidebar--content {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -97,7 +97,7 @@
   text-decoration: none;
   text-transform: uppercase }
 
-#si-sidebar .si-effect--underline::before {
+#mt-sidebar .mt-effect--underline::before {
   bottom: 0px;
   --underline-color: #333 }
 

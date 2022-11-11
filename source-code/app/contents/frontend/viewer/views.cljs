@@ -133,7 +133,8 @@
        [body]])
 
 (defn- content-viewer
-  []
+  ; @param (keyword) surface-id
+  [_]
   [item-viewer/body :contents.viewer
                     {:auto-title?   true
                      :error-element [common/error-content {:error :the-item-you-opened-may-be-broken}]
@@ -143,6 +144,7 @@
                      :label-key     :name}])
 
 (defn view
+  ; @param (keyword) surface-id
   [surface-id]
   [surface-a/layout surface-id
                     {:content #'content-viewer}])

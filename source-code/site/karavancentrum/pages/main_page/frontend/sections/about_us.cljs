@@ -1,7 +1,7 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.about-us
     (:require [app.contents.frontend.api :as contents]
-              [mid-fruits.css            :as css]
+              [css.api                   :as css]
               [re-frame.api              :as r]
               [reagent.api               :refer [ratom]]))
 

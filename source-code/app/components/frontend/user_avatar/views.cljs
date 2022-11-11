@@ -1,9 +1,9 @@
 
 (ns app.components.frontend.user-avatar.views
     (:require [app.components.frontend.user-avatar.prototypes :as user-avatar.prototypes]
+              [css.api                                        :as css]
               [elements.api                                   :as elements]
-              [mid-fruits.css                                 :as css]
-              [mid-fruits.math                                :as math]
+              [math.api                                       :as math]
               [mid-fruits.random                              :as random]
               [mid-fruits.string                              :as string]
               [mid-fruits.vector                              :as vector]))
@@ -26,8 +26,8 @@
   ; Rc: (Do + Di) / 2     = 29px
   ; CIRCUM: 2Rc * Pi      = 185.35
   (let [percent          (/ 100 (count colors))
-        percent-result   (mid-fruits.math/percent-result 185.35        percent)
-        percent-rem      (mid-fruits.math/percent-result 185.35 (- 100 percent))
+        percent-result   (math/percent-result 185.35        percent)
+        percent-rem      (math/percent-result 185.35 (- 100 percent))
         stroke-dasharray (str percent-result" "percent-rem)
         rotation-angle   (+ 30 (* dex (/ 360 (count colors))))]
        [:circle {:style {:fill :transparent :transform-origin :center :transform (css/rotate-z rotation-angle)}

@@ -2,7 +2,7 @@
 (ns app.common.frontend.item-viewer.views
     (:require [app.common.frontend.item-editor.views    :as item-editor.views]
               [app.common.frontend.surface.views        :as surface.views]
-              [app.common.frontend.surface-button.views :as surface-button.views]
+              [app.components.frontend.surface-button.views :as surface-button.views]
               [elements.api                             :as elements]
               [mid-fruits.vector                        :as vector]
               [re-frame.api                             :as r]))
@@ -137,13 +137,13 @@
   ; @usage
   ;  [delete-item-button :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
-  [surface-button.views/element ::delete-item-button
-                                {:color       :warning
-                                 :disabled?   disabled?
-                                 :hover-color :highlight
-                                 :icon        :delete_outline
-                                 :label       :delete!
-                                 :on-click    [:item-viewer/delete-item! viewer-id]}])
+  [surface-button.views/component ::delete-item-button
+                                  {:color       :warning
+                                   :disabled?   disabled?
+                                   :hover-color :highlight
+                                   :icon        :delete_outline
+                                   :label       :delete!
+                                   :on-click    [:item-viewer/delete-item! viewer-id]}])
 
 (defn duplicate-item-button
   ; @param (keyword) viewer-id
@@ -153,13 +153,13 @@
   ; @usage
   ;  [duplicate-item-button :my-viewer {...}]
   [viewer-id {:keys [disabled?]}]
-  [surface-button.views/element ::duplicate-item-button
-                                {:disabled?   disabled?
-                                 :hover-color :highlight
-                                 :icon        :file_copy
-                                 :icon-family :material-icons-outlined
-                                 :label       :duplicate!
-                                 :on-click    [:item-viewer/duplicate-item! viewer-id]}])
+  [surface-button.views/component ::duplicate-item-button
+                                  {:disabled?   disabled?
+                                   :hover-color :highlight
+                                   :icon        :file_copy
+                                   :icon-family :material-icons-outlined
+                                   :label       :duplicate!
+                                   :on-click    [:item-viewer/duplicate-item! viewer-id]}])
 
 (defn edit-item-button
   ; @param (keyword) viewer-id
@@ -170,13 +170,13 @@
   ; @usage
   ;  [edit-item-button :my-viewer {...}]
   [viewer-id {:keys [disabled? edit-item-uri]}]
-  [surface-button.views/element ::edit-item-button
-                                {:background-color "#5a4aff"
-                                 :color            "white"
-                                 :disabled?        disabled?
-                                 :icon             :edit
-                                 :label            :edit!
-                                 :on-click         [:router/go-to! edit-item-uri]}])
+  [surface-button.views/component ::edit-item-button
+                                  {:background-color "#5a4aff"
+                                   :color            "white"
+                                   :disabled?        disabled?
+                                   :icon             :edit
+                                   :label            :edit!
+                                   :on-click         [:router/go-to! edit-item-uri]}])
 
 (defn item-viewer-controls
   ; @param (keyword) viewer-id
@@ -189,5 +189,5 @@
   [viewer-id bar-props]
   [:div {:style {:display "flex" :grid-column-gap "12px"}}
         [:<> [delete-item-button    viewer-id bar-props]
-             [duplicate-item-button viewer-id bar-props]]])
-             ;[edit-item-button      viewer-id bar-props]]])
+             [duplicate-item-button viewer-id bar-props]
+             [edit-item-button      viewer-id bar-props]]])

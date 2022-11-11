@@ -2,17 +2,17 @@
 /******************************************************************************/
 /***** Effects *****/
 
-.si-effect--underline {
+.mt-effect--underline {
   text-decoration: none;
   --underline-color: white;
 }
 
-.si-effect--underline:hover::before,
-.si-effect--underline:focus::before {
+.mt-effect--underline:hover::before,
+.mt-effect--underline:focus::before {
   transform: scale(1);
 }
 
-.si-effect--underline::before {
+.mt-effect--underline::before {
   background-color: var(--underline-color);
   bottom: -5px;
   content: '';

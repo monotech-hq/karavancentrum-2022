@@ -1,13 +1,13 @@
 
 (ns app.common.frontend.item-lister.views
     (:require [app.common.frontend.item-editor.views    :as item-editor.views]
-              [app.common.frontend.surface-button.views :as surface-button.views]
+              [app.components.frontend.surface-button.views :as surface-button.views]
+              [css.api                                  :as css]
               [dom.api                                  :as dom]
               [elements.api                             :as elements]
-              [mid-fruits.css                           :as css]
               [mid-fruits.keyword                       :as keyword]
-              [mid-fruits.logical                       :refer [nor]]
-              [mid-fruits.math                          :as math]
+              [logical.api                              :refer [nor]]
+              [math.api                                 :as math]
               [mid-fruits.random                        :as random]
               [re-frame.api                             :as r]
               [x.app-components.api                     :as x.components]))
@@ -315,13 +315,13 @@
   ; @usage
   ;  [item-lister-create-item-button :my-lister {...}]
   [_ {:keys [disabled? create-item-uri]}]
-  [surface-button.views/element ::item-lister-create-item-button
-                                {:background-color "#5a4aff"
-                                 :color            "white"
-                                 :disabled?        disabled?
-                                 :icon             :add
-                                 :label            :add!
-                                 :on-click         [:router/go-to! create-item-uri]}])
+  [surface-button.views/component ::item-lister-create-item-button
+                                  {:background-color "#5a4aff"
+                                   :color            "white"
+                                   :disabled?        disabled?
+                                   :icon             :add
+                                   :label            :add!
+                                   :on-click         [:router/go-to! create-item-uri]}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

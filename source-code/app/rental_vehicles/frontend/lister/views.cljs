@@ -21,10 +21,10 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- vehicle-item-structure
-  [lister-id item-dex {:keys [modified-at name thumbnail]} dnd-kit-props]
+  [lister-id item-dex {:keys [modified-at name thumbnail]} {:keys [handle-attributes] :as drag-props}]
   (let [timestamp  @(r/subscribe [:activities/get-actual-timestamp modified-at])
         item-last? @(r/subscribe [:item-lister/item-last? lister-id item-dex])]
-       [common/list-item-structure {:cells [[common/list-item-drag-handle {:indent {:left :xs}} dnd-kit-props]
+       [common/list-item-structure {:cells [[common/list-item-drag-handle {:indent {:left :xs} :drag-attributes handle-attributes}]
                                             [common/list-item-thumbnail    {:thumbnail (:media/uri thumbnail)}]
                                             [common/list-item-primary-cell {:label name :stretch? true :placeholder :unnamed-vehicle}]
                                             [common/list-item-detail       {:content timestamp :width "160px"}]
@@ -32,11 +32,12 @@
                                     :separator (if-not item-last? :bottom)}]))
 
 (defn vehicle-item
-  [lister-id item-dex {:keys [id] :as item} {:keys [isDragging] :as dnd-kit-props}]
-  [elements/toggle {:background-color (if isDragging :highlight)
-                    :content          [vehicle-item-structure lister-id item-dex item dnd-kit-props]
-                    :hover-color      :highlight
-                    :on-click         [:router/go-to! (str "/@app-home/rental-vehicles/"id)]}])
+  [lister-id item-dex {:keys [id] :as item} {:keys [dragging? item-attributes] :as drag-props}]
+  [:div item-attributes
+        [elements/toggle {:background-color (if dragging? :highlight)
+                          :content          [vehicle-item-structure lister-id item-dex item drag-props]
+                          :hover-color      :highlight
+                          :on-click         [:router/go-to! (str "/@app-home/rental-vehicles/"id)]}]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -47,7 +48,7 @@
                 {:items            items
                  :item-id-f        :id
                  :item-element     #'vehicle-item
-                 :on-order-changed [:item-lister/reorder-items! :rental-vehicles.lister]}])
+                 :on-order-changed (fn [_ _ %] (r/dispatch-sync [:item-lister/reorder-items! :rental-vehicles.lister %]))}])
 
 (defn- vehicle-lister-body
   []

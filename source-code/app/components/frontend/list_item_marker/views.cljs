@@ -1,8 +1,8 @@
 
 (ns app.components.frontend.list-item-marker.views
-    (:require [elements.api      :as elements]
-              [mid-fruits.css    :as css]
-              [mid-fruits.math   :as math]
+    (:require [css.api           :as css]
+              [elements.api      :as elements]
+              [math.api          :as math]
               [mid-fruits.random :as random]
               [re-frame.api      :as r]))
 

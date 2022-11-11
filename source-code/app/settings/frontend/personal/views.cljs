@@ -1,8 +1,8 @@
 
 (ns app.settings.frontend.personal.views
-    (:require [elements.api   :as elements]
-              [mid-fruits.css :as css]
-              [re-frame.api   :as r]))
+    (:require [css.api      :as css]
+              [elements.api :as elements]
+              [re-frame.api :as r]))
 
 ;; -- Body components ---------------------------------------------------------
 ;; ----------------------------------------------------------------------------
