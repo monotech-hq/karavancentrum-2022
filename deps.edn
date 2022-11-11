@@ -76,6 +76,7 @@
                            :port         3000}
               :jvm-opts ["-Dclojure.server.repl={:port,5555,:accept,clojure.core.server/repl}"]
               :extra-deps {binaryage/devtools               {:mvn/version "1.0.0"}
+                           com.github.seancorfield/depstar  {:mvn/version "2.0.211"}
                            com.wsscode/pathom-viz-connector {:mvn/version "2021.01.25"}
                            org.clojure/tools.namespace      {:mvn/version "1.0.0"}}}
 
@@ -95,4 +96,4 @@
                                    :jar "karavancentrum.jar"
                                    :jar-type :uber
                                    :main-class boot-loader.backend.main}
-                     :js-builds [:site-ready :app-ready]}}}}
+                     :js-builds [:site-ready]}}}} ;:app-ready]}}}}

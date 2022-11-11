@@ -195,19 +195,6 @@
                                   :placeholder :brand-description-placeholder
                                   :value-path  [:website-content :editor/edited-item :brands brand-dex :description]}]))
 
-(defn- brand-icon-picker
-  [brand-dex _]
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [storage/media-picker {:autosave?     true
-                              :disabled?     editor-disabled?
-                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
-                              :indent        {:top :m :vertical :s}
-                              :label         :icon
-                              :multi-select? false
-                              :toggle-label  :select-image!
-                              :thumbnail     {:height :3xl :width :5xl}
-                              :value-path    [:website-content :editor/edited-item :brands brand-dex :icon]}]))
-
 (defn- brand-title-field
   [brand-dex _]
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
@@ -239,9 +226,7 @@
   [brand-dex brand-props]
   [common/surface-box {:indent  {:top :m}
                        :content [:<> [:div (forms/form-row-attributes)
-                                           [:div (forms/form-block-attributes {:ratio 30})
-                                                 [brand-icon-picker      brand-dex brand-props]]
-                                           [:div (forms/form-block-attributes {:ratio 70})
+                                           [:div (forms/form-block-attributes {:ratio 100})
                                                  [brand-title-field      brand-dex brand-props]
                                                  [brand-link-label-field brand-dex brand-props]
                                                  [brand-link-field       brand-dex brand-props]]]

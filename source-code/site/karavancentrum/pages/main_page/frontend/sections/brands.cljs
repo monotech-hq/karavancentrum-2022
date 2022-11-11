@@ -8,17 +8,16 @@
 ;; -----------------------------------------------------------------------------
 
 (defn brand
-  [brand-dex {:keys [link-label link description icon title]}]
-  [:div.kc-brand [:div.kc-brand--icon {:style {:background-image (-> icon :media/uri css/url)}}]
-                 [:p.kc-brand--title         title]
+  [brand-dex {:keys [link-label link description title]}]
+  [:div.kc-brand [:p.kc-brand--title         title]
                  [:div.kc-brand--description description]
                  [:div {:class :kc-brand--link-box}
                        [:div {}
                              [:div.kc-brand--label link-label]
                              [:div.kc-brand--link  link]]
-                       [:div {}
-                             [:a.kc-brand--goto {:href (uri/valid-uri link) :title "Hivatkozás megnyitása" :target "_blank"}
-                                                "Megtekintés"]]]])
+                       [:a.kc-brand--goto {:href (uri/valid-uri link) :title "Hivatkozás megnyitása" :target "_blank"}
+                                          [:span "Megtekintés"]
+                                          [:i.fas.fa-arrow-right]]]])
 
 (defn brands
   []

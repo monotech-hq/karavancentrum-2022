@@ -44,16 +44,20 @@
 #mt-navbar {
   height: 75px;
   padding: 0 24px;
-  transition: background-color .2s }
+  transition: background-color .2s;
+}
 
 #mt-navbar[data-scrolled="false"] {
-  background-color: hsl(0deg 0% 100% / 0%)}
+  background-color: hsl(0deg 0% 100% / 0%);
+}
 
 #mt-navbar[data-scrolled="true"] {
-  background-color: hsl(0deg 0% 100% / 80%)}
+  background-color: hsl(0deg 0% 100% / 80%);
+}
 
 #mt-navbar--menu-items {
-  gap: 50px }
+  gap: 50px;
+}
 
 .mt-navbar--menu-item {
   color: #333;
@@ -61,11 +65,13 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.5px;
-  text-transform: uppercase }
+  text-transform: uppercase;
+}
 
 #mt-navbar .mt-effect--underline::before {
   bottom: 0px;
-  --underline-color: #333 }
+  --underline-color: #333;
+}
 
 /***** Navbar *****/
 /******************************************************************************/
@@ -85,7 +91,8 @@
 #kc-sidebar--menu-items {
   display: flex;
   flex-direction: column;
-  gap: 50px }
+  gap: 50px;
+}
 
 .kc-sidebar--menu-item {
   color: #333;
@@ -95,11 +102,13 @@
   letter-spacing: 1.5px;
   text-align: center;
   text-decoration: none;
-  text-transform: uppercase }
+  text-transform: uppercase;
+}
 
 #mt-sidebar .mt-effect--underline::before {
   bottom: 0px;
-  --underline-color: #333 }
+  --underline-color: #333;
+}
 
 /***** Sidebar *****/
 /******************************************************************************/
@@ -148,15 +157,16 @@
 /***** Hero *****/
 
 #kc-hero {
-    height: 95vh;
-    background-position: 55% 60%;
-    background-image: url(/site/images/hero-1920.jpg);
-    background-size: cover;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    justify-content: center }
+  height: 95vh;
+  background-position: 55% 60%;
+  background-image: url(/site/images/hero-1920.jpg);
+  background-size: cover;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  justify-content: center;
+}
 
 #kc-hero::after {
   background-color: #9dc3fb;
@@ -164,7 +174,8 @@
   content: '';
   height: 5px;
   position: absolute;
-  width: 100% }
+  width: 100%;
+}
 
 #kc-navbar--company-name-and-slogan {
   display: flex;
@@ -269,7 +280,8 @@
   max-width: 1440px;
   padding-bottom: 45px;
   padding-top: 45px;
-  width: 100% }
+  width: 100%;
+}
 
 .kc-vehicle-card-wrapper {
   max-width: 620px;
@@ -286,7 +298,8 @@
 
 @media only screen and (max-width: 620px) {
 .kc-vehicle-card {
-  border-radius: 0 }}
+  border-radius: 0;
+}}
 
 .kc-vehicle-card:hover .kc-vehicle-card--thumbnail {
   height: 105%;
@@ -362,7 +375,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   padding-bottom: 120px;
 }
 
@@ -377,65 +389,76 @@
 
 .kc-brand {
   align-items: left;
-  background-color: #50697a;
+  background-color: #ffffff5c;
+  border: 1px solid #ddd;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
   max-width: 420px;
-  padding: 35px 35px 250px 35px;
+  min-height: 480px;
 }
 
 .kc-brand--title {
-  color: white;
-  font-size: 30px;
+  border-bottom: 1px solid #ddd;
+  font-size: 25px;
   font-weight: 400;
-  line-height: 35px;
-  padding-bottom: 15px;
-}
-
-.kc-brand--icon {
-  background-size: contain;
-  bottom: 35px;
-  height: 260px;
-  left: 35px;
-  opacity: .1;
-  position: absolute;
-  width: 260px;
+  line-height: 25px;
+  padding: 30px;
 }
 
 .kc-brand--label {
-  color: white;
   font-weight: 500;
-  padding-top: 60px;
 }
 
 .kc-brand--link-box {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   grid-column-gap: 24px;
-  justify-content: space-between;
+  justify-content: flex-end;
+  padding: 60px 30px 30px 30px;
 }
 
 .kc-brand--link {
-  color: #ddd;
+  color: #888;
   font-size: 15px;
   font-weight: 500;
 }
 
 @media only screen and (max-width: 450px) {
-.kc-brand--link { font-size: 13px }}
+.kc-brand--link {
+  font-size: 13px;
+}}
 
 .kc-brand--description {
-  color: white;
+  color: #454545;
   font-size: 14px;
   font-weight: 500;
   line-height: 18px;
+  padding: 30px;
 }
 
 .kc-brand--goto {
+  align-items: center;
+  display: flex;
+  color: #008579 !important;
   font-size: 15px;
   font-weight: 500;
-  color: #ffcbcb !important;
+  grid-gap: 15px;
+  margin-top: 15px;
   width: 120px;
+}
+
+.kc-brand--goto span {
+}
+
+.kc-brand--goto i {
+  transition: transform .15s;
+}
+
+.kc-brand--goto:hover i {
+  transform: rotateZ(360deg);
 }
 
 .kc-brand--goto:hover {
@@ -445,7 +468,8 @@
 
 @media only screen and (max-width: 420px) {
 .kc-brand {
-  border-radius: 0 }}
+  border-radius: 0;
+}}
 
 /***** Brands *****/
 /******************************************************************************/
@@ -465,7 +489,8 @@
 
 #kc-about-us--section {
   max-width: 1024px;
-  padding: 0 30px 60px 30px }
+  padding: 0 30px 60px 30px;
+}
 
 /***** About us *****/
 /******************************************************************************/
@@ -482,7 +507,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  -padding: 150px 0 0 0 }
+  -padding: 150px 0 0 0;
+}
 
 #kc-contacts--background {
   background-image: url(/site/images/footer-1920.jpg);
@@ -497,7 +523,8 @@
   content: '';
   height: 5px;
   position: absolute;
-  width: 100% }
+  width: 100%;
+}
 
 
 #kc-contact-groups,
@@ -512,10 +539,12 @@
 .kc-address-group {
   display: flex;
   flex-direction: column;
-  padding-bottom: 30px }
+  padding-bottom: 30px;
+}
 
 .kc-contact-information {
-  margin-bottom: 30px }
+  margin-bottom: 30px;
+}
 
 .kc-contact-information,
 .kc-address-information,
@@ -525,7 +554,8 @@
   font-size: 15px;
   font-weight: 500;
   line-height: 25px;
-  letter-spacing: 2px }
+  letter-spacing: 2px;
+}
 
 .kc-contact-group--value,
 .kc-address-group--value {
@@ -533,39 +563,47 @@
   color: #007cff !important;
   font-size: 21px;
   line-height: 35px;
-  letter-spacing: 2px }
+  letter-spacing: 2px;
+}
 
 @media only screen and (max-width: 800px) {
 .kc-contact-group--value,
 .kc-address-group--value {
-    font-size: 15px }}
+    font-size: 15px;
+}}
 
 .kc-contact-group--value:hover,
 .kc-address-group--value:hover {
-  text-decoration: none }
+  text-decoration: none;
+}
 
 .kc-address-information {
-  max-width: 780px }
+  max-width: 780px;
+}
 
 #kc-social-media-links {
   display: flex;
   flex-direction: column;
   grid-gap: 24px;
-  padding-top: 60px }
+  padding-top: 60px;
+}
 
 .kc-social-media-link {
   display: flex;
-  text-decoration: none }
+  text-decoration: none;
+}
 
 .kc-social-media-link:hover {
   opacity: .5;
-  text-decoration: none }
+  text-decoration: none;
+}
 
 .kc-social-media-link i {
   display: flex;
   font-size: 24px;
   justify-content: center;
-  width: 32px }
+  width: 32px;
+}
 
 .kc-social-media-link span {
   display: block;
@@ -608,7 +646,8 @@
 #kc-rent-informations--content,
 #kc-vehicle-page--content {
   border-radius: 0;
-  width: 100% }}
+  width: 100%;
+}}
 
 #kc-vehicle-page--slider {
   border-radius: 10px;
@@ -620,7 +659,8 @@
 @media only screen and (max-width: 1024px) {
 #kc-vehicle-page--slider {
   border-radius: 0;
-  width: 100% }}
+  width: 100%;
+}}
 
 #kc-vehicle-page--slider li {
     align-self: center;
