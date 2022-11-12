@@ -52,9 +52,9 @@
 
  ; CSS paths
  :css-paths
- [{:uri "/site/css/site.css"               :js-build :site}
-  {:uri "/plugins/slider/carousel.css"     :js-build :site}
-  {:uri "/plugins/slider/carousel.min.css" :js-build :site}]
+ [{:uri "/site/css/site.css"                 :js-build :site}
+  {:uri "/plugins/carousel/carousel.css"     :js-build :site}
+  {:uri "/plugins/carousel/carousel.min.css" :js-build :site}]
 
  ; Favicon paths
  :favicon-paths

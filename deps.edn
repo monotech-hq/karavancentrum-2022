@@ -96,4 +96,4 @@
                                    :jar "karavancentrum.jar"
                                    :jar-type :uber
                                    :main-class boot-loader.backend.main}
-                     :js-builds [:site-ready]}}}} ;:app-ready]}}}}
+                     :js-builds [:site-ready :app-ready]}}}}

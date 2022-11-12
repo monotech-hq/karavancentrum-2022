@@ -53,7 +53,7 @@
 (defn- vehicle-lister-body
   []
   [item-lister/body :rental-vehicles.lister
-                    {:default-order-by :order/descending
+                    {:default-order-by :order/ascending
                      :order-key        :order
                      :items-path       [:rental-vehicles :lister/downloaded-items]
                      :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]

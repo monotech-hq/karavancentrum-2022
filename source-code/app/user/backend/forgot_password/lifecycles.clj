@@ -8,4 +8,5 @@
 (x.core/reg-lifecycles! ::lifecycles
   {:on-server-boot [:router/add-route! :user.forgot-password/route
                                        {:client-event   [:user.forgot-password/render!]
+                                        :js-build       :app
                                         :route-template "/@app-home/forgot-password"}]})

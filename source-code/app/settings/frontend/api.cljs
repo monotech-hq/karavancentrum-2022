@@ -20,7 +20,7 @@
               [app.settings.frontend.notifications.lifecycles]
               ;[app.settings.frontend.personal.lifecycles]
               [app.settings.frontend.privacy.lifecycles]
-              [app.settings.frontend.sales.lifecycles]
+              ;[app.settings.frontend.sales.lifecycles]
 
 
 

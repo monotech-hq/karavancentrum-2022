@@ -2,6 +2,7 @@
 
 (ns site.karavancentrum.pages.main-page.frontend.sections.renting
     (:require [elements.api                       :as elements]
+              [mid-fruits.vector                  :as vector]
               [re-frame.api                       :as r]
               [reagent.api                        :refer [lifecycles]]
               [site.karavancentrum.components.api :as site.components]))
@@ -49,22 +50,22 @@
   [name]
   [:p.kc-link.si-effect--underline.name name])
 
-(defn vehicle
-  [{:vehicle/keys [id link-name] :as vehicle}]
+(defn vehicle-card
+  [{:vehicle/keys [order id link-name] :as vehicle}]
   [:a {:class :kc-vehicle-card-wrapper :key id
        :href  (str "/berelheto-jarmuveink/" link-name)
        :style {:text-decoration "none"}}
       [site.components/vehicle-card vehicle]])
 
-(defn vehicles
+(defn vehicle-list
   []
   (if @(r/subscribe [:main-page.filters/no-filter-enabled?])
        [elements/label {:color   :muted
                         :content "Bérelhető járműveink megtekintéséhez válasszon járműkategóriát!"
                         :indent  {:horizontal :xxl :vertical :s}}]
-
        (let [vehicles @(r/subscribe [:site/vehicles])]
-            [:div#kc-vehicles--container (map vehicle vehicles)])))
+            (letfn [(f [vehicles vehicle] (conj vehicles [vehicle-card vehicle]))]
+                   [:div#kc-vehicles--container (reduce f [:<>] (vector/sort-items-by vehicles :vehicle/order))]))))
 
 (defn renting
   []
@@ -72,7 +73,7 @@
     {:component-did-mount (fn [] (r/dispatch [:main-page.filters/init!]))
      :reagent-render      (fn [] [:div#kc-renting [section-title]
                                                   [filters]
-                                                  [vehicles]
+                                                  [vehicle-list]
                                                   [:a {:class :kc-content-button :href "/berlesi-feltetelek"} "Bérlési feltételek"]])}))
 
 (defn view

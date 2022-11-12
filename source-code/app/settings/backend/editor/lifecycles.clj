@@ -12,10 +12,12 @@
                                                              :item-namespace  :user-settings}]
                                  [:router/add-route! :settings.editor/base-route
                                                      {:client-event   [:settings.editor/load-editor!]
+                                                      :js-build       :app
                                                       :restricted?    true
                                                       :route-template "/@app-home/settings"}]
                                  [:router/add-route! :settings.editor/extended-route
                                                      {:client-event   [:settings.editor/load-editor!]
+                                                      :js-build       :app
                                                       :restricted?    true
                                                       :route-parent   "/@app-home"
                                                       :route-template "/@app-home/settings/:view-id"}]]}})
