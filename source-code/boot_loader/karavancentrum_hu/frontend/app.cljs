@@ -16,8 +16,7 @@
               [app.user.frontend.api]
               [app.views.frontend.api]
               [app.website-config.frontend.api]
-              [app.website-content.frontend.api]
-              [app.website-post.frontend.api]))
+              [app.website-content.frontend.api]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
