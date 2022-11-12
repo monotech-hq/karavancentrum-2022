@@ -48,7 +48,7 @@
 
 (defn vehicle-name
   [name]
-  [:p.kc-link.si-effect--underline.name name])
+  [:p.kc-link.mt-effect--underline.name name])
 
 (defn vehicle-card
   [{:vehicle/keys [order id link-name] :as vehicle}]
