@@ -3,8 +3,8 @@
  :builds
  {:site        {:asset-path "/js/core"
                 :devtools {:watch-dir "resources"
-                           :after-load boot-loader.frontend.site/render-site!}
-                :modules {:site {:init-fn boot-loader.frontend.site/start-site!}}
+                           :after-load boot-loader.project-emulator.frontend.site/render-site!}
+                :modules {:site {:init-fn boot-loader.project-emulator.frontend.site/start-site!}}
                 :output-dir "resources/public/js/core"
                 ; BUG#0012
                 ; A CKEditor miatt szükséges az {:output-feature-set :es-next} beállítás!
@@ -13,14 +13,14 @@
 
   :app          {:asset-path "/js/core"
                  :devtools {:watch-dir "resources"
-                            :after-load boot-loader.frontend.app/render-app!}
-                 :modules {:app {:init-fn boot-loader.frontend.app/start-app!}}
+                            :after-load boot-loader.project-emulator.frontend.app/render-app!}
+                 :modules {:app {:init-fn boot-loader.project-emulator.frontend.app/start-app!}}
                  :output-dir "resources/public/js/core"
                  ; BUG#0012
                  :compiler-options {:infer-externs true :output-feature-set :es-next}
                  :target :browser}
 
-  :site-ready  {:modules {:site {:init-fn boot-loader.frontend.site/start-site!}}
+  :site-ready  {:modules {:site {:init-fn boot-loader.project-emulator.frontend.site/start-site!}}
                 ; BUG#0012
                 :compiler-options {:infer-externs true :output-feature-set :es-next}
                 :optimizations :advanced
@@ -28,7 +28,7 @@
                 :output-dir "resources/public/js/core"
                 :target :browser}
 
-  :app-ready    {:modules {:app {:init-fn boot-loader.frontend.app/start-app!}}
+  :app-ready    {:modules {:app {:init-fn boot-loader.project-emulator.frontend.app/start-app!}}
                  ; BUG#0012
                  :compiler-options {:infer-externs true :output-feature-set :es-next}
                  :optimizations :advanced

@@ -19,12 +19,12 @@
 
 {; Database details
  :database-host "127.0.0.1"
- :database-name "karavancentrum"
+ :database-name "karavancentrum-hu"
  :database-port 27017
  :docker-database-host "mongo"
 
  ; Resources details
-  :resources [{:path "/" :root "/karavancentrum"}
+  :resources [{:path "/" :root "/karavancentrum-hu"}
               {:path "/" :root "/public"}]
 
  ; Storage details
