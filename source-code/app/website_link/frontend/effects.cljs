@@ -23,9 +23,9 @@
 (r/reg-event-fx :website-link/open-website!
   (fn [{:keys [db]} _]
       (let [website-link (r x.core/get-app-config-item db :app-domain)]
-           {:fx [:environment/go-to! website-link]})))
+           {:fx [:environment/go-to! "/"]})))
 
 (r/reg-event-fx :website-link/open-website-in-new-page!
   (fn [{:keys [db]} _]
       (let [website-link (r x.core/get-app-config-item db :app-domain)]
-           {:fx [:environment/open-tab! website-link]})))
+           {:fx [:environment/open-tab! "/"]})))
