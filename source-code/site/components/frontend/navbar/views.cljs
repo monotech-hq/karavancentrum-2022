@@ -57,8 +57,8 @@
   ;   :threshold (px)(opt)}
   [component-id {:keys [class style threshold] :as component-props}]
   (let [threshold? (<= threshold @(r/subscribe [:environment/get-viewport-width]))]
-       [:<> [:div {:id :mt-navbar--sensor :style {:left 0 :position :absolute :top 0}}
-                  [scroll-sensor.views/component ::scroll-sensor navbar.helpers/scroll-f]]
+       [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f navbar.helpers/scroll-f
+                                                            :style {:left "0" :position "absolute" :top "0"}}]
             [:div {:id :mt-navbar :class class :style style
                    :data-profile (if threshold? :desktop :mobile)}
                   [navbar-logo component-id component-props]

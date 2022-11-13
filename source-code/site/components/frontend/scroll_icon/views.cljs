@@ -13,8 +13,8 @@
   ;  {:color (string)(opt)
   ;   :style (map)}
   [_ {:keys [color style]}]
-  [:<> [:div {:id :mt-scroll-icon--sensor :style {:left 0 :position :absolute :top 0}}
-             [scroll-sensor.views/component ::scroll-sensor scroll-icon.helpers/scroll-f]]
+  [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f scroll-icon.helpers/scroll-f
+                                                       :style {:left 2 :position "absolute" :top "0"}}]
        [:div {:id :mt-scroll-icon :style style}
              [:div {:id :mt-scroll-icon--body :style {"--icon-color" (or color "white")}}]]])
 

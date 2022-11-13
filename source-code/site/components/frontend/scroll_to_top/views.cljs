@@ -15,8 +15,8 @@
   ;  {:color (string)(opt)
   ;   :style (map)}
   [_ {:keys [color style]}]
-  [:<> [:div {:id :mt-scroll-to-top--sensor :style {:left 0 :position :absolute :bottom 0}}
-             [scroll-sensor.views/component ::scroll-sensor scroll-to-top.helpers/scroll-f]]
+  [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f scroll-to-top.helpers/scroll-f
+                                                       :style {:left "0" :position "absolute" :bottom "0"}}]
        [:div {:id :mt-scroll-to-top :style style :on-click #(r/dispatch {:fx [:environment/reset-scroll-y!]})}
              [elements/icon ::scroll-to-top
                             {:color (or color "white")

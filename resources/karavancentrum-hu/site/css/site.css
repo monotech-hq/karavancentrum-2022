@@ -178,28 +178,88 @@
 }
 
 #kc-navbar--company-name-and-slogan {
+  align-items: center;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  transition: opacity .25s .25s;
+}
+
+#kc-navbar--company-name-and-slogan[data-hidden="true"] {
+  opacity: 0;
 }
 
 #kc-navbar--company-name {
-  text-transform: uppercase;
-  letter-spacing: 3.5px;
-  font-weight: 300;
-  font-size: 20px;
-  font-family: 'Poppins';
   color: #007cff;
+  font-family: 'Poppins';
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 3.5px;
+  line-height: 30px;
+  text-transform: uppercase;
 }
 
 #kc-navbar--company-slogan {
-  font-family: 'Dancing script';
-  letter-spacing: 2px;
-  font-size: 18px;
   color: #555;
+  font-family: 'Dancing script';
+  font-size: 18px;
   font-weight: 100;
+  letter-spacing: 2px;
   line-height: 26px;
+}
+
+#kc-hero--company-name-and-slogan {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 20%;
+  position: absolute;
+  top: 15vh;
+  transition: opacity .25s .25s;
+}
+
+[data-viewport-profile="xxs"] #kc-hero--company-name-and-slogan,
+[data-viewport-profile="xs"]  #kc-hero--company-name-and-slogan,
+[data-viewport-profile="s"]   #kc-hero--company-name-and-slogan {
+  left: 10%;
+}
+
+[data-viewport-profile="xxs"] #kc-hero--company-name,
+[data-viewport-profile="xs"]  #kc-hero--company-name,
+[data-viewport-profile="s"]   #kc-hero--company-name {
+  font-size: 25px;
+  line-height: 35px;
+}
+
+[data-viewport-profile="xxs"] #kc-hero--company-slogan,
+[data-viewport-profile="xs"]  #kc-hero--company-slogan,
+[data-viewport-profile="s"]   #kc-hero--company-slogan {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+#kc-hero--company-name-and-slogan[data-hidden="true"] {
+  opacity: 0;
+}
+
+#kc-hero--company-name {
+  color: #007cff;
+  font-family: 'Poppins';
+  font-size: 35px;
+  font-weight: 200;
+  letter-spacing: 3.5px;
+  line-height: 45px;
+  text-transform: uppercase;
+}
+
+#kc-hero--company-slogan {
+  color: #555;
+  font-family: 'Dancing script';
+  font-size: 30px;
+  font-weight: 100;
+  letter-spacing: 2px;
+  line-height: 40px;
 }
 
 /***** Hero *****/
@@ -289,11 +349,11 @@
 }
 
 .kc-vehicle-card {
-  border-radius: 10px;
-  width: 100%;
-  height: 360px;
   border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
   overflow: hidden;
+  width: 100%;
 }
 
 @media only screen and (max-width: 620px) {
@@ -302,17 +362,16 @@
 }}
 
 .kc-vehicle-card:hover .kc-vehicle-card--thumbnail {
-  height: 105%;
+  opacity: .8;
 }
 
 .kc-vehicle-card--thumbnail {
-  position: absolute;
-  height: 100%; width: 100%;
-  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  cursor: pointer;
-  transition: height .3s;
+  background-size: cover;
+  height: 360px;
+  transition: opacity .15s;
+  width: 100%;
 }
 
 .kc-vehicle-card--header {
@@ -371,7 +430,7 @@
 
 #kc-brands {
   align-items: center;
-  background-color: #e7edeb;
+  background-color: #cad6d2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -389,7 +448,7 @@
 
 .kc-brand {
   align-items: left;
-  background-color: #ffffff5c;
+  background-color: #ffffff9c;
   border: 1px solid #ddd;
   border-radius: 10px;
   display: flex;

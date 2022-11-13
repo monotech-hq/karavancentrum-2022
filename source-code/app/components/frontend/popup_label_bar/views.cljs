@@ -10,11 +10,11 @@
 (defn- popup-label-bar-label
   ; @param (keyword) bar-id
   ; @param (map) bar-props
-  ;  {:label (metamorphic-content)}
+  ;  {:label (metamorphic-content)(opt)}
   [_ {:keys [label]}]
-  [elements/label {:content     label
-                   :indent      {:horizontal :xs}
-                   :line-height :block}])
+  (if label [elements/label {:content     label
+                             :indent      {:horizontal :xs}
+                             :line-height :block}]))
 
 (defn- popup-secondary-button
   ; @param (keyword) bar-id
@@ -46,7 +46,8 @@
 (defn component
   ; @param (keyword)(opt) bar-id
   ; @param (map) bar-props
-  ;  {:primary-button (map)(opt)
+  ;  {:label (metamorphic-content)(opt)
+  ;   :primary-button (map)(opt)
   ;    {:label (metamorphic-content)
   ;     :on-click (metamorphic-even)}
   ;   :secondary-button (map)(opt)

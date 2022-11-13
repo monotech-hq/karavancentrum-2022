@@ -14,8 +14,8 @@
   ;   :links (map)
   ;   :style (map)}
   [_ {{:keys [facebook instagram linkedin]} :links :keys [color style]}]
-  [:<> [:div {:id :mt-follow-us--sensor :style {:left 0 :position :absolute :top 0}}
-             [scroll-sensor.views/component ::scroll-sensor follow-us.helpers/scroll-f]]
+  [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f follow-us.helpers/scroll-f
+                                                       :style {:left "0" :position "absolute" :top "0"}}]
        [:div {:id :mt-follow-us :style style}
              (if facebook  [:a {:href facebook  :target "_blank"} [:i.fab.fa-facebook  {:style {:color (or color "white")}}]])
              (if instagram [:a {:href instagram :target "_blank"} [:i.fab.fa-instagram {:style {:color (or color "white")}}]])

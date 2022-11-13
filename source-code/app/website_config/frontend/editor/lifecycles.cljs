@@ -11,10 +11,10 @@
                                                             :icon-color "#8655b1"
                                                             :label      :website-config
                                                             :on-click   [:router/go-to! "/@app-home/website-config"]
-                                                            :horizontal-weight 2}]
+                                                            :horizontal-weight 3}]
                               [:home.sidebar/add-menu-item! {:group-name :website
                                                              :icon       :tune
                                                              :icon-color "#8655b1"
                                                              :label      :website-config
                                                              :on-click   [:router/go-to! "/@app-home/website-config"]
-                                                             :vertical-weight 2}]]}})
+                                                             :vertical-weight 3}]]}})

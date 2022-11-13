@@ -15,6 +15,12 @@
   ;      :on-click (metamorphic-event)(opt)
   ;      :placeholder (metamorphic-content)(opt)}]
   ;   :placeholder (metamorphic-content)(opt)}
+  ;
+  ; @usage
+  ;  [:components.context-menu/render-menu! {...}]
+  ;
+  ; @usage
+  ;  [:components.context-menu/render-menu! :my-menu {...}]
   [r/event-vector<-id]
   (fn [{:keys [db]} [_ menu-id menu-props]]
       [:ui/render-popup! :components.context-menu/view

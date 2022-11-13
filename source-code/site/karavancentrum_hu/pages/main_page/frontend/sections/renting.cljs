@@ -60,9 +60,10 @@
 (defn vehicle-list
   []
   (if @(r/subscribe [:main-page.filters/no-filter-enabled?])
-       [elements/label {:color   :muted
-                        :content "Bérelhető járműveink megtekintéséhez válasszon járműkategóriát!"
-                        :indent  {:horizontal :xxl :vertical :s}}]
+       [elements/text {:color   :muted
+                       :content "Bérelhető járműveink megtekintéséhez válasszon járműkategóriát!"
+                       :horizontal-align :center
+                       :indent  {:horizontal :xxl :vertical :s}}]
        (let [vehicles @(r/subscribe [:site/vehicles])]
             (letfn [(f [vehicles vehicle] (conj vehicles [vehicle-card vehicle]))]
                    [:div#kc-vehicles--container (reduce f [:<>] (vector/sort-items-by vehicles :vehicle/order))]))))

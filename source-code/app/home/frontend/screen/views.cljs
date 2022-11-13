@@ -113,10 +113,10 @@
   ; XXX#0091
   ; Az azonos menu-group csoportban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
-  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items name])]
+  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items name])] 
        (if (vector/nonempty? group-items)
            [common/surface-box {:content [:div {:style {:display "grid" :grid-row-gap "12px" :padding "12px 0"
-                                                        :grid-template-columns "repeat(auto-fill, minmax(240px, 1fr))"}}
+                                                        :grid-template-columns "repeat(auto-fill, minmax(260px, 1fr))"}}
                                                (let [weight-groups (group-by :horizontal-weight group-items)]
                                                     (letfn [(f [group-list horizontal-weight]
                                                                (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]

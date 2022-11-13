@@ -11,10 +11,10 @@
                                                             :icon-color "#8655b1"
                                                             :label      :website-content
                                                             :on-click   [:router/go-to! "/@app-home/website-content"]
-                                                            :horizontal-weight 1}]
+                                                            :horizontal-weight 2}]
                               [:home.sidebar/add-menu-item! {:group-name :website
                                                              :icon       :wysiwyg
                                                              :icon-color "#8655b1"
                                                              :label      :website-content
                                                              :on-click   [:router/go-to! "/@app-home/website-content"]
-                                                             :vertical-weight 1}]]}})
+                                                             :vertical-weight 2}]]}})
