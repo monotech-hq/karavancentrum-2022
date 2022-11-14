@@ -10,13 +10,9 @@
               [app.views.frontend.api]
 
               ; Site modules
-
+              [site.karavancentrum-hu.wrapper.views :as karavancentrum-hu.wrapper.views] ; Why?
              ;[site.karavancentrum-hu.frontend.api :as karavancentrum-hu]
-
-              ; Why?
-              [site.karavancentrum-hu.wrapper.views :as karavancentrum-hu.wrapper.views]
-              ; Why?
-              [site.karavancentrum-hu.pages.main-page.frontend.api]))
+              [site.karavancentrum-hu.pages.main-page.frontend.api])) ; Why?
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -7,6 +7,7 @@
 
               ; App modules
               [app.common.frontend.api]
+              [app.components.frontend.api]
               [app.contents.frontend.api]
               [app.home.frontend.api]
               [app.pages.frontend.api]
@@ -21,7 +22,7 @@
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
- 
+
 (defn- app-structure
   [ui-structure]
   [:<> [ui-structure]
