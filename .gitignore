@@ -13,6 +13,7 @@ environment/media/thumbnails/*
 
 # config files
 resources/public/x.app-build.edn
+environment/x.install-log.edn
 environment/website-config.edn
 environment/website-content.edn
 
