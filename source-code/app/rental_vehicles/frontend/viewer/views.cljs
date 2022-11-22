@@ -30,7 +30,7 @@
                                  {:color       :muted
                                   :disabled?   viewer-disabled?
                                   :indent      {:top :m :vertical :s}
-                                  :items       [vehicle-description]
+                                  :item-link   vehicle-description
                                   :placeholder "-"}]))
 
 (defn- vehicle-description-box

@@ -5,6 +5,7 @@
               [app.contents.backend.editor.resolvers]
               [app.contents.backend.handler.lifecycles]
               [app.contents.backend.handler.resolvers]
+              [app.contents.backend.installer.side-effects]
               [app.contents.backend.lister.lifecycles]
               [app.contents.backend.lister.mutations]
               [app.contents.backend.lister.resolvers]

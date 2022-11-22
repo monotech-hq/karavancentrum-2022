@@ -30,4 +30,10 @@
    "Kimagaslóan jó ár-érték arányú járművek a több, mint 40 éves lakóautó gyártási tapasztalattal rendelkező olasz Rimor cégtől. 7 alkóvos, 6 részintegrált, 2 kempingbusz modell" 
    :icon 
    {:media/id "63545eb8e04104725c62f3ca" 
-    :media/uri "/media/storage/63545eb8e04104725c62f3ca.png"}}]}
+    :media/uri "/media/storage/63545eb8e04104725c62f3ca.png"}}] 
+ :rent-informations {:content/id "637ce0fad0a970a8c746aedc"} 
+ :webshop-link "karaven" 
+ :contacts-data-information {:content/id "637d06f9b7298cbaddbcc15e"} 
+ :address-data-information {:content/id "637d06f9b7298cbaddbcc15e"} 
+ :about-us-section {:content/id "637d06f9b7298cbaddbcc15e"} 
+ :about-us-page {:content/id "637d06f9b7298cbaddbcc15e"}}

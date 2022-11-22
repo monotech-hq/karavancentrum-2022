@@ -1,6 +1,7 @@
 
 (ns app.common.frontend.item-lister.views
-    (:require [app.common.frontend.item-lister.prototypes :as item-lister.prototypes]
+    (:require [app.common.frontend.item-lister.helpers    :as item-lister.helpers]
+              [app.common.frontend.item-lister.prototypes :as item-lister.prototypes]
               [app.components.frontend.api                :as components]
               [elements.api                               :as elements]
               [engines.item-lister.api                    :as item-lister]
@@ -332,7 +333,7 @@
                      {:items            downloaded-items
                       :item-id-f        :id
                       :item-element     [list-item-element lister-id lister-props]
-                      :on-order-changed (fn [_ _ %] (r/dispatch-sync [:x.db/set-item! items-path %]))}]))
+                      :on-order-changed (item-lister.helpers/on-order-changed-f lister-id lister-props)}]))
 
 (defn- item-list-body
   ; @param (keyword) lister-id
@@ -371,6 +372,9 @@
   ; @param (map) lister-props
   ;  {:item-list-header (component or symbol)(opt)
   ;   :list-item-element (component or symbol)(opt)
+  ;   :on-order-changed (metamorphic-event)(opt)
+  ;    Az esemény utolsó paraméterként megkapja az újrarendezett elemeket.
+  ;    W/ {:sortable? true}
   ;   :sortable? (boolean)(opt)
   ;    Default: false}
   ;

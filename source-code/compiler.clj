@@ -4,7 +4,7 @@
               [io.api                      :as io]
               [shadow.cljs.devtools.server :as server]
               [shadow.cljs.devtools.api    :as shadow]
-              [x.server-core.api           :as core])
+              [x.core.api                  :as x.core])
     (:gen-class))
 
 ;; ----------------------------------------------------------------------------
@@ -18,12 +18,12 @@
 
 (defn compile-app!
   ; @param (map) compiler-props
-  ; {:java-config (map)
-  ;   {:aot (boolean)
-  ;    :jar (string)
-  ;    :jar-type (keyword)
-  ;    :main-class (class)}
-  ;  :js-builds (keywords in vector)}
+  ;  {:java-config (map)
+  ;    {:aot (boolean)
+  ;     :jar (string)
+  ;     :jar-type (keyword)
+  ;     :main-class (class)}
+  ;   :js-builds (keywords in vector)}
   ;
   ; @usage
   ;  (compiler/compile-app! {:java-config {...}
@@ -34,4 +34,4 @@
          (println "Compiling:" js-build)
          (shadow/release js-build))
   (hf/jar java-config)
-  (core/->app-built))
+  (x.core/->app-built))

@@ -43,31 +43,28 @@
 
 (defn- vehicle-list-header
   []
-  (let [current-order-by @(r/subscribe [:item-lister/get-current-order-by :rental-vehicles.lister])]
-       [components/item-list-header ::vehicle-list-header
-                                    {:cells [{:width 12}
-                                             {:width 24}
-                                             {:width 12}
-                                             {:width 84}
-                                             {:width 12}
-                                             {:label :name :order-by-key :name
-                                              :on-click [:item-lister/order-items! :rental-vehicles.lister :name]}
-                                             {:width 12}
-                                             {:label :modified :width 100 :order-by-key :modified-at
-                                              :on-click [:item-lister/order-items! :rental-vehicles.lister :modified-at]}
-                                             {:width 12}
-                                             {:width 100}
-                                             {:width 12}]
-                                     :border :bottom
-                                     :order-by current-order-by}]))
+  [components/item-list-header ::vehicle-list-header
+                               {:cells [{:width 12}
+                                        {:width 24}
+                                        {:width 12}
+                                        {:width 84}
+                                        {:width 12}
+                                        {:label :name}
+                                        {:width 12}
+                                        {:label :modified :width 100}
+                                        {:width 12}
+                                        {:width 100}
+                                        {:width 12}]
+                                :border :bottom}])
 
 (defn- vehicle-lister
   []
   [common/item-lister :rental-vehicles.lister
-                      {:default-order-by  :modified-at/descending
+                      {:default-order-by  :order/ascending
                        :list-item-element #'vehicle-list-item
                        :item-list-header  #'vehicle-list-header
                        :items-path        [:rental-vehicles :lister/downloaded-items]
+                       :on-order-changed  [:item-lister/reorder-items! :rental-vehicles.lister]
                        :sortable?         true}])
 
 (defn- body
