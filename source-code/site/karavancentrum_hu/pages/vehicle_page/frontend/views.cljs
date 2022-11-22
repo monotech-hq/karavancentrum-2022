@@ -24,7 +24,7 @@
 
 (defn vehicle-content
   [{:vehicle/keys [description]}]
-  [:div#kc-vehicle-page--content [contents/content-preview {:items [description]}]])
+  [:div#kc-vehicle-page--content [contents/content-preview {:item-link description}]])
 
 (defn vehicle-view
   [vehicle]

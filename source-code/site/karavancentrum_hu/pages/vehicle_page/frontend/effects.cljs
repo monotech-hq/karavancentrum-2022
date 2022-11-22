@@ -5,7 +5,7 @@
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
-
+ 
 (r/reg-event-fx :vehicle-page/render!
   [:x.ui/render-surface! :vehicle-page/view
                          {:on-unmount [:vehicle-page/clear-selected-vehicle!]

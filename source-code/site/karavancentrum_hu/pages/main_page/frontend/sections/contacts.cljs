@@ -11,7 +11,7 @@
 (defn contact-information
   []
   (let [contacts-data-information @(r/subscribe [:x.db/get-item [:site :content :contacts-data-information]])]
-       [:div.kc-contact-information [contents/content-preview {:items [contacts-data-information] :color :default :font-size :inherit :font-weight :inherit}]]))
+       [:div.kc-contact-information [contents/content-preview {:item-link contacts-data-information :color :default :font-size :inherit :font-weight :inherit}]]))
 
 (defn contact-group
   [{:keys [label phone-numbers email-addresses]}]
@@ -34,7 +34,7 @@
 (defn address-information
   []
   (let [address-data-information @(r/subscribe [:x.db/get-item [:site :content :address-data-information]])]
-       [:div.kc-address-information [contents/content-preview {:items [address-data-information] :color :default :font-size :inherit :font-weight :inherit}]]))
+       [:div.kc-address-information [contents/content-preview {:item-link address-data-information :color :default :font-size :inherit :font-weight :inherit}]]))
 
 (defn address-group
   [{:keys [label company-address]}]

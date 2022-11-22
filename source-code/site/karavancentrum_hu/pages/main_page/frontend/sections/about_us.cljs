@@ -13,7 +13,7 @@
   (let [page-visible?  (ratom false)
         about-us-page @(r/subscribe [:x.db/get-item [:site :content :about-us-page]])]
        (fn [] [:<> [:div {:id :kc-about-us--section :style {:display (if-not @page-visible? "none" "block")}}
-                         [contents/content-preview {:items     [about-us-page]
+                         [contents/content-preview {:item-link about-us-page
                                                     :style     {:color "#333"}
                                                     :font-size :m}]]
                    [:div {:class :kc-content-button :on-click #(swap! page-visible? not)}
@@ -24,7 +24,7 @@
   (let [about-us-section @(r/subscribe [:x.db/get-item [:site :content :about-us-section]])]
        [:div {:id :kc-about-us--section}
              [contents/content-preview {:font-size :m
-                                        :items     [about-us-section]
+                                        :item-link about-us-section
                                         :style     {:color "#333"}}]]))
 
 (defn about-us

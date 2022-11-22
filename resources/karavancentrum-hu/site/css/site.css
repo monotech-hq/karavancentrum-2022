@@ -566,7 +566,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  -padding: 150px 0 0 0;
+  padding: 0 10px;
 }
 
 #kc-contacts--background {
@@ -588,6 +588,7 @@
 
 #kc-contact-groups,
 #kc-address-groups {
+  max-width: 800px;
 }
 
 #kc-contact-groups {
@@ -609,7 +610,6 @@
 .kc-address-information,
 .kc-contact-group--label,
 .kc-address-group--label {
-  padding: 0 6px;
   font-size: 15px;
   font-weight: 500;
   line-height: 25px;
@@ -618,7 +618,6 @@
 
 .kc-contact-group--value,
 .kc-address-group--value {
-  padding: 0 6px;
   color: #007cff !important;
   font-size: 21px;
   line-height: 35px;
@@ -628,7 +627,7 @@
 @media only screen and (max-width: 800px) {
 .kc-contact-group--value,
 .kc-address-group--value {
-    font-size: 15px;
+  font-size: 15px;
 }}
 
 .kc-contact-group--value:hover,
@@ -637,7 +636,6 @@
 }
 
 .kc-address-information {
-  max-width: 780px;
 }
 
 #kc-social-media-links {
