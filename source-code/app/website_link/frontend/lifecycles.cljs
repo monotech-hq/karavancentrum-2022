@@ -1,11 +1,9 @@
 
 (ns app.website-link.frontend.lifecycles
-    (:require [x.app-core.api :as x.core]))
+    (:require [x.core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
-
-(println "xx")
 
 (x.core/reg-lifecycles! ::lifecycles
   {:on-app-boot {:dispatch-n [[:home.screen/add-menu-item! {:group-name :website

@@ -1,11 +1,11 @@
 
 (ns app.contents.backend.handler.resolvers
     (:require [app.common.backend.api                :as common]
+              [candy.api                             :refer [return]]
               [com.wsscode.pathom3.connect.operation :refer [defresolver]]
-              [mid-fruits.candy                      :refer [return]]
               [mongo-db.api                          :as mongo-db]
               [pathom.api                            :as pathom]
-              [x.server-user.api                     :as x.user]))
+              [x.user.api                         :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

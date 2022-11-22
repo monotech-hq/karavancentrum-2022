@@ -1,9 +1,9 @@
 
 (ns app.home.frontend.screen.events
     (:require [app.home.frontend.screen.prototypes :as screen.prototypes]
-              [mid-fruits.map                      :refer [dissoc-in]]
-              [mid-fruits.vector                   :as vector]
-              [re-frame.api                        :as r]))
+              [map.api                             :refer [dissoc-in]]
+              [re-frame.api                        :as r]
+              [vector.api                          :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -46,5 +46,5 @@
 ; @usage
 ;  [:home.screen/add-menu-item! {:label    "My item"
 ;                                :icon     :festival
-;                                :on-click [:router/go-to! "/@app-home/my-item"]}]
+;                                :on-click [:x.router/go-to! "/@app-home/my-item"]}]
 (r/reg-event-db :home.screen/add-menu-item! add-menu-item!)

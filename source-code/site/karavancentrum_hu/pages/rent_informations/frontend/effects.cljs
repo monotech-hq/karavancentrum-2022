@@ -7,8 +7,8 @@
 ;; -----------------------------------------------------------------------------
 
 (r/reg-event-fx :rent-informations/render!
-  [:ui/render-surface! :rent-informations/view
-                       {:content #'views/view}])
+  [:x.ui/render-surface! :rent-informations/view
+                         {:content #'views/view}])
 
 (r/reg-event-fx :rent-informations/load!
   {:dispatch-n [[:rent-informations/render!]]})

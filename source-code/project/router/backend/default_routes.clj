@@ -1,7 +1,7 @@
 
 (ns project.router.backend.default-routes
-    (:require [project.ui.backend.api :as ui]
-              [server-fruits.http     :as http]))
+    (:require [http.api               :as http]
+              [project.ui.backend.api :as ui]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -15,5 +15,5 @@
 (def NOT-ACCEPTABLE #(http/html-wrap {:body (ui/main %) :status 404}))
 
 ; @constant (function)
-;  No route matched – {:status 200} handled at client-side
+;  No route matched
 (def NOT-FOUND #(http/html-wrap {:body (ui/main %) :status 200}))

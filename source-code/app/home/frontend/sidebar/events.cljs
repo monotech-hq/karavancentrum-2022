@@ -1,8 +1,8 @@
 
 (ns app.home.frontend.sidebar.events
     (:require [app.home.frontend.sidebar.prototypes :as sidebar.prototypes]
-              [mid-fruits.vector                    :as vector]
-              [re-frame.api                         :as r]))
+              [re-frame.api                         :as r]
+              [vector.api                           :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -30,5 +30,5 @@
 ; @usage
 ;  [:home.sidebar/add-menu-item! {:label    "My item"
 ;                                 :icon     :festival
-;                                 :on-click [:router/go-to! "/@app-home/my-item"]}]
+;                                 :on-click [:x.router/go-to! "/@app-home/my-item"]}]
 (r/reg-event-db :home.sidebar/add-menu-item! add-menu-item!)

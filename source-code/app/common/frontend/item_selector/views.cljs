@@ -1,18 +1,17 @@
 
 (ns app.common.frontend.item-selector.views
-    (:require [app.common.frontend.item-lister.views :as item-lister.views]
-              [elements.api                          :as elements]))
+    (:require [app.components.frontend.api :as components]
+              [elements.api                :as elements]
+              [engines.item-lister.api     :as item-lister]
+              [re-frame.api                :as r]))
 
-;; ----------------------------------------------------------------------------
+;; -- Footer components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn all-item-selected-button
   ; @param (keyword) selector-id
   ; @param (map) footer-props
   ;  {}
-  ;
-  ; @usage
-  ;  [all-item-selected-button :my-selector {...}]
   [_ {:keys []}]
   [elements/toggle ::all-item-selected-button
                    {:disabled? false
@@ -25,9 +24,6 @@
   ; @param (keyword) selector-id
   ; @param (map) footer-props
   ;  {}
-  ;
-  ; @usage
-  ;  [no-item-selected-button :my-selector {...}]
   [_ {:keys []}]
   [elements/toggle ::no-item-selected-button
                    {:disabled? false
@@ -40,10 +36,7 @@
   ; @param (keyword) selector-id
   ; @param (map) footer-props
   ;  {}
-  ;
-  ; @usage
-  ;  [some-item-selected-button :my-selector {...}]
-  [_ {:keys [on-s]}]
+  [_ {:keys []}]
   [elements/toggle ::some-item-selected-button
                    {:disabled? false
                     :indent    {:horizontal :xxs :right :xs}
@@ -55,9 +48,6 @@
   ; @param (keyword) selector-id
   ; @param (map) footer-props
   ;  {}
-  ;
-  ; @usage
-  ;  [handle-selection-button :my-selector {...}]
   [selector-id {:keys [all-downloaded-item-selected? any-downloaded-item-selected?] :as footer-props}]
   (cond all-downloaded-item-selected? [all-item-selected-button  selector-id footer-props]
         any-downloaded-item-selected? [some-item-selected-button selector-id footer-props]
@@ -69,9 +59,6 @@
   ; @param (map) footer-props
   ;  {:on-discard-selection (metamorphic-event)
   ;   :selected-item-count (integer)}
-  ;
-  ; @usage
-  ;  [discard-selection-button :my-selector {...}]
   [_ {:keys [on-discard-selection selected-item-count]}]
   [elements/button ::discard-selection-button
                    {:disabled?     (< selected-item-count 1)
@@ -106,9 +93,6 @@
   ;    Default: false
   ;   :search-field-placeholder (metamorphic-content)(opt)
   ;   :search-keys (keywords in vector)}
-  ;
-  ; @usage
-  ;  [search-items-field :my-selector {...}]
   [selector-id {:keys [disabled? search-field-placeholder search-keys]}]
   (let [search-event [:item-lister/search-items! selector-id {:search-keys search-keys}]]
        [:div {:style {:flex-grow 1}}
@@ -126,9 +110,6 @@
   ;  {:disabled? (boolean)(opt)
   ;    Default: false
   ;   :order-by-options (namespaced keywords in vector)}
-  ;
-  ; @usage
-  ;  [order-by-icon-button :my-selector {...}]
   [selector-id {:keys [disabled? order-by-options]}]
   [elements/icon-button ::order-by-icon-button
                         {:border-radius :s
@@ -153,14 +134,41 @@
                 {:content [:<> [search-items-field   selector-id bar-props]
                                [order-by-icon-button selector-id bar-props]]}])
 
-;; -- Ghost-view components ---------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn item-selector-ghost-element
+(defn- item-list-body
   ; @param (keyword) selector-id
-  ; @param (map) element-props
+  ; @param (map) body-props
+  ;  {:list-item-element (component or symbol)}
+  [selector-id {:keys [list-item-element]}]
+  (let [downloaded-items @(r/subscribe [:item-lister/get-downloaded-items selector-id])
+        selector-props   @(r/subscribe [:x.db/get-item [:engines :engine-handler/meta-items selector-id]])]
+       (letfn [(f [item-list item-dex item]
+                  (conj item-list [list-item-element selector-id selector-props item-dex item]))]
+              (reduce-kv f [:<>] downloaded-items))))
+
+(defn- item-list
+  ; @param (keyword) selector-id
+  ; @param (map) body-props
+  [selector-id body-props]
+  ; BUG#7610
+  ; A {width: 100%} tulajdonságú table elem popup elemen megjelenítve, megnövelte
+  ; a popup elem szélességét!
+  [:div {:style {:max-width "var( --content-width-m )"}}
+        [components/item-list-table selector-id
+                                    {:body [item-list-body selector-id body-props]}]])
+
+(defn item-selector-body
+  ; @param (keyword) selector-id
+  ; @param (map) body-props
+  ;  {:list-item-element (component or symbol)}
   ;
   ; @usage
-  ;  [item-selector-ghost-element :my-selector {...}]
-  [selector-id view-props]
-  [item-lister.views/item-lister-ghost-element selector-id view-props])
+  ;  [item-selector-body :my-selector {...}]
+  ;
+  ; @usage
+  ;  (defn my-list-item-element [selector-id selector-props item-dex item] ...)
+  ;  [item-selector-body :my-selector {:list-item-element #'my-list-item-element}]
+  [selector-id body-props]
+  [item-list selector-id body-props])

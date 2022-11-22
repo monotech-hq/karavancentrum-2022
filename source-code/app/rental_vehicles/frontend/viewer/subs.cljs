@@ -1,8 +1,8 @@
 
 (ns app.rental-vehicles.frontend.viewer.subs
-    (:require [mid-fruits.normalize :as normalize]
-              [re-frame.api         :as r :refer [r]]
-              [x.app-router.api     :as x.router]))
+    (:require [normalize.api :as normalize]
+              [re-frame.api  :as r :refer [r]]
+              [x.router.api  :as x.router]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 
 (ns app.contents.backend.handler.routes
-    (:require [mongo-db.api       :as mongo-db]
-              [server-fruits.http :as http]
-              [x.server-user.api  :as x.user]))
+    (:require [http.api     :as http]
+              [mongo-db.api :as mongo-db]
+              [x.user.api   :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

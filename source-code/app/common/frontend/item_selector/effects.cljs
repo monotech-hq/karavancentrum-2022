@@ -4,7 +4,7 @@
               [app.common.frontend.item-selector.prototypes :as item-selector.prototypes]
               [app.common.frontend.item-selector.subs       :as item-selector.subs]
               [engines.item-lister.api                      :as item-lister]
-              [mid-fruits.random                            :as random]
+              [random.api                                   :as random]
               [re-frame.api                                 :as r :refer [r]]))
 
 ;; ----------------------------------------------------------------------------
@@ -18,9 +18,9 @@
   ;   :export-item-f (function)(opt)
   ;    Default: (fn [item-id item item-count] item-id)
   ;   :import-count-f (function)(opt)
-  ;    Default: (fn [_] 1)
+  ;    Default: (fn [{:keys [count] :as item-link}] count)
   ;   :import-id-f (function)(opt)
-  ;    Default: (fn [item-id] item-id)
+  ;    Default: (fn [{:keys [id] :as item-link}] id)
   ;   :multi-select? (boolean)(opt)
   ;   :on-change (metamorphic-event)(opt)
   ;    Az esemény utolsó paraméterként megkapja a kiválasztott elem(ek)et.

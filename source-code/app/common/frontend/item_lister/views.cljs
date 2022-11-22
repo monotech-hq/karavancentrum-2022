@@ -1,16 +1,17 @@
 
 (ns app.common.frontend.item-lister.views
-    (:require [app.common.frontend.item-editor.views    :as item-editor.views]
-              [app.components.frontend.surface-button.views :as surface-button.views]
-              [css.api                                  :as css]
-              [dom.api                                  :as dom]
-              [elements.api                             :as elements]
-              [mid-fruits.keyword                       :as keyword]
-              [logical.api                              :refer [nor]]
-              [math.api                                 :as math]
-              [mid-fruits.random                        :as random]
-              [re-frame.api                             :as r]
-              [x.app-components.api                     :as x.components]))
+    (:require [app.common.frontend.item-lister.prototypes :as item-lister.prototypes]
+              [app.components.frontend.api                :as components]
+              [elements.api                               :as elements]
+              [engines.item-lister.api                    :as item-lister]
+              [keyword.api                                :as keyword]
+              [logical.api                                :refer [nor]]
+              [random.api                                 :as random]
+              [re-frame.api                               :as r]
+              [x.components.api                           :as x.components]
+
+              ; TEMP
+              [plugins.dnd-kit.api :as dnd-kit]))
 
 ;; -- List-item components ----------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -110,7 +111,7 @@
   ; @param (keyword)(opt) structure-id
   ; @param (map) structure-props
   ;  {:cells (components in vector)
-  ;   :separator (keyword)(opt)
+  ;   :border (keyword)(opt)
   ;    :bottom, :top, :both}
   ;
   ; @usage
@@ -146,7 +147,7 @@
   ; @usage
   ;  [item-lister-search-field :my-lister {...}]
   [lister-id {:keys [disabled? placeholder search-keys]}]
-  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])
+  (let [viewport-small? @(r/subscribe [:x.environment/viewport-small?])
         search-event     [:item-lister/search-items! lister-id {:search-keys search-keys}]]
        [elements/search-field ::item-lister-search-field
                               {:autoclear?    true
@@ -169,12 +170,10 @@
   (let [search-term    @(r/subscribe [:item-lister/get-meta-item      lister-id :search-term])
         all-item-count @(r/subscribe [:item-lister/get-all-item-count lister-id])
         description     (x.components/content {:content :search-results-n :replacements [all-item-count]})]
-       [elements/label ::item-lister-search-description
-                       {:color       :highlight
-                        :content     (if (nor disabled? (empty? search-term)) description)
-                        :font-size   :xxs
-                        :indent      {:top :m :left :xs}
-                        :line-height :block}]))
+       [components/surface-description {:content (if (nor disabled? (empty? search-term)) description)
+                                        :disabled?        disabled?
+                                        :horizontal-align :left
+                                        :indent           {:top :m :left :xs}}]))
 
 ;; -- Header components -------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -263,45 +262,13 @@
   ; @usage
   ;  [item-lister-wrapper :my-lister {...}]
   [lister-id {:keys [body header]}]
-  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])]
+  (let [viewport-small? @(r/subscribe [:x.environment/viewport-small?])]
        [:div {:style {:display "flex" :flex-direction "column-reverse"
                       :background-color "var( --fill-color )" :border "1px solid var( --border-color-highlight )"
                       :border-radius (if viewport-small? "0" "var( --border-radius-m )")}}
              [:div {:style {:width "100%" :overflow "hidden" :border-radius "0 0 var( --border-radius-m ) var( --border-radius-m )"}}
                    [x.components/content body]]
              [x.components/content header]]))
-
-;; -- Ghost-view components ---------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn item-lister-ghost-element
-  ; @param (keyword) lister-id
-  ; @param (map) element-props
-  ;
-  ; @usage
-  ;  [item-lister-ghost-element :my-lister {...}]
-  [_ {:keys []}]
-  [:div {:style {:padding "12px 12px" :width "100%"}}
-        [:div {:style {:display "flex" :flex-direction "column" :width "100%" :grid-row-gap "24px"}}
-              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
-              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]
-              [:div {:style {:flex-grow 1}} [elements/ghost {:height :l :indent {}}]]]])
-
-(defn item-lister-ghost-header
-  ; @param (keyword) lister-id
-  ; @param (map) header-props
-  ;
-  ; @usage
-  ;  [item-lister-ghost-header :my-lister {...}]
-  [_ {:keys []}]
-  [:div {:style {:padding "0 12px" :width "100%"}}
-        [:div {:style {:padding-bottom "6px" :width "240px"}}
-              [elements/ghost {:height :xl}]]
-        [:div {:style {:display "flex" :grid-column-gap "12px" :padding-top "6px"}}
-              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]
-              [:div {:style {:width "80px"}} [elements/ghost {:height :xs}]]]
-        [:div {:style {:width "100%" :padding-top "12px" :padding-bottom "48px"}}
-              [elements/ghost {:height :l}]]])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -315,13 +282,13 @@
   ; @usage
   ;  [item-lister-create-item-button :my-lister {...}]
   [_ {:keys [disabled? create-item-uri]}]
-  [surface-button.views/component ::item-lister-create-item-button
-                                  {:background-color "#5a4aff"
-                                   :color            "white"
-                                   :disabled?        disabled?
-                                   :icon             :add
-                                   :label            :add!
-                                   :on-click         [:router/go-to! create-item-uri]}])
+  [components/surface-button ::item-lister-create-item-button
+                             {:background-color "#5a4aff"
+                              :color            "white"
+                              :disabled?        disabled?
+                              :icon             :add
+                              :label            :add!
+                              :on-click         [:x.router/go-to! create-item-uri]}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -329,17 +296,103 @@
 (defn item-lister-download-info
   ; @param (keyword) lister-id
   ; @param (map) info-props
+  ;  {:disabled? (boolean)(opt)
+  ;    Default: false}
   ;
   ; @usage
   ;  [item-lister-download-info :my-lister {...}]
-  [lister-id _]
+  [lister-id {:keys [disabled?]}]
   (let [all-item-count        @(r/subscribe [:item-lister/get-all-item-count        lister-id])
         downloaded-item-count @(r/subscribe [:item-lister/get-downloaded-item-count lister-id])
-        content {:content :npn-items-downloaded :replacements [downloaded-item-count all-item-count]}]
-       [elements/horizontal-polarity ::item-lister-download-info
-                                     {:middle-content [elements/label ::item-lister-download-info-label
-                                                                      {:color       :highlight
-                                                                       :content     content
-                                                                       :font-size   :xxs
-                                                                       :indent      {:horizontal :xxs}
-                                                                       :line-height :block}]}]))
+        download-info          {:content :npn-items-downloaded :replacements [downloaded-item-count all-item-count]}]
+       [components/surface-description {:content   download-info
+                                        :disabled? disabled?}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- static-item-list
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  ;  {:list-item-element (component or symbol)}
+  [lister-id {:keys [list-item-element] :as lister-props}]
+  (let [downloaded-items @(r/subscribe [:item-lister/get-downloaded-items lister-id])]
+       (letfn [(f [item-list item-dex item]
+                  (conj item-list [list-item-element lister-id lister-props item-dex item]))]
+              (reduce-kv f [:<>] downloaded-items))))
+
+(defn- sortable-item-list
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  ;  {:list-item-element (component or symbol)
+  ;   :items-path (vector)}
+  [lister-id {:keys [items-path list-item-element] :as lister-props}]
+  (let [downloaded-items @(r/subscribe [:item-lister/get-downloaded-items lister-id])]
+       [dnd-kit/body lister-id
+                     {:items            downloaded-items
+                      :item-id-f        :id
+                      :item-element     [list-item-element lister-id lister-props]
+                      :on-order-changed (fn [_ _ %] (r/dispatch-sync [:x.db/set-item! items-path %]))}]))
+
+(defn- item-list-body
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  ;  {:sortable? (boolean)(opt)}
+  [lister-id {:keys [sortable?] :as lister-props}]
+  (if sortable? [sortable-item-list lister-id lister-props]
+                [static-item-list   lister-id lister-props]))
+
+(defn- item-list-header
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  ;  {:item-list-header (component or symbol)(opt)}
+  [lister-id {:keys [item-list-header] :as lister-props}]
+  (if item-list-header [item-list-header lister-id lister-props]))
+
+(defn- item-list
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  [lister-id lister-props]
+  [components/item-list-table lister-id
+                              {:body   [item-list-body   lister-id lister-props]
+                               :header [item-list-header lister-id lister-props]}])
+
+(defn- item-lister
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  [lister-id lister-props]
+  (let [lister-props (assoc lister-props :error-element [components/error-content {:error :the-content-you-opened-may-be-broken}]
+                                         :ghost-element [components/ghost-view    {:layout :item-list :item-count 3}]
+                                         :list-element  [item-list lister-id lister-props])]
+       [item-lister/body lister-id lister-props]))
+
+(defn element
+  ; @param (keyword)(opt) lister-id
+  ; @param (map) lister-props
+  ;  {:item-list-header (component or symbol)(opt)
+  ;   :list-item-element (component or symbol)(opt)
+  ;   :sortable? (boolean)(opt)
+  ;    Default: false}
+  ;
+  ; @usage
+  ;  [item-lister {...}]
+  ;
+  ; @usage
+  ;  [item-lister :my-item-lister {...}]
+  ;
+  ; @usage
+  ;  (defn my-item-element [lister-id lister-props item-dex item] ...)
+  ;  [item-lister :my-item-lister {:item-element  #'my-item-element}]
+  ;
+  ; @usage
+  ;  (defn my-item-list-header  [lister-id lister-props] ...)
+  ;  (defn my-list-item-element [lister-id lister-props item-dex item drag-props] ...)
+  ;  [item-lister :my-item-lister {:item-list-header  #'my-item-list-header
+  ;                                :list-item-element #'my-list-item-element
+  ;                                :sortable?         true}]
+  ([lister-props]
+   [element (random/generate-keyword) lister-props])
+
+  ([lister-id lister-props]
+   (let [];lister-props (item-lister.prototypes/lister-props-prototype lister-id lister-props)
+        [item-lister lister-id lister-props])))

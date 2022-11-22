@@ -3,9 +3,9 @@
     (:require [app.home.frontend.handler.config :as handler.config]
               [elements.api                     :as elements]
               [layouts.sidebar-a.api            :as sidebar-a]
-              [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
-              [x.app-components.api             :as x.components]))
+              [vector.api                       :as vector]
+              [x.components.api                 :as x.components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -73,7 +73,7 @@
                    :font-size   :xs
                    :indent      {:left :s :top :xs :right :l}
                    :line-height :block
-                   :style       {:opacity ".5"}}])
+                   :style       {:opacity ".6"}}])
 
 (defn- menu-group
   ; @param (map) group-props
@@ -99,11 +99,21 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- app-home-button
+  []
+  [label-group-item {:icon :apps :label :app-home :icon-family :material-icons-outlined
+                     :icon-color "#98829e" :on-click [:x.router/go-to! "/@app-home"]}])
+
 (defn- label
   []
-  (let [app-title @(r/subscribe [:core/get-app-config-item :app-title])]
-       [label-group-item {:icon :apps :label :app-home :icon-family :material-icons-outlined
-                          :icon-color "#ceded4" :on-click [:router/go-to! "/@app-home"]}]))
+  (let [app-title @(r/subscribe [:x.core/get-app-config-item :app-title])]
+       [elements/label ::label
+                       {:color       "#bfbfbf"
+                        :content     (string.api/uppercase app-title)
+                        :font-size   :xs
+                        :font-weight :extra-bold
+                        :line-height :block
+                        :indent      {:horizontal :xs :vertical :s}}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -111,10 +121,15 @@
 (defn- view-structure
   ; @param (keyword) sidebar-id
   [_]
-  (if @(r/subscribe [:environment/viewport-min? 1024])
-       [:<> [elements/horizontal-separator {:size :s}]
-            [label]
-            [menu-groups]]))
+  (if @(r/subscribe [:x.environment/viewport-min? 1024])
+       [:div {:style {:display "flex" :flex-direction "column" :height "100%"}}
+             [:div {:style {:background-color "#00000021"}}
+                   [label]]
+             ;[elements/horizontal-line {:color "#88998e"}]
+             [elements/horizontal-separator {:height :xs}]
+             [:div {:data-scrollable-y true :style {:flex-grow "1"}}
+                   [app-home-button]
+                   [menu-groups]]]))
 
 (defn view
   ; @param (keyword) sidebar-id
@@ -122,7 +137,7 @@
 
   ; TEMP
   ; BUG
-  (let [js-build @(r/subscribe [:router/get-current-js-build])]
+  (let [js-build @(r/subscribe [:x.router/get-current-js-build])]
        (if (= js-build :app)
 
            [sidebar-a/layout sidebar-id

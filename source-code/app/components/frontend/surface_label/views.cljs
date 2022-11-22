@@ -2,7 +2,7 @@
 (ns app.components.frontend.surface-label.views
     (:require [elements.api          :as elements]
               [layouts.surface-a.api :as surface-a]
-              [mid-fruits.random     :as random]
+              [random.api            :as random]
               [re-frame.api          :as r]))
 
 ;; ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@
   ; esetekben (pl. horizontal-polarity elemben) nem megfelelő helyen érzékelt a sensor
   [:div {:data-component :surface-label}
         [surface-a/title-sensor {:title label :offset -12}]
-        (let [viewport-large? @(r/subscribe [:environment/viewport-large?])]
+        (let [viewport-large? @(r/subscribe [:x.environment/viewport-large?])]
              [elements/label label-id
                              {:content     label
                               :disabled?   disabled?
@@ -40,7 +40,7 @@
   ;  [surface-label {...}]
   ;
   ; @usage
-  ;  [surface-label :my-label {...}]
+  ;  [surface-label :my-surface-label {...}]
   ([label-props]
    [component (random/generate-keyword) label-props])
 

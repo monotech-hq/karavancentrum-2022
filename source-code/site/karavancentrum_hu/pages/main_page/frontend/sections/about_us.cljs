@@ -2,8 +2,8 @@
 (ns site.karavancentrum-hu.pages.main-page.frontend.sections.about-us
     (:require [app.contents.frontend.api :as contents]
               [css.api                   :as css]
-              [re-frame.api              :as r]
-              [reagent.api               :refer [ratom]]))
+              [plugins.reagent.api       :refer [ratom]]
+              [re-frame.api              :as r]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -11,7 +11,7 @@
 (defn about-us-page
   []
   (let [page-visible?  (ratom false)
-        about-us-page @(r/subscribe [:db/get-item [:site :content :about-us-page]])]
+        about-us-page @(r/subscribe [:x.db/get-item [:site :content :about-us-page]])]
        (fn [] [:<> [:div {:id :kc-about-us--section :style {:display (if-not @page-visible? "none" "block")}}
                          [contents/content-preview {:items     [about-us-page]
                                                     :style     {:color "#333"}
@@ -21,7 +21,7 @@
 
 (defn about-us-section
   []
-  (let [about-us-section @(r/subscribe [:db/get-item [:site :content :about-us-section]])]
+  (let [about-us-section @(r/subscribe [:x.db/get-item [:site :content :about-us-section]])]
        [:div {:id :kc-about-us--section}
              [contents/content-preview {:font-size :m
                                         :items     [about-us-section]

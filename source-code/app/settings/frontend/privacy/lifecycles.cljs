@@ -1,7 +1,7 @@
 
 (ns app.settings.frontend.privacy.lifecycles
     (:require [app.home.frontend.api]
-              [x.app-core.api :as x.core]))
+              [x.core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -13,5 +13,5 @@
                                               :icon-color  "#584b64"
                                               :icon-family :material-icons-outlined
                                               :label       :privacy
-                                              :on-click    [:router/go-to! "/@app-home/settings/privacy"]
+                                              :on-click    [:x.router/go-to! "/@app-home/settings/privacy"]
                                               :horizontal-weight 3}]})

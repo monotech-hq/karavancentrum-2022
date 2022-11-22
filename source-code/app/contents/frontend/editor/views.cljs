@@ -1,13 +1,14 @@
 
 (ns app.contents.frontend.editor.views
-    (:require [app.common.frontend.api  :as common]
-              [app.storage.frontend.api :as storage]
-              [elements.api             :as elements]
-              [engines.item-editor.api  :as item-editor]
-              [engines.text-editor.api  :as text-editor]
-              [forms.api                :as forms]
-              [layouts.surface-a.api    :as surface-a]
-              [re-frame.api             :as r]))
+    (:require [app.common.frontend.api     :as common]
+              [app.components.frontend.api :as components]
+              [app.storage.frontend.api    :as storage]
+              [elements.api                :as elements]
+              [engines.item-editor.api     :as item-editor]
+              [engines.text-editor.api     :as text-editor]
+              [forms.api                   :as forms]
+              [layouts.surface-a.api       :as surface-a]
+              [re-frame.api                :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -23,11 +24,11 @@
 (defn- content-content-box
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
-       [common/surface-box ::content-content-box
-                           {:content [:<> [content-body-editor]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :content}]))
+       [components/surface-box ::content-content-box
+                               {:content [:<> [content-body-editor]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :content}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -56,13 +57,13 @@
 (defn- content-settings-box
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
-       [common/surface-box ::content-settings-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [content-visibility-radio-button]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :label     :settings
-                            :disabled? editor-disabled?}]))
+       [components/surface-box ::content-settings-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [content-visibility-radio-button]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :label     :settings
+                                :disabled? editor-disabled?}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -91,13 +92,13 @@
 (defn- content-basic-data-box
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])]
-       [common/surface-box ::content-basic-data-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [content-name-field]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :basic-data}]))
+       [components/surface-box ::content-basic-data-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [content-name-field]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :basic-data}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -120,7 +121,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :contents.editor])]
+  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :contents.editor])]
        (case current-view-id :data     [content-data]
                              :content  [content-content]
                              :settings [content-settings])))
@@ -137,27 +138,27 @@
 (defn- breadcrumbs
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])
-        content-name     @(r/subscribe [:db/get-item [:contents :editor/edited-item :name]])
-        content-id       @(r/subscribe [:router/get-current-route-path-param :item-id])
+        content-name     @(r/subscribe [:x.db/get-item [:contents :editor/edited-item :name]])
+        content-id       @(r/subscribe [:x.router/get-current-route-path-param :item-id])
         content-uri       (str "/@app-home/contents/" content-id)]
-       [common/surface-breadcrumbs :contents.editor/view
-                                   {:crumbs (if content-id [{:label :app-home    :route "/@app-home"}
-                                                            {:label :contents    :route "/@app-home/contents"}
-                                                            {:label content-name :route content-uri :placeholder :unnamed-content}
-                                                            {:label :edit!}]
-                                                           [{:label :app-home    :route "/@app-home"}
-                                                            {:label :contents    :route "/@app-home/contents"}
-                                                            {:label :add!}])
-                                    :disabled? editor-disabled?}]))
+       [components/surface-breadcrumbs ::breadcrumbs
+                                       {:crumbs (if content-id [{:label :app-home    :route "/@app-home"}
+                                                                {:label :contents    :route "/@app-home/contents"}
+                                                                {:label content-name :route content-uri :placeholder :unnamed-content}
+                                                                {:label :edit!}]
+                                                               [{:label :app-home    :route "/@app-home"}
+                                                                {:label :contents    :route "/@app-home/contents"}
+                                                                {:label :add!}])
+                                        :disabled? editor-disabled?}]))
 
 (defn- label
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :contents.editor])
-        content-name     @(r/subscribe [:db/get-item [:contents :editor/edited-item :name]])]
-       [common/surface-label :contents.editor/view
-                             {:disabled?   editor-disabled?
-                              :label       content-name
-                              :placeholder :unnamed-content}]))
+        content-name     @(r/subscribe [:x.db/get-item [:contents :editor/edited-item :name]])]
+       [components/surface-label ::label
+                                 {:disabled?   editor-disabled?
+                                  :label       content-name
+                                  :placeholder :unnamed-content}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -168,7 +169,7 @@
              [:div [label]
                    [breadcrumbs]]
              [:div [controls]]]
-       [elements/horizontal-separator {:size :xxl}]
+       [elements/horizontal-separator {:height :xxl}]
        [menu-bar]])
 
 (defn- view-structure
@@ -181,9 +182,9 @@
   [_]
   [item-editor/body :contents.editor
                     {:auto-title?      true
-                     :form-element     #'view-structure
-                     :error-element    [common/error-content {:error :the-item-you-opened-may-be-broken}]
-                     :ghost-element    #'common/item-editor-ghost-element
+                     :form-element     [view-structure]
+                     :error-element    [components/error-content {:error :the-item-you-opened-may-be-broken}]
+                     :ghost-element    [components/ghost-view    {:breadcrumb-count 4 :layout :box-surface}]
                      :initial-item     {:visibility :public}
                      :item-path        [:contents :editor/edited-item]
                      :label-key        :name

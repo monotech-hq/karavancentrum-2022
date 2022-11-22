@@ -15,5 +15,5 @@
   ;   :secondary-button (map)(opt)}
   [r/event-vector<-id]
   (fn [{:keys [db]} [_ dialog-id dialog-props]]
-      [:ui/render-popup! :components.consent-dialog/view
-                         {:content [consent-dialog.views/component dialog-id dialog-props]}]))
+      [:x.ui/render-popup! :components.consent-dialog/view
+                           {:content [consent-dialog.views/component dialog-id dialog-props]}]))

@@ -1,11 +1,11 @@
 
 (ns site.karavancentrum-hu.pages.vehicle-page.frontend.views
     (:require [app.contents.frontend.api                                 :as contents]
-              [mid-fruits.vector                                         :as vector]
               [re-frame.api                                              :as r]
               [site.components.frontend.api                              :as components]
               [site.karavancentrum-hu.components.api                     :as site.components]
-              [site.karavancentrum-hu.pages.vehicle-page.frontend.slider :as slider]))
+              [site.karavancentrum-hu.pages.vehicle-page.frontend.slider :as slider]
+              [vector.api                                                :as vector]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -39,7 +39,7 @@
   [vehicles]
   [:div {:id :kc-vehicles--container}
         (letfn [(f [card-list {:vehicle/keys [id] :as vehicle}]
-                  (conj card-list [:button {:on-click #(r/dispatch [:db/set-item! [:selected-vehicle] id])}
+                  (conj card-list [:button {:on-click #(r/dispatch [:x.db/set-item! [:selected-vehicle] id])}
                                            [site.components/vehicle-card vehicle]]))]
                (reduce f [:div {:style {:display "flex" :flex-wrap "wrap" :grid-gap "45px" :justify-content "center"}}] vehicles))])
 

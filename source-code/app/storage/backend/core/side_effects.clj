@@ -2,10 +2,10 @@
 (ns app.storage.backend.core.side-effects
     (:require [app.common.backend.api          :as common]
               [app.storage.backend.core.config :as core.config]
-              [mid-fruits.candy                :refer [return]]
-              [mid-fruits.vector               :as vector]
+              [candy.api                       :refer [return]]
               [mongo-db.api                    :as mongo-db]
-              [x.server-media.api              :as x.media]))
+              [vector.api                      :as vector]
+              [x.media.api                     :as x.media]))
 
 ;; -- Attach/detach item functions --------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -50,7 +50,7 @@
            (f [path] (when-let [{:media/keys [id]} (last path)]
                                (if operation (mongo-db/apply-document! "storage" id update-f {:prepare-f prepare-f})
                                              (mongo-db/apply-document! "storage" id return   {:prepare-f prepare-f}))
-                               (-> path vector/pop-last-item f)))]
+                               (-> path vector/remove-last-item f)))]
           (f path))))
 
 ;; ----------------------------------------------------------------------------

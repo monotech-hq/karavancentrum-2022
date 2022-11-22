@@ -1,8 +1,8 @@
 
 (ns site.components.frontend.scroll-sensor.views
     (:require [hiccup.api                                     :as hiccup]
-              [mid-fruits.random                              :as random]
-              [reagent.api                                    :as reagent]
+              [plugins.reagent.api                            :as reagent]
+              [random.api                                     :as random]
               [site.components.frontend.scroll-sensor.helpers :as scroll-sensor.helpers]))
 
 ;; ----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 
 (ns app.pages.frontend.lister.lifecycles
     (:require [app.home.frontend.api]
-              [x.app-core.api :as x.core]))
+              [x.core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -13,7 +13,7 @@
                                                             :icon-color  "#5564b1"
                                                             :icon-family :material-icons-outlined
                                                             :label       :pages
-                                                            :on-click    [:router/go-to! "/@app-home/pages"]
+                                                            :on-click    [:x.router/go-to! "/@app-home/pages"]
                                                             :horizontal-weight 0}]
                               [:home.sidebar/add-menu-item! {:disabled?   true
                                                              :group-name  :content
@@ -21,5 +21,5 @@
                                                              :icon-color  "#5c72e5"
                                                              :icon-family :material-icons-outlined
                                                              :label       :pages
-                                                             :on-click    [:router/go-to! "/@app-home/pages"]
+                                                             :on-click    [:x.router/go-to! "/@app-home/pages"]
                                                              :vertical-weight 0}]]}})

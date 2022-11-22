@@ -1,4 +1,4 @@
 
 (ns app.settings.frontend.editor.events
-    (:require [mid-fruits.map :refer [dissoc-in]]
-              [re-frame.api   :as r]))
+    (:require [map.api      :refer [dissoc-in]]
+              [re-frame.api :as r]))

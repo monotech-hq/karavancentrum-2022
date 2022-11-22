@@ -8,6 +8,10 @@
               [app.storage.backend.media-browser.lifecycles]
               [app.storage.backend.media-browser.mutations]
               [app.storage.backend.media-browser.resolvers]
+              [app.storage.backend.media-lister.lifecycles]
+              [app.storage.backend.media-lister.resolvers]
+              [app.storage.backend.media-preview.lifecycles]
+              [app.storage.backend.media-preview.resolvers]
               [app.storage.backend.media-selector.lifecycles]
               [layouts.popup-a.api]
               [layouts.surface-a.api]))

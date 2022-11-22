@@ -12,7 +12,7 @@
                     :label    :cancel!
                     :preset   :close-button
                     :variant  :transparent
-                    :on-click [:ui/remove-popup! :settings.remove-stored-cookies/view]}])
+                    :on-click [:x.ui/remove-popup! :settings.remove-stored-cookies/view]}])
 
 (defn remove-button
   []
@@ -21,7 +21,7 @@
                     :label    :remove!
                     :preset   :close-button
                     :variant  :transparent
-                    :on-click {:dispatch-n [[:ui/remove-popup! :settings.remove-stored-cookies/view]
+                    :on-click {:dispatch-n [[:x.ui/remove-popup! :settings.remove-stored-cookies/view]
                                             [:settings/remove-stored-cookies!]]}}])
 
 (defn header
@@ -35,6 +35,6 @@
 
 (defn body
   [_]
-  [:<> [elements/horizontal-separator {:size :xs}]
+  [:<> [elements/horizontal-separator {:height :xs}]
        [elements/text {:content :remove-stored-cookies? :font-weight :bold
                        :horizontal-align :center :icon :delete}]])

@@ -1,12 +1,12 @@
 
 (ns app.common.backend.prototypes
-    (:require [mid-fruits.json   :as json]
-              [x.server-user.api :as x.user]))
+    (:require [json.api   :as json]
+              [x.user.api :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; XXX#0780 (app.common.backend.prototypes)
+; XXX#0780 (source-code/app/common/backend/prototypes.cljs)
 ; Az added-document-prototype, updated-document-prototype és duplicated-document-prototype
 ; függvények a modulok (adatbázisba dokumentumot író) mutation függvényeinek prototípusai.
 ;

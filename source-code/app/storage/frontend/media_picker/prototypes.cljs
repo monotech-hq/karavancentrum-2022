@@ -1,7 +1,7 @@
 
 (ns app.storage.frontend.media-picker.prototypes
-    (:require [mid-fruits.candy :refer [param]]
-              [re-frame.api     :as r]))
+    (:require [candy.api    :refer [param]]
+              [re-frame.api :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -10,6 +10,7 @@
   ; @param (keyword) picker-id
   ; @param (map) picker-props
   ;  {}
+  ; @param (namespaced map) media-link
   ;
   ; @return (map)
   ;  {:disabled? (boolean)
@@ -19,23 +20,28 @@
   ;   :sortable? (boolean)
   ;   :thumbnail (map)
   ;   :value-path (vector)}
-  [_ {:keys [disabled? multi-select? placeholder sortable? thumbnail value-path]}]
-  ; XXX#6071 (app.products.frontend.picker.prototypes)
-  (let [picked-media @(r/subscribe [:db/get-item value-path])]
-       {:disabled?   disabled?
-        :indent      {:top :m}
-        :items       (cond multi-select? picked-media picked-media [picked-media])
-        :placeholder placeholder
-        :sortable?   sortable?
-        :thumbnail   thumbnail
-        :value-path  value-path}))
+  [_ {:keys [disabled? placeholder thumbnail]} media-link]
+  {:disabled?   disabled?
+   :item-link   media-link
+   :placeholder placeholder
+   :thumbnail   thumbnail})
 
 (defn picker-props-prototype
   ; @param (keyword) picker-id
   ; @param (map) picker-props
+  ;  {:multi-select? (boolean)(opt)}
   ;
   ; @return (map)
-  ;  {}
-  [picker-id picker-props]
-  (merge {:max-count 8}
-         (param picker-props)))
+  ;  {:export-filter-f (function)
+  ;   :import-id-f (function)
+  ;   :on-select (metamorphic-event)
+  ;   :toggle-label (metamorphic-content)
+  ;   :transfer-id (keyword)}
+  [_ {:keys [multi-select?] :as picker-props}]
+  (merge {:toggle-label    (if multi-select? :select-images! :select-image!)}
+         (param picker-props)
+         {:export-filter-f (fn [media-id] {:media/id media-id})
+          :import-id-f     :media/id
+          :items-path      [:storage :picker/downloaded-items]
+          :on-select       [:storage.media-selector/load-selector! :storage.media-selector picker-props]
+          :transfer-id     :storage.media-lister}))

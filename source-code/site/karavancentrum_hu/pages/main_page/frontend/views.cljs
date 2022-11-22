@@ -1,6 +1,6 @@
 
 (ns site.karavancentrum-hu.pages.main-page.frontend.views
-    (:require [reagent.api                                                       :as reagent]
+    (:require [plugins.reagent.api                                               :as reagent]
               [re-frame.api                                                      :as r]
               [site.components.frontend.api                                      :as components]
               [site.karavancentrum-hu.pages.main-page.frontend.sections.about-us :as about-us]

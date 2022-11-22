@@ -9,8 +9,8 @@
 (r/reg-event-fx :main-page/render-page!
   ; @param (keyword) scroll-target
   (fn [_ [_ scroll-target]]
-      {:dispatch-later [{:ms   0 :dispatch [:ui/render-surface! :main-page/view {:content #'views/view}]}
-                        {:ms 350 :fx       [:environment/scroll-to-element-top! (name scroll-target)]}]}))
+      {:dispatch-later [{:ms   0 :dispatch [:x.ui/render-surface! :main-page/view {:content #'views/view}]}
+                        {:ms 350 :fx       [:x.environment/scroll-to-element-top! (name scroll-target)]}]}))
 
 (r/reg-event-fx :main-page/load-page!
   ; @param (keyword) scroll-target

@@ -1,6 +1,7 @@
 
 (ns app.settings.backend.editor.lifecycles
-    (:require [x.server-core.api :as x.core]))
+    (:require [engines.item-editor.api]
+              [x.core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -10,14 +11,14 @@
                                                             {:collection-name "user_settings"
                                                              :handler-key     :settings.editor
                                                              :item-namespace  :user-settings}]
-                                 [:router/add-route! :settings.editor/base-route
-                                                     {:client-event   [:settings.editor/load-editor!]
-                                                      :js-build       :app
-                                                      :restricted?    true
-                                                      :route-template "/@app-home/settings"}]
-                                 [:router/add-route! :settings.editor/extended-route
-                                                     {:client-event   [:settings.editor/load-editor!]
-                                                      :js-build       :app
-                                                      :restricted?    true
-                                                      :route-parent   "/@app-home"
-                                                      :route-template "/@app-home/settings/:view-id"}]]}})
+                                 [:x.router/add-route! :settings.editor/base-route
+                                                       {:client-event   [:settings.editor/load-editor!]
+                                                        :js-build       :app
+                                                        :restricted?    true
+                                                        :route-template "/@app-home/settings"}]
+                                 [:x.router/add-route! :settings.editor/extended-route
+                                                       {:client-event   [:settings.editor/load-editor!]
+                                                        :js-build       :app
+                                                        :restricted?    true
+                                                        :parent-route   "/@app-home"
+                                                        :route-template "/@app-home/settings/:view-id"}]]}})

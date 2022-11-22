@@ -1,7 +1,7 @@
 
 (ns site.components.frontend.scroll-to-top.views
     (:require [elements.api                                   :as elements]
-              [mid-fruits.random                              :as random]
+              [random.api                                     :as random]
               [re-frame.api                                   :as r]
               [site.components.frontend.scroll-sensor.views   :as scroll-sensor.views]
               [site.components.frontend.scroll-to-top.helpers :as scroll-to-top.helpers]))
@@ -13,11 +13,11 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:color (string)(opt)
-  ;   :style (map)}
+  ;   :style (map)(opt)}
   [_ {:keys [color style]}]
   [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f scroll-to-top.helpers/scroll-f
                                                        :style {:left "0" :position "absolute" :bottom "0"}}]
-       [:div {:id :mt-scroll-to-top :style style :on-click #(r/dispatch {:fx [:environment/reset-scroll-y!]})}
+       [:div {:id :mt-scroll-to-top :style style :on-click #(r/dispatch {:fx [:x.environment/reset-scroll-y!]})}
              [elements/icon ::scroll-to-top
                             {:color (or color "white")
                              :icon :arrow_upward

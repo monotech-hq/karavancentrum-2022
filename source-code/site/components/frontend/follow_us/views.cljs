@@ -1,6 +1,6 @@
 
 (ns site.components.frontend.follow-us.views
-    (:require [mid-fruits.random                            :as random]
+    (:require [random.api                                   :as random]
               [site.components.frontend.follow-us.helpers   :as follow-us.helpers]
               [site.components.frontend.scroll-sensor.views :as scroll-sensor.views]))
 
@@ -12,7 +12,7 @@
   ; @param (map) component-props
   ;  {:color (string)(opt)
   ;   :links (map)
-  ;   :style (map)}
+  ;   :style (map)(opt)}
   [_ {{:keys [facebook instagram linkedin]} :links :keys [color style]}]
   [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f follow-us.helpers/scroll-f
                                                        :style {:left "0" :position "absolute" :top "0"}}]

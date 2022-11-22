@@ -1,7 +1,7 @@
 
 (ns app.settings.frontend.sales.lifecycles
     (:require [app.home.frontend.api]
-              [x.app-core.api :as x.core]))
+              [x.core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -12,5 +12,5 @@
                                               :icon-color  "#5f8e75"
                                               :icon-family :material-icons-outlined
                                               :label       :sales
-                                              :on-click    [:router/go-to! "/@app-home/settings/sales"]
+                                              :on-click    [:x.router/go-to! "/@app-home/settings/sales"]
                                               :horizontal-weight 4}]})

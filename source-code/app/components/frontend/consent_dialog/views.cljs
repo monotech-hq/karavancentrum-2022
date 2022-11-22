@@ -3,8 +3,8 @@
     (:require [app.components.frontend.consent-dialog.prototypes :as consent-dialog.prototypes]
               [elements.api                                      :as elements]
               [layouts.popup-a.api                               :as popup-a]
-              [mid-fruits.random                                 :as random]
-              [x.app-components.api                              :as x.components]))
+              [random.api                                        :as random]
+              [x.components.api                                  :as x.components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

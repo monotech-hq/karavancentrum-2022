@@ -2,10 +2,10 @@
 
 (ns site.karavancentrum-hu.pages.main-page.frontend.sections.renting
     (:require [elements.api                          :as elements]
-              [mid-fruits.vector                     :as vector]
+              [plugins.reagent.api                   :refer [lifecycles]]
               [re-frame.api                          :as r]
-              [reagent.api                           :refer [lifecycles]]
-              [site.karavancentrum-hu.components.api :as site.components]))
+              [site.karavancentrum-hu.components.api :as site.components]
+              [vector.api                            :as vector]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

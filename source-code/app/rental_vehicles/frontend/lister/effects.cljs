@@ -7,5 +7,5 @@
 ;; ----------------------------------------------------------------------------
 
 (r/reg-event-fx :rental-vehicles.lister/load!
-  [:ui/render-surface! :rental-vehicles.lister/view
-                       {:content #'lister.views/view}])
+  [:x.ui/render-surface! :rental-vehicles.lister/view
+                         {:content #'lister.views/view}])

@@ -2,7 +2,7 @@
 (ns app.components.frontend.context-menu.views
     (:require [elements.api        :as elements]
               [layouts.popup-a.api :as popup-a]
-              [mid-fruits.random   :as random]))
+              [random.api          :as random]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -22,7 +22,7 @@
                     :hover-color      :highlight
                     :indent           {:vertical :xs}
                     :label            label
-                    :on-click         {:dispatch-n [[:ui/remove-popup! :components.context-menu/view] on-click]}
+                    :on-click         {:dispatch-n [[:x.ui/remove-popup! :components.context-menu/view] on-click]}
                     :placeholder      placeholder}])
 
 (defn- context-menu-body
@@ -32,7 +32,7 @@
   [menu-id {:keys [menu-items] :as menu-props}]
   (letfn [(f [menu-items menu-item] (conj menu-items [context-menu-item menu-id menu-props menu-item]))]
          [:<> (reduce f [:<>] menu-items)
-              [elements/horizontal-separator {:size :xs}]]))
+              [elements/horizontal-separator {:height :xs}]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -44,7 +44,7 @@
   [elements/icon-button ::close-icon-button
                         {:hover-color :highlight
                          :keypress    {:key-code 27}
-                         :on-click    [:ui/remove-popup! :components.context-menu/view]
+                         :on-click    [:x.ui/remove-popup! :components.context-menu/view]
                          :preset      :close}])
 
 (defn- header-label

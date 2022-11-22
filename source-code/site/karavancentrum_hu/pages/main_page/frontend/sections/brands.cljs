@@ -1,8 +1,8 @@
 
 (ns site.karavancentrum-hu.pages.main-page.frontend.sections.brands
-    (:require [css.api        :as css]
-              [mid-fruits.uri :as uri]
-              [re-frame.api   :as r]))
+    (:require [css.api      :as css]
+              [re-frame.api :as r]
+              [uri.api      :as uri]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
@@ -21,7 +21,7 @@
 
 (defn brands
   []
-  (let [brands @(r/subscribe [:db/get-item [:site :content :brands]])]
+  (let [brands @(r/subscribe [:x.db/get-item [:site :content :brands]])]
        [:div#kc-brands [:div [:p.kc-section-title "Értékesítés"]]
                        [:div#kc-brands--brand-list (letfn [(f [%1 %2 %3] (conj %1 [brand %2 %3]))]
                                                           (reduce-kv f [:<>] brands))]]))

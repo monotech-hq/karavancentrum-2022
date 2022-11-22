@@ -1,9 +1,9 @@
 
 (ns app.contents.frontend.lister.views
     (:require [app.common.frontend.api               :as common]
+              [app.components.frontend.api           :as components]
               [app.contents.frontend.handler.helpers :as handler.helpers]
               [elements.api                          :as elements]
-              [engines.item-lister.api               :as item-lister]
               [hiccup.api                            :as hiccup]
               [layouts.surface-a.api                 :as surface-a]
               [re-frame.api                          :as r]))
@@ -11,50 +11,64 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- content-item-structure
-  [lister-id item-dex {:keys [body modified-at name]}]
-  (let [timestamp   @(r/subscribe [:activities/get-actual-timestamp modified-at])
-        item-last?  @(r/subscribe [:item-lister/item-last? lister-id item-dex])
+(defn- footer
+  []
+  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.lister])]
+          [common/item-lister-download-info :contents.lister {}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- content-list-item
+  ; @param (keyword) lister-id
+  ; @param (map) lister-props
+  ; @param (integer) item-dex
+  ; @param (map) content-item
+  [_ _ item-dex {:keys [body id modified-at name]}]
+  (let [timestamp   @(r/subscribe [:x.activities/get-actual-timestamp modified-at])
         content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
-       [common/list-item-structure {:cells [[common/list-item-thumbnail {:icon :article :icon-family :material-icons-outlined}]
-                                            ; HACK#4506
-                                            ; A túl hosszú tartalom ne lógjon ki az elemből!
-                                            ; Ez a megoldás ideiglenes!
-                                            [:div {:style {:flex-grow 1 :max-width "calc(100% - 304px)" :padding-right "24px"}}
-                                                  [common/list-item-primary-cell {:label name :placeholder :unnamed-content :description content-body}]]
-                                            [common/list-item-detail {:content timestamp :width "160px"}]
-                                            [common/list-item-marker {:icon    :navigate_next}]]
-                                    :separator (if-not item-last? :bottom)}]))
-
-(defn- content-item
-  [lister-id item-dex {:keys [id] :as content-item}]
-  [elements/toggle {:content     [content-item-structure lister-id item-dex content-item]
-                    :hover-color :highlight
-                    :on-click    [:router/go-to! (str "/@app-home/contents/"id)]}])
+       [components/item-list-row {:cells [[components/list-item-thumbnail {:icon :article :icon-family :material-icons-outlined}]
+                                          [components/list-item-cell      {:rows [{:content name :placeholder :unnamed-content}
+                                                                                  {:content content-body :placeholder "-" :color :muted :font-size :xs}]}]
+                                          [components/list-item-gap       {:width 12}]
+                                          [components/list-item-cell      {:rows [{:content timestamp :font-size :xs :color :muted}] :width 100}]
+                                          [components/list-item-gap       {:width 12}]
+                                          [components/list-item-button    {:label :open! :width 100 :on-click [:x.router/go-to! (str "/@app-home/contents/"id)]}]
+                                          [components/list-item-gap       {:width 12}]]
+                                  :border (if (not= item-dex 0) :top)}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- content-list
-  [lister-id items]
-  [common/item-list lister-id {:item-element #'content-item :items items}])
-
-(defn- content-lister-body
+(defn- content-list-header
   []
-  [item-lister/body :contents.lister
-                    {:default-order-by :modified-at/descending
-                     :items-path       [:contents :lister/downloaded-items]
-                     :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
-                     :ghost-element    #'common/item-lister-ghost-element
-                     :list-element     #'content-list}])
+  (let [current-order-by @(r/subscribe [:item-lister/get-current-order-by :contents.lister])]
+       [components/item-list-header ::content-list-header
+                                    {:cells [{:width 84}
+                                             {:label :name :order-by-key :name
+                                              :on-click [:item-lister/order-items! :contents.lister :name]}
+                                             {:width 12}
+                                             {:label :modified :width 100 :order-by-key :modified-at
+                                              :on-click [:item-lister/order-items! :contents.lister :modified-at]}
+                                             {:width 12}
+                                             {:width 100}
+                                             {:width 12}]
+                                     :border :bottom
+                                     :order-by current-order-by}]))
 
-(defn- content-lister-header
+(defn- content-lister
   []
-  [common/item-lister-header :contents.lister
-                             {:cells [[common/item-lister-header-spacer :contents.lister {:width "108px"}]
-                                      [common/item-lister-header-cell   :contents.lister {:label :name          :order-by-key :name :stretch? true}]
-                                      [common/item-lister-header-cell   :contents.lister {:label :last-modified :order-by-key :modified-at :width "160px"}]
-                                      [common/item-lister-header-spacer :contents.lister {:width "36px"}]]}])
+  [common/item-lister :contents.lister
+                      {:default-order-by  :modified-at/descending
+                       :list-item-element #'content-list-item
+                       :item-list-header  #'content-list-header
+                       :items-path        [:contents :lister/downloaded-items]}])
+
+(defn- body
+  []
+  [components/surface-box ::body
+                          {:content [:<> [content-lister]
+                                         [elements/horizontal-separator {:height :xxs}]]}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -84,31 +98,17 @@
 (defn- breadcrumbs
   []
   (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
-       [common/surface-breadcrumbs :contents.lister/view
-                                   {:crumbs [{:label :app-home :route "/@app-home"}
-                                             {:label :contents}]
-                                    :disabled? lister-disabled?}]))
+       [components/surface-breadcrumbs ::breadcrumbs
+                                       {:crumbs [{:label :app-home :route "/@app-home"}
+                                                 {:label :contents}]
+                                        :disabled? lister-disabled?}]))
 
 (defn- label
   []
   (let [lister-disabled? @(r/subscribe [:item-lister/lister-disabled? :contents.lister])]
-       [common/surface-label :contents.lister/view
-                             {:disabled? lister-disabled?
-                              :label     :contents}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- footer
-  []
-  (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.lister])]
-          [common/item-lister-download-info :contents.lister {}]))
-
-(defn- body
-  []
-  [common/item-lister-wrapper :contents.lister
-                              {:body   #'content-lister-body
-                               :header #'content-lister-header}])
+       [components/surface-label ::label
+                                 {:disabled? lister-disabled?
+                                  :label     :contents}]))
 
 (defn- header
   []
@@ -119,7 +119,10 @@
                      [:div [create-item-button]]]
                [search-field]
                [search-description]]
-          [common/item-lister-ghost-header :contents.lister {}]))
+          [components/ghost-view {:breadcrumb-count 2 :layout :box-surface-header}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 
 (defn- view-structure
   ; @param (keyword) surface-id

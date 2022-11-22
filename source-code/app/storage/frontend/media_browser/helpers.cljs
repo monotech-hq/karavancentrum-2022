@@ -1,10 +1,10 @@
 
 (ns app.storage.frontend.media-browser.helpers
-    (:require [format.api           :as format]
-              [io.api               :as io]
-              [mid-fruits.vector    :as vector]
-              [x.app-components.api :as x.components]
-              [x.app-media.api      :as x.media]))
+    (:require [format.api        :as format]
+              [io.api            :as io]
+              [vector.api        :as vector]
+              [x.components.api  :as x.components]
+              [x.media.api       :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

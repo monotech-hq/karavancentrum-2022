@@ -1,15 +1,15 @@
 
 (ns site.karavancentrum-hu.wrapper.views
-    (:require [mid-fruits.uri               :as uri]
-              [re-frame.api                 :as r]
-              [site.components.frontend.api :as components]))
+    (:require [re-frame.api                 :as r]
+              [site.components.frontend.api :as components]
+              [uri.api                      :as uri]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn sidebar-menu
   []
-  (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
+  (let [webshop-link @(r/subscribe [:x.db/get-item [:site :content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [:div#kc-sidebar--menu-items
          [:a.kc-sidebar--menu-item.mt-effect--underline {:href "/berbeadas"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
@@ -27,15 +27,15 @@
 
 (defn company-name-and-slogan
   []
-  (let [company-name   @(r/subscribe [:db/get-item [:site :config :company-name]])
-        company-slogan @(r/subscribe [:db/get-item [:site :config :company-slogan]])]
+  (let [company-name   @(r/subscribe [:x.db/get-item [:site :config :company-name]])
+        company-slogan @(r/subscribe [:x.db/get-item [:site :config :company-slogan]])]
        [:a {:href "/" :style {:text-decoration "none"}}
            [:div#kc-navbar--company-name-and-slogan [:div#kc-navbar--company-name   company-name]
                                                     [:div#kc-navbar--company-slogan company-slogan]]]))
 
 (defn header
   []
-  (let [webshop-link @(r/subscribe [:db/get-item [:site :content :webshop-link]])
+  (let [webshop-link @(r/subscribe [:x.db/get-item [:site :content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [components/navbar {:logo #'company-name-and-slogan
                            :menu-items [{:href "/berbeadas"   :label "Bérbeadás"   :class :mt-effect--underline}

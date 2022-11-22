@@ -5,16 +5,16 @@
               [app.storage.backend.media-browser.config     :as media-browser.config]
               [app.storage.backend.media-browser.prototypes :as media-browser.prototypes]
               [app.storage.backend.core.side-effects        :as core.side-effects]
+              [candy.api                                    :refer [return]]
               [com.wsscode.pathom3.connect.operation        :as pathom.co :refer [defmutation]]
               [engines.item-browser.api                     :as item-browser]
               [io.api                                       :as io]
-              [mid-fruits.candy                             :refer [return]]
-              [mid-fruits.map                               :as map]
-              [mid-fruits.vector                            :as vector]
+              [map.api                                      :as map]
               [mongo-db.api                                 :as mongo-db]
               [pathom.api                                   :as pathom]
               [time.api                                     :as time]
-              [x.server-media.api                           :as x.media]))
+              [vector.api                                   :as vector]
+              [x.media.api                                  :as x.media]))
 
 ;; -- Remove media-item links -------------------------------------------------
 ;; ----------------------------------------------------------------------------

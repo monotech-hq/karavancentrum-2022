@@ -1,8 +1,8 @@
 
 (ns app.home.frontend.screen.prototypes
     (:require [app.home.frontend.handler.config :as handler.config]
-              [mid-fruits.candy                 :refer [param]]
-              [mid-fruits.vector                :as vector]))
+              [candy.api                        :refer [param]]
+              [vector.api                       :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -1,14 +1,15 @@
 
 (ns project.ui.backend.loading-screen
-    (:require [mid-fruits.candy  :refer [param]]
-              [css.api           :as css]
-              [re-frame.api      :as r]
-              [x.server-user.api :as x.user]))
+    (:require [candy.api    :refer [param]]
+              [css.api      :as css]
+              [re-frame.api :as r]
+              [x.user.api   :as x.user]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
 (defn- progress-indicator
+  ; @param (map) request
   [_]
   [:div {:style (css/unparse {:animation-duration        "3s"
                               :animation-name            "opacity-0-1-0"
@@ -21,8 +22,9 @@
         "Loading ..."])
 
 (defn- app-title
+  ; @param (map) request
   [_]
-  (let [title @(r/subscribe [:core/get-app-config-item :app-title])]
+  (let [title @(r/subscribe [:x.core/get-app-config-item :app-title])]
        [:div {:style (css/unparse {:font-size           (css/var "font-size-xs")
                                    :font-weight         "600"
                                    :line-height         "24px"
@@ -36,6 +38,7 @@
              (param title)]))
 
 (defn- app-logo
+  ; @param (map) request
   [request]
   (let [selected-theme (x.user/request->user-settings-item request :selected-theme)]
        [:div {:style (css/unparse {:background-image (case selected-theme :light (css/url "/app/logo/logo-light.png")
@@ -48,8 +51,9 @@
                                    :width               "100px"})}]))
 
 (defn view
+  ; @param (map) request
   [request]
-  [:div {:style (css/unparse {:align-items :center :display :flex :flex-direction :column})}
+  [:div {:style (css/unparse {:align-items "center" :display "flex" :flex-direction "column"})}
         (app-logo           request)
         (app-title          request)
         (progress-indicator request)])

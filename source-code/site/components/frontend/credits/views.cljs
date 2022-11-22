@@ -1,11 +1,10 @@
 
 (ns site.components.frontend.credits.views
     (:require [elements.api                                   :as elements]
-              [mid-fruits.random                              :as random]
+              [random.api                                     :as random]
               [re-frame.api                                   :as r]
               [site.components.frontend.copyright-label.views :as copyright-label.views]
-              [site.components.frontend.mt-logo.views         :as mt-logo.views]
-              [x.app-details                                  :as x.details]))
+              [site.components.frontend.mt-logo.views         :as mt-logo.views]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -37,7 +36,7 @@
   ;  [created-by]
   [component-id component-props]
   [elements/toggle ::created-by
-                   {:on-click {:fx [:environment/open-new-browser-tab! "https://www.monotech.hu"]}
+                   {:on-click {:fx [:x.environment/open-new-browser-tab! "https://www.monotech.hu"]}
                     :content  [:div {:style {:align-items "center" :display "flex" :flex-direction "column"}}
                                     [mt-logo.views/component component-id component-props]
                                     [created-by-label        component-id component-props]]

@@ -1,7 +1,7 @@
 
 (ns app.website-link.frontend.effects
   (:require [re-frame.api   :as r :refer [r]]
-            [x.app-core.api :as x.core]))
+            [x.core.api :as x.core]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -23,9 +23,9 @@
 (r/reg-event-fx :website-link/open-website!
   (fn [{:keys [db]} _]
       (let [website-link (r x.core/get-app-config-item db :app-domain)]
-           {:fx [:environment/go-to! "/"]})))
+           {:fx [:x.environment/go-to! "/"]})))
 
 (r/reg-event-fx :website-link/open-website-in-new-page!
   (fn [{:keys [db]} _]
       (let [website-link (r x.core/get-app-config-item db :app-domain)]
-           {:fx [:environment/open-tab! "/"]})))
+           {:fx [:x.environment/open-tab! "/"]})))

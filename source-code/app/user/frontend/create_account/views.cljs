@@ -20,14 +20,14 @@
 
 (defn- body
   []
-  (let [viewport-small? @(r/subscribe [:environment/viewport-small?])]
+  (let [viewport-small? @(r/subscribe [:x.environment/viewport-small?])]
        [:div#create-account--body {:style (if viewport-small? {:width         "320px"}
                                                               {:border-color  "var( --border-color-highlight )"
                                                                :border-radius "var( --border-radius-m )"
                                                                :border-style  "solid"
                                                                :border-width  "1px"
                                                                :width         "320px"})}
-                                  (if-let [user-identified? @(r/subscribe [:user/user-identified?])]
+                                  (if-let [user-identified? @(r/subscribe [:x.user/user-identified?])]
                                           [logged-in-form]
                                           [create-account-form])]))
 

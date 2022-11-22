@@ -1,9 +1,20 @@
 
 (ns app.common.frontend.item-selector.subs
-    (:require [engines.item-lister.api :as item-lister]
-              [mid-fruits.candy        :refer [return]]
-              [mid-fruits.vector       :as vector]
-              [re-frame.api            :as r :refer [r]]))
+    (:require [candy.api               :refer [return]]
+              [engines.item-lister.api :as item-lister]
+              [re-frame.api            :as r :refer [r]]
+              [vector.api              :as vector]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn item-selected?
+  ; @param (keyword) selector-id
+  ; @param (string) item-id
+  ;
+  ; @return (boolean)
+  [db [_ selector-id item-id]]
+  (r item-lister/item-selected? db selector-id item-id))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -115,6 +126,10 @@
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+; @usage
+;  [:item-selector/item-selected? :my-selector "my-item"]
+(r/reg-sub :item-selector/item-selected? item-selected?)
 
 ; @usage
 ;  [:item-selector/get-item-count :my-selector "my-item"]

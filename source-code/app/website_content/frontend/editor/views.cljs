@@ -1,15 +1,16 @@
 
 (ns app.website-content.frontend.editor.views
-    (:require [app.common.frontend.api   :as common]
-              [app.contents.frontend.api :as contents]
-              [app.storage.frontend.api  :as storage]
-              [css.api                   :as css]
-              [elements.api              :as elements]
-              [engines.file-editor.api   :as file-editor]
-              [forms.api                 :as forms]
-              [layouts.surface-a.api     :as surface-a]
-              [mid-fruits.vector         :as vector]
-              [re-frame.api              :as r]))
+    (:require [app.common.frontend.api     :as common]
+              [app.components.frontend.api :as components]
+              [app.contents.frontend.api   :as contents]
+              [app.storage.frontend.api    :as storage]
+              [css.api                     :as css]
+              [elements.api                :as elements]
+              [engines.file-editor.api     :as file-editor]
+              [forms.api                   :as forms]
+              [layouts.surface-a.api       :as surface-a]
+              [re-frame.api                :as r]
+              [vector.api                  :as vector]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -28,13 +29,13 @@
 (defn- about-us-section-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::about-us-section-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [about-us-section-picker]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :about-us-section}]))
+       [components/surface-box ::about-us-section-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [about-us-section-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :about-us-section}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -53,14 +54,14 @@
 (defn- about-us-page-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::about-us-page-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [about-us-page-picker]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :indent    {:top :m}
-                            :label     :about-us-page}]))
+       [components/surface-box ::about-us-page-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [about-us-page-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :indent    {:top :m}
+                                :label     :about-us-page}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -87,14 +88,14 @@
 (defn- address-data-information-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::address-data-information-box
-                           {:indent  {:top :m}
-                            :content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [address-data-information-picker]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :address-data-information}]))
+       [components/surface-box ::address-data-information-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [address-data-information-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :indent    {:top :m}
+                                :label     :address-data-information}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -113,13 +114,13 @@
 (defn- contacts-data-information-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::contacts-data-information-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 100})
-                                                      [contacts-data-information-picker]]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :contacts-data-information}]))
+       [components/surface-box ::contacts-data-information-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [contacts-data-information-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :contacts-data-information}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -145,14 +146,14 @@
 (defn- webshop-settings-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::webshop-settings-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 50})
-                                                      [webshop-link-field]]
-                                                [:div (forms/form-block-attributes {:ratio 50})]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :webshop}]))
+       [components/surface-box ::webshop-settings-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 50})
+                                                          [webshop-link-field]]
+                                                    [:div (forms/form-block-attributes {:ratio 50})]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :webshop}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -172,7 +173,7 @@
                          :font-size :xs
                          :indent    {:right :s :top :m}
                          :label     :duplicate!
-                         :on-click  [:db/apply-item! [:website-content :editor/edited-item :brands]
+                         :on-click  [:x.db/apply-item! [:website-content :editor/edited-item :brands]
                                                      vector/duplicate-nth-item brand-dex]}]))
 
 (defn- delete-brand-button
@@ -183,7 +184,7 @@
                          :font-size :xs
                          :indent    {:right :s :top :m}
                          :label     :delete!
-                         :on-click  [:db/apply-item! [:website-content :editor/edited-item :brands]
+                         :on-click  [:x.db/apply-item! [:website-content :editor/edited-item :brands]
                                                      vector/remove-nth-item brand-dex]}]))
 
 (defn- brand-description-field
@@ -224,19 +225,19 @@
 
 (defn- brand-box
   [brand-dex brand-props]
-  [common/surface-box {:indent  {:top :m}
-                       :content [:<> [:div (forms/form-row-attributes)
-                                           [:div (forms/form-block-attributes {:ratio 100})
-                                                 [brand-title-field      brand-dex brand-props]
-                                                 [brand-link-label-field brand-dex brand-props]
-                                                 [brand-link-field       brand-dex brand-props]]]
-                                     [:div (forms/form-row-attributes)
-                                           [:div (forms/form-block-attributes {:ratio 100})
-                                                 [brand-description-field brand-dex brand-props]]]
-                                     [:div {:style {:display :flex :justify-content :flex-end}}
-                                           [duplicate-brand-button brand-dex brand-props]
-                                           [delete-brand-button    brand-dex brand-props]]
-                                     [elements/horizontal-separator {:size :xs}]]}])
+  [components/surface-box {:content [:<> [:div (forms/form-row-attributes)
+                                               [:div (forms/form-block-attributes {:ratio 100})
+                                                     [brand-title-field      brand-dex brand-props]
+                                                     [brand-link-label-field brand-dex brand-props]
+                                                     [brand-link-field       brand-dex brand-props]]]
+                                         [:div (forms/form-row-attributes)
+                                               [:div (forms/form-block-attributes {:ratio 100})
+                                                     [brand-description-field brand-dex brand-props]]]
+                                         [:div {:style {:display :flex :justify-content :flex-end}}
+                                               [duplicate-brand-button brand-dex brand-props]
+                                               [delete-brand-button    brand-dex brand-props]]
+                                         [elements/horizontal-separator {:height :xs}]]
+                           :indent  {:top :m}}])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -244,7 +245,7 @@
 (defn- brand-list
   []
   (letfn [(f [%1 %2 %3] (conj %1 [brand-box %2 %3]))]
-         (let [brands @(r/subscribe [:db/get-item [:website-content :editor/edited-item :brands]])]
+         (let [brands @(r/subscribe [:x.db/get-item [:website-content :editor/edited-item :brands]])]
               (reduce-kv f [:<>] brands))))
 
 ;; ----------------------------------------------------------------------------
@@ -253,7 +254,7 @@
 (defn- brand-controls-action-bar
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])
-        on-click [:db/apply-item! [:website-content :editor/edited-item :brands] vector/cons-item {}]]
+        on-click [:x.db/apply-item! [:website-content :editor/edited-item :brands] vector/cons-item {}]]
        [common/action-bar ::brand-controls-action-bar
                           {:disabled? editor-disabled?
                            :label     :add-brand!
@@ -262,11 +263,11 @@
 (defn- selling-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::selling-box
-                           {:content [:<> [brand-controls-action-bar]
-                                          [elements/horizontal-separator {:size :xs}]]
-                            :disabled? editor-disabled?
-                            :label     :selling}]))
+       [components/surface-box ::selling-box
+                               {:content [:<> [brand-controls-action-bar]
+                                              [elements/horizontal-separator {:height :xs}]]
+                                :disabled? editor-disabled?
+                                :label     :selling}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -293,14 +294,13 @@
 (defn- rent-informations-box
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-box ::rent-informations-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 33})
-                                                      [rent-informations-picker]]
-                                                [:div (forms/form-block-attributes {:ratio 67})]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :rent-informations}]))
+       [components/surface-box ::rent-informations-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [rent-informations-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :rent-informations}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -325,7 +325,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :website-content.editor])]
+  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :website-content.editor])]
        (case current-view-id :renting  [renting]
                              :selling  [selling]
                              :webshop  [webshop]
@@ -344,17 +344,17 @@
 (defn- breadcrumbs
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-breadcrumbs :website-content.editor/view
-                                   {:crumbs [{:label :app-home :route "/@app-home"}
-                                             {:label :website-content}]
-                                    :disabled? editor-disabled?}]))
+       [components/surface-breadcrumbs ::breadcrumbs
+                                       {:crumbs [{:label :app-home :route "/@app-home"}
+                                                 {:label :website-content}]
+                                        :disabled? editor-disabled?}]))
 
 (defn- label
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [common/surface-label :website-content.editor/view
-                             {:disabled? editor-disabled?
-                              :label     :website-content}]))
+       [components/surface-label ::label
+                                 {:disabled? editor-disabled?
+                                  :label     :website-content}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -365,7 +365,7 @@
              [:div [label]
                    [breadcrumbs]]
              [:div [controls]]]
-       [elements/horizontal-separator {:size :xxl}]
+       [elements/horizontal-separator {:height :xxl}]
        [menu-bar]])
 
 (defn- view-structure
@@ -378,9 +378,9 @@
   [_]
   [file-editor/body :website-content.editor
                     {:content-path  [:website-content :editor/edited-item]
-                     :form-element  #'view-structure
-                     :error-element [common/error-content {:error :the-content-you-opened-may-be-broken}]
-                     :ghost-element #'common/file-editor-ghost-element}])
+                     :form-element  [view-structure]
+                     :error-element [components/error-content {:error :the-content-you-opened-may-be-broken}]
+                     :ghost-element [components/ghost-view    {:breadcrumb-count 2 :layout :box-surface}]}])
 
 (defn view
   ; @param (keyword) surface-id

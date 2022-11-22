@@ -1,12 +1,13 @@
 
 (ns app.settings.frontend.editor.views
-    (:require [app.common.frontend.api :as common]
-              [elements.api            :as elements]
-              [engines.item-editor.api :as item-editor]
-              [forms.api               :as forms]
-              [layouts.surface-a.api   :as surface-a]
-              [re-frame.api            :as r]
-              [x.app-locales.api       :as x.locales]))
+    (:require [app.common.frontend.api     :as common]
+              [app.components.frontend.api :as components]
+              [elements.api                :as elements]
+              [engines.item-editor.api     :as item-editor]
+              [forms.api                   :as forms]
+              [layouts.surface-a.api       :as surface-a]
+              [re-frame.api                :as r]
+              [x.locales.api               :as x.locales]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -14,7 +15,7 @@
 (defn- settings-primary-currency-select
   []
   (let [editor-disabled?   @(r/subscribe [:item-editor/editor-disabled? :settings.editor])
-        secondary-currency @(r/subscribe [:db/get-item [:settings :editor/edited-item :secondary-currency]])]
+        secondary-currency @(r/subscribe [:x.db/get-item [:settings :editor/edited-item :secondary-currency]])]
        [elements/select ::settings-primary-currency-select
                         {:disabled?  editor-disabled?
                          :indent     {:top :m :vertical :s}
@@ -26,7 +27,7 @@
 (defn- settings-secondary-currency-select
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :settings.editor])
-        primary-currency @(r/subscribe [:db/get-item [:settings :editor/edited-item :primary-currency]])]
+        primary-currency @(r/subscribe [:x.db/get-item [:settings :editor/edited-item :primary-currency]])]
        [elements/select ::settings-secondary-currency-select
                         {:disabled?  editor-disabled?
                          :indent     {:top :m :vertical :s}
@@ -49,8 +50,8 @@
 (defn- settings-current-price-field
   []
   (let [editor-disabled?   @(r/subscribe [:item-editor/editor-disabled? :settings.editor])
-        primary-currency   @(r/subscribe [:db/get-item [:settings :editor/edited-item :primary-currency]])
-        secondary-currency @(r/subscribe [:db/get-item [:settings :editor/edited-item :secondary-currency]])]
+        primary-currency   @(r/subscribe [:x.db/get-item [:settings :editor/edited-item :primary-currency]])
+        secondary-currency @(r/subscribe [:x.db/get-item [:settings :editor/edited-item :secondary-currency]])]
        [elements/text-field ::settings-current-price-field
                             {:disabled?      editor-disabled?
                              :end-adornments [{:label (str primary-currency" / " secondary-currency) :color :muted}]
@@ -62,22 +63,22 @@
 (defn- settings-taxes-and-current-price-box
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :settings.editor])]
-       [common/surface-box ::taxes-and-current-price-box
-                           {:content [:<> [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 33})
-                                                      [settings-primary-currency-select]]
-                                                [:div (forms/form-block-attributes {:ratio 33})
-                                                      [settings-secondary-currency-select]]
-                                                [:div (forms/form-block-attributes {:ratio 34})
-                                                      [settings-current-price-field]]]
-                                          [:div (forms/form-row-attributes)
-                                                [:div (forms/form-block-attributes {:ratio 33})
-                                                      [settings-vat-value-field]]
-                                                [:div (forms/form-block-attributes {:ratio 33})]
-                                                [:div (forms/form-block-attributes {:ratio 34})]]
-                                          [elements/horizontal-separator {:size :s}]]
-                            :disabled? editor-disabled?
-                            :label     :taxes-and-current-price}]))
+       [components/surface-box ::taxes-and-current-price-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 33})
+                                                          [settings-primary-currency-select]]
+                                                    [:div (forms/form-block-attributes {:ratio 33})
+                                                          [settings-secondary-currency-select]]
+                                                    [:div (forms/form-block-attributes {:ratio 34})
+                                                          [settings-current-price-field]]]
+                                              [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 33})
+                                                          [settings-vat-value-field]]
+                                                    [:div (forms/form-block-attributes {:ratio 33})]
+                                                    [:div (forms/form-block-attributes {:ratio 34})]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :taxes-and-current-price}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -91,7 +92,7 @@
 
 (defn- body
   []
-  (let [current-view-id @(r/subscribe [:gestures/get-current-view-id :settings.editor])]
+  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :settings.editor])]
        (case current-view-id :sales [settings-sales])))
 
 ;; ----------------------------------------------------------------------------
@@ -116,16 +117,16 @@
 (defn- breadcrumbs
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :settings.editor])]
-       [common/surface-breadcrumbs :settings.editor/view
-                                   {:crumbs [{:label :app-home :route "/@app-home"}
-                                             {:label :settings}]}]))
+       [components/surface-breadcrumbs ::breadcrumbs
+                                       {:crumbs [{:label :app-home :route "/@app-home"}
+                                                 {:label :settings}]}]))
 
 (defn- label
   []
   (let [editor-disabled? @(r/subscribe [:item-editor/editor-disabled? :settings.editor])]
-       [common/surface-label :settings.editor/view
-                             {:disabled? editor-disabled?
-                              :label     :settings}]))
+       [components/surface-label ::label
+                                 {:disabled? editor-disabled?
+                                  :label     :settings}]))
 
 (defn- header
   []
@@ -133,7 +134,7 @@
              [:div [label]
                    [breadcrumbs]]
              [:div [controls]]]
-       [elements/horizontal-separator {:size :xxl}]
+       [elements/horizontal-separator {:height :xxl}]
        [menu-bar]])
 
 ;; ----------------------------------------------------------------------------
@@ -147,9 +148,9 @@
 (defn- settings-editor
   []
   [item-editor/body :settings.editor
-                    {:form-element     #'view-structure
-                     :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
-                     :ghost-element    #'common/item-editor-ghost-element
+                    {:form-element     [view-structure]
+                     :error-element    [components/error-content {:error :the-content-you-opened-may-be-broken}]
+                     :ghost-element    [components/ghost-view    {:breadcrumb-count 4 :layout :box-surface}]
                      :item-path        [:settings :editor/edited-item]
                      :on-saved         [:settings.editor/user-settings-saved]
                      :suggestion-keys  []

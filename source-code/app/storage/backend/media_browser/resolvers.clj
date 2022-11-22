@@ -53,7 +53,7 @@
              ; @param (map) resolver-props
              ;
              ; @return (namespaced map)
-             ;  {:contents.content-lister/get-items (map)
+             ;  {:storage.media-browser/get-items (map)
              ;    {:document-count (integer)
              ;     :documents (namespaced maps in vector)}}
              [env resolver-props]

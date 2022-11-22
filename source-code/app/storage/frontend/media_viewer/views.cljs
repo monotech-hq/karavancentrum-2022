@@ -5,7 +5,7 @@
               [io.api              :as io]
               [layouts.popup-b.api :as popup-b]
               [re-frame.api        :as r]
-              [x.app-media.api     :as x.media]))
+              [x.media.api         :as x.media]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -16,7 +16,7 @@
         [elements/icon-button ::close-icon-button
                               {:color    :invert
                                :keypress {:key-code 27}
-                               :on-click [:ui/remove-popup! :storage.media-viewer/view]
+                               :on-click [:x.ui/remove-popup! :storage.media-viewer/view]
                                :preset   :close}]])
 
 ;; -- PDF-item components -----------------------------------------------------

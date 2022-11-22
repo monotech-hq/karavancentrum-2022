@@ -1,20 +1,29 @@
 
 (ns app.home.frontend.screen.views
     (:require [app.common.frontend.api          :as common]
+              [app.components.frontend.api      :as components]
               [app.home.frontend.handler.config :as handler.config]
               [css.api                          :as css]
               [elements.api                     :as elements]
               [layouts.surface-a.api            :as surface-a]
-              [mid-fruits.vector                :as vector]
               [re-frame.api                     :as r]
-              [x.app-components.api             :as x.components]))
+              [vector.api                       :as vector]
+              [x.components.api                 :as x.components]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
+
+(defn- last-login-label
+  []
+  (let [last-login-at @(r/subscribe [:x.db/get-item [:x.user :login-handler/user-login :successful-logins 1]])
+        timestamp     @(r/subscribe [:x.activities/get-actual-timestamp last-login-at])
+        last-login     {:content :last-login-at-n :replacements [timestamp]}]
+       [components/surface-description ::last-login-label
+                                       {:content last-login}]))
 
 (defn- user-profile-picture
   []
-  (let [user-profile-picture @(r/subscribe [:user/get-user-profile-picture])]
+  (let [user-profile-picture @(r/subscribe [:x.user/get-user-profile-picture])]
        [:div.x-user-profile-picture {:style {:backgroundImage     (css/url user-profile-picture)
                                              :background-color    (css/var "background-color-highlight")
                                              :border-radius       "50%";
@@ -27,7 +36,7 @@
 
 (defn- user-name-label
   []
-  (let [user-name @(r/subscribe [:user/get-user-name])]
+  (let [user-name @(r/subscribe [:x.user/get-user-name])]
        [elements/label ::user-name-label
                        {:content     user-name
                         :font-size   :s
@@ -37,7 +46,7 @@
 
 (defn- user-email-address-label
   []
-  (let [user-email-address (r/subscribe [:user/get-user-email-address])]
+  (let [user-email-address (r/subscribe [:x.user/get-user-email-address])]
        [elements/label ::user-email-address-label
                        {:color       :muted
                         :content     user-email-address
@@ -113,16 +122,16 @@
   ; XXX#0091
   ; Az azonos menu-group csoportban felsorolt menü elemek a horizontal-weight
   ; tulajdonságuk szerinti kisebb csoportokban vannak felsorolva.
-  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items name])] 
+  (let [group-items @(r/subscribe [:home.screen/get-menu-group-items name])]
        (if (vector/nonempty? group-items)
-           [common/surface-box {:content [:div {:style {:display "grid" :grid-row-gap "12px" :padding "12px 0"
-                                                        :grid-template-columns "repeat(auto-fill, minmax(260px, 1fr))"}}
-                                               (let [weight-groups (group-by :horizontal-weight group-items)]
-                                                    (letfn [(f [group-list horizontal-weight]
-                                                               (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
-                                                           (reduce f [:<>] (-> weight-groups keys sort))))]
-                                :indent {:top :m}
-                                :label  name}])))
+           [components/surface-box {:content [:div {:style {:display "grid" :grid-row-gap "12px" :padding "12px 0"
+                                                            :grid-template-columns "repeat(auto-fill, minmax(260px, 1fr))"}}
+                                                   (let [weight-groups (group-by :horizontal-weight group-items)]
+                                                        (letfn [(f [group-list horizontal-weight]
+                                                                   (conj group-list [weight-group horizontal-weight (get weight-groups horizontal-weight)]))]
+                                                               (reduce f [:<>] (-> weight-groups keys sort))))]
+                                    :indent {:top :m}
+                                    :label  name}])))
 
 (defn- menu-groups
   []
@@ -136,16 +145,29 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- head-box
+  []
+  [components/surface-box ::head-box
+                          {:background-color "#bad3e6"
+                           :content [:div {:style {:height "160px"}}]
+                           :indent  {:top :m}}])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- breadcrumbs
   []
-  [common/surface-breadcrumbs :home.screen/view
-                              {:crumbs [{:label :app-home}]}])
+  [components/surface-breadcrumbs ::breadcrumbs
+                                  {:crumbs [{:label :app-home}]}])
 
 (defn- label
   []
-  (let [app-title @(r/subscribe [:core/get-app-config-item :app-title])]
-       [common/surface-label :home.screen/view
-                             {:label app-title}]))
+  (let [app-title @(r/subscribe [:x.core/get-app-config-item :app-title])])
+  (let [user-first-name @(r/subscribe [:x.user/get-user-first-name])
+        user-last-name  @(r/subscribe [:x.user/get-user-last-name])
+        user-full-name  @(r/subscribe [:x.locales/get-ordered-name user-first-name user-last-name])]
+       [components/surface-label ::label
+                                 {:label {:content :welcome-n :replacements [user-full-name]}}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -153,12 +175,14 @@
 (defn- view-structure
   ; @param (keyword) surface-id
   [_]
-  (if-let [screen-loaded? @(r/subscribe [:db/get-item [:home :screen/screen-loaded?]])]
+  (if-let [screen-loaded? @(r/subscribe [:x.db/get-item [:home :screen/screen-loaded?]])]
           [:<> [label]
                [breadcrumbs]
-               ;[elements/horizontal-separator {:size :xxl}]
-               [menu-groups]]
-          [common/surface-box-layout-ghost-view :home.screen/view {:breadcrumb-count 1}]))
+               ;[elements/horizontal-separator {:height :xxl}]
+               [head-box]
+               [menu-groups]
+               [last-login-label]]
+          [components/ghost-view {:breadcrumb-count 1 :layout :box-surface}]))
 
 (defn view
   ; @param (keyword) surface-id

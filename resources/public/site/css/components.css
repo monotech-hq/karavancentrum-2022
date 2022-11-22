@@ -118,6 +118,17 @@
 
 
 
+/***** Scroll-sensor *****/
+
+.mt-scroll-sensor {
+  height: 1px;
+  width: 100%;
+}
+
+/***** Scroll-sensor *****/
+
+
+
 /***** Scroll-icon *****/
 
 #mt-scroll-icon {

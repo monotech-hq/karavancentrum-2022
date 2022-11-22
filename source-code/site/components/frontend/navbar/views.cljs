@@ -2,12 +2,12 @@
 (ns site.components.frontend.navbar.views
     (:require [elements.api                                 :as elements]
               [hiccup.api                                   :as hiccup]
-              [mid-fruits.random                            :as random]
+              [random.api                                   :as random]
               [re-frame.api                                 :as r]
               [site.components.frontend.navbar.helpers      :as navbar.helpers]
               [site.components.frontend.scroll-sensor.views :as scroll-sensor.views]
-              [x.app-components.api                         :as x.components]
-              [x.app-environment.api                        :as x.environment]))
+              [x.components.api                             :as x.components]
+              [x.environment.api                            :as x.environment]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -56,7 +56,7 @@
   ;   :style (map)(opt)
   ;   :threshold (px)(opt)}
   [component-id {:keys [class style threshold] :as component-props}]
-  (let [threshold? (<= threshold @(r/subscribe [:environment/get-viewport-width]))]
+  (let [threshold? (<= threshold @(r/subscribe [:x.environment/get-viewport-width]))]
        [:<> [scroll-sensor.views/component ::scroll-sensor {:callback-f navbar.helpers/scroll-f
                                                             :style {:left "0" :position "absolute" :top "0"}}]
             [:div {:id :mt-navbar :class class :style style

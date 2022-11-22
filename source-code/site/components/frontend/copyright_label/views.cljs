@@ -1,9 +1,9 @@
 
 (ns site.components.frontend.copyright-label.views
-    (:require [elements.api      :as elements]
-              [mid-fruits.random :as random]
-              [re-frame.api      :as r]
-              [x.app-details     :as x.details]))
+    (:require [elements.api  :as elements]
+              [random.api    :as random]
+              [re-frame.api  :as r]
+              [x.app-details :as x.app-details]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -18,8 +18,8 @@
   ; @usage
   ;  [copyright-label]
   [_ {:keys [theme]}]
-  (let [server-year          @(r/subscribe [:core/get-server-year])
-        copyright-information (x.details/copyright-information server-year)]
+  (let [server-year          @(r/subscribe [:x.core/get-server-year])
+        copyright-information (x.app-details/copyright-information server-year)]
        [elements/label ::copyright-label
                        {:color            (case theme :dark :invert :default)
                         :content          copyright-information

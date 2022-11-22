@@ -1,11 +1,11 @@
 
 (ns site.components.frontend.sidebar.views
     (:require [elements.api                             :as elements]
-              [mid-fruits.random                        :as random]
+              [random.api                               :as random]
               [re-frame.api                             :as r]
               [site.components.frontend.sidebar.helpers :as sidebar.helpers]
-              [x.app-components.api                     :as x.components]
-              [x.app-environment.api                    :as x.environment]))
+              [x.components.api                         :as x.components]
+              [x.environment.api                        :as x.environment]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -16,7 +16,7 @@
   [_ _]
   [:div {:style {:position "absolute" :right "12px" :top "12px"}}
         [elements/icon-button ::sidebar-close-button
-                              {:icon :close :on-click [:site.components/hide-sidebar!]}]])
+                              {:icon :close :on-click [:components.sidebar/hide-sidebar!]}]])
 
 (defn- sidebar
   ; @param (keyword) component-id
@@ -25,10 +25,10 @@
   ;   :content (metamorphic-content)
   ;   :style (map)(opt)}
   [component-id {:keys [class content style] :as component-props}]
-  (let [sidebar-visible? @(r/subscribe [:site.components/sidebar-visible?])]
+  (let [sidebar-visible? @(r/subscribe [:components.sidebar/sidebar-visible?])]
        [:div {:id :mt-sidebar :class class :style style
               :data-visible (boolean sidebar-visible?)}
-             [:div {:id :mt-sidebar--cover :on-click #(r/dispatch [:site.components/hide-sidebar!])}]
+             [:div {:id :mt-sidebar--cover :on-click #(r/dispatch [:components.sidebar/hide-sidebar!])}]
              [:div {:id :mt-sidebar--content}
                    [x.components/content component-id content]
                    [sidebar-close-button component-id component-props]]]))

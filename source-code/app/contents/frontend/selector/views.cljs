@@ -1,6 +1,7 @@
 
 (ns app.contents.frontend.selector.views
     (:require [app.common.frontend.api               :as common]
+              [app.components.frontend.api           :as components]
               [app.contents.frontend.handler.helpers :as handler.helpers]
               [elements.api                          :as elements]
               [engines.item-lister.api               :as item-lister]
@@ -11,43 +12,36 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn content-item-structure
-  [selector-id item-dex {:keys [body name id modified-at] :as content-item}]
-  (let [timestamp   @(r/subscribe [:activities/get-actual-timestamp modified-at])
-        item-last?  @(r/subscribe [:item-lister/item-last? selector-id item-dex])
-        content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
-       [common/list-item-structure {:cells [[common/list-item-thumbnail {:icon :article :icon-family :material-icons-outlined}]
-                                            ; HACK#4506
-                                            [:div {:style {:flex-grow 1 :max-width "calc(100% - 144px)" :padding-right "24px"}}
-                                                  [common/list-item-primary-cell {:label name :placeholder :unnamed-content :description content-body :timestamp timestamp}]]
-                                            [common/selector-item-marker selector-id item-dex {:item-id id}]]
-                                    :separator (if-not item-last? :bottom)}]))
-
-(defn content-item
-  [selector-id item-dex {:keys [id] :as content-item}]
-  [elements/toggle {:content     [content-item-structure selector-id item-dex content-item]
-                    :hover-color :highlight
-                    :on-click    [:item-selector/item-clicked :contents.selector id]}])
+(defn content-list-item
+  ; @param (keyword) selector-id
+  ; @param (map) selector-props
+  ; @param (integer) item-dex
+  ; @param (map) content-item
+  [selector-id _ item-dex {:keys [body name id]}]
+  (let [content-body (-> body handler.helpers/parse-content-body hiccup/to-string)]
+       [components/item-list-row {:cells [[components/list-item-thumbnail {:icon :article :icon-family :material-icons-outlined}]
+                                          [components/list-item-cell      {:rows [{:content name :placeholder :unnamed-content}
+                                                                                  {:content content-body :font-size :xs :color :muted}]}]
+                                          [components/list-item-gap {:width 6}]
+                                          [common/selector-item-marker selector-id item-dex {:item-id id}]
+                                          [components/list-item-gap {:width 6}]]
+                                  :border (if (not= item-dex 0) :top)}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
-
-(defn- content-list
-  [lister-id items]
-  [common/item-list lister-id {:item-element #'content-item :items items}])
 
 (defn- content-lister
   []
   [item-lister/body :contents.selector
                     {:default-order-by :modified-at/descending
                      :items-path       [:contents :selector/downloaded-items]
-                     :error-element    [common/error-content {:error :the-content-you-opened-may-be-broken}]
-                     :ghost-element    #'common/item-selector-ghost-element
-                     :list-element     #'content-list}])
+                     :error-element    [components/error-content {:error :the-content-you-opened-may-be-broken}]
+                     :ghost-element    [components/ghost-view    {:layout :item-list :item-count 3}]
+                     :list-element     [common/item-selector-body :contents.selector {:list-item-element #'content-list-item}]}])
 
 (defn- body
   []
-  [:<> [elements/horizontal-separator {:size :xs}]
+  [:<> [elements/horizontal-separator {:height :xs}]
        [content-lister]])
 
 ;; ----------------------------------------------------------------------------
@@ -65,19 +59,19 @@
 (defn- label-bar
   []
   (let [multi-select? @(r/subscribe [:item-lister/get-meta-item :contents.selector :multi-select?])]
-       [common/popup-label-bar :contents.selector/view
-                               {:primary-button   {:label :save! :on-click [:item-selector/save-selection! :contents.selector]}
-                                :secondary-button (if-let [autosaving? @(r/subscribe [:item-selector/autosaving? :contents.selector])]
-                                                          {:label :abort!  :on-click [:item-selector/abort-autosave! :contents.selector]}
-                                                          {:label :cancel! :on-click [:ui/remove-popup! :contents.selector/view]})
-                                :label            (if multi-select? :select-contents! :select-content!)}]))
+       [components/popup-label-bar :contents.selector/view
+                                   {:primary-button   {:label :save! :on-click [:item-selector/save-selection! :contents.selector]}
+                                    :secondary-button (if-let [autosaving? @(r/subscribe [:item-selector/autosaving? :contents.selector])]
+                                                              {:label :abort!  :on-click [:item-selector/abort-autosave! :contents.selector]}
+                                                              {:label :cancel! :on-click [:x.ui/remove-popup! :contents.selector/view]})
+                                    :label            (if multi-select? :select-contents! :select-content!)}]))
 
 (defn- header
   []
   [:<> [label-bar]
        (if-let [first-data-received? @(r/subscribe [:item-lister/first-data-received? :contents.selector])]
                [control-bar]
-               [elements/horizontal-separator {:size :xxl}])])
+               [elements/horizontal-separator {:height :xxl}])])
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -94,7 +88,8 @@
 ;; ----------------------------------------------------------------------------
 
 (defn view
-  [selector-id]
+  ; @param (keyword) popup-id
+  [popup-id]
   [popup-a/layout :contents.selector/view
                   {:body                #'body
                    :header              #'header

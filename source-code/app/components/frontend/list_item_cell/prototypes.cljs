@@ -1,6 +1,6 @@
 
 (ns app.components.frontend.list-item-cell.prototypes
-    (:require [mid-fruits.candy :refer [param]]))
+    (:require [candy.api :refer [param]]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -9,6 +9,6 @@
   ; @param (map) cell-props
   ;
   ; @return (map)
-  [{:keys [] :as cell-props}]
+  [cell-props]
   (merge {}
          (param cell-props)))

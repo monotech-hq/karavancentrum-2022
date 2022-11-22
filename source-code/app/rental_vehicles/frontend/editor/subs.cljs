@@ -2,7 +2,7 @@
 (ns app.rental-vehicles.frontend.editor.subs
     (:require [app.rental-vehicles.mid.handler.helpers :as handler.helpers]
               [re-frame.api                            :as r :refer [r]]
-              [x.app-router.api                        :as x.router]))
+              [x.router.api                            :as x.router]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
