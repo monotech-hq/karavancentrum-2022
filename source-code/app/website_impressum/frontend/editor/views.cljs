@@ -11,9 +11,17 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- company-data
+  []
+  [:<> [editor.boxes/company-data-box]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- body
   []
-  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :website-impressum.editor])]))
+  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :website-impressum.editor])]
+       (case current-view-id :company-data [company-data])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -22,7 +30,7 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
        [common/file-editor-menu-bar :website-impressum.editor
-                                    {:menu-items []
+                                    {:menu-items [{:label :company-data :change-keys [:company-name :company-slogan :company-est-year]}]
                                      :disabled? editor-disabled?}]))
 
 (defn- controls

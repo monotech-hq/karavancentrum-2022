@@ -14,8 +14,7 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-config.editor])]
        [elements/text-field ::meta-name-field
-                            {:autofocus?  true
-                             :disabled?   editor-disabled?
+                            {:disabled?   editor-disabled?
                              :label       :meta-name
                              :indent      {:top :m :vertical :s}
                              :info-text   :describe-the-page-with-a-name

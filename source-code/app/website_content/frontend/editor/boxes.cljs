@@ -26,8 +26,7 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [elements/text-field ::website-name-field
-                            {:autofocus?  true
-                             :disabled?   editor-disabled?
+                            {:disabled?   editor-disabled?
                              :indent      {:top :m :vertical :s}
                              :label       :name
                              :placeholder :website-name-placeholder

@@ -280,8 +280,7 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-contacts.editor])]
        [elements/multi-field ::facebook-links-field
-                             {:autofocus?  true
-                              :disabled?   editor-disabled?
+                             {:disabled?   editor-disabled?
                               :indent      {:top :m :vertical :s}
                               :label       :facebook-link
                               :placeholder :facebook-link-placeholder

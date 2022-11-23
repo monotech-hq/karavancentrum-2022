@@ -8,6 +8,6 @@
 
 (r/reg-event-fx :website-impressum.editor/load-editor!
   {:dispatch-n [[:x.gestures/init-view-handler! :website-impressum.editor
-                                                {:default-view-id :xxx}]
+                                                {:default-view-id :company-data}]
                 [:x.ui/render-surface! :website-impressum.editor/view
                                        {:content #'editor.views/view}]]})
