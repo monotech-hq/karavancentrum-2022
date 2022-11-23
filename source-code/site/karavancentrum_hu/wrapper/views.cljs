@@ -27,8 +27,8 @@
 
 (defn company-name-and-slogan
   []
-  (let [company-name   @(r/subscribe [:x.db/get-item [:site :website-impressum :company-name]])
-        company-slogan @(r/subscribe [:x.db/get-item [:site :website-impressum :company-slogan]])]
+  (let [company-name   @(r/subscribe [:x.db/get-item [:site :website-content :website-name]])
+        company-slogan @(r/subscribe [:x.db/get-item [:site :website-content :website-slogan]])]
        [:a {:href "/" :style {:text-decoration "none"}}
            [:div#kc-navbar--company-name-and-slogan [:div#kc-navbar--company-name   company-name]
                                                     [:div#kc-navbar--company-slogan company-slogan]]]))

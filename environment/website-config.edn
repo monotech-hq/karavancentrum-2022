@@ -1,2 +1,5 @@
 
-{:debug "Follow the white rabbit"}
+{:debug "Follow the white rabbit" 
+ :share-preview 
+ {:media/id "61de15aaffc7a6839cde85d9" 
+  :media/uri "/media/storage/sample.png"}}

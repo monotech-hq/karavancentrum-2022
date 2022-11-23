@@ -9,22 +9,13 @@
 (defn preview-props-prototype
   ; @param (keyword) picker-id
   ; @param (map) picker-props
-  ;  {}
   ; @param (namespaced map) media-link
   ;
   ; @return (map)
-  ;  {:disabled? (boolean)
-  ;   :items (namespaced maps in vector)
-  ;   :indent (map)
-  ;   :placeholder (metamorphic-content)
-  ;   :sortable? (boolean)
-  ;   :thumbnail (map)
-  ;   :value-path (vector)}
-  [_ {:keys [disabled? placeholder thumbnail]} media-link]
-  {:disabled?   disabled?
-   :item-link   media-link
-   :placeholder placeholder
-   :thumbnail   thumbnail})
+  ;  {:item-link (namespaced map)}
+  [_ picker-props media-link]
+  (merge (select-keys picker-props [:disabled? :placeholder])
+         {:item-link media-link}))
 
 (defn picker-props-prototype
   ; @param (keyword) picker-id

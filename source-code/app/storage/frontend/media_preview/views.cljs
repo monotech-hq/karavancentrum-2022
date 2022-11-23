@@ -37,7 +37,7 @@
   ;     :media/uri}}
   [_ {{:media/keys [id uri]} :item-link :keys [disabled?]}]
   ; XXX#0059 (source-code/app/clients/frontend/preview/views.cljs)
-  ; XXX#6690 (source-code/app/storage/media-browser/views.cljs)
+  ; XXX#6690 (source-code/app/storage/media_browser/views.cljs)
   (let [thumbnail @(r/subscribe [:x.db/get-item [:storage :media-preview/downloaded-items id :thumbnail]])]
        [elements/thumbnail {:border-radius :s
                             :disabled? disabled?
@@ -53,7 +53,7 @@
   ;    {:media/id (string)}}
   [_ {{:media/keys [id]} :item-link :keys [disabled?]}]
   ; XXX#0059 (source-code/app/clients/frontend/preview/views.cljs)
-  ; XXX#6690 (source-code/app/storage/media-browser/views.cljs)
+  ; XXX#6690 (source-code/app/storage/media_browser/views.cljs)
   (let [alias @(r/subscribe [:x.db/get-item [:storage :media-preview/downloaded-items id :alias]])
         icon (cond (io/filename->audio? alias) :audio_file
                    (io/filename->text?  alias) :insert_drive_file
@@ -73,7 +73,7 @@
   ;   :item-link (namespaced map)
   ;    {:media/id (string)}}
   [preview-id {{:media/keys [id]} :item-link :keys [disabled?] :as preview-props}]
-  ; XXX#6690 (source-code/app/storage/media-browser/views.cljs)
+  ; XXX#6690 (source-code/app/storage/media_browser/views.cljs)
   (let [alias @(r/subscribe [:x.db/get-item [:storage :media-preview/downloaded-items id :alias]])]
        (if (io/filename->image? alias)
            [media-preview-image-thumbnail preview-id preview-props]

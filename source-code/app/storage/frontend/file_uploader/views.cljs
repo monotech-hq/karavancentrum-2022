@@ -73,12 +73,12 @@
   [uploader-id]
   (let [request-id     (file-uploader.helpers/request-id uploader-id)
         request-sent? @(r/subscribe [:x.sync/request-sent? request-id])]
-       (if request-sent? [:<> [elements/row {:content [:<> [progress-label        uploader-id]
-                                                           [abort-progress-button uploader-id]]
-                                             :horizontal-align :space-between
-                                             :indent {:top :xs}}]
-                              [:div {:style {:width "100%"}}
-                                    [progress-diagram uploader-id]]])))
+       (if request-sent? [:div {:style {:width "100%"}}
+                               [elements/row {:content [:<> [progress-label        uploader-id]
+                                                            [abort-progress-button uploader-id]]
+                                              :horizontal-align :space-between
+                                              :indent {:top :xs}}]
+                               [progress-diagram uploader-id]])))
 
 (defn progress-list
   ; @param (keyword) dialog-id
@@ -196,7 +196,7 @@
         object-url      @(r/subscribe [:storage.file-uploader/get-file-prop uploader-id file-dex :object-url])
         filesize         (-> filesize io/B->MB format/decimals (str " MB"))]
        [:div {:style {:align-items "center" :border-bottom "1px solid #f0f0f0" :display "flex"}}
-             ; XXX#6690 (source-code/app/storage/media-browser/views.cljs)
+             ; XXX#6690 (source-code/app/storage/media_browser/views.cljs)
              ; A fájlfeltöltő a storage modul többi almoduljától eltérően nem jelenít meg különböző ikonokat
              ; és előnézeti képeket az audio, text, video, stb. fájltípusoknak!
              (if (io/filename->image? filename)

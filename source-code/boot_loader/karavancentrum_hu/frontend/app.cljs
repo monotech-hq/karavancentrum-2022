@@ -16,6 +16,7 @@
               [app.storage.frontend.api]
               [app.user.frontend.api]
               [app.views.frontend.api]
+              [app.website-contacts.frontend.api]
               [app.website-config.frontend.api]
               [app.website-content.frontend.api]
               [app.website-impressum.frontend.api]

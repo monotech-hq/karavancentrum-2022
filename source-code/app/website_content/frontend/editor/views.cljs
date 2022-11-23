@@ -12,6 +12,14 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
+(defn- basic-data
+  []
+  [:<> [editor.boxes/website-logo-box]
+       [editor.boxes/website-data-box]])
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
 (defn- about-us
   []
   [:<> [editor.boxes/about-us-section-box]
@@ -46,19 +54,21 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [common/file-editor-menu-bar :website-content.editor
-                                    {:menu-items [{:label :renting  :change-keys [:rent-informations]}
-                                                  {:label :selling  :change-keys [:brands]}
-                                                  {:label :webshop  :change-keys [:webshop-link]}
-                                                  {:label :about-us :change-keys [:about-us-section :about-us-page]}]
+                                    {:menu-items [{:label :basic-data :change-keys [:company-name :company-slogan :company-logo]}
+                                                  {:label :renting    :change-keys [:rent-informations]}
+                                                  {:label :selling    :change-keys [:brands]}
+                                                  {:label :webshop    :change-keys [:webshop-link]}
+                                                  {:label :about-us   :change-keys [:about-us-section :about-us-page]}]
                                      :disabled? editor-disabled?}]))
 
 (defn- body
   []
   (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :website-content.editor])]
-       (case current-view-id :renting  [renting]
-                             :selling  [selling]
-                             :webshop  [webshop]
-                             :about-us [about-us])))
+       (case current-view-id :basic-data [basic-data]
+                             :renting    [renting]
+                             :selling    [selling]
+                             :webshop    [webshop]
+                             :about-us   [about-us])))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------

@@ -30,7 +30,7 @@
   ; @param (map) browser-props
   ; @param (integer) item-dex
   ; @param (map) media-item
-  [_ _ item-dex {:keys [alias size id items modified-at]}]
+  [_ _ item-dex {:keys [alias size id items modified-at] :as media-item}]
   (let [timestamp  @(r/subscribe [:x.activities/get-actual-timestamp modified-at])
         item-count  (x.components/content {:content :n-items :replacements [(count items)]})
         size        (-> size io/B->MB format/decimals (str " MB"))
@@ -45,6 +45,8 @@
                                           [components/list-item-cell      {:rows [{:content timestamp :font-size :xs :color :muted}] :width 100}]
                                           [components/list-item-gap       {:width 6}]
                                           [components/list-item-button    {:label :open! :width 100 :on-click [:item-browser/browse-item! :storage.media-browser id]}]
+                                          [components/list-item-gap       {:width 6}]
+                                          [components/list-item-button    {:icon :more_horiz :width 40 :on-click [:storage.media-menu/render-directory-menu! media-item]}]
                                           [components/list-item-gap       {:width 6}]]
                                   :border (if (not= item-dex 0) :top)}]))
 
@@ -57,7 +59,7 @@
   (let [timestamp @(r/subscribe [:x.activities/get-actual-timestamp modified-at])
         size       (-> size io/B->MB format/decimals (str " MB"))]
        [components/item-list-row {:cells [[components/list-item-gap    {:width 12}]
-                                          ; XXX#6690 (source-code/app/storage/media-browser/views.cljs)
+                                          ; XXX#6690 (source-code/app/storage/media_browser/views.cljs)
                                           (cond (io/filename->audio? alias)
                                                 [components/list-item-thumbnail {:icon :audio_file :icon-family :material-icons-outlined}]
                                                 (io/filename->image? alias)
@@ -75,7 +77,9 @@
                                           [components/list-item-gap    {:width 12}]
                                           [components/list-item-cell   {:rows [{:content timestamp :font-size :xs :color :muted}] :width 100}]
                                           [components/list-item-gap    {:width 6}]
-                                          [components/list-item-button {:icon :more_horiz :width 100 :on-click [:storage.media-menu/render-file-menu! media-item]}]
+                                          [components/list-item-cell   {:width 100}]
+                                          [components/list-item-gap    {:width 6}]
+                                          [components/list-item-button {:icon :more_horiz :width 40 :on-click [:storage.media-menu/render-file-menu! media-item]}]
                                           [components/list-item-gap    {:width 6}]]
                                   :border (if (not= item-dex 0) :top)}]))
 
@@ -166,9 +170,11 @@
                                              {:width 12}
                                              {:label :modified :width 100 :order-by-key :modified-at
                                               :on-click [:item-browser/order-items! :rental-vehicles.media-browser :modified-at]}
-                                             {:width 12}
+                                             {:width 6}
                                              {:width 100}
-                                             {:width 12}]
+                                             {:width 6}
+                                             {:width 40}
+                                             {:width 6}]
                                      :border :bottom
                                      :order-by current-order-by}]))
 

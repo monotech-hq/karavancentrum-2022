@@ -14,7 +14,7 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [_ _]
-  (if-let [contacts-data-information @(r/subscribe [:x.db/get-applied-item [:site :website-impressum :contacts-data-information]
+  (if-let [contacts-data-information @(r/subscribe [:x.db/get-applied-item [:site :website-contacts :contacts-data-information]
                                                                            contents/parse-content-body])]
           [:div {:id :mt-contacts--contacts-data-information} contacts-data-information]))
 
@@ -59,7 +59,7 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [component-id component-props]
-  (let [contact-groups @(r/subscribe [:x.db/get-item [:site :website-impressum :contact-groups]])]
+  (let [contact-groups @(r/subscribe [:x.db/get-item [:site :website-contacts :contact-groups]])]
        [:div {:id :mt-contacts--contact-groups}
              (letfn [(f [groups group-props]
                         (conj groups [contact-group component-id component-props group-props]))]
@@ -72,7 +72,7 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [_ _]
-  (if-let [address-data-information @(r/subscribe [:x.db/get-applied-item [:site :website-impressum :address-data-information]
+  (if-let [address-data-information @(r/subscribe [:x.db/get-applied-item [:site :website-contacts :address-data-information]
                                                                           contents/parse-content-body])]
           [:div {:id :mt-contacts--address-data-information} address-data-information]))
 
@@ -100,7 +100,7 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [component-id component-props]
-  (let [address-groups @(r/subscribe [:x.db/get-item [:site :website-impressum :address-groups]])]
+  (let [address-groups @(r/subscribe [:x.db/get-item [:site :website-contacts :address-groups]])]
        [:div {:id :mt-contacts--address-groups}
              (letfn [(f [groups group-props]
                         (conj groups [address-group component-id component-props group-props]))]

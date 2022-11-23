@@ -40,7 +40,7 @@
        [components/item-list-row {:drag-attributes item-attributes
                                   :cells [(if sortable? [components/list-item-drag-handle {:drag-attributes handle-attributes}])
                                           (if sortable? [components/list-item-gap         {:width 12}])
-                                          ; XXX#6690 (source-code/app/storage/media-browser/views.cljs)
+                                          ; XXX#6690 (source-code/app/storage/media_browser/views.cljs)
                                           (cond (io/filename->audio? alias)
                                                 [components/list-item-thumbnail {:icon :audio_file :icon-family :material-icons-outlined}]
                                                 (io/filename->image? alias)

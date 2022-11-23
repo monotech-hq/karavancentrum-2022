@@ -2,7 +2,6 @@
 (ns app.website-impressum.frontend.editor.views
     (:require [app.common.frontend.api                     :as common]
               [app.components.frontend.api                 :as components]
-              [app.storage.frontend.api                    :as storage]
               [app.website-impressum.frontend.editor.boxes :as editor.boxes]
               [elements.api                                :as elements]
               [engines.file-editor.api                     :as file-editor]
@@ -12,46 +11,9 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- basic-data
-  []
-  [:<> [editor.boxes/company-logo-box]
-       [editor.boxes/company-data-box]])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- contacts-data
-  []
-  [:<> [editor.boxes/contacts-data-box]
-       [editor.boxes/contacts-data-information-box]
-       [editor.boxes/contact-group-list]])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- address-data
-  []
-  [:<> [editor.boxes/address-data-box]
-       [editor.boxes/address-data-information-box]
-       [editor.boxes/address-group-list]])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- social-media
-  []
-  [:<> [editor.boxes/social-media-box]])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- body
   []
-  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :website-impressum.editor])]
-       (case current-view-id :basic-data    [basic-data]
-                             :contacts-data [contacts-data]
-                             :address-data  [address-data]
-                             :social-media  [social-media])))
+  (let [current-view-id @(r/subscribe [:x.gestures/get-current-view-id :website-impressum.editor])]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -60,10 +22,7 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
        [common/file-editor-menu-bar :website-impressum.editor
-                                    {:menu-items [{:label :basic-data    :change-keys [:company-name :company-slogan :company-logo]}
-                                                  {:label :contacts-data :change-keys [:contact-groups :contacts-data-information]}
-                                                  {:label :address-data  :change-keys [:address-groups :address-data-information]}
-                                                  {:label :social-media  :change-keys [:facebook-links :instagram-links :youtube-links]}]
+                                    {:menu-items []
                                      :disabled? editor-disabled?}]))
 
 (defn- controls

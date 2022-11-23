@@ -3,10 +3,75 @@
     (:require [app.common.frontend.api     :as common]
               [app.components.frontend.api :as components]
               [app.contents.frontend.api   :as contents]
+              [app.storage.frontend.api    :as storage]
               [elements.api                :as elements]
               [forms.api                   :as forms]
               [re-frame.api                :as r]
               [vector.api                  :as vector]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- website-slogan-field
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [elements/text-field ::website-slogan-field
+                            {:disabled?   editor-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :slogan
+                             :placeholder :website-slogan-placeholder
+                             :value-path  [:website-content :editor/edited-item :website-slogan]}]))
+
+(defn- website-name-field
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [elements/text-field ::website-name-field
+                            {:autofocus?  true
+                             :disabled?   editor-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :name
+                             :placeholder :website-name-placeholder
+                             :value-path  [:website-content :editor/edited-item :website-name]}]))
+
+(defn- website-data-box
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [components/surface-box ::website-data-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [website-name-field]]]
+                                              [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [website-slogan-field]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :indent    {:top :m}
+                                :label     :website-data}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- website-logo-picker
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [storage/media-picker ::website-logo-picker
+                             {:autosave?     true
+                              :disabled?     editor-disabled?
+                              :extensions    ["bmp" "jpg" "jpeg" "png" "webp"]
+                              :indent        {:vertical :s}
+                              :multi-select? false
+                              :placeholder   "-"
+                              :toggle-label  :select-image!
+                              :value-path    [:website-content :editor/edited-item :website-logo]}]))
+
+(defn- website-logo-box
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
+       [components/surface-box ::website-logo-box
+                               {:content [:<> [website-logo-picker]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :label     :website-logo}]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
