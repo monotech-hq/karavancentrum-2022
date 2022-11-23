@@ -687,6 +687,8 @@
   display: flex;
   justify-content: center;
 
+  font-size: var( --font-size-s );
+
   padding: 24px;
   border-radius: 10px;
   background-color: white;

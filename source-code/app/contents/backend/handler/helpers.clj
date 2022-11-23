@@ -3,6 +3,7 @@
     (:require [app.common.backend.api :as common]
               [candy.api              :refer [return]]
               [mongo-db.api           :as mongo-db]
+              [vector.api             :as vector]
               [x.user.api             :as x.user]))
 
 ;; ----------------------------------------------------------------------------
@@ -36,4 +37,5 @@
              (if-let [content-id (:content/id v)]
                      (assoc result k (get-content request v))
                      (assoc result k v)))]
-         (reduce-kv f {} n)))
+         (cond (vector? n) (vector/->items n #(fill-data request %))
+               (map?    n) (reduce-kv f {} n))))

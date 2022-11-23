@@ -17,7 +17,7 @@
 (defn init-filters [db _]
   (let [filters #{:alcove-rv :caravan :semi-integrated-rv :trailer :van-rv}
         result  (reduce (fn [m k]
-                          (if (empty? (filter #(= k (:vehicle/type %)) (get-in db [:site :vehicles])))
+                          (if (empty? (filter #(= k (:vehicle/type %)) (get-in db [:site :rental-vehicles])))
                             m
                             (conj m k)))
                         #{}

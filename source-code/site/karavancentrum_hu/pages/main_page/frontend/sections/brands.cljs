@@ -21,7 +21,7 @@
 
 (defn brands
   []
-  (let [brands @(r/subscribe [:x.db/get-item [:site :content :brands]])]
+  (let [brands @(r/subscribe [:x.db/get-item [:site :website-content :brands]])]
        [:div#kc-brands [:div [:p.kc-section-title "Értékesítés"]]
                        [:div#kc-brands--brand-list (letfn [(f [%1 %2 %3] (conj %1 [brand %2 %3]))]
                                                           (reduce-kv f [:<>] brands))]]))

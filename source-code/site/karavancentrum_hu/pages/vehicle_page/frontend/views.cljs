@@ -24,13 +24,15 @@
 
 (defn vehicle-content
   [{:vehicle/keys [description]}]
-  [:div#kc-vehicle-page--content [contents/content-preview {:item-link description}]])
+  [:div#kc-vehicle-page--content (contents/parse-content-body description)])
 
 (defn vehicle-view
   [vehicle]
   [:<> [slideshow       vehicle]
        [vehicle-name    vehicle]
-       [vehicle-content vehicle]])
+       [vehicle-content vehicle]
+       [:br]
+       [:a {:class :kc-content-button :href "/"} "Vissza a főoldalra"]])
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
