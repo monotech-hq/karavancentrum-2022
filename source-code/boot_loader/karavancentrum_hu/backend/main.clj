@@ -24,6 +24,7 @@
 
               ; Site modules
               [site.karavancentrum-hu.backend.api]
+              [site.rental-vehicles.backend.api]
               [site.website-config.backend.api]
               [site.website-content.backend.api]
               [site.website-impressum.backend.api]))

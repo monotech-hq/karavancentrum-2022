@@ -12,12 +12,12 @@
   (contains? (get-in db path) item))
 
 (defn filter-disabled? [db [_ id]]
-  (empty? (filter #(= id (:vehicle/type %)) (get-in db [:site :vehicles]))))
+  (empty? (filter #(= id (:vehicle/type %)) (get-in db [:site :rental-vehicles]))))
 
 (defn vehicles [db _]
   (let [filters (get db :main-page.filters)]
        (filter #(contains? filters (:vehicle/type %))
-                (get-in db [:site :vehicles]))))
+                (get-in db [:site :rental-vehicles]))))
 
 (defn no-filter-enabled?
   [db _]

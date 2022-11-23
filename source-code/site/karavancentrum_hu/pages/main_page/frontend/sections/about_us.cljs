@@ -10,22 +10,21 @@
 
 (defn about-us-page
   []
-  (let [page-visible?  (ratom false)
-        about-us-page @(r/subscribe [:x.db/get-item [:site :content :about-us-page]])]
-       (fn [] [:<> [:div {:id :kc-about-us--section :style {:display (if-not @page-visible? "none" "block")}}
-                         [contents/content-preview {:item-link about-us-page
-                                                    :style     {:color "#333"}
-                                                    :font-size :m}]]
-                   [:div {:class :kc-content-button :on-click #(swap! page-visible? not)}
-                         (if @page-visible? "Kevesebb tartalom" "Tovább olvasom")]])))
+  (let [page-visible? (ratom false)]
+       (fn []
+           (if-let [about-us-page @(r/subscribe [:x.db/get-applied-item [:site :website-content :about-us-page]
+                                                                        contents/parse-content-body])]
+                   [:<> [:div {:id :kc-about-us--section :style {:display (if-not @page-visible? "none" "block")}}
+                              about-us-page]
+                        [:div {:class :kc-content-button :on-click #(swap! page-visible? not)}
+                              (if @page-visible? "Kevesebb tartalom" "Tovább olvasom")]]))))
 
 (defn about-us-section
   []
-  (let [about-us-section @(r/subscribe [:x.db/get-item [:site :content :about-us-section]])]
-       [:div {:id :kc-about-us--section}
-             [contents/content-preview {:font-size :m
-                                        :item-link about-us-section
-                                        :style     {:color "#333"}}]]))
+  (if-let [about-us-section @(r/subscribe [:x.db/get-applied-item [:site :website-content :about-us-section]
+                                                                  contents/parse-content-body])]
+          [:div {:id :kc-about-us--section}
+                about-us-section]))
 
 (defn about-us
   []

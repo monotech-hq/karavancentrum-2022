@@ -9,8 +9,8 @@
 
 (defn hero
   []
-  (let [company-name   @(r/subscribe [:x.db/get-item [:site :config :company-name]])
-        company-slogan @(r/subscribe [:x.db/get-item [:site :config :company-slogan]])]
+  (let [company-name   @(r/subscribe [:x.db/get-item [:site :website-impressum :company-name]])
+        company-slogan @(r/subscribe [:x.db/get-item [:site :website-impressum :company-slogan]])]
        [:div#kc-hero [:div#kc-hero--company-name-and-slogan
                        (letfn [(scroll-f [intersecting?]
                                          (x.environment/set-element-attribute! "kc-navbar--company-name-and-slogan" "data-hidden"      intersecting?)

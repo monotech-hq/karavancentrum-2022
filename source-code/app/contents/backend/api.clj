@@ -22,3 +22,4 @@
 
 ; app.contents.backend.handler.helpers
 (def get-content handler.helpers/get-content)
+(def fill-data   handler.helpers/fill-data)

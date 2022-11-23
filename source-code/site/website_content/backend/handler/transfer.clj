@@ -1,16 +1,17 @@
 
 (ns site.website-content.backend.handler.transfer
-    (:require [app.website-content.backend.handler.config :as handler.config]
-              [io.api                                     :as io]
-              [x.core.api                                 :as x.core]))
+    (:require [app.contents.backend.api        :as contents]
+              [app.website-content.backend.api :as website-content]
+              [x.core.api                      :as x.core]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------
 
 (defn transfer-website-content-f
   ; @param (map) request
-  [_]
-  (io/read-edn-file handler.config/WEBSITE-CONTENT-FILEPATH))
+  [request]
+  (let [website-content (website-content/get-website-content)]
+       (contents/fill-data request website-content)))
 
 (x.core/reg-transfer! ::transfer-website-content!
   {:data-f      transfer-website-content-f

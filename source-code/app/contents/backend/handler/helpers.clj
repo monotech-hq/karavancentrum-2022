@@ -9,15 +9,31 @@
 ;; ----------------------------------------------------------------------------
 
 (defn get-content
-  ; @param (map) env
-  ;  {:request (map)}
+  ; @param (map) request
   ; @param (namespaced map)
   ;  {:content/id (string)}
   ;
   ; @return (string)
-  [{:keys [request]} {:content/keys [id]}]
+  [request {:content/keys [id]}]
   (let [projection (common/get-document-projection :content)]
        (if-let [{:content/keys [body visibility]} (mongo-db/get-document-by-id "contents" id projection)]
                (case visibility :private (if (x.user/request->authenticated? request)
                                              (return body))
                                 :public      (return body)))))
+
+(defn fill-data
+  ; @param (map) request
+  ; @param (map) n
+  ;
+  ; @example
+  ;  (fill-data {...} {:my-content {:content/id "my-content"}})
+  ;  =>
+  ;  {:my-content "My content"}
+  ;
+  ; @return (map)
+  [request n]
+  (letfn [(f [result k v]
+             (if-let [content-id (:content/id v)]
+                     (assoc result k (get-content request v))
+                     (assoc result k v)))]
+         (reduce-kv f {} n)))

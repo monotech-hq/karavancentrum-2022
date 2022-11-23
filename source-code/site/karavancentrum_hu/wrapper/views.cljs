@@ -9,7 +9,7 @@
 
 (defn sidebar-menu
   []
-  (let [webshop-link @(r/subscribe [:x.db/get-item [:site :content :webshop-link]])
+  (let [webshop-link @(r/subscribe [:x.db/get-item [:site :website-content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [:div#kc-sidebar--menu-items
          [:a.kc-sidebar--menu-item.mt-effect--underline {:href "/berbeadas"   :on-click #(r/dispatch [:site.components/hide-sidebar!])}
@@ -27,15 +27,15 @@
 
 (defn company-name-and-slogan
   []
-  (let [company-name   @(r/subscribe [:x.db/get-item [:site :config :company-name]])
-        company-slogan @(r/subscribe [:x.db/get-item [:site :config :company-slogan]])]
+  (let [company-name   @(r/subscribe [:x.db/get-item [:site :website-impressum :company-name]])
+        company-slogan @(r/subscribe [:x.db/get-item [:site :website-impressum :company-slogan]])]
        [:a {:href "/" :style {:text-decoration "none"}}
            [:div#kc-navbar--company-name-and-slogan [:div#kc-navbar--company-name   company-name]
                                                     [:div#kc-navbar--company-slogan company-slogan]]]))
 
 (defn header
   []
-  (let [webshop-link @(r/subscribe [:x.db/get-item [:site :content :webshop-link]])
+  (let [webshop-link @(r/subscribe [:x.db/get-item [:site :website-content :webshop-link]])
         webshop-link  (uri/valid-uri webshop-link)]
        [components/navbar {:logo #'company-name-and-slogan
                            :menu-items [{:href "/berbeadas"   :label "Bérbeadás"   :class :mt-effect--underline}
