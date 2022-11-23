@@ -679,8 +679,15 @@
   font-size: var( --font-size-xs );
   font-weight: 500;
   justify-content: center;
-  gap: 36px;
   padding: 25px 0 50px 0;
+}
+
+#mt-impressum--company-data {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column-gap: 25px;
+  justify-content: center;
+  max-width: 720px;
 }
 
 #mt-impressum--company-name {

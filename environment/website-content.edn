@@ -31,12 +31,9 @@
    :icon 
    {:media/id "63545eb8e04104725c62f3ca" 
     :media/uri "/media/storage/63545eb8e04104725c62f3ca.png"}}] 
- :rent-informations {:content/id "637ce0fad0a970a8c746aedc"} 
- :webshop-link "karaven" 
- :about-us-section {:content/id "637d06f9b7298cbaddbcc15e"} 
- :about-us-page {:content/id "637d06f9b7298cbaddbcc15e"} 
- :website-logo 
- {:media/id "61de15aaffc7a6839cde85d9" 
-  :media/uri "/media/storage/sample.png"} 
+ :rent-informations {:content/id "637e7557b7298c2671ce6643"} 
+ :webshop-link "https://webshop.karavancentrum.hu" 
+ :about-us-section {:content/id "637e743fb7298c2671ce663e"} 
+ :about-us-page {:content/id "637e749bb7298c2671ce6640"} 
  :website-name "Karaván Centrum" 
  :website-slogan "Lakóautók és kempingcikkek"}

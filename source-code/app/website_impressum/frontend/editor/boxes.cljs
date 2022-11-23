@@ -9,15 +9,35 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- company-reg-number-field
+(defn- company-eu-vat-no-field
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
-       [elements/text-field ::company-reg-number-field
+       [elements/text-field ::company-eu-vat-no-field
                             {:disabled?   editor-disabled?
                              :indent      {:top :m :vertical :s}
-                             :label       :company-reg-number
-                             :placeholder :company-reg-number-placeholder
-                             :value-path  [:website-impressum :editor/edited-item :company-reg-number]}]))
+                             :label       :eu-vat-no
+                             :placeholder :eu-vat-no-placeholder
+                             :value-path  [:website-impressum :editor/edited-item :company-eu-vat-no]}]))
+
+(defn- company-vat-no-field
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
+       [elements/text-field ::company-vat-no-field
+                            {:disabled?   editor-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :vat-no
+                             :placeholder :vat-no-placeholder
+                             :value-path  [:website-impressum :editor/edited-item :company-vat-no]}]))
+
+(defn- company-reg-no-field
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
+       [elements/text-field ::company-reg-no-field
+                            {:disabled?   editor-disabled?
+                             :indent      {:top :m :vertical :s}
+                             :label       :company-reg-no
+                             :placeholder :company-reg-no-placeholder
+                             :value-path  [:website-impressum :editor/edited-item :company-reg-no]}]))
 
 (defn- company-reg-office-field
   []
@@ -64,7 +84,13 @@
                                                           [company-reg-office-field]]]
                                               [:div (forms/form-row-attributes)
                                                     [:div (forms/form-block-attributes {:ratio 100})
-                                                          [company-reg-number-field]]]
+                                                          [company-reg-no-field]]]
+                                              [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [company-vat-no-field]]]
+                                              [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [company-eu-vat-no-field]]]
                                               [elements/horizontal-separator {:height :s}]]
                                 :disabled? editor-disabled?
                                 :label     :company-data}]))

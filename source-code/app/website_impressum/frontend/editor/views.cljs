@@ -30,7 +30,9 @@
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
        [common/file-editor-menu-bar :website-impressum.editor
-                                    {:menu-items [{:label :company-data :change-keys [:company-name :company-slogan :company-est-year]}]
+                                    {:menu-items [{:label :company-data :change-keys [:company-name :company-est-year
+                                                                                      :company-reg-office :company-reg-no
+                                                                                      :company-vat-no :company-eu-vat-no]}]
                                      :disabled? editor-disabled?}]))
 
 (defn- controls
