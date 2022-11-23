@@ -14,4 +14,11 @@
               [app.contents.backend.selector.lifecycles]
               [app.contents.backend.viewer.lifecycles]
               [app.contents.backend.viewer.mutations]
-              [app.contents.backend.viewer.resolvers]))
+              [app.contents.backend.viewer.resolvers]
+              [app.contents.backend.handler.helpers :as handler.helpers]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+; app.contents.backend.handler.helpers
+(def get-content handler.helpers/get-content)

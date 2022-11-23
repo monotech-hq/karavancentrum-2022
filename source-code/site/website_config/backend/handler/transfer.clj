@@ -1,8 +1,8 @@
 
 (ns site.website-config.backend.handler.transfer
-    (:require [io.api                                     :as io]
-              [site.website-config.backend.handler.config :as handler.config]
-              [x.core.api                                 :as x.core]))
+    (:require [app.website-config.backend.handler.config :as handler.config]
+              [io.api                                    :as io]
+              [x.core.api                                :as x.core]))
 
 ;; -----------------------------------------------------------------------------
 ;; -----------------------------------------------------------------------------

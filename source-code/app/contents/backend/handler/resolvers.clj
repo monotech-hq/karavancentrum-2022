@@ -1,11 +1,8 @@
 
 (ns app.contents.backend.handler.resolvers
-    (:require [app.common.backend.api                :as common]
-              [candy.api                             :refer [return]]
+    (:require [app.contents.backend.handler.helpers  :as handler.helpers]
               [com.wsscode.pathom3.connect.operation :refer [defresolver]]
-              [mongo-db.api                          :as mongo-db]
-              [pathom.api                            :as pathom]
-              [x.user.api                         :as x.user]))
+              [pathom.api                            :as pathom]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -15,14 +12,10 @@
   ;  {:request (map)}
   ; @param (map) resolver-props
   ;
-  ; @return (namespaced map)
+  ; @return (string)
   [{:keys [request] :as env} _]
-  (let [content-id (pathom/env->param env :content-id)
-        projection (common/get-document-projection :content)]
-       (if-let [{:content/keys [body visibility]} (mongo-db/get-document-by-id "contents" content-id projection)]
-               (case visibility :private (if (x.user/request->authenticated? request)
-                                             (return body))
-                                :public      (return body)))))
+  (let [content-id (pathom/env->param env :content-id)]
+       (handler.helpers/get-content request {:content/id content-id})))
 
 (defresolver get-content
              ; @param (map) env
@@ -30,7 +23,7 @@
              ;  {:content-id (string)}
              ;
              ; @return (map)
-             ;  {:contents.handler/get-content (namespaced map)}
+             ;  {:contents.handler/get-content (string)}
              [env resolver-props]
              {:contents.handler/get-content (get-content-f env resolver-props)})
 
