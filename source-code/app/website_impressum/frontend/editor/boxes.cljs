@@ -39,16 +39,6 @@
                              :placeholder :company-est-year-placeholder
                              :value-path  [:website-impressum :editor/edited-item :company-est-year]}]))
 
-(defn- company-slogan-field
-  []
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
-       [elements/text-field ::company-slogan-field
-                            {:disabled?   editor-disabled?
-                             :indent      {:top :m :vertical :s}
-                             :label       :company-slogan
-                             :placeholder :company-slogan-placeholder
-                             :value-path  [:website-impressum :editor/edited-item :company-slogan]}]))
-
 (defn- company-name-field
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
@@ -66,9 +56,6 @@
                                {:content [:<> [:div (forms/form-row-attributes)
                                                     [:div (forms/form-block-attributes {:ratio 100})
                                                           [company-name-field]]]
-                                              [:div (forms/form-row-attributes)
-                                                    [:div (forms/form-block-attributes {:ratio 100})
-                                                          [company-slogan-field]]]
                                               [:div (forms/form-row-attributes)
                                                     [:div (forms/form-block-attributes {:ratio 100})
                                                           [company-est-year-field]]]

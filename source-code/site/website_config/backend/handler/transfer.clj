@@ -8,6 +8,8 @@
 
 (defn transfer-website-config-f
   ; @param (map) request
+  ;
+  ; @return (map)
   [_]
   (website-config/get-website-config))
 

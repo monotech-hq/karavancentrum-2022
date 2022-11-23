@@ -9,6 +9,8 @@
 
 (defn transfer-website-content-f
   ; @param (map) request
+  ;
+  ; @return (map)
   [request]
   (let [website-content (website-content/get-website-content)]
        (contents/fill-data request website-content)))

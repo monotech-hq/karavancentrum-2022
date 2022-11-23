@@ -6,6 +6,7 @@
               [site.components.frontend.sidebar.subs]
               [site.components.frontend.contacts.views           :as contacts.views]
               [site.components.frontend.copyright-label.views    :as copyright-label.views]
+              [site.components.frontend.created-by-link.views    :as created-by-link.views]
               [site.components.frontend.credits.views            :as credits.views]
               [site.components.frontend.follow-us.views          :as follow-us.views]
               [site.components.frontend.impressum.views          :as impressum.views]
@@ -27,6 +28,9 @@
 
 ; site.components.frontend.copyright-label.views
 (def copyright-label copyright-label.views/component)
+
+; site.components.frontend.created-by-link.views
+(def created-by-link created-by-link.views/component)
 
 ; site.components.frontend.credits.views
 (def credits credits.views/component)

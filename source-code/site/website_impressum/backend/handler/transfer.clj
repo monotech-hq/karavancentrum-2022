@@ -8,6 +8,8 @@
 
 (defn transfer-website-impressum-f
   ; @param (map) request
+  ;
+  ; @return (map)
   [request]
   (website-impressum/get-website-impressum))
 

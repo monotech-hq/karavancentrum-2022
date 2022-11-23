@@ -9,6 +9,8 @@
 
 (defn transfer-website-contacts-f
   ; @param (map) request
+  ;
+  ; @return (map)
   [request]
   (let [website-contacts (website-contacts/get-website-contacts)]
        (contents/fill-data request website-contacts)))

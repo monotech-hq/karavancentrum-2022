@@ -12,9 +12,7 @@
 (defn- created-by-label
   ; @param (keyword) component-id
   ; @param (map) component-props
-  ;  {:theme (keyword)(opt)
-  ;    :light, :dark
-  ;    Default: :light}
+  ;  {:theme (keyword)(opt)}
   [_ {:keys [theme]}]
   [elements/label ::created-by-label
                   {:color     (case theme :dark :invert :default)
@@ -25,9 +23,6 @@
 (defn- created-by
   ; @param (keyword) component-id
   ; @param (map) component-props
-  ;  {:theme (keyword)(opt)
-  ;    :light, :dark
-  ;    Default: :light}
   [component-id component-props]
   [elements/toggle ::created-by
                    {:on-click {:fx [:x.environment/open-new-browser-tab! "https://www.monotech.hu"]}

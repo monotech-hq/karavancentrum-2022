@@ -64,7 +64,7 @@
                        [vehicle-view (first vehicles)]
                        [vehicles-view vehicles])]
             [:div {:style {:padding "60px 0 15px 0"}}
-                  [components/credits {:theme :light}]]]))
+                  [components/created-by-link {:theme :light}]]]))
 
 ;; --------------------------------------------------------------------------
 ;; --------------------------------------------------------------------------

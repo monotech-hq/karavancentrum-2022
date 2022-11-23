@@ -596,7 +596,7 @@
 .mt-contacts--contact-group {
   display: flex;
   flex-direction: column;
-  max-width: 500px;
+  width: 500px;
   padding-bottom: 30px;
 }
 
@@ -665,6 +665,30 @@
 }
 
 /***** Contacts *****/
+/******************************************************************************/
+
+
+
+/******************************************************************************/
+/***** Impressum *****/
+
+#mt-impressum {
+  background-color: #2d2925;
+  color: #a5a5a5;
+  display: flex;
+  font-size: var( --font-size-xs );
+  font-weight: 500;
+  justify-content: center;
+  gap: 36px;
+  padding: 25px 0 50px 0;
+}
+
+#mt-impressum--company-name {
+  display: flex;
+  gap: 12px;
+}
+
+/***** Impressum *****/
 /******************************************************************************/
 
 
