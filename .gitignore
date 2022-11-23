@@ -18,6 +18,7 @@ environment/website-contacts.edn
 environment/website-config.edn
 environment/website-content.edn
 environment/website-impressum.edn
+environment/website-menu.edn
 
 # Log
 environment/log

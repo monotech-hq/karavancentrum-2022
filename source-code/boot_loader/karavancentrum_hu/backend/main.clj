@@ -22,6 +22,7 @@
               [app.website-contacts.backend.api]
               [app.website-content.backend.api]
               [app.website-impressum.backend.api]
+              [app.website-menu.backend.api]
 
               ; Site modules
               [site.karavancentrum-hu.backend.api]
@@ -29,4 +30,5 @@
               [site.website-contacts.backend.api]
               [site.website-config.backend.api]
               [site.website-content.backend.api]
-              [site.website-impressum.backend.api]))
+              [site.website-impressum.backend.api]
+              [site.website-menu.backend.api]))

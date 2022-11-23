@@ -3,6 +3,7 @@
     (:require [app.website-contacts.backend.editor.lifecycles]
               [app.website-contacts.backend.editor.mutations]
               [app.website-contacts.backend.editor.resolvers]
+              [app.website-contacts.backend.installer.side-effects]
               [app.website-contacts.backend.handler.helpers :as handler.helpers]))
 
 ;; ----------------------------------------------------------------------------

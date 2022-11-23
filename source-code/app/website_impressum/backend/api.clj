@@ -3,6 +3,7 @@
     (:require [app.website-impressum.backend.editor.lifecycles]
               [app.website-impressum.backend.editor.mutations]
               [app.website-impressum.backend.editor.resolvers]
+              [app.website-impressum.backend.installer.side-effects]
               [app.website-impressum.backend.handler.helpers :as handler.helpers]))
 
 ;; ----------------------------------------------------------------------------

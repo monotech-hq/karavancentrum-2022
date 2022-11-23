@@ -20,7 +20,8 @@
               [app.website-config.frontend.api]
               [app.website-content.frontend.api]
               [app.website-impressum.frontend.api]
-              [app.website-link.frontend.api]))
+              [app.website-link.frontend.api]
+              [app.website-menu.frontend.api]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
