@@ -20,14 +20,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- contacts
-  []
-  [:<> [editor.boxes/contacts-data-information-box]
-       [editor.boxes/address-data-information-box]])
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- webshop
   []
   [:<> [editor.boxes/webshop-settings-box]])
@@ -57,7 +49,6 @@
                                     {:menu-items [{:label :renting  :change-keys [:rent-informations]}
                                                   {:label :selling  :change-keys [:brands]}
                                                   {:label :webshop  :change-keys [:webshop-link]}
-                                                  {:label :contacts :change-keys [:address-data-information :contacts-data-information]}
                                                   {:label :about-us :change-keys [:about-us-section :about-us-page]}]
                                      :disabled? editor-disabled?}]))
 
@@ -67,7 +58,6 @@
        (case current-view-id :renting  [renting]
                              :selling  [selling]
                              :webshop  [webshop]
-                             :contacts [contacts]
                              :about-us [about-us])))
 
 ;; ----------------------------------------------------------------------------

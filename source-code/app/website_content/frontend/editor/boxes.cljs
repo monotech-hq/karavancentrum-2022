@@ -64,59 +64,6 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn- address-data-information-picker
-  []
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [contents/content-picker ::address-data-information-picker
-                                {:autosave?     true
-                                 :color         :muted
-                                 :disabled?     editor-disabled?
-                                 :indent        {:vertical :s}
-                                 :multi-select? false
-                                 :placeholder   "-"
-                                 :value-path    [:website-content :editor/edited-item :address-data-information]}]))
-
-(defn- address-data-information-box
-  []
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [components/surface-box ::address-data-information-box
-                               {:content [:<> [:div (forms/form-row-attributes)
-                                                    [:div (forms/form-block-attributes {:ratio 100})
-                                                          [address-data-information-picker]]]
-                                              [elements/horizontal-separator {:height :s}]]
-                                :disabled? editor-disabled?
-                                :indent    {:top :m}
-                                :label     :address-data-information}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
-(defn- contacts-data-information-picker
-  []
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [contents/content-picker ::contacts-data-information-picker
-                                {:autosave?     true
-                                 :color         :muted
-                                 :disabled?     editor-disabled?
-                                 :indent        {:vertical :s}
-                                 :multi-select? false
-                                 :placeholder   "-"
-                                 :value-path    [:website-content :editor/edited-item :contacts-data-information]}]))
-
-(defn- contacts-data-information-box
-  []
-  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
-       [components/surface-box ::contacts-data-information-box
-                               {:content [:<> [:div (forms/form-row-attributes)
-                                                    [:div (forms/form-block-attributes {:ratio 100})
-                                                          [contacts-data-information-picker]]]
-                                              [elements/horizontal-separator {:height :s}]]
-                                :disabled? editor-disabled?
-                                :label     :contacts-data-information}]))
-
-;; ----------------------------------------------------------------------------
-;; ----------------------------------------------------------------------------
-
 (defn- webshop-link-field
   []
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]

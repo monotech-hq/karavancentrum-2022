@@ -23,6 +23,7 @@
 (defn- contacts-data
   []
   [:<> [editor.boxes/contacts-data-box]
+       [editor.boxes/contacts-data-information-box]
        [editor.boxes/contact-group-list]])
 
 ;; ----------------------------------------------------------------------------
@@ -31,6 +32,7 @@
 (defn- address-data
   []
   [:<> [editor.boxes/address-data-box]
+       [editor.boxes/address-data-information-box]
        [editor.boxes/address-group-list]])
 
 ;; ----------------------------------------------------------------------------
@@ -59,8 +61,8 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
        [common/file-editor-menu-bar :website-impressum.editor
                                     {:menu-items [{:label :basic-data    :change-keys [:company-name :company-slogan :company-logo]}
-                                                  {:label :contacts-data :change-keys [:contact-groups]}
-                                                  {:label :address-data  :change-keys [:address-groups]}
+                                                  {:label :contacts-data :change-keys [:contact-groups :contacts-data-information]}
+                                                  {:label :address-data  :change-keys [:address-groups :address-data-information]}
                                                   {:label :social-media  :change-keys [:facebook-links :instagram-links :youtube-links]}]
                                      :disabled? editor-disabled?}]))
 

@@ -2,12 +2,67 @@
 (ns app.website-impressum.frontend.editor.boxes
     (:require [app.common.frontend.api     :as common]
               [app.components.frontend.api :as components]
+              [app.contents.frontend.api   :as contents]
               [app.storage.frontend.api    :as storage]
               [elements.api                :as elements]
               [forms.api                   :as forms]
               [re-frame.api                :as r]
               [vector.api                  :as vector]))
- 
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- address-data-information-picker
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
+       [contents/content-picker ::address-data-information-picker
+                                {:autosave?     true
+                                 :color         :muted
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-impressum :editor/edited-item :address-data-information]}]))
+
+(defn- address-data-information-box
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
+       [components/surface-box ::address-data-information-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [address-data-information-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :indent    {:top :m}
+                                :label     :address-data-information}]))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn- contacts-data-information-picker
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
+       [contents/content-picker ::contacts-data-information-picker
+                                {:autosave?     true
+                                 :color         :muted
+                                 :disabled?     editor-disabled?
+                                 :indent        {:vertical :s}
+                                 :multi-select? false
+                                 :placeholder   "-"
+                                 :value-path    [:website-impressum :editor/edited-item :contacts-data-information]}]))
+
+(defn- contacts-data-information-box
+  []
+  (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-impressum.editor])]
+       [components/surface-box ::contacts-data-information-box
+                               {:content [:<> [:div (forms/form-row-attributes)
+                                                    [:div (forms/form-block-attributes {:ratio 100})
+                                                          [contacts-data-information-picker]]]
+                                              [elements/horizontal-separator {:height :s}]]
+                                :disabled? editor-disabled?
+                                :indent    {:top :m}
+                                :label     :contacts-data-information}]))
+
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
