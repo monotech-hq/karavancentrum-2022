@@ -12,12 +12,13 @@
 
 (defn save-content-f
   ; @param (map) env
+  ;  {:request (map)}
   ; @param (map) mutation-props
   ;  {:content (map)}
   ;
   ; @return (map)
-  [_ {:keys [content]}]
-  (let [content (common/updated-edn-prototype content)]
+  [{:keys [request]} {:keys [content]}]
+  (let [content (common/updated-edn-prototype request content)]
        (io/write-edn-file! handler.config/WEBSITE-CONTENT-FILEPATH content)
        (return content)))
 
