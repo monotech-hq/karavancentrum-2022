@@ -16,6 +16,7 @@ resources/public/x.app-build.edn
 environment/x.install-log.edn
 environment/website-config.edn
 environment/website-content.edn
+environment/website-impressum.edn
 
 # Log
 environment/log

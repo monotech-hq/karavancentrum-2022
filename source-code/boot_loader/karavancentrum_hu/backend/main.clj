@@ -22,4 +22,7 @@
               [app.website-content.backend.api]
 
               ; Site modules
-              [site.karavancentrum-hu.backend.api]))
+              [site.karavancentrum-hu.backend.api]
+              [site.website-config.backend.api]
+              [site.website-content.backend.api]
+              [site.website-impressum.backend.api]))
