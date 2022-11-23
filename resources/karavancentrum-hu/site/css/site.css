@@ -603,6 +603,7 @@
 #mt-contacts--address-data-information,
 #mt-contacts--contacts-data-information {
   margin-bottom: 30px;
+  min-width: 500px;
 }
 
 .mt-contacts--address-data-information,
@@ -685,7 +686,7 @@
 #mt-impressum--company-data {
   display: flex;
   flex-wrap: wrap;
-  grid-column-gap: 25px;
+  grid-column-gap: 10px;
   justify-content: center;
   max-width: 720px;
 }

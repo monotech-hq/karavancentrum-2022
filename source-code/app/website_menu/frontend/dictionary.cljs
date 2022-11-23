@@ -5,6 +5,9 @@
 ;; ----------------------------------------------------------------------------
 
 ; @constant (map)
-(def BOOK {:website-menu
+(def BOOK {:add-link!
+           {:en "Add link"
+            :hu "Hivatkozás hozzáadása"}
+           :website-menu
            {:en "Website menu"
             :hu "Webhely menü"}})

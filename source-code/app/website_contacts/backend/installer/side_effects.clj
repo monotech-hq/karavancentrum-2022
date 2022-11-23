@@ -8,7 +8,6 @@
 ;; ----------------------------------------------------------------------------
 
 (defn- installer
-  ; @return (namespaced map)
   []
   (io/create-edn-file! handler.config/WEBSITE-CONTACTS-FILEPATH))
 
