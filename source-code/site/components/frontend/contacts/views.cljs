@@ -1,8 +1,10 @@
 
 (ns site.components.frontend.contacts.views
-    (:require [elements.api :as elements]
-              [random.api   :as random]
-              [re-frame.api :as r]))
+    (:require [app.contents.frontend.api :as contents]
+              [candy.api                 :refer [return]]
+              [elements.api              :as elements]
+              [random.api                :as random]
+              [re-frame.api              :as r]))
 
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
@@ -11,16 +13,28 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [_ _]
-  [:div {:id :mt-contacts--contacts-data-information}])
-  ;(let [contacts-data-information @(r/subscribe [:x.db/get-item [:site :website-impressum :contacts-data-information]])]
-  ;     [:div.kc-contact-information [contents/content-preview {:item-link contacts-data-information :color :default :font-size :inherit :font-weight :inherit}]]])
+  (let [contacts-data-information @(r/subscribe [:x.db/get-item [:site :website-impressum :contacts-data-information]])]
+       (if (contents/nonblank? contacts-data-information)
+           [:div {:id :mt-contacts--contacts-data-information} contacts-data-information])))
 
 (defn- contact-group
   ; @param (keyword) component-id
   ; @param (map) component-props
   ; @param (map) group-props
-  [_ _ group-props]
-  [:div {:class :mt-contacts--contact-group}])
+  ;  {:email-addresses (strings in vector)(opt)
+  ;   :label (string)(opt)
+  ;   :phone-numbers (strings in vector)(opt)}
+  [_ _ {:keys [email-addresses label phone-numbers]}]
+  [:div {:class :mt-contacts--contact-group}
+        (if label [:div {:class :mt-contacts--contact-group-label} label])
+        (letfn [(f [phone-numbers phone-number]
+                   (if phone-number (conj   phone-numbers [:div {:class :mt-contacts--phone-number} phone-number])
+                                    (return phone-numbers)))]
+               (reduce f [:<>] phone-numbers))
+        (letfn [(f [email-addresses email-address]
+                   (if email-address (conj   email-addresses [:div {:class :mt-contacts--email-address} email-address])
+                                     (return email-addresses)))]
+               (reduce f [:<>] phone-numbers))])
 
 (defn- contact-groups
   ; @param (keyword) component-id
@@ -39,14 +53,20 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   [_ _]
-  [:div {:id :mt-contacts--address-data-information}])
+  (let [address-data-information @(r/subscribe [:x.db/get-item [:site :website-impressum :address-data-information]])]
+       (if (contents/nonblank? contacts-data-information)
+           [:div {:id :mt-contacts--address-data-information} address-data-information])))
 
 (defn- address-group
   ; @param (keyword) component-id
   ; @param (map) component-props
   ; @param (map) group-props
-  [_ _ group-props]
-  [:div {:class :mt-contacts--address-group}])
+  ;  {:company-address (string)(opt)
+  ;   :label (string)(opt)}
+  [_ _ {:keys [company-address label]}]
+  [:div {:class :mt-contacts--address-group}
+        (if label           [:div {:class :mt-contacts--address-group-label} label])
+        (if company-address [:div {:class :mt-contacts--company-address}     company-address])])
 
 (defn- address-groups
   ; @param (keyword) component-id

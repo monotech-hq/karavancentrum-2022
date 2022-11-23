@@ -56,3 +56,18 @@
                 (json/trim-values)
                 (json/parse-number-values)
                 (json/remove-blank-values)))
+
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
+
+(defn updated-edn-prototype
+  ; @param (map) request
+  ; @param (map) content
+  [request content]
+  ; - A string típusú értékek vágása
+  ; - A kliens-oldali mezők által string típusként tárolt egész számok
+  ;   integer típusra alakítása
+  ; - Az üres értékek eltávolítása (pl. "", nil, [], {}, ())
+  (->> content (json/trim-values)
+               (json/parse-number-values)
+               (json/remove-blank-values)))

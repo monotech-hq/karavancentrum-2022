@@ -1,6 +1,7 @@
 
 (ns app.website-config.backend.editor.mutations
-    (:require [app.website-config.backend.handler.config :as handler.config]
+    (:require [app.common.backend.api                    :as common]
+              [app.website-config.backend.handler.config :as handler.config]
               [candy.api                                 :refer [return]]
               [com.wsscode.pathom3.connect.operation     :as pathom.co :refer [defmutation]]
               [io.api                                    :as io]
@@ -16,8 +17,9 @@
   ;
   ; @return (map)
   [_ {:keys [content]}]
-  (io/write-edn-file! handler.config/WEBSITE-CONFIG-FILEPATH content)
-  (return content))
+  (let [content (common/updated-edn-prototype content)]
+       (io/write-edn-file! handler.config/WEBSITE-CONFIG-FILEPATH content)
+       (return content)))
 
 (defmutation save-content!
              ; @param (map) env

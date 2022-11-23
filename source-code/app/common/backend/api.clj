@@ -16,3 +16,4 @@
 (def added-document-prototype      prototypes/added-document-prototype)
 (def updated-document-prototype    prototypes/updated-document-prototype)
 (def duplicated-document-prototype prototypes/duplicated-document-prototype)
+(def updated-edn-prototype         prototypes/updated-edn-prototype)
