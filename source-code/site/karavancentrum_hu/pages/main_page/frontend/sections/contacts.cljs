@@ -10,7 +10,7 @@
 
 (defn contact-information
   []
-  (let [contacts-data-information @(r/subscribe [:x.db/get-item [:site :content :contacts-data-information]])]
+  (let [contacts-data-information @(r/subscribe [:x.db/get-item [:site :website-impressum :contacts-data-information]])]
        [:div.kc-contact-information [contents/content-preview {:item-link contacts-data-information :color :default :font-size :inherit :font-weight :inherit}]]))
 
 (defn contact-group
@@ -23,7 +23,7 @@
 
 (defn contact-groups
   []
-  (let [contact-groups @(r/subscribe [:x.db/get-item [:site :config :contact-groups]])]
+  (let [contact-groups @(r/subscribe [:x.db/get-item [:site :website-impressum :contact-groups]])]
        (letfn [(f [contact-groups group-props]
                   (conj contact-groups [contact-group group-props]))]
               (reduce f [:<>] contact-groups))))
@@ -33,7 +33,7 @@
 
 (defn address-information
   []
-  (let [address-data-information @(r/subscribe [:x.db/get-item [:site :content :address-data-information]])]
+  (let [address-data-information @(r/subscribe [:x.db/get-item [:site :website-impressum :address-data-information]])]
        [:div.kc-address-information [contents/content-preview {:item-link address-data-information :color :default :font-size :inherit :font-weight :inherit}]]))
 
 (defn address-group
@@ -45,7 +45,7 @@
 
 (defn address-groups
   []
-  (let [address-groups @(r/subscribe [:x.db/get-item [:site :config :address-groups]])]
+  (let [address-groups @(r/subscribe [:x.db/get-item [:site :website-impressum :address-groups]])]
        (letfn [(f [address-groups group-props]
                   (conj address-groups [address-group group-props]))]
               (reduce f [:<>] address-groups))))
@@ -61,19 +61,19 @@
 
 (defn facebook-links
   []
-  (let [facebook-links @(r/subscribe [:x.db/get-item [:site :config :facebook-links]])]
+  (let [facebook-links @(r/subscribe [:x.db/get-item [:site :website-impressum :facebook-links]])]
        (letfn [(f [links link] (conj links [social-media-link link [:fab :fa-facebook] "Tovább a Facebook-ra"]))]
               (reduce f [:<>] facebook-links))))
 
 (defn instagram-links
   []
-  (let [instagram-links @(r/subscribe [:x.db/get-item [:site :config :instagram-links]])]
+  (let [instagram-links @(r/subscribe [:x.db/get-item [:site :website-impressum :instagram-links]])]
        (letfn [(f [links link] (conj links [social-media-link link [:fab :fa-instagram] "Tovább a Instagram-ra"]))]
               (reduce f [:<>] instagram-links))))
 
 (defn youtube-links
   []
-  (let [youtube-links @(r/subscribe [:x.db/get-item [:site :config :youtube-links]])]
+  (let [youtube-links @(r/subscribe [:x.db/get-item [:site :website-impressum :youtube-links]])]
        (letfn [(f [links link] (conj links [social-media-link link [:fab :fa-youtube] "Tovább a Youtube-ra"]))]
               (reduce f [:<>] youtube-links))))
 

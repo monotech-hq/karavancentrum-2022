@@ -11,7 +11,7 @@
   ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {}
-  [_ {:keys []}]
+  [component-id component-props]
   [:div {:id :mt-impressum}])
 
 (defn component

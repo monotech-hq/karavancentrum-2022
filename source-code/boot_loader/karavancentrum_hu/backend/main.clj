@@ -20,6 +20,7 @@
               [app.views.backend.api]
               [app.website-config.backend.api]
               [app.website-content.backend.api]
+              [app.website-impressum.backend.api]
 
               ; Site modules
               [site.karavancentrum-hu.backend.api]
