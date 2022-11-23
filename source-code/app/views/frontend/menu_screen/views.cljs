@@ -110,7 +110,7 @@
   [elements/button ::logout-button
                    {:hover-color :highlight
                     :indent      {:vertical :xs}
-                    :on-click    [:user/logout!]
+                    :on-click    [:x.user/logout!]
                     :preset      :logout}])
 
 (defn- main
