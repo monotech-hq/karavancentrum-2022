@@ -9,15 +9,12 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn created-by-label
+(defn- created-by-label
   ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
-  ;
-  ; @usage
-  ;  [created-by-label]
   [_ {:keys [theme]}]
   [elements/label ::created-by-label
                   {:color     (case theme :dark :invert :default)
@@ -25,15 +22,12 @@
                    :font-size :xs
                    :indent    {:top :xxs}}])
 
-(defn created-by
+(defn- created-by
   ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
-  ;
-  ; @usage
-  ;  [created-by]
   [component-id component-props]
   [elements/toggle ::created-by
                    {:on-click {:fx [:x.environment/open-new-browser-tab! "https://www.monotech.hu"]}

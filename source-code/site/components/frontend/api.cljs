@@ -4,9 +4,11 @@
               [site.components.frontend.scheme-table.subs]
               [site.components.frontend.sidebar.effects]
               [site.components.frontend.sidebar.subs]
+              [site.components.frontend.contacts.views           :as contacts.views]
               [site.components.frontend.copyright-label.views    :as copyright-label.views]
               [site.components.frontend.credits.views            :as credits.views]
               [site.components.frontend.follow-us.views          :as follow-us.views]
+              [site.components.frontend.impressum.views          :as impressum.views]
               [site.components.frontend.language-selector.views  :as language-selector.views]
               [site.components.frontend.mt-logo.views            :as mt-logo.views]
               [site.components.frontend.navbar.views             :as navbar.views]
@@ -20,7 +22,10 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-; site.components.frontend.credits.views
+; site.components.frontend.contacts.views
+(def contacts contacts.views/component)
+
+; site.components.frontend.copyright-label.views
 (def copyright-label copyright-label.views/component)
 
 ; site.components.frontend.credits.views
@@ -28,6 +33,9 @@
 
 ; site.components.frontend.follow-us.views
 (def follow-us follow-us.views/component)
+
+; site.components.frontend.impressum.views
+(def impressum impressum.views/component)
 
 ; site.components.frontend.language-selector.views
 (def language-selector language-selector.views/component)

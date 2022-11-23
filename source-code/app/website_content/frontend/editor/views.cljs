@@ -20,6 +20,7 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::about-us-section-picker
                                 {:autosave?     true
+                                 :color         :muted
                                  :disabled?     editor-disabled?
                                  :indent        {:vertical :s}
                                  :multi-select? false
@@ -45,6 +46,7 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::about-us-page-picker
                                 {:autosave?     true
+                                 :color         :muted
                                  :disabled?     editor-disabled?
                                  :indent        {:vertical :s}
                                  :multi-select? false
@@ -79,6 +81,7 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::address-data-information-picker
                                 {:autosave?     true
+                                 :color         :muted
                                  :disabled?     editor-disabled?
                                  :indent        {:vertical :s}
                                  :multi-select? false
@@ -105,6 +108,7 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::contacts-data-information-picker
                                 {:autosave?     true
+                                 :color         :muted
                                  :disabled?     editor-disabled?
                                  :indent        {:vertical :s}
                                  :multi-select? false
@@ -285,6 +289,7 @@
   (let [editor-disabled? @(r/subscribe [:file-editor/editor-disabled? :website-content.editor])]
        [contents/content-picker ::rent-informations-picker
                                 {:autosave?     true
+                                 :color         :muted
                                  :disabled?     editor-disabled?
                                  :indent        {:vertical :s}
                                  :multi-select? false

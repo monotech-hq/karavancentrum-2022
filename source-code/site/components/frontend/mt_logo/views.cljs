@@ -6,15 +6,12 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn mt-logo
+(defn- mt-logo
   ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
-  ;
-  ; @usage
-  ;  [mt-logo]
   [_ {:keys [theme]}]
   [:div {:style {:background-image (case theme :dark (css/url "/app/logo/mt-logo-dark.png")
                                                      (css/url "/app/logo/mt-logo-light.png"))

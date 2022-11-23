@@ -1,14 +1,2 @@
 
-{:company-name "Karaván Centrum" 
- :company-slogan "Lakóautók és kempingcikkek" 
- :facebook-links ["facebook.com/karavancentrum.hu"] 
- :contact-groups 
- [{:label "Iroda" 
-   :phone-numbers ["23456789"] 
-   :email-addresses ["iroda@karavancentrum.hu"]} 
-  {:label "Webáruház" 
-   :phone-numbers ["123456789"] 
-   :email-addresses ["webshop@karavancentrum.hu"]}] 
- :address-groups 
- [{:label "Iroda" 
-   :company-address "1025 Budapest, Minta utca 123"}]}
+{:debug "Follow the white rabbit"}

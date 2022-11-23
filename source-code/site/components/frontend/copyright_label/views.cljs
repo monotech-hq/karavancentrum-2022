@@ -8,15 +8,12 @@
 ;; ----------------------------------------------------------------------------
 ;; ----------------------------------------------------------------------------
 
-(defn copyright-label
+(defn- copyright-label
   ; @param (keyword) component-id
   ; @param (map) component-props
   ;  {:theme (keyword)(opt)
   ;    :light, :dark
   ;    Default: :light}
-  ;
-  ; @usage
-  ;  [copyright-label]
   [_ {:keys [theme]}]
   (let [server-year          @(r/subscribe [:x.core/get-server-year])
         copyright-information (x.app-details/copyright-information server-year)]
