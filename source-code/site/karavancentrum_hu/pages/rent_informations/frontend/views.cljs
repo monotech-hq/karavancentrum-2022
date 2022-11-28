@@ -8,7 +8,7 @@
 ;; -----------------------------------------------------------------------------
 
 (defn view-structure []
-  (if-let [rent-informations @(r/subscribe [:x.db/get-applied-item [:site :website-content :rent-informations]
+  (if-let [rent-informations @(r/subscribe [:x.db/get-applied-item [:site :website-content :rent-informations :content/body]
                                                                    contents/parse-content-body])]
           [:<> [:main {:id :kc-rent-informations--wrapper}
                       [:h1.kc-section-title "Bérlési feltételek"]

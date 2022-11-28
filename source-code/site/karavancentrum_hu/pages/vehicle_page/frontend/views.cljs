@@ -11,6 +11,7 @@
 ;; -----------------------------------------------------------------------------
 
 (defn slideshow
+  ; @param (namespaced map) vehicle-item
   [{:vehicle/keys [images]}]
   [:div#kc-vehicle-page--slider
    [slider/view (map (fn [src] ^{:key src}
@@ -19,18 +20,21 @@
                      (vector/->items images :media/uri))]])
 
 (defn vehicle-name
+  ; @param (namespaced map) vehicle-item
   [{:vehicle/keys [name]}]
   [:h1.kc-section-title name])
 
 (defn vehicle-content
-  [{:vehicle/keys [description]}]
-  [:div#kc-vehicle-page--content (contents/parse-content-body description)])
+  ; @param (namespaced map) vehicle-item
+  [{{:content/keys [body]} :vehicle/description}]
+  [:div#kc-vehicle-page--content (contents/parse-content-body body)])
 
 (defn vehicle-view
-  [vehicle]
-  [:<> [slideshow       vehicle]
-       [vehicle-name    vehicle]
-       [vehicle-content vehicle]
+  ; @param (namespaced map) vehicle-item
+  [vehicle-item]
+  [:<> [slideshow       vehicle-item]
+       [vehicle-name    vehicle-item]
+       [vehicle-content vehicle-item]
        [:br]
        [:a {:class :kc-content-button :href "/"} "Vissza a főoldalra"]])
 

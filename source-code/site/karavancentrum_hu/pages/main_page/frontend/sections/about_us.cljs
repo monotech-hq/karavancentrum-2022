@@ -12,7 +12,7 @@
   []
   (let [page-visible? (ratom false)]
        (fn []
-           (if-let [about-us-page @(r/subscribe [:x.db/get-applied-item [:site :website-content :about-us-page]
+           (if-let [about-us-page @(r/subscribe [:x.db/get-applied-item [:site :website-content :about-us-page :content/body]
                                                                         contents/parse-content-body])]
                    [:<> [:div {:id :kc-about-us--section :style {:display (if-not @page-visible? "none" "block")}}
                               about-us-page]
@@ -21,7 +21,7 @@
 
 (defn about-us-section
   []
-  (if-let [about-us-section @(r/subscribe [:x.db/get-applied-item [:site :website-content :about-us-section]
+  (if-let [about-us-section @(r/subscribe [:x.db/get-applied-item [:site :website-content :about-us-section :content/body]
                                                                   contents/parse-content-body])]
           [:div {:id :kc-about-us--section}
                 about-us-section]))
